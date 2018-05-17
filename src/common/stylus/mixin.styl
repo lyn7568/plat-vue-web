@@ -1,0 +1,70 @@
+/*main color#319dff*/
+$mainColor = #409EFF
+/*mian-font*/
+/*主要文字*/ $mainFont = #303133
+/*常规文字*/ $commonFont = #606266
+/*次要文字*/ $secondaryFont = #909399
+/*占位文字*/ $occupancyFont = #C0C4CC
+
+
+/*bg-about s*/
+bg-blue-color()
+  background: $mainColor
+  color: #fff
+bg-blue-active-color($bg = #0c84f1)
+  background: $bg
+
+bg-grey-color($bg = #373d41, $color = #c4c3c3)
+  background: $bg
+  color: $color
+  a
+  	color: $color
+  a:hover
+  	color: #fff
+
+bg-image($url)
+  background-image:url($url)
+  background-position: center center
+  background-repeat: no-repeat
+/*bg-about e*/
+
+/*border-about s*/
+border-radius($radius = 6px)
+  -webkit-border-radius: $radius
+  -moz-border-radius: $radius
+  border-radius: $radius
+
+border-1px($color)
+  position:relative
+  &:after
+    display:block
+    position:absolute
+    left:0
+    bottom:0
+    width:100%
+    border-top:1px solid $color
+    content:' '
+border-none()
+  &:after
+    display:none
+/*border-about e*/
+
+/*margin-about s*/
+
+/*margin-about e*/
+
+/*text-about s*/
+text-ellipsis($n = 1,$lineH = 30px)
+  display: -webkit-box
+  line-height: $lineH
+  height: $lineH*$n
+  white-space: normal !important
+  text-overflow: ellipsis
+  word-wrap: break-word
+  -webkit-line-clamp: $n
+  -webkit-box-orient: vertical
+  overflow: hidden
+/*text-about e*/
+
+
+

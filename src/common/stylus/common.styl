@@ -1,0 +1,73 @@
+@import './mixin';
+
+body
+  background:#f4f6f8
+
+a
+  color: $mainFont
+
+.contain-wrapper
+  box-sizing: content-box
+  width: 1100px
+  padding: 0 10px
+  position:relative
+  margin:auto
+  clear:both
+  font-size:15px
+
+.content-wrapper
+  box-sizing: border-box
+  padding:20px
+  background:#fff
+
+.content-title
+  display:flex
+  justify-content: space-between
+  font-size:16px
+  line-height:30px
+  font-weight: bold
+  color:$mainFont
+  margin-bottom:12px
+  .content-more
+    font-size:13px
+    color:$secondaryFont
+
+/*form-css*/
+.frmtype
+  width:100%
+  box-sizing: border-box
+  border:none
+  border:1px #d2d2d2 solid
+  height:46px
+  background: #f5f6f8
+  padding:4px 10px
+  font-size:14px
+  outline: none
+  &.btnModel
+    margin:20px 0 0
+    color:#FFFFFF
+    border:none
+    cursor:pointer
+    background:$mainColor
+.fontLink
+  background:none
+  border:none
+  color:$mainColor
+  font-size:13px
+.frmmsg
+  position:relative
+  padding-left:20px
+  line-height:28px
+  color: #fd5f39
+  &:before
+    content: ''
+    position: absolute
+    left: 0
+.frmmsg-warning
+  border: 1px solid #fd5f39
+/*form-css*/
+
+
+.el-button--primary
+  background-color: $mainColor;
+  border-color: $mainColor;
