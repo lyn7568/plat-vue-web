@@ -159,17 +159,7 @@
             <router-link class="content-more" to="">查看全部</router-link>
         </div>
         <div class="block-container">
-          <div class="block-item" v-for="item in 6" :key="item">
-            <div class="show-head"></div>
-            <div class="show-info">
-              <div class="info-tit">专家姓名</div>
-              <div class="info-tag">职称/职位，所在机构</div>
-              <div class="info-desc">
-
-研究方向：研究方向A；研究方向B；研究方向C；研究方向A；研究方向B；研究方向C；研究方...
-</div>
-            </div>
-          </div>
+          <baseExpert v-for="item in 6" :key="item"></baseExpert>
         </div>
       </div>
     </div>
@@ -181,17 +171,7 @@
             <router-link class="content-more" to="">查看全部</router-link>
         </div>
         <div class="block-container">
-          <div class="block-item org-item" v-for="item in 3" :key="item">
-            <div class="item-block">
-              <div class="item-pic">
-                <img src="">
-              </div>
-              <div class="item-text">
-                <p class="item-tit">北京科袖科技有限公司北京科袖科技有限公司</p>
-                <p class="item-tag">所属行业 | 所属行业 | 所属行业</p>
-              </div>
-            </div>
-          </div>
+          <baseAgency v-for="item in 3" :key="item"></baseAgency>
         </div>
       </div>
     </div>
@@ -202,6 +182,9 @@
 <script>
   import Swiper from 'swiper';
   import 'swiper/dist/css/swiper.min.css';
+
+  import baseAgency from './subtemplate/BaseAgency';
+  import baseExpert from './subtemplate/BaseExpert';
 
   export default {
     props: {
@@ -236,6 +219,10 @@
           prevEl: this.$refs.prevResource
         }
       });
+    },
+    components: {
+      baseAgency,
+      baseExpert
     }
   };
 </script>
@@ -329,30 +316,6 @@
         .swiper-container-rtl .swiper-button-prev
           background:linear-gradient(to left,rgba(178, 178, 178,.4) 0,rgba(0,0,0,0.0001) 100%)
           right:0
-        .item-block
-          width:180px
-          overflow:hidden
-          .item-pic
-            width:180px
-            height:120px
-            box-sizing:border-box
-            border:1px solid #e4e7ed
-            background-size:cover
-            overflow:hidden
-          .item-text
-            margin-top:6px
-            line-height:30px
-            &.item-tit
-              text-align:center
-              text-ellipsis()
-            .title
-              text-ellipsis()
-            .desc
-              margin-top:3px
-              text-ellipsis(2,20px)
-            .owner
-              margin-top:10px
-              text-ellipsis()
         .content-title
           .content-search
             display:flex
@@ -379,43 +342,5 @@
           flex-wrap: wrap
           margin-right:-10px
           margin-bottom:-10px
-          .block-item
-            display:flex
-            justify-content: space-between
-            width:346px
-            height:140px
-            box-sizing:border-box
-            padding:10px
-            margin-right:10px
-            margin-bottom:10px
-            border:1px solid #e4e7ed
-            .show-head
-              width:80px
-              height:80px
-              border:1px solid #e4e7ed
-              border-radius(50%)
-            .show-info
-              width:230px
-              .info-tit
-                font-size:18px
-                line-height:28px
-                color:$mainFont
-              .info-tag
-                color:$secondaryFont
-                text-ellipsis(1,26px)
-              .info-desc
-                color:$secondaryFont
-                text-ellipsis(3,20px)
-            &.org-item
-              height:200px
-              text-align:center
-              .item-block
-                width:306px
-                margin:auto
-                .item-pic
-                  margin:auto
-                .item-tag
-                  color:$secondaryFont
-                  text-ellipsis(1,20px)
 
 </style>

@@ -52,6 +52,11 @@ export const otherRouter = {
       name: 'aboutUs',
       component: () => import('@/components/main-views/ViewAboutUs.vue')
       // component: resolve => { require(['../components/ViewAboutUs.vue'], resolve); }
+    },
+    { path: 'workBench',
+      title: '平台工作台',
+      name: 'workBench',
+      component: () => import('@/components/bench-views/ViewWorkBench.vue')
     }
   ]
 };

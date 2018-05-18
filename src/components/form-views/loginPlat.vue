@@ -16,6 +16,7 @@
           </li>
           <li>
             <button type="button" disabled class="frmtype btnModel">登录</button>
+            <router-link to="workBench">wwww</router-link>
             <router-link class="fontLink" to="">忘记密码？</router-link>
           </li>
         </ul>

@@ -3,9 +3,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
 import {router} from './router/index';
-import VueResource from 'vue-resource';
+import axios from 'axios';
 
-Vue.use(VueResource);
+Vue.prototype.$axios = axios;
 Vue.use(ElementUI);
 
 /* eslint-disable no-new */

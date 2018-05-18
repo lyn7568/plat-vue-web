@@ -27,11 +27,12 @@
       };
     },
     created() {
-      this.$http.get('./api/plat').then((response) => {
-        response = response.body;
-         if (response.errno === ERR_OK) {
-          this.plat = response.data;
-         };
+      this.$axios.get('./api/plat').then((res) => {
+        // console.log(res);
+        res = res.data;
+        if (res.errno === ERR_OK) {
+          this.plat = res.data;
+        };
       });
     },
     components: {
