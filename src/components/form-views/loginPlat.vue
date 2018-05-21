@@ -15,7 +15,7 @@
             <div class="frmmsg msgLog2"><span></span></div>
           </li>
           <li>
-            <button type="button" disabled class="frmtype btnModel">登录</button>
+            <button type="button" disabled class="frmtype btnModel" @click="login">登录</button>
             <router-link to="workBench">wwww</router-link>
             <router-link class="fontLink" to="">忘记密码？</router-link>
           </li>
@@ -27,6 +27,11 @@
 
 <script>
   export default {
+    methods: {
+      login() {
+          this.$router.push({path:'/WorkHome'});
+      }
+    }
   };
 </script>
 

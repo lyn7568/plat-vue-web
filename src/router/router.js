@@ -1,5 +1,5 @@
 import Main from '@/components/Main.vue';
-
+import WorkMain from '@/components/bench-views/WorkCommon.vue';
 // 全屏展示页面
 export const loginRouter = {
     path: '/loginPlat',
@@ -52,23 +52,27 @@ export const otherRouter = {
       name: 'aboutUs',
       component: () => import('@/components/main-views/ViewAboutUs.vue')
       // component: resolve => { require(['../components/ViewAboutUs.vue'], resolve); }
-    },
-    { path: 'workBench',
-      title: '平台工作台',
-      name: 'workBench',
-      component: () => import('@/components/bench-views/ViewWorkBench.vue')
     }
   ]
 };
 
 // 作为工作台bench子页面展示
-export const appRouter = [
-
-];
+export const appRouter ={
+  path: '/',
+  name: 'appRouter',
+  component: WorkMain,
+  children: [
+    {
+      path:  "WorkHome",
+      titile:  '平台主页',
+      component: () => import('@/components/bench-views/WorkHome.vue')
+    }
+  ]
+}
 
 // 所有上面定义的路由都要写在下面的routers里
 export const routers = [
     loginRouter,
     otherRouter,
-    ...appRouter
+    appRouter
 ];
