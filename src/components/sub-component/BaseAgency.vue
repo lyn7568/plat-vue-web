@@ -5,14 +5,14 @@
         <img src="">
       </div>
       <div class="item-text">
-        <p class="item-tit">北京科袖科技有限公司北京科袖科技有限公司</p>
+        <div class="item-tit"><span>北京科袖科技有限公司北京科有限公司北京科袖科技有限公司</span><em class="authicon icon-com"></em></div>
         <p class="item-tag">所属行业 | 所属行业 | 所属行业</p>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   export default {
 
   };

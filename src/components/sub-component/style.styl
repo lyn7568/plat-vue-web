@@ -1,0 +1,112 @@
+@import '../../common/stylus/mixin';
+
+.item-block
+  width:180px
+  overflow:hidden
+  .item-pic
+    width:180px
+    height:120px
+    box-sizing:border-box
+    border:1px solid $borderColor
+    background-size:cover
+    overflow:hidden
+  .item-text
+    margin-top:6px
+    line-height:30px
+    &.item-left
+      text-ellipsis()
+    .item-tit
+      text-align:center
+      display:flex
+      align-items:center
+      span
+        display: inline-block
+        max-width: 86%
+        text-ellipsis()
+    .title
+      text-ellipsis()
+    .desc
+      margin-top:3px
+      text-ellipsis(2,20px)
+    .owner
+      margin-top:10px
+      text-ellipsis()
+
+.block-container
+  display: flex
+  flex-wrap: wrap
+  margin-right:-10px
+  margin-bottom:-10px
+  .block-item
+    display:flex
+    justify-content: space-between
+    width:346px
+    height:140px
+    box-sizing:border-box
+    padding:10px
+    margin-right:10px
+    margin-bottom:10px
+    border:1px solid $borderColor
+    .show-head
+      width:80px
+      height:80px
+      border:1px solid $borderColor
+      border-radius(50%)
+    .show-info
+      width:230px
+      .info-tit
+        font-size:18px
+        line-height:28px
+        color:$mainFont
+      .info-tag
+        color:$secondaryFont
+        text-ellipsis(1,26px)
+      .info-desc
+        color:$secondaryFont
+        text-ellipsis(3,20px)
+    &.org-item
+      height:200px
+      text-align:center
+      .item-block
+        width:306px
+        margin:auto
+        .item-pic
+          margin:auto
+        .item-tag
+          color:$secondaryFont
+          text-ellipsis(1,20px)
+
+.list-item
+  display:flex
+  align-items:center
+  background:#fff
+  padding:20px
+  border-1px()
+  &:last-child
+    border-none()
+  .list-head
+    width:180px
+    height:120px
+    background:red
+  .list-info
+    flex: 1 1 180px
+    padding-left:15px
+    .list-tit
+      color:$mainFont
+      font-size:18px
+      text-ellipsis(2,26px)
+      &.list-topic
+        text-ellipsis(1,26px)
+    .list-tag
+      margin-top:10px
+      color:$secondaryFont
+      font-size:14px
+      li
+        display:inline-block
+        margin-right:15px
+    .list-owner
+      color:$commonFont
+      line-height:30px
+    .list-desc
+      text-ellipsis(2,20px)
+      color:$commonFont

@@ -9,6 +9,12 @@
     "mailbox": "xtkfqbgs@sohu.com",
     "logourl": "/static/xtkfq/icon-logo.png",
     "bannerurl": "/static/xtkfq/banner.jpg",
-    "platimgurl": "/static/xtkfq/platimg.jpg"
+    "platimgurl": "/static/xtkfq/platimg.jpg",
+    "adinfo":[
+      {
+        "adUrl": "http://www.ecorr.org",
+        "imgUrl": "/static/xtkfq/ad/fengying.jpg"
+      }
+    ]
   }
 }

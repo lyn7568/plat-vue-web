@@ -1,5 +1,7 @@
 <template>
   <div class="home-main">
+    <!-- <backTop :scrollmyself="true"></backTop> -->
+
     <div class="block-wrapper">
       <div class="wrapper-left">
         <img :src="plat.platimgurl" width="800" height="280">
@@ -76,7 +78,7 @@
                 <div class="item-pic">
                   <img src="">
                 </div>
-                <div class="item-text item-tit">北京科袖科技有限公司北京科袖科技有限公司</div>
+                <div class="item-text item-left">北京科袖科技有限公司北京科袖科技有限公司</div>
               </div>
             </div>
           </div>
@@ -175,16 +177,16 @@
         </div>
       </div>
     </div>
-
+    <!-- <Loading></Loading> -->
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import Swiper from 'swiper';
   import 'swiper/dist/css/swiper.min.css';
 
-  import baseAgency from './subtemplate/BaseAgency';
-  import baseExpert from './subtemplate/BaseExpert';
+  import baseAgency from '../sub-component/BaseAgency';
+  import baseExpert from '../sub-component/BaseExpert';
 
   export default {
     props: {
@@ -234,7 +236,6 @@
     .block-wrapper
       display: flex
       justify-content: space-between
-      margin-bottom: 20px
       color:$commonFont
       .wrapper-left
         padding: 0
@@ -337,10 +338,5 @@
             display:inline-block
             padding-left:20px
             color:$secondaryFont
-        .block-container
-          display:flex
-          flex-wrap: wrap
-          margin-right:-10px
-          margin-bottom:-10px
 
 </style>

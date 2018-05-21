@@ -3,7 +3,7 @@
     <div class="block-item">
       <div class="show-head"></div>
       <div class="show-info">
-        <div class="info-tit">专家姓名</div>
+        <div class="info-tit">专家姓名<em class="authicon icon-pro"></em></div>
         <div class="info-tag">职称/职位，所在机构</div>
         <div class="info-desc">
 
@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   export default {
 
   };

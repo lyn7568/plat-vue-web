@@ -15,10 +15,36 @@ a
   clear:both
   font-size:15px
 
+.block-wrapper
+  margin-bottom:20px
+
 .content-wrapper
   box-sizing: border-box
   padding:20px
   background:#fff
+
+/*左右分栏*/
+.main-content
+  display: flex
+  justify-content: space-between
+  .wrapper-left
+    width:800px
+  .wrapper-right
+    width: 280px
+.ad-wrapper
+  position: relative
+  display: block
+  margin-bottom: 10px
+  &:after
+    content:"广告"
+    font-size:10px
+    color:#fff
+    background:rgba(0,0,0,0.3)
+    position:absolute
+    padding:0 4px
+    right:0
+    bottom:0px
+/*左右分栏*/
 
 .content-title
   display:flex
@@ -71,3 +97,20 @@ a
 .el-button--primary
   background-color: $mainColor;
   border-color: $mainColor;
+
+/*认证标识相关*/
+.authicon
+  display: inline-block
+  margin-left:4px
+  width:16px
+  height:16px
+  background-size: cover
+  &.icon-pro
+    bg-image($iconPro)
+  &.icon-com
+    bg-image($iconCmp)
+  &.icon-staff
+    bg-image($iconStaff)
+  &.icon-real
+    width:24px
+    bg-image($iconReal)
