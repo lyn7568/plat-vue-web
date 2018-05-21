@@ -57,18 +57,18 @@ export const otherRouter = {
 };
 
 // 作为工作台bench子页面展示
-export const appRouter ={
+export const appRouter = {
   path: '/',
   name: 'appRouter',
   component: WorkMain,
   children: [
     {
-      path:  "WorkHome",
-      titile:  '平台主页',
+      path: 'WorkHome',
+      titile: '平台主页',
       component: () => import('@/components/bench-views/WorkHome.vue')
     }
   ]
-}
+};
 
 // 所有上面定义的路由都要写在下面的routers里
 export const routers = [
