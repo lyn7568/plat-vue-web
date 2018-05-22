@@ -5,9 +5,17 @@ export const loginRouter = {
     path: '/loginPlat',
     name: 'loginPlat',
     meta: {
-        title: 'Login - 登录'
+        title: 'Login-登录'
     },
     component: () => import('@/components/form-views/loginPlat.vue')
+};
+export const pwdRouter = {
+    path: '/findPwd',
+    name: 'findPwd',
+    meta: {
+        title: '找回密码'
+    },
+    component: () => import('@/components/form-views/findPwd.vue')
 };
 
 // 作为Main组件的子页面展示
@@ -73,6 +81,7 @@ export const appRouter = {
 // 所有上面定义的路由都要写在下面的routers里
 export const routers = [
     loginRouter,
+    pwdRouter,
     otherRouter,
     appRouter
 ];

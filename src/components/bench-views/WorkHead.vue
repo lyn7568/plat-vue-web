@@ -34,7 +34,7 @@
     data() {
       return {
         animateStatus: false
-      }
+      };
     },
     methods: {
       overShow() {

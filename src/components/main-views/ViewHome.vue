@@ -16,7 +16,7 @@
           将您的需求发布到科袖网，<br>
           我们为您对接专家和各类专业机构。
         </p>
-        <button type="button" class="frmtype btnModel">免费发布需求</button>
+        <el-button type="primary" style="margin-top:30px">免费发布需求</el-button>
       </div>
     </div>
 
@@ -254,9 +254,6 @@
           font-size: 14px
           line-height: 22px
           color:$secondaryFont
-        .frmtype
-          margin-top:28px
-          width:60%
       .plat-news
         width:800px
         height:200px

@@ -63,6 +63,8 @@ import baseArticle from '../sub-component/BaseArticle';
 			cursor: pointer
 			&.active
 				color: $mainColor
+		.el-tabs__header
+			margin: 0 0 4px
 		.el-tabs__nav-wrap::after
 			content:none
 		.el-tabs__content
