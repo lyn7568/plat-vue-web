@@ -45,4 +45,14 @@
         .list-tagy
           li
             margin-right: 70px
+  .listMain
+    .select
+      margin-top: 20px
+      .week
+        display: inline-block
+        margin-right: 40px
+        .weekText
+          margin: 0 8px
+        .el-select
+          width: 130px
 </style>

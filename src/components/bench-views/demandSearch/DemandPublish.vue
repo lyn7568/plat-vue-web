@@ -113,17 +113,3 @@
      }
    };
 </script>
-
-<style lang="stylus" rel="stylesheet/stylus">
-  .listMain
-    .select
-      margin-top: 10px
-      .week
-        border: 1px solid #e4e7ed
-        display: inline-block
-        margin-right: 40px
-        .weekText
-          margin: 0 8px
-          .el-select
-            width: 130px
-</style>
