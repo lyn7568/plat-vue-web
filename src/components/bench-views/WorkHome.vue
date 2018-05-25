@@ -72,14 +72,14 @@
     },
     methods: {
       getPlatInfo(id) {
-        this.$axios.get(httpUrl.workbench.platBase, {
+        this.$axios.get(httpUrl.hQuery.baseInfo.query, {
           params: {
             id: id
           }
         }).then((res) => {
           console.log(res);
           this.platInfo = res.data;
-          this.imgUrl = util.orgLogoUrl(res.data.logo);
+          this.imgUrl = util.ImageUrl('platform' + res.data.logo);
         });
       },
       updateInfo() {

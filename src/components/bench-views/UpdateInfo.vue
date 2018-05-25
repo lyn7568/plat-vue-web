@@ -99,7 +99,7 @@
         plf_name: '',
         imageUrl: '', // 临时地址
         imgName: '', // 图片的name
-        uploadUrl: httpUrl.workbench.uploadImg,
+        uploadUrl: httpUrl.hQuery.baseInfo.upload,
         optionsCity: provinceAndCityData,
         selectedOptions: [],
         dynamicTags: [],
@@ -150,7 +150,7 @@
     },
     methods: {
       getPlatInfo(id) {
-        this.$axios.get(httpUrl.workbench.platBase, {
+        this.$axios.get(httpUrl.hQuery.baseInfo.query, {
           params: {
             id: id
           }
@@ -158,7 +158,7 @@
           console.log(res);
           let str = res.data;
           this.plf_name = str.name;
-          this.imageUrl = util.orgLogoUrl(str.logo);
+          this.imageUrl = util.ImageUrl('platform' + str.logo);
           this.imgName = str.logo;
           this.ruleForm.linkman = str.linkman;
           this.ruleForm.tel = str.linkphone;
@@ -200,7 +200,7 @@
               'industry': this.ruleForm.industry,
               'descp': this.ruleForm.desc
             };
-            this.$axios.post(httpUrl.workbench.updateInfo, paramsData).then((res) => {
+            this.$axios.post(httpUrl.hQuery.baseInfo.update, paramsData).then((res) => {
               this.$message({
                 message: '平台信息修改成功！',
                 type: 'success'
@@ -227,7 +227,7 @@
       // upload img
       handleAvatarSuccess(res, file) {
         this.imageUrl = URL.createObjectURL(file.raw);
-        this.imgName = 'platform' + res.data[0].uri;
+        this.imgName = res.data[0].uri;
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';

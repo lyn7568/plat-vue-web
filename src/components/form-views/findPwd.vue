@@ -111,8 +111,35 @@
       resetPwd(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
-            this.$router.push({path: '/WorkHome'});
+            // this.$axios.post(httpUrl.workbench.fingPwd, paramsData).then(res => {
+            //   this.logining = false;
+            //   console.log(res);
+            //   if (res.success) {
+            //     this.$router.push({path: '/loginPlat'});
+            //   } else {
+            //     let errorCode = [{
+            //       code: -600001,
+            //       msg: '用户不存在'
+            //     }, {
+            //       code: -600002,
+            //       msg: '密码不正确'
+            //     }, {
+            //       code: -600003,
+            //       msg: '平台信息不存在'
+            //     }, {
+            //       code: -600004,
+            //       msg: '用户被禁用'
+            //     }];
+            //     for (let i = 0; i < errorCode.length; i++) {
+            //       if (res.code === errorCode[i].code) {
+            //         this.$message.error(errorCode[i].msg);
+            //         return;
+            //       };
+            //     };
+            //   }
+            // }).catch(error => {
+            //   console.log(error);
+            // });
           } else {
             return false;
           }

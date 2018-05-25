@@ -28,6 +28,7 @@ bg-image($url)
   background-image:url($url)
   background-position: center center
   background-repeat: no-repeat
+  background-size:cover
 /*bg-about e*/
 
 /*border-about s*/
@@ -68,11 +69,14 @@ text-ellipsis($n = 1,$lineH = 30px)
 center-items($w = 180px,$h = 120px)
   display: flex
   align-items: center
+  justify-content: center
   border: 1px solid $borderColor
   box-sizing:border-box
   width: $w+2px
   height: $h+2px
   border-radius(4px)
+  background-size:cover
+  background-position: center center
   img
     max-width: $w
     max-height: 100%

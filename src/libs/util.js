@@ -1,3 +1,4 @@
+
 // let ekexiuUrl = 'https://www.ekexiu.com';
 let ekexiuUrl = 'http://192.168.3.233:81';
 
@@ -6,6 +7,44 @@ let util = {
 };
 
 util.ekexiuUrl = ekexiuUrl;
+
+/**
+ * default img
+ */
+util.defaultSet = {
+  img: {
+    expert: '/static/comimg/default-expert.jpg',
+    org: '/static/comimg/default-org.jpg',
+    article: '/static/comimg/default-article.jpg',
+    resource: '/static/comimg/default-resource.jpg',
+    service: '/static/comimg/default-service.jpg'
+  },
+  link: {
+    expert: ekexiuUrl + '/userInforShow.html?professorId=',
+    org: ekexiuUrl + '/cmpInforShow.html?orgId=',
+    article: ekexiuUrl + '/articleShow.html?articleId=',
+    resource: ekexiuUrl + '/resourceShow.html?resourceId=',
+    service: ekexiuUrl + '/sevriceShow.html?sevriceId='
+  }
+};
+
+/**
+ * expert head symbol icon
+ */
+util.autho = function (a, b, c) {
+  if (a === 1) {
+    return 'icon-pro';
+  } else {
+    if (b === 1) {
+      return 'icon-staff';
+    } else {
+      if (c === 3) {
+        return 'icon-real';
+      };
+    };
+  };
+};
+
 /**
  * 解析url参数
  * @example ?id=12345&a=b
@@ -30,8 +69,8 @@ util.urlParse = function (name) {
 /**
  * 拼接图片链接地址
  */
-util.orgLogoUrl = function (str) {
-    return ekexiuUrl + '/data/' + str;
+util.ImageUrl = function (str, bol) {
+    return bol ? (ekexiuUrl + '/images/' + str) : (ekexiuUrl + '/data/' + str);
 };
 
 // util.cutOutUrl = function (str) {

@@ -103,16 +103,16 @@
         </div>
         <div class="swiper-container" ref="findService">
           <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="item in 20" :key="item">
+            <a class="swiper-slide" v-for="item in platWares" :key="item.index" :href="linkWare">
               <div class="item-block">
-                <div class="item-pic" :style="{backgroundImage: 'url(' + item.imgs + ')'}"></div>
+                <div class="item-pic" :style="{backgroundImage: 'url(' + waresUrl + ')'}"></div>
                 <div class="item-text">
-                  <p class="title">北京科袖科技有限公司北京科袖科技有限公司</p>
-                  <p class="desc">北京科袖科技有限公司北京科袖科技有限公司有限公司有限公司</p>
+                  <p class="title">{{item.name}}</p>
+                  <p class="desc">{{item.cnt}}</p>
                   <p class="owner">北京科袖科技有限公司北京科袖科技有限公司有限公司有限公司</p>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
           <div class="swiper-button-prev el-icon-arrow-left" ref="prevService"></div>
           <div class="swiper-button-next el-icon-arrow-right" ref="nextService"></div>
@@ -132,21 +132,21 @@
           </div>
           <div class="content-more">
             <router-link class="item-more" v-for="item in 4" :key="item" to="">咨询服务</router-link>
-            <router-link class="item-more" to="">更多</router-link>
+            <router-link class="item-more" to="/findResource">更多</router-link>
           </div>
         </div>
         <div class="swiper-container" ref="findResource">
           <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="item in 20" :key="item">
+            <a class="swiper-slide" v-for="item in platResources" :key="item.index" :href="linkResource">
               <div class="item-block">
-                <div class="item-pic" :style="{backgroundImage: 'url(' + item.imgs + ')'}"></div>
+                <div class="item-pic" :style="{backgroundImage: 'url(' + resourcesUrl(item) + ')'}"></div>
                 <div class="item-text">
-                  <p class="title">北京科袖科技有限公司北京科袖科技有限公司</p>
-                  <p class="desc">北京科袖科技有限公司北京科袖科技有限公司有限公司有限公司</p>
-                  <p class="owner">北京科袖科技有限公司北京科袖科技有限公司有限公司有限公司</p>
+                  <p class="title">{{item.name}}</p>
+                  <p class="desc">{{item.cnt}}</p>
+                  <p class="owner">北京科袖科技</p>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
           <div class="swiper-button-prev el-icon-arrow-left" ref="prevResource"></div>
           <div class="swiper-button-next el-icon-arrow-right" ref="nextResource"></div>
@@ -158,11 +158,9 @@
       <div class="content-wrapper full-wrapper">
         <div class="content-title">
             <span>专家顾问</span>
-            <router-link class="content-more" to="">查看全部</router-link>
+            <router-link class="content-more" to="/expertPool">查看全部</router-link>
         </div>
-        <div class="block-container">
-          <baseExpert v-for="item in 6" :key="item"></baseExpert>
-        </div>
+        <baseExpert :num="6"></baseExpert>
       </div>
     </div>
 
@@ -170,7 +168,7 @@
       <div class="content-wrapper full-wrapper">
         <div class="content-title">
             <span>合作机构</span>
-            <router-link class="content-more" to="">查看全部</router-link>
+            <router-link class="content-more" to="/cooperationAgency">查看全部</router-link>
         </div>
         <baseAgency :num="3"></baseAgency>
       </div>
@@ -182,6 +180,7 @@
 <script type="text/ecmascript-6">
   import Cookies from 'js-cookie';
   import httpUrl from '@/libs/http';
+  import util from '@/libs/util';
 
   import Swiper from 'swiper';
   import 'swiper/dist/css/swiper.min.css';
@@ -198,12 +197,15 @@
     data() {
       return {
         platId: '',
-        rows: 20
+        rows: 20,
+        platResources: '',
+        platWares: ''
       };
     },
     created() {
        this.platId = Cookies.get('platId');
-       this.queryOrg(this.platId);
+       this.queryPlatResources(this.platId);
+       this.queryPlatWares(this.platId);
     },
     mounted() {
       this.latestCmpSwiper = new Swiper(this.$refs.latestCmp, {
@@ -212,7 +214,9 @@
         loop: true,
         autoplay: {
           disableOnInteraction: false
-        }
+        },
+        observer: true,
+        observeParents: true
       });
 
       this.findServiceSwiper = new Swiper(this.$refs.findService, {
@@ -221,7 +225,9 @@
         navigation: {
           nextEl: this.$refs.nextService,
           prevEl: this.$refs.prevService
-        }
+        },
+        observer: true,
+        observeParents: true
       });
 
       this.findResourceSwiper = new Swiper(this.$refs.findResource, {
@@ -230,19 +236,51 @@
         navigation: {
           nextEl: this.$refs.nextResource,
           prevEl: this.$refs.prevResource
-        }
+        },
+        observer: true, // 修改swiper自己或子元素时，自动初始化swiper
+        observeParents: true // 修改swiper的父元素时，自动初始化swiper
       });
     },
     methods: {
-      queryOrg(id) {
-        this.$axios.get(httpUrl.homequery.residentOrgs, {
+      queryPlatResources(id) {
+        this.$axios.get(httpUrl.hQuery.queryResource, {
           params: {
             pid: id,
             rows: this.rows
           }
         }).then((res) => {
           console.log(res);
+          if (res.success) {
+            var $info = res.data;
+            this.platResources = $info;
+          };
         });
+      },
+      queryPlatWares(id) {
+        this.$axios.get(httpUrl.hQuery.queryWare, {
+          params: {
+            pid: id,
+            rows: this.rows
+          }
+        }).then((res) => {
+          console.log(res);
+          if (res.success) {
+            var $info = res.data;
+            this.platWares = $info;
+          };
+        });
+      },
+      resourcesUrl(item) {
+        return item.images ? util.ImageUrl('resource/' + item.images.split(',')[0]) : util.defaultSet.img.resource;
+      },
+      waresUrl(item) {
+        return item.images ? util.ImageUrl('ware/' + item.images.split(',')[0]) : util.defaultSet.img.service;
+      },
+      linkResource(item) {
+        return util.defaultSet.link.resource + item.id;
+      },
+      linkWare(item) {
+        return util.defaultSet.link.service + item.id;
       }
     },
     components: {
@@ -365,14 +403,6 @@
             line-height:30px
             &.item-left
               text-ellipsis()
-            .item-tit
-              text-align:center
-              display:flex
-              align-items:center
-              span
-                display: inline-block
-                max-width: 86%
-                text-ellipsis()
             .title
               text-ellipsis()
             .desc

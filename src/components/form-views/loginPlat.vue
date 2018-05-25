@@ -55,7 +55,7 @@
               'email': this.ruleForm.mail,
               'pw': this.ruleForm.pass
             };
-            this.$axios.post(httpUrl.workbench.login, paramsData).then(res => {
+            this.$axios.post(httpUrl.hQuery.sign.login, paramsData).then(res => {
               this.logining = false;
               console.log(res);
               if (res.success) {

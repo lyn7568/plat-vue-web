@@ -53,7 +53,7 @@
       }
     },
     created() {
-      this.plf_logo = util.orgLogoUrl(Cookies.get('plf_logo'));
+      this.plf_logo = util.ImageUrl('platform' + Cookies.get('plf_logo'));
     }
 	};
 </script>

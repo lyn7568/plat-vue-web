@@ -1,5 +1,5 @@
 <template>
-	<div class="cooperation">
+	<div class="cooperation block-wrapper">
 		<div class="content-wrapper">
 			<div class="content-title">平台合作机构</div>
 			<baseAgency></baseAgency>
