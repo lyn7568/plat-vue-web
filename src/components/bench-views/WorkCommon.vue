@@ -43,14 +43,14 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-
+  @import './workCommon'
   .Site
     display: flex
     min-height: 100vh
     flex-direction: column
     .Site-content
       flex: 1
-      padding-top:20px
+      padding-top:80px
       .router-fade-enter-active,
       .router-fade-leave-active
         transition: opacity 0.2s

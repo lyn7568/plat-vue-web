@@ -31,7 +31,3 @@
     }
   };
 </script>
-
-<style lang="stylus" rel="stylesheet/stylus">
-  @import '../workCommon'
-</style>

@@ -35,7 +35,7 @@
   };
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
-  @import '../sub-component/style'
+  @import '../../common/stylus/listitem';
     .list-item
       &:hover
         background: #EEEEEE

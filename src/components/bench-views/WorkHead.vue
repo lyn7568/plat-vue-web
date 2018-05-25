@@ -61,6 +61,8 @@
 <style lang="stylus" rel="stylesheet/stylus">
   .workHeader
     .workHeaderWrapper
+      position: fixed;
+      width: 100%;
       height: 60px
       background: #fff
       border-bottom: 2px solid $borderColor

@@ -83,19 +83,19 @@
         });
       },
       updateInfo() {
-        this.$router.push({path: '/updateInfo'});
+        this.$router.push({path: 'updateInfo'});
       },
       conManage() {
-        this.$router.push({path: '/findPwd'});
+        this.$router.push({path: 'ContentManagement'});
       },
       cmpManage() {
-        this.$router.push({path: '/findPwd'});
+        this.$router.push({path: 'BusinessManagement'});
       },
       demandManage() {
-        this.$router.push({path: '/findPwd'});
+        this.$router.push({path: 'DemandSearch'});
       },
       serviceManage() {
-        this.$router.push({path: '/findPwd'});
+        this.$router.push({path: 'ButtService'});
       }
     }
   };
