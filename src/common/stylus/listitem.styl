@@ -1,37 +1,4 @@
-@import '../../common/stylus/mixin';
-
-.item-block
-  width:180px
-  overflow:hidden
-  .item-pic
-    width:180px
-    height:120px
-    box-sizing:border-box
-    border:1px solid $borderColor
-    background-size:cover
-    overflow:hidden
-  .item-text
-    margin-top:6px
-    line-height:30px
-    &.item-left
-      text-ellipsis()
-    .item-tit
-      text-align:center
-      display:flex
-      align-items:center
-      span
-        display: inline-block
-        max-width: 86%
-        text-ellipsis()
-    .title
-      text-ellipsis()
-    .desc
-      margin-top:3px
-      text-ellipsis(2,20px)
-    .owner
-      margin-top:10px
-      text-ellipsis()
-
+/*home--cmp、expert*/
 .block-container
   display: flex
   flex-wrap: wrap
@@ -39,7 +6,6 @@
   margin-bottom:-10px
   .block-item
     display:flex
-    justify-content: space-between
     width:346px
     height:140px
     box-sizing:border-box
@@ -53,7 +19,8 @@
       border:1px solid $borderColor
       border-radius(50%)
     .show-info
-      width:230px
+      flex:1 0 80px
+      padding-left:15px
       .info-tit
         font-size:18px
         line-height:28px
@@ -75,7 +42,9 @@
         .item-tag
           color:$secondaryFont
           text-ellipsis(1,20px)
+/*home--cmp、expert*/
 
+/*list--图文*/
 .list-item
   display:flex
   align-items:center
@@ -85,9 +54,7 @@
   &:last-child
     border-none()
   .list-head
-    width:180px
-    height:120px
-    background:red
+    center-items()
   .list-info
     flex: 1 1 180px
     padding-left:15px
@@ -110,3 +77,4 @@
     .list-desc
       text-ellipsis(2,20px)
       color:$commonFont
+/*list*/

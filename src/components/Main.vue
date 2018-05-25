@@ -14,9 +14,11 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import TheHeader from './main-views/TheHeader.vue';
   import TheFooter from './main-views/TheFooter.vue';
+  import Cookies from 'js-cookie';
+  import httpUrl from '@/libs/http';
 
   const ERR_OK = 0;
 
@@ -27,11 +29,11 @@
       };
     },
     created() {
-      this.$axios.get('./api/plat').then((res) => {
-        // console.log(res);
-        res = res.data;
+      this.$axios.get(httpUrl.webbase).then(res => {
+        console.log(res);
         if (res.errno === ERR_OK) {
           this.plat = res.data;
+          Cookies.set('platId', res.data.id);
         };
       });
     },

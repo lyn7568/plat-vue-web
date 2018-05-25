@@ -5,11 +5,11 @@
         <div class="wrapper-left">
           <a :href="plat.website" class="a-link">{{plat.name}}</a>
           <span> X </span>
-          <a href="http://www.ekexiu.com" class="a-link">科袖网</a>
+          <a :href="kexiuLink" class="a-link">科袖网</a>
           <span>联合为您服务</span>
         </div>
         <div class="wrapper-right">
-          <a href="https://www.ekexiu.com/cmp-portal/cmp-settled-log.html" class="a-link">进入企业版</a>
+          <a :href="kexiuLink + '/cmp-portal/cmp-settled-log.html'" class="a-link">进入企业版</a>
         </div>
       </div>
     </div>
@@ -32,18 +32,23 @@
 </template>
 
 <script type="text/javascript">
+  import util from '@/libs/util';
+
   export default {
     props: {
       plat: {
         type: Object
       }
+    },
+    data() {
+      return {
+        kexiuLink: util.ekexiuUrl
+      };
     }
   };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import '../../common/stylus/mixin';
-
   .header
     .top-wrapper
       width: 100%

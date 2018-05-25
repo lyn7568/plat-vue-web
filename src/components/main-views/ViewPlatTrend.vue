@@ -52,7 +52,6 @@ import baseArticle from '../sub-component/BaseArticle';
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-	@import '../../common/stylus/mixin';
 
 	.tab-wrapper
 		padding:10px 20px

@@ -13,7 +13,7 @@
           </el-form-item>
           <el-form-item></el-form-item>
           <el-form-item>
-            <el-button type="primary" :disabled="isDisabl" @click="submitForm('ruleForm')">登录</el-button>
+            <el-button type="primary" :disabled="isDisabl" :loading="logining" @click="submitForm('ruleForm')">登录</el-button>
             <el-button type="text" @click="goBackPwd">忘记密码？</el-button>
           </el-form-item>
         </el-form>
@@ -23,9 +23,12 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import httpUrl from '@/libs/http';
+
   export default {
      data() {
       return {
+        logining: false,
         isDisabl: false,
         ruleForm: {
           mail: '',
@@ -47,7 +50,40 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$router.push({path: '/WorkHome'});
+            this.logining = true;
+            let paramsData = {
+              'email': this.ruleForm.mail,
+              'pw': this.ruleForm.pass
+            };
+            this.$axios.post(httpUrl.workbench.login, paramsData).then(res => {
+              this.logining = false;
+              console.log(res);
+              if (res.success) {
+                this.$router.push({path: '/WorkHome'});
+              } else {
+                let errorCode = [{
+                  code: -600001,
+                  msg: '用户不存在'
+                }, {
+                  code: -600002,
+                  msg: '密码不正确'
+                }, {
+                  code: -600003,
+                  msg: '平台信息不存在'
+                }, {
+                  code: -600004,
+                  msg: '用户被禁用'
+                }];
+                for (let i = 0; i < errorCode.length; i++) {
+                  if (res.code === errorCode[i].code) {
+                    this.$message.error(errorCode[i].msg);
+                    return;
+                  };
+                };
+              }
+            }).catch(error => {
+              console.log(error);
+            });
           } else {
             return false;
           }

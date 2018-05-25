@@ -172,9 +172,7 @@
             <span>合作机构</span>
             <router-link class="content-more" to="">查看全部</router-link>
         </div>
-        <div class="block-container">
-          <baseAgency v-for="item in 3" :key="item"></baseAgency>
-        </div>
+        <baseAgency :num="3"></baseAgency>
       </div>
     </div>
     <!-- <Loading></Loading> -->
@@ -182,6 +180,9 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import Cookies from 'js-cookie';
+  import httpUrl from '@/libs/http';
+
   import Swiper from 'swiper';
   import 'swiper/dist/css/swiper.min.css';
 
@@ -193,6 +194,16 @@
       plat: {
         type: Object
       }
+    },
+    data() {
+      return {
+        platId: '',
+        rows: 20
+      };
+    },
+    created() {
+       this.platId = Cookies.get('platId');
+       this.queryOrg(this.platId);
     },
     mounted() {
       this.latestCmpSwiper = new Swiper(this.$refs.latestCmp, {
@@ -222,6 +233,18 @@
         }
       });
     },
+    methods: {
+      queryOrg(id) {
+        this.$axios.get(httpUrl.homequery.residentOrgs, {
+          params: {
+            pid: id,
+            rows: this.rows
+          }
+        }).then((res) => {
+          console.log(res);
+        });
+      }
+    },
     components: {
       baseAgency,
       baseExpert
@@ -230,7 +253,6 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import '../../common/stylus/mixin';
 
   .home-main
     .block-wrapper
@@ -260,12 +282,10 @@
         .content
           display: flex
           .pictures
-            width:180px
-            height:120px
-            background:red
-            margin-right:15px
+            center-items()
           .maincon
-            width:565px
+            flex:1 0 180px
+            padding-left:15px
             height:120px
             overflow:hidden
             li
@@ -335,5 +355,30 @@
             display:inline-block
             padding-left:20px
             color:$secondaryFont
-
+        .item-block
+          width:182px
+          overflow:hidden
+          .item-pic
+            center-items()
+          .item-text
+            margin-top:6px
+            line-height:30px
+            &.item-left
+              text-ellipsis()
+            .item-tit
+              text-align:center
+              display:flex
+              align-items:center
+              span
+                display: inline-block
+                max-width: 86%
+                text-ellipsis()
+            .title
+              text-ellipsis()
+            .desc
+              margin-top:3px
+              text-ellipsis(2,20px)
+            .owner
+              margin-top:10px
+              text-ellipsis()
 </style>

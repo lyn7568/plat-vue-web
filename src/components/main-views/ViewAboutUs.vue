@@ -34,8 +34,6 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import '../../common/stylus/mixin';
-
   .aboutUs
     margin-bottom:20px
     padding:20px

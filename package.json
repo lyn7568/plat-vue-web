@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "element-china-area-data": "^4.1.0",
     "element-ui": "^2.3.8",
+    "nprogress": "^0.2.0",
     "style-loader": "^0.20.3",
     "stylus": "^0.54.5",
     "swiper": "^4.2.6",

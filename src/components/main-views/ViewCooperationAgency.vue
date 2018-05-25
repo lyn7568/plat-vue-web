@@ -2,9 +2,7 @@
 	<div class="cooperation">
 		<div class="content-wrapper">
 			<div class="content-title">平台合作机构</div>
-			<div class="block-container">
-				<baseAgency v-for="item in 10" :key="item"></baseAgency>
-			</div>
+			<baseAgency></baseAgency>
 		</div>
 	</div>
 </template>

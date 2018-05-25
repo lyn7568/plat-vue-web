@@ -6,13 +6,13 @@
 					<img class="logo-block" :src="plat.logourl">
 					<div>
 						<router-link to='aboutUs'>关于我们 |</router-link>
-						<a :href="plat.website" class="a-link">{{plat.name}} |</a>
-						<a href="http://www.ekexiu.com/" target="_blank">科袖网 |</a>
-						<router-link to="loginPlat">平台管理员登录</router-link>
+						<a :href="plat.website">{{plat.name}} |</a>
+						<a :href="kexiuLink" target="_blank">科袖网 |</a>
+						<a @click="goWorkBench">平台管理员登录</a>
 					</div>
 					<div>
-						<span class="listlink">客服热线： 010-62343359</span>
-						<span class="listlink">客服邮箱：<a rel="nofollow" href="mailto:service@ekexiu.com"> service@ekexiu.com</a></span>
+						<span class="listlink">客服热线： {{plat.tel}}</span>
+						<span class="listlink">客服邮箱：<a rel="nofollow" :href="'mailto:'+ plat.mailbox"> {{plat.mailbox}}</a></span>
 					</div>
 					<div>
 						<span class="listlink">工作时间： 周一至周五  9:00-18:00 </span>
@@ -28,17 +28,40 @@
 </template>
 
 <script type="text/javascript">
+  import Cookies from 'js-cookie';
+  import util from '@/libs/util';
+
   export default {
     props: {
       plat: {
         type: Object
       }
+    },
+    data() {
+      return {
+        kexiuLink: util.ekexiuUrl,
+        plf_user: ''
+      };
+    },
+    methods: {
+      init () {
+        this.plf_user = Cookies.get('plf_user');
+      },
+      goWorkBench() {
+        if (this.plf_user) {
+          this.$router.push({path: '/WorkHome'});
+        } else {
+          this.$router.push({path: '/loginPlat'});
+        };
+      }
+    },
+    mounted () {
+      this.init();
     }
   };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import '../../common/stylus/mixin';
 
   .footer
     bg-grey-color()
@@ -56,7 +79,7 @@
           margin-right:25px
         a
           color:#888
-
+          cursor:pointer
     .copy-wrapper
       margin-top:20px
       font-size:12px

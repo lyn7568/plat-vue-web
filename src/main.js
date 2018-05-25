@@ -3,15 +3,14 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
 import {router} from './router/index';
-import axios from 'axios';
+import axiosH from './libs/axios';
 
 import Loading from './components/global-component/loading';
-import BackTop from './components/global-component/backtop';
+// import BackTop from './components/global-component/backtop';
 
-Vue.prototype.$axios = axios;
+Vue.use(axiosH);
 Vue.use(ElementUI);
 Vue.use(Loading);
-Vue.use(BackTop);
 
 /* eslint-disable no-new */
 new Vue({

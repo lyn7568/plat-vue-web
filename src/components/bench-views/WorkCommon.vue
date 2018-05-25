@@ -14,9 +14,10 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import TheHeader from './WorkHead.vue';
   import TheFooter from '../main-views/TheFooter.vue';
+  import httpUrl from '@/libs/http';
 
   const ERR_OK = 0;
 
@@ -27,9 +28,8 @@
       };
     },
     created() {
-      this.$axios.get('./api/plat').then((res) => {
-        // console.log(res);
-        res = res.data;
+      this.$axios.get(httpUrl.webbase).then(res => {
+        console.log(res);
         if (res.errno === ERR_OK) {
           this.plat = res.data;
         };
