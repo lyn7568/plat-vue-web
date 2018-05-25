@@ -1,0 +1,53 @@
+@import '../../common/stylus/mixin'
+@import '../sub-component/style'
+  .newsmMain
+    margin-top: 50px
+    width: 100%
+    clear: both
+    .newsRight
+      float: right
+      width: 950px
+      padding: 0 10px
+      margin-left: 10px
+      background: #fff
+      box-sizing: border-box
+      min-height: 700px
+      .listMain
+        margin-top: 10px
+        .searchList
+          margin-top: 20px
+        .coRed
+          color: red
+        .search
+          width: 100%
+          .search-wrapper
+            position: relative
+            .el-input
+              width:400px
+              input
+                width:400px
+                height: 40px
+            button:nth-child(2)
+              position: absolute
+              left: 380px
+            button:last-child
+              position: absolute
+              right: 10px
+      .el-dialog__header
+        border-1px()
+      .el-dialog__body
+          padding: 15px 20px 30px 20px 
+      .list-item
+        &:hover
+          background: #EEEEEE
+        &:hover .dele
+          display: block
+      .dele
+        display: none
+        position: absolute
+        right: 10px
+      .taglist
+        display: flex
+        justify-content: center
+        align-item: center
+        margin: 40px 0

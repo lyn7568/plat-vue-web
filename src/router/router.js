@@ -74,6 +74,46 @@ export const appRouter = {
       path: 'WorkHome',
       titile: '平台主页',
       component: () => import('@/components/bench-views/WorkHome.vue')
+    },
+    {
+      path: 'UpdateInfo',
+      titile: '修改资料',
+      component: () => import('@/components/bench-views/UpdateInfo.vue')
+    },
+    {
+      path: 'ContentManagement',
+      titile: '内容管理',
+      component: () => import('@/components/bench-views/contentManagement/ContentManagement.vue')
+    },
+    {
+      path: 'PublishArticle',
+      titile: '文章发布及修改',
+      component: () => import('@/components/bench-views/contentManagement/PublishArticle.vue')
+    },
+    {
+      path: 'BusinessManagement',
+      titile: '企业管理',
+      component: () => import('@/components/bench-views/businessManagement/EnterBusiness.vue')
+    },
+    {
+      path: 'DemandSearch',
+      titile: '需求查询',
+      component: () => import('@/components/bench-views/demandSearch/DemandSearch.vue')
+    },
+    {
+      path: 'ButtService',
+      titile: '对接服务',
+      component: () => import('@/components/bench-views/abutmentService/ButtService.vue')
+    },
+    {
+      path: 'AccountSettings',
+      titile: '账户设置',
+      component: () => import('@/components/form-views/AccountSettings.vue')
+    },
+    {
+      path: 'BindAccount',
+      titile: '账号绑定',
+      component: () => import('@/components/form-views/BindAccount.vue')
     }
   ]
 };

@@ -1,0 +1,27 @@
+ @import '../../common/stylus/mixin'
+  .newsLeft
+      float: left
+      width: 140px
+      li
+        height: 50px
+        text-align: center
+        background: #fff
+        line-height: 50px
+        border: 1px solid $borderColor
+        border-top:none
+        cursor: pointer
+        color: $commonFont
+        &:hover
+          background: $mainColor
+          color: #fff
+        &:last-child
+          margin-top: 10px
+          border-top: 1px solid $borderColor
+        &:first-child
+          height: 70px
+          line-height: 70px
+          cursor: default
+          border-top: 1px solid $borderColor
+          &:hover
+            background: #fff
+            color: $commonFont

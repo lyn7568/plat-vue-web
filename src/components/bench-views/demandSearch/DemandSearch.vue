@@ -1,0 +1,49 @@
+<template>
+  <div class="newsmMain">
+    <Sidebar></Sidebar>
+    <div class="newsRight">
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="发布中的需求" name="first">
+          <DemandPublish></DemandPublish>
+        </el-tab-pane>
+        <el-tab-pane label="已完成的需求" name="second">
+          <DemandComplete></DemandComplete>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+  </div>
+</template>
+
+<script>
+  import Sidebar from '../Sidebar.vue';
+  import DemandComplete from './DemandComplete.vue';
+  import DemandPublish from './DemandPublish.vue';
+  export default {
+    data() {
+      return {
+        activeName: 'first'
+      };
+    },
+    components: {
+      Sidebar,
+      DemandComplete,
+      DemandPublish
+    }
+  };
+</script>
+
+<style lang="stylus" rel="stylesheet/stylus">
+  @import '../workCommon'
+  ul
+    .list-item
+      .list-info
+        .list-tig
+          height: 30px
+        .list-tagl
+          li
+            text-ellipsis(2)
+            color: $commonFont
+        .list-tagy
+          li
+            margin-right: 70px
+</style>
