@@ -33,7 +33,6 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import '../workCommon'
   ul
     .list-item
       .list-info
