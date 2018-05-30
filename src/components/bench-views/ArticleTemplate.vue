@@ -7,35 +7,35 @@
           <div class="list-tit">{{item.articleTitle}}</div>
           <ul class="list-tag" v-if="flag!=1">
             <li>{{item.company}}</li>
-            <li>发布于 {{timeChage(item)}}</li>
+            <li>发布于 {{comTime(item.publishTime)}}</li>
             <li>阅读量 {{item.pageViews}}</li>
             <li>赞 {{item.articleAgree}}</li>
             <li>留言 {{item.leverNumber}}</li>
           </ul>
           <ul class="list-tag" v-if="(flag==1) && (item.status==1)">
-            <li>发布于</li>
+            <li>发布于 {{comTime(item.publishTime)}}</li>
             <li>阅读量 {{item.pageViews}}</li>
             <li>赞 {{item.articleAgree}}</li>
             <li>留言 {{item.leverNumber}}</li>
           </ul>
           <ul class="list-tag" v-if="(flag==1) && (item.status==2)">
-            <li v-show="item.status">修改于{{timeChage(item)}}</li>
+            <li v-show="item.status">修改于{{comTime(item.publishTime)}}</li>
             <li class="coRed">草稿</li>
             <li class="coRed">将在 定时发布</li>
           </ul>
           <ul class="list-tag" v-if="(flag==1) && (item.status==0)">
-            <li v-show="item.status">修改于</li>
+            <li v-show="item.status">修改于{{comTime(item.publishTime)}}</li>
             <li class="coRed">草稿</li>
           </ul>
         </div>
-        <div class="dele" v-if="flag === 1">
+        <div class="dele" v-if='flag === 1'>
           <el-button type="primary" size="small" v-if="(item.status == 0 || item.status == 2)">修改</el-button>
-          <el-button type="danger" icon="el-icon-delete" circle  @click="dele(item.articleId,index)></el-button>
+          <el-button type="danger" icon="el-icon-delete" circle  @click="delet(item.articleId, index)"></el-button>
         </div>
-        <div class="dele" v-else-if="flag === 2">
-          <el-button type="danger" icon="el-icon-delete" circle @click="dele(item.articleId,index)"></el-button>
+        <div class="dele" v-else-if='flag === 2'>
+          <el-button type="danger" icon="el-icon-delete" circle @click="delet(item.articleId, index)"></el-button>
         </div>
-        <div class="dele" v-else-if="flag === 2">
+        <div class="dele" v-else-if='flag === 3'>
           <el-button type="primary" size="small" @click.once="add(item.articleId)">{{addText}}</el-button>
         </div>
       </li>
@@ -72,7 +72,7 @@
     },
     computed: {
       imageDis: function (item) {
-        return (item.hasOrgLogo) ? this.orgImageAddId + item.articleImg  : this.orgDefaultImage;
+        return (item.hasOrgLogo) ? this.orgImageAddId + item.articleImg : this.orgDefaultImage;
       }
     },
     created() {
@@ -91,18 +91,7 @@
       this.expertList();
     },
     methods: {
-      timeChage(item) {
-        var nowTimg = new Date();
-        var startTime = (item.status !== 1) ? item.modifyTime : item.publishTime;
-          if (item.status == 2) {
-            startTime = item.publishTime;
-          }
-          if (nowTimg.getFullYear() === startTime.substring(0, 4)) {
-            return startTime.substring(4, 6).replace(/\b(0+)/gi, '') + '月' + startTime.substring(6, 8).replace(/\b(0+)/gi, '') + '日 ' + startTime.substring(8, 10) + ':' + startTime.substring(10, 12);
-          } else {
-            return startTime.substring(0, 4) + "年" + startTime.substring(4, 6).replace(/\b(0+)/gi, '') + '月' + startTime.substring(6, 8).replace(/\b(0+)/gi, '') + '日 ' + startTime.substring(8, 10) + ':' + startTime.substring(10, 12);
-          }
-      },
+      comTime: util.commenTime,
       expertList() {
         this.dataList = [];
         this.$axios.get(util.ekexiuUrl + this.url, {
@@ -112,7 +101,7 @@
             this.dataList = [];
             this.dataList = res.data.data;
             this.total = res.data.total;
-            for (let i=0 ; i< res.data.data.length; i++) {
+            for (let i = 0; i < res.data.data.length; i++) {
               if (this.flag !== 1) {
                 this.leaveWordTotal(res.data.data[i]);
                 this.companyName(res.data.data[i]);
@@ -154,7 +143,7 @@
         this.expertParameters.pageNo = val;
         this.expertList();
       },
-      dele(id, index) {
+      delet(id, index) {
         this.$axios.post(httpUrl.hQuery.orgTrends.del, {
             params: {
               pid: this.platId,
