@@ -4,10 +4,10 @@
     <div class="newsRight">
       <el-tabs v-model="activeName">
         <el-tab-pane label="发布中的需求" name="first">
-          <DemandPublish></DemandPublish>
+          <DemandTemplate></DemandTemplate>
         </el-tab-pane>
         <el-tab-pane label="已完成的需求" name="second">
-          <DemandComplete></DemandComplete>
+          <DemandTemplate></DemandTemplate>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -16,8 +16,7 @@
 
 <script>
   import Sidebar from '../Sidebar.vue';
-  import DemandComplete from './DemandComplete.vue';
-  import DemandPublish from './DemandPublish.vue';
+  import DemandTemplate from './DemandTemplate.vue';
   export default {
     data() {
       return {
@@ -26,8 +25,7 @@
     },
     components: {
       Sidebar,
-      DemandComplete,
-      DemandPublish
+      DemandTemplate
     }
   };
 </script>
