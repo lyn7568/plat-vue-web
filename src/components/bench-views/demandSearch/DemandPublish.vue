@@ -9,7 +9,7 @@
     <div class="select">
       <div class="week">
         <span class="weekText">周期：</span>
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="value" placeholder="请选择" change="change">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -41,15 +41,7 @@
         </el-select>
       </div>
     </div>
-    <div class="searchList">
-      <ul>
-        <DemandTemplate></DemandTemplate>
-      </ul>
-      <div class="taglist">
-        <el-pagination background layout="prev, pager, next" :total="100">
-        </el-pagination>
-      </div>
-    </div>
+    <DemandTemplate></DemandTemplate>
   </div>
 </template>
 
@@ -110,6 +102,11 @@
      },
      components: {
          DemandTemplate
+     },
+     methods:{
+       change() {
+         alert(this.value)
+       }
      }
    };
 </script>

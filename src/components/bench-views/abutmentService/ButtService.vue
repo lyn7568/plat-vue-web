@@ -7,7 +7,8 @@
           <ExpertAdvisor></ExpertAdvisor>
         </el-tab-pane>
         <el-tab-pane label="合作机构" name="second">
-          <BusTemplate></BusTemplate>
+          <BusTemplate :url='url' :flag='2'>
+          </BusTemplate>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -21,7 +22,8 @@
   export default {
     data() {
       return {
-        activeName: 'first'
+        activeName: 'first',
+        url: '/ajax/platform/info/pqButtedOrgs'
       };
     },
     components: {

@@ -30,15 +30,7 @@
         </el-select>
       </div>
     </div>
-    <div class="searchList">
-      <ul>
-        <DemandTemplate></DemandTemplate>
-      </ul>
-      <div class="taglist">
-        <el-pagination background layout="prev, pager, next" :total="100">
-        </el-pagination>
-      </div>
-    </div>
+    <DemandTemplate></DemandTemplate>
   </div>
 </template>
 

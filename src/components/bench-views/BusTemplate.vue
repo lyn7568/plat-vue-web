@@ -1,24 +1,106 @@
 <template>
   <ul>
-    <li class="list-item">
-      <div class="list-head"></div>
+    <li class="list-item" v-for="(item, index) in dataList" :key="index" @click="kexiuExpert(item.id)">
+      <div class="list-head" :style="{ backgroundImage: 'url('+ imageDis+')'}"></div>
       <div class="list-info">
         <div class="list-tit list-tig">
-          北京科大材料分析检测中心限公司
-          <em class="authicon icon-com"></em>
+          {{(item.forShort) ? item.forShort : item.name}}
+          <em class="authicon icon-com" v-bind:class="{ active: (item.authStatus == 3)}"></em>
+          {{keyValue}}
         </div>
         <ul class="list-tag">
-          <li>企业类型</li>
-          <li>所属行业 | 所属行业 | 所属行业</li>
+          <li>{{(item.orgType == 2) ? '上市企业' : ''}}</li>
+          <li>{{(item.industry) ? item.industry.split(',').join(' | ') : '' }}</li>
         </ul>
       </div>
-      <div class="dele">
-        <el-button type="danger" icon="el-icon-delete" circle></el-button>
+      <div class="dele" v-show="(flag == 1)">
+        <el-button type="danger" icon="el-icon-delete" circle @click="dele(item.id)"></el-button>
       </div>
     </li>
     <div class="taglist">
-      <el-pagination background layout="prev, pager, next" :total="100">
+      <el-pagination background layout="prev, pager, next" :total="total" :page-size="10" @current-change="handleCurrentChange">
       </el-pagination>
     </div>
   </ul>
 </template>
+
+<script type="text/ecmascript-6">
+  import Cookies from 'js-cookie';
+  import httpUrl from '@/libs/http';
+  import util from '@/libs/util';
+  export default {
+    props: ['keyValue', 'url', 'flag'],
+    data() {
+      return {
+        expertParameters: {},
+        dataList: [],
+        total: 0,
+        orgDefaultImage: util.defaultSet.img.org,
+        orgImageAddId: util.ImageUrl('org/', true),
+        platId: ''
+      };
+    },
+    watch: {
+      keyValue: function () {
+        this.expertParameters.key = this.keyValue;
+        this.expertList();
+      }
+    },
+    computed: {
+      imageDis: function (item) {
+        return (item.hasOrgLogo) ? this.orgImageAddId + item.id + '.jpg' : this.orgDefaultImage;
+      }
+    },
+    created() {
+      this.platId = Cookies.get('platId');
+      this.expertParameters = {
+        pid: this.platId,
+        pageSize: 10,
+        pageNo: 1
+      };
+      if (this.flag === 1) {
+        this.expertParameters.key = this.keyValue;
+      }
+      this.expertList();
+    },
+    methods: {
+      expertList() {
+        this.dataList = [];
+        this.$axios.get(util.ekexiuUrl + this.url, {
+          params: this.expertParameters
+        }).then((res) => {
+          if (res.success) {
+            this.dataList = [];
+            this.dataList = res.data.data;
+            this.total = res.data.total;
+          }
+        });
+      },
+      kexiuExpert(id) {
+        window.open(util.defaultSet.link.org + id);
+      },
+      handleCurrentChange(val) {
+        this.expertParameters.pageNo = val;
+        this.expertList();
+      },
+      dele(id, index) {
+        this.$axios.post(httpUrl.hQuery.residentOrgs.del, {
+            params: {
+              pid: this.platId,
+              oid: id
+            }
+          }).then((res) => {
+            if (res.success) {
+              this.dataList.splice(index, 1);
+            }
+          });
+        }
+    }
+  };
+</script>
+
+<style lang="stylus" rel="stylesheet/stylus">
+  ul
+    .list-tag
+      cursor: pointer
+</style>
