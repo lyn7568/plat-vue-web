@@ -62,7 +62,7 @@
             <el-button v-else class="button-new-tag" v-show="isShowAdd" size="small" @click="showInput">+ 请填写园区面向的行业，如：互联网/智能制造/新材料</el-button>
           </el-form-item>
           <el-form-item label="平台介绍" prop="desc">
-            <el-input type="textarea" v-model="ruleForm.desc" placeholder="请填写一个简单的介绍，让大家更好地了解平台"></el-input>
+            <el-input type="textarea" :rows="8" v-model="ruleForm.desc" placeholder="请填写一个简单的介绍，让大家更好地了解平台"></el-input>
           </el-form-item>
           <el-form-item></el-form-item>
           <el-form-item>

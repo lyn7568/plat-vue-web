@@ -34,6 +34,7 @@
         if (res.errno === ERR_OK) {
           this.plat = res.data;
           Cookies.set('platId', res.data.id);
+          Cookies.set('platSource', res.data.source);
         };
       });
     },

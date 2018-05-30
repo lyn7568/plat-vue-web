@@ -1,6 +1,6 @@
+import http from './http.js';
 
-// let ekexiuUrl = 'https://www.ekexiu.com';
-let ekexiuUrl = 'http://192.168.3.233:81';
+let ekexiuUrl = http.kexiuUrl;
 
 let util = {
 
@@ -22,10 +22,51 @@ util.defaultSet = {
   link: {
     expert: ekexiuUrl + '/userInforShow.html?professorId=',
     org: ekexiuUrl + '/cmpInforShow.html?orgId=',
-    article: ekexiuUrl + '/articleShow.html?articleId=',
+    article: ekexiuUrl + '/articalList.html?articleId=',
     resource: ekexiuUrl + '/resourceShow.html?resourceId=',
     service: ekexiuUrl + '/sevriceShow.html?sevriceId='
   }
+};
+
+/**
+ * 数据字典
+ */
+util.Dictionary = {
+  durationTime: [{ // 预计合作周期
+      value: '1',
+      label: '1个月内'
+    }, {
+      value: '2',
+      label: '1-3个月'
+    }, {
+      value: '3',
+      label: '3-6个月'
+    }, {
+      value: '4',
+      label: '6-12个月'
+    }, {
+      value: '5',
+      label: '1年以上'
+    }],
+  costRange: [{ // 费用预算
+      value: '1',
+      label: '1万元以内'
+    }, {
+      value: '2',
+      label: '1-5万元'
+    }, {
+      value: '3',
+      label: '5-10万元'
+    }, {
+      value: '4',
+      label: '10-20万元'
+    }, {
+      value: '5',
+      label: '20-50万元'
+    }, {
+      value: '6',
+      label: '50万元以上'
+    }]
 };
 
 /**
@@ -51,19 +92,7 @@ util.autho = function (a, b, c) {
  * @return Object {id:12345,a:b}
  */
 util.urlParse = function (name) {
-  let obj = {};
-  let reg = /[?&][^?&]+=[^?&]+/g;
-  let arr = name.match(reg);
-  // ['?id=12345', '&a=b']
-  if (arr) {
-    arr.forEach((item) => {
-      let tempArr = item.substring(1).split('=');
-      let key = decodeURIComponent(tempArr[0]);
-      let val = decodeURIComponent(tempArr[1]);
-      obj[key] = val;
-    });
-  }
-  return obj;
+  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || ['', ''])[1].replace(/\+/g, '%20')) || null;
 };
 
 /**
@@ -97,5 +126,81 @@ util.ImageUrl = function (str, bol) {
 //     var newStr = arr.join(',');
 //     return newStr;
 // };
+
+/*
+ * 根据Value格式化为带有换行、空格格式的HTML代码
+ * @param strValue {String} 需要转换的值
+ * @return  {String}转换后的HTML代码
+ * @example
+ * getFormatCode("测\r\n\s试")  =>  “测<br/> 试”
+ */
+util.getFormatCode = function(strValue) {
+  return strValue.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, ' ');
+};
+
+/**
+ * 时间显示规则
+ */
+util.commenTime = function(startTime, flag) {
+  var nowTimg = new Date();
+  var startdate = new Date();
+  startdate.setFullYear(parseInt(startTime.substring(0, 4)));
+  startdate.setMonth(parseInt(startTime.substring(4, 6)) - 1);
+  startdate.setDate(parseInt(startTime.substring(6, 8)));
+  startdate.setHours(parseInt(startTime.substring(8, 10)));
+  startdate.setMinutes(parseInt(startTime.substring(10, 12)));
+  startdate.setSeconds(parseInt(startTime.substring(12, 14)));
+  var date3 = nowTimg.getTime() - startdate.getTime(); // 时间差的毫秒数
+  var hours = parseInt((date3 % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = parseInt((date3 % (1000 * 60 * 60)) / (1000 * 60));
+  if (date3 < 60000) {
+    return '刚刚';
+  } else if (date3 >= 60000 && date3 < 3600000) {
+    return minutes + '分钟前';
+  } else if (date3 >= 3600000 && date3 < 86400000) {
+    return hours + '小时前';
+  } else if (date3 >= 86400000) {
+    if (nowTimg.getFullYear() === startTime.substring(0, 4)) {
+      if (!flag) {
+        return startTime.substring(4, 6).replace(/\b(0+)/gi, '') + '月' + startTime.substring(6, 8).replace(/\b(0+)/gi, '') + '日 ' + startTime.substring(8, 10) + ':' + startTime.substring(10, 12);
+      } else {
+        return startTime.substring(4, 6).replace(/\b(0+)/gi, '') + '/' + startTime.substring(6, 8).replace(/\b(0+)/gi, '');
+      }
+    } else {
+      if (!flag) {
+        return startTime.substring(0, 4) + '年' + startTime.substring(4, 6).replace(/\b(0+)/gi, '') + '月' + startTime.substring(6, 8).replace(/\b(0+)/gi, '') + '日 ' + startTime.substring(8, 10) + ':' + startTime.substring(10, 12);
+      } else {
+        return startTime.substring(0, 4) + '/' + startTime.substring(4, 6).replace(/\b(0+)/gi, '') + '/' + startTime.substring(6, 8).replace(/\b(0+)/gi, '');
+      }
+    }
+  };
+};
+
+/**
+ * 时间格式转换
+ */
+util.dateFormatter = function(str, fl, bol) { // 默认返回yyyy-MM-dd HH-mm-ss
+    var hasTime = fl !== false; // 可传第二个参数false，返回yyyy-MM-dd
+    var d = new Date(str);
+    var year = d.getFullYear();
+    var month = (d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1);
+    var day = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
+    var hour = d.getHours() < 10 ? '0' + d.getHours() : d.getHours();
+    var minute = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes();
+    var second = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds();
+    if (hasTime) {
+      if (bol) {
+        return year + month + day + hour + minute + second;
+      } else {
+        return [year, month, day].join('-') + ' ' + [hour, minute, second].join(':');
+      }
+    } else {
+      if (bol) {
+        return year + month + day;
+      } else {
+        return [year, month, day].join('-');
+      }
+    }
+};
 
 export default util;

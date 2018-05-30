@@ -1,9 +1,10 @@
 <template>
-	<div class="cooperation block-wrapper">
-		<div class="content-wrapper">
+	<div class="cooperation">
+		<div class="content-wrapper block-wrapper">
 			<div class="content-title">平台合作机构</div>
 			<baseAgency></baseAgency>
 		</div>
+		<BackTop></BackTop>
 	</div>
 </template>
 

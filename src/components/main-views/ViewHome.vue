@@ -1,6 +1,23 @@
 <template>
   <div class="home-main">
-    <!-- <backTop :scrollmyself="true"></backTop> -->
+    <el-dialog title="发布需求" :visible.sync="dialogFormVisible" width="700px">
+      <div class="tip-show">
+        <div class="tip-h1">免费发布需求到科袖网，让企业没有难搞的研发</div>
+        <div class="tip-h2">1. 发布需求  →  2. 为您对接专家或机构  →  3. 登录科袖网进行沟通  →  4. 开展合作，解决您的需求</div>
+      </div>
+      <el-tabs class="tab-show" v-model="activeName" type="card" >
+        <el-tab-pane label="注册科袖网，发布需求" name="first">
+          <demandIssue ref="issueDemand" :dialogFormVisible="dialogFormVisible"></demandIssue>
+        </el-tab-pane>
+        <el-tab-pane label="已有账户，快速发布" name="second">
+          <demandIssue></demandIssue>
+        </el-tab-pane>
+      </el-tabs>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="pubDemand">立即发布</el-button><br/>
+        <el-checkbox checked disabled>我已阅读并同意<a :href="kexiuLink + '/privacy.html'">《科袖用户协议》</a></el-checkbox>
+      </div>
+    </el-dialog>
 
     <div class="block-wrapper">
       <div class="wrapper-left">
@@ -16,7 +33,7 @@
           将您的需求发布到科袖网，<br>
           我们为您对接专家和各类专业机构。
         </p>
-        <el-button type="primary" style="margin-top:30px">免费发布需求</el-button>
+        <el-button type="primary" @click="dialogFormVisible = true" style="margin-top:30px">免费发布需求</el-button>
       </div>
     </div>
 
@@ -25,14 +42,16 @@
         <div class="content-wrapper plat-news">
           <div class="content-title">
             <span>平台新闻</span>
-            <router-link class="content-more" to="">更多</router-link>
+            <router-link class="content-more" to="/platTrends?flag=first">更多</router-link>
           </div>
           <div class="content">
-            <div class="pictures"></div>
+            <div class="pictures" :style="{backgroundImage: 'url(' + articleUrl(0) + ')'}"></div>
             <ul class="maincon">
-              <li v-for="item in [0,1,2,3]" :key="item">
-                <span class="topic">文章标题文章标题文章标题文章标题文章标题文章标题文章标...</span>
-                <span class="time">04/17</span>
+              <li v-for="item in paltNews" :key="item.index">
+                <a :href="linkArticle(item)">
+                  <span class="topic">{{item.articleTitle}}</span>
+                  <span class="time">{{formTime(item)}}</span>
+                </a>
               </li>
             </ul>
           </div>
@@ -40,14 +59,16 @@
         <div class="content-wrapper plat-news">
           <div class="content-title">
             <span>企业动态</span>
-            <router-link class="content-more" to="">更多</router-link>
+            <router-link class="content-more" to="/platTrends?flag=second">更多</router-link>
           </div>
           <div class="content">
             <ul class="maincon maincon2">
-              <li v-for="item in [0,1,2,3]" :key="item">
-                <span class="topic">文章标题文章标题文章标题文章标题文章标题文章标题文章标...</span>
-                <span class="owner">北京科技大学北京科技大学</span>
-                <span class="time">04/17</span>
+              <li v-for="item in orgTrends" :key="item.index">
+                <a :href="linkArticle(item)">
+                  <span class="topic">{{item.articleTitle}}</span>
+                  <span class="owner">北京科技大学北京科技大学</span>
+                  <span class="time">{{formTime(item)}}</span>
+                </a>
               </li>
             </ul>
           </div>
@@ -56,13 +77,9 @@
       <div class="wrapper-right content-wrapper about-us">
         <div class="content-title">
           <span>关于我们</span>
-          <router-link class="content-more" to="">更多</router-link>
+          <router-link class="content-more" to="/aboutUs">更多</router-link>
         </div>
-        <div class="content">
-          介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容。
-介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容。
-介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容。
-        </div>
+        <div class="content">{{aboutUs}}</div>
       </div>
     </div>
 
@@ -73,14 +90,14 @@
         </div>
         <div class="swiper-container" ref="latestCmp">
           <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="item in 20" :key="item">
+            <a class="swiper-slide" v-for="item in residentOrgs" :key="item.index" :href="linkOrg(item)">
               <div class="item-block">
                 <div class="item-pic">
-                  <img src="">
+                  <img :src="orgsUrl(item)">
                 </div>
-                <div class="item-text item-left">北京科袖科技有限公司北京科袖科技有限公司</div>
+                <div class="item-text item-left">{{item.name}}</div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
@@ -92,20 +109,20 @@
           <div class="content-search">
             <span>找服务</span>
             <div class="search-wrapper">
-              <el-input placeholder="输入关键词"></el-input>
-              <el-button type="primary" icon="el-icon-search">搜索</el-button>
+              <el-input placeholder="输入关键词" v-model="inputSer"></el-input>
+              <el-button type="primary" icon="el-icon-search" @click="searchSer">搜索</el-button>
             </div>
           </div>
           <div class="content-more">
-            <router-link class="item-more" v-for="item in 4" :key="item" to="">咨询服务</router-link>
-            <router-link class="item-more" to="">更多</router-link>
+            <!-- <router-link class="item-more" v-for="item in 4" :key="item" to="">咨询服务</router-link> -->
+            <router-link class="item-more" to="/findServe">更多</router-link>
           </div>
         </div>
         <div class="swiper-container" ref="findService">
           <div class="swiper-wrapper">
-            <a class="swiper-slide" v-for="item in platWares" :key="item.index" :href="linkWare">
+            <a class="swiper-slide" v-for="item in platWares" :key="item.index" :href="linkWare(item)">
               <div class="item-block">
-                <div class="item-pic" :style="{backgroundImage: 'url(' + waresUrl + ')'}"></div>
+                <div class="item-pic" :style="{backgroundImage: 'url(' + waresUrl(item) + ')'}"></div>
                 <div class="item-text">
                   <p class="title">{{item.name}}</p>
                   <p class="desc">{{item.cnt}}</p>
@@ -126,19 +143,19 @@
           <div class="content-search">
             <span>找资源</span>
             <div class="search-wrapper">
-              <el-input placeholder="输入关键词"></el-input>
-              <el-button type="primary" icon="el-icon-search">搜索</el-button>
+              <el-input placeholder="输入关键词" v-model="inputRes"></el-input>
+              <el-button type="primary" icon="el-icon-search" @click="searchRes">搜索</el-button>
             </div>
           </div>
           <div class="content-more">
-            <router-link class="item-more" v-for="item in 4" :key="item" to="">咨询服务</router-link>
+            <!-- <router-link class="item-more" v-for="item in 4" :key="item" to="">咨询服务</router-link> -->
             <router-link class="item-more" to="/findResource">更多</router-link>
           </div>
         </div>
         <div class="swiper-container" ref="findResource">
           <div class="swiper-wrapper">
-            <a class="swiper-slide" v-for="item in platResources" :key="item.index" :href="linkResource">
-              <div class="item-block">
+            <a class="swiper-slide" v-for="item in platResources" :key="item.index" :href="linkResource(item)">
+              <div class="item-block" >
                 <div class="item-pic" :style="{backgroundImage: 'url(' + resourcesUrl(item) + ')'}"></div>
                 <div class="item-text">
                   <p class="title">{{item.name}}</p>
@@ -173,7 +190,7 @@
         <baseAgency :num="3"></baseAgency>
       </div>
     </div>
-    <!-- <Loading></Loading> -->
+    <BackTop></BackTop>
   </div>
 </template>
 
@@ -187,6 +204,7 @@
 
   import baseAgency from '../sub-component/BaseAgency';
   import baseExpert from '../sub-component/BaseExpert';
+  import demandIssue from '../form-views/DemandIssue';
 
   export default {
     props: {
@@ -196,14 +214,28 @@
     },
     data() {
       return {
+        kexiuLink: util.ekexiuUrl,
+        activeName: 'first',
         platId: '',
         rows: 20,
+        orgTrends: '',
+        paltNews: '',
+        residentOrgs: '',
         platResources: '',
-        platWares: ''
+        platWares: '',
+        ownerInfo: '',
+        aboutUs: '',
+        inputSer: '',
+        inputRes: '',
+        dialogFormVisible: false
       };
     },
     created() {
        this.platId = Cookies.get('platId');
+       this.getAboutUs(this.platId);
+       this.queryPaltNews(this.platId);
+       this.queryOrgTrends(this.platId);
+       this.queryResidentOrgs(this.platId);
        this.queryPlatResources(this.platId);
        this.queryPlatWares(this.platId);
     },
@@ -242,6 +274,52 @@
       });
     },
     methods: {
+      pubDemand() {
+        this.$refs.issueDemand.submitForm('ruleForm');
+        this.$on('dialogFormVisible', this.dialogFormVisible);
+      },
+      queryPaltNews(id) {
+        this.$axios.get(httpUrl.hQuery.platNews.nopq, {
+          params: {
+            ownerId: id,
+            articleType: '3',
+            rows: 5
+          }
+        }).then((res) => {
+          console.log(res);
+          if (res.success) {
+            var $info = res.data;
+            this.paltNews = $info;
+          };
+        });
+      },
+      queryOrgTrends(id) {
+        this.$axios.get(httpUrl.hQuery.orgTrends.nopq, {
+          params: {
+            pid: id,
+            rows: 5
+          }
+        }).then((res) => {
+          if (res.success) {
+            var $info = res.data;
+            this.orgTrends = $info;
+          };
+        });
+      },
+      queryResidentOrgs(id) {
+        this.$axios.get(httpUrl.hQuery.residentOrgs.nopq, {
+          params: {
+            pid: id,
+            rows: this.rows
+          }
+        }).then((res) => {
+          console.log(res);
+          if (res.success) {
+            var $info = res.data;
+            this.residentOrgs = $info;
+          };
+        });
+      },
       queryPlatResources(id) {
         this.$axios.get(httpUrl.hQuery.queryResource, {
           params: {
@@ -273,19 +351,65 @@
       resourcesUrl(item) {
         return item.images ? util.ImageUrl('resource/' + item.images.split(',')[0]) : util.defaultSet.img.resource;
       },
+      articleUrl(item) {
+        return item.articleImg ? util.ImageUrl('article/' + item.articleImg) : util.defaultSet.img.article;
+      },
       waresUrl(item) {
-        return item.images ? util.ImageUrl('ware/' + item.images.split(',')[0]) : util.defaultSet.img.service;
+        return item.images ? util.ImageUrl('ware' + item.images.split(',')[0]) : util.defaultSet.img.service;
+      },
+      orgsUrl(item) {
+        return item.hasOrgLogo ? util.ImageUrl(('org/' + item.id + '.jpg'), true) : util.defaultSet.img.org;
       },
       linkResource(item) {
         return util.defaultSet.link.resource + item.id;
       },
       linkWare(item) {
         return util.defaultSet.link.service + item.id;
+      },
+      linkOrg(item) {
+        return util.defaultSet.link.org + item.id;
+      },
+      linkArticle(item) {
+        return util.defaultSet.link.article + item.articleId;
+      },
+      getAboutUs(id) {
+        this.$axios.get(httpUrl.hQuery.baseInfo.query, {
+          params: {
+            id: id
+          }
+        }).then((res) => {
+          console.log(res);
+          this.aboutUs = res.data.descp;
+        });
+      },
+      formTime(item) {
+        return util.commenTime(item.publishTime, true);
+      },
+      searchRes() {
+        if (this.inputRes) {
+          this.$router.push({path: '/findResource', query: {key: this.inputRes}});
+        } else {
+          this.$message({
+            message: '请填写搜索资源的关键词',
+            type: 'warning'
+          });
+        }
+      },
+      searchSer() {
+        if (this.inputSer) {
+          this.$router.push({path: '/findServe', query: {key: this.inputSer}});
+        } else {
+          this.$message({
+            message: '请填写搜索服务的关键词',
+            type: 'warning'
+          });
+        }
       }
     },
     components: {
       baseAgency,
-      baseExpert
+      baseExpert,
+      demandIssue
     }
   };
 </script>
@@ -326,9 +450,10 @@
             padding-left:15px
             height:120px
             overflow:hidden
-            li
+            li>a
               display: flex
               justify-content: space-between
+              line-height:30px
               .topic
                 display:inline-block
                 width:400px
@@ -337,6 +462,7 @@
                 color:$secondaryFont
             &.maincon2
               width:100%
+              padding:0
               .owner
                 display:inline-block
                 width:180px
@@ -402,6 +528,7 @@
             margin-top:6px
             line-height:30px
             &.item-left
+              text-align:center
               text-ellipsis()
             .title
               text-ellipsis()
@@ -411,4 +538,37 @@
             .owner
               margin-top:10px
               text-ellipsis()
+
+    .tip-show
+      background:$mainColor
+      text-align:center
+      justify-content: space-between
+      margin:-30px -20px 10px
+      padding:20px
+      color:#fff
+      .tip-h1
+        font-size:16px
+        line-height:40px
+      .tip-h2
+        font-size:12px
+        line-height:30px
+    .tab-show
+      margin:20px -20px 0
+      .el-tabs__nav
+        width:99.6%
+        text-align: center
+        .el-tabs__item
+          font-size:16px
+          width:50%
+    .el-dialog
+      overflow:hidden
+      .el-dialog__footer
+        text-align:center
+        margin-top:-30px
+        margin-bottom:20px
+        .el-button
+          width:200px
+          margin-bottom:10px
+        a
+          color:$mainColor
 </style>

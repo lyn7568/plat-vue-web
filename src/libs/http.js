@@ -1,14 +1,17 @@
 
 let http = { };
 
+// const kexiuUrl = 'https://www.ekexiu.com';
+const kexiuUrl = 'http://192.168.3.233:81';
+
 const utilUrl = 'http://localhost:7070/ajax';
 
 http.utilUrl = utilUrl;
+http.kexiuUrl = kexiuUrl;
 
-let webbase = '/api/plat';
-http.webbase = webbase;
+http.webbase = '/api/plat';
 
-let hQuery = {
+http.hQuery = {
     sign: {
       login: utilUrl + '/platform/login',
       modifypw: utilUrl + '/platform/modifypw', // 修改密码
@@ -34,6 +37,10 @@ let hQuery = {
       add: utilUrl + '/platform/buttedProfessor',
       del: utilUrl + '/platform/buttedProfessor/delete'
     },
+    platNews: { // 平台新闻
+      nopq: utilUrl + '/article/qaPublish',
+      pq: utilUrl + '/article/pageQueryPublish'
+    },
     orgTrends: { // 企业动态
       nopq: utilUrl + '/article/publishInPlatform',
       pq: utilUrl + '/article/pgPublishInPlatform',
@@ -51,40 +58,13 @@ let hQuery = {
     queryWare: utilUrl + '/platform/info/wares', // 找服务
     queryResource: utilUrl + '/platform/info/resources' // 找资源
 };
-http.hQuery = hQuery;
 
-// let manage = {
-//     user: {
-//         list: utilUrl + '/user/list.do',
-//         getById: utilUrl + '/user/getById.do',
-//         save: utilUrl + '/user/save.do',
-//         delete: utilUrl + '/user/delete.do',
-//         validate: utilUrl + '/user/validate.do',
-//         setPWD: utilUrl + '/user/setPWD.do'
-//     },
-//     kit: {
-//         list: utilUrl + '/kit/list.do',
-//         getById: utilUrl + '/kit/getById.do',
-//         save: utilUrl + '/kit/save.do',
-//         delete: utilUrl + '/kit/delete.do'
-//     }
-// };
-
-// http.manage = manage;
-
-// let sample = {
-//     list: utilUrl + '/sample/list.do',
-//     getById: utilUrl + '/sample/getById.do',
-//     save: utilUrl + '/sample/save.do',
-//     delete: utilUrl + '/sample/delete.do'
-// };
-
-// http.sample = sample;
-
-let status = {
-    sucess: '000000'
+http.kxQurey = {
+    sign: {
+      login: utilUrl + '/phoneValidCode', // 登录科袖
+      msgVC: utilUrl + '/phoneValidCode', // 发送手机验证码
+      imgVC: utilUrl + '/PictureVC' // 图形验证
+    }
 };
-
-http.status = status;
 
 export default http;

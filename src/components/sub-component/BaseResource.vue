@@ -1,16 +1,30 @@
 <template>
-  <div class="list-item">
-    <div class="list-head"></div>
+  <a class="list-item" :href="linkResource(itemResources)">
+    <div class="list-head" :style="{backgroundImage: 'url(' + resourcesUrl(itemResources) + ')'}"></div>
     <div class="list-info">
-      <div class="list-tit list-topic">2017年“浙江杰出青年”揭晓，祝贺中科院宁波材料所王立平研究员上榜中科院宁波材料所王立平研究员上榜！</div>
+      <div class="list-tit list-topic">{{itemResources.name}}</div>
       <div class="list-owner">发布者<em class="authicon icon-pro"></em></div>
-      <div class="list-desc">内容：2017年“浙江杰出青年”揭晓，祝贺中科院宁波材料所王立平研究员上榜中科院宁波材料所王立平研究员上榜2017年“浙江杰出青年”揭晓，祝贺中科院宁波材料所王立平研究员上榜中科院宁波材料所王立平研究员上榜</div>
+      <div class="list-desc">用途：{{itemResources.cnt}}</div>
     </div>
-  </div>
+  </a>
 </template>
 
 <script type="text/ecmascript-6">
-  export default {
+  import util from '@/libs/util';
 
+  export default {
+    props: {
+      itemResources: {
+        type: Object
+      }
+    },
+    methods: {
+      resourcesUrl(item) {
+        return item.images ? util.ImageUrl('resource/' + item.images.split(',')[0]) : util.defaultSet.img.resource;
+      },
+      linkResource(item) {
+        return util.defaultSet.link.resource + item.id;
+      }
+    }
   };
 </script>

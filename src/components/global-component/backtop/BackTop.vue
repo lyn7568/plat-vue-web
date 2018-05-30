@@ -1,99 +1,80 @@
 <template>
-  <div>9090909top</div>
-  <!-- <transition name='slide-fade'>backup
-    <div class='page-component-up' v-show='isShow' @click='getTop'>
-      <i class='tri'></i>
+    <div>
+        <div class="scroll" :class="{show:isActive}">
+            <div id="toTop" @click="toTop(step)">&lt;</div>
+            <div id="toBottom" @click="toBottom(step)">&gt;</div>
+        </div>
     </div>
-  </transition> -->
 </template>
 <script>
-  export default {
-    name: 'BackTop',
+  export default{
     props: {
-      scrollmyself: {
-        type: Boolean,
-        // 这是选择滚动对象的props值，如果滚动的对象是当前组件的父元素，就设置scrollObj为true.如果没有设置就默认为window对象
-        default: false
+      step: { // 此数据是控制动画快慢的
+        type: Number,
+        default: 50
       }
     },
-    data () {
+    data() {
       return {
-        isShow: false,
-        target: ''
+        isActive: false
       };
     },
     methods: {
-      addhoverClass (e) {
-        if (e.type === 'mouseover') {
-          this.$el.classList.add('hover');
-        } else if (e.type === 'mouseout') {
-          this.$el.classList.remove('hover');
-        }
+      toTop(i) {
+        // 参数i表示间隔的幅度大小，以此来控制速度
+        document.documentElement.scrollTop -= i;
+        if (document.documentElement.scrollTop > 0) {
+            var c = setTimeout(() => this.toTop(i), 16);
+        } else {
+            clearTimeout(c);
+        };
       },
-      showIcon () {
-        if (this.target.scrollTop > 100) {
-          this.isShow = true;
-          this.$el.addEventListener('mouseover', this.addhoverClass);
-          this.$el.addEventListener('mouseout', this.addhoverClass);
-        } else if (this.target.scrollTop < 100) {
-          this.isShow = false;
-        }
-      },
-      getTop () {
-        let timer = setInterval(() => {
-          let top = this.target.scrollTop;
-          let speed = Math.ceil(top / 5);
-          this.target.scrollTop = top - speed;
-          if (top === 0) {
-            clearInterval(timer);
-          }
-        }, 20);
+      toBottom(i) {
+        var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+        var scrollHeight = document.documentElement.scrollHeight;
+        var height = scrollHeight - clientHeight; // 超出窗口上界的值就是底部的scrolTop的值
+        document.documentElement.scrollTop += i;
+        if (document.documentElement.scrollTop < height) {
+            var c = setTimeout(() => this.toBottom(i), 16);
+        } else {
+            clearTimeout(c);
+        };
       }
     },
-    mounted () {
-      // 通过这个target来判断当前的滚动监听对象是谁
-      if (this.scrollmyself) {
-        this.target = this.$el.parentNode;
-      } else {
-        this.target = document.body;
-      }
-      this.target.addEventListener('scroll', this.showIcon);
-    },
-    beforeDestroy () {
-      this.target.removeEventListener('scroll', this.showIcon);
+    created() {
+      var vm = this;
+      window.onscroll = function() {
+        if (document.documentElement.scrollTop > 60) {
+            vm.isActive = true;
+        } else {
+            vm.isActive = false;
+        };
+      };
     }
   };
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
-  .slide-fade-enter-active
-     transition: all .1s ease
-  .slide-fade-leave-active
-    transition: all .1s cubic-bezier(1.0, 0.3, 0.8, 1.0)
-    opacity: 0
-  .slide-fade-enter, .slide-fade-leave-to
-    opacity: 0
-
-  .page-component-up
-    background-color: #4eb1fb
+  .scroll
     position: fixed
-    right: 3rem
-    bottom: 12rem
-    width: 50px
-    height: 50px
-    border-radius: 25px
+    right: 10px
+    bottom: 60px
+    width: 45px
+    height: 90px
     cursor: pointer
-    opacity: .4
-    transition: .3s
-    text-align: center
-    z-index: 999
+    display: none
+    div
+      width: 45px
+      height: 45px
+      transform: rotate(90deg)
+      line-height: 45px
+      text-align: center
+      font-size: 35px
+      font-family:"黑体"
+      background-color: rgba(0,0,0,.2)
+      color: #fff
+      &:hover
+        background-color: rgba(0,0,0,.5)
 
-  .tri
-    width: 0
-    height: 0
-    border: 12px solid transparent
-    border-bottom-color: #dfe6ec
-    text-align: center
-  .hover
-    background-color: red
-
+  .show
+    display: block;
 </style>

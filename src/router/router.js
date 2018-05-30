@@ -78,7 +78,7 @@ export const appRouter = {
     {
       path: 'UpdateInfo',
       titile: '修改资料',
-      component: () => import('@/components/bench-views/UpdateInfo.vue')
+      component: () => import('@/components/form-views/UpdateInfo.vue')
     },
     {
       path: 'ContentManagement',
