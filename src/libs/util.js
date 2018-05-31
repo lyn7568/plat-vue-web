@@ -24,8 +24,16 @@ util.defaultSet = {
     org: ekexiuUrl + '/cmpInforShow.html?orgId=',
     article: ekexiuUrl + '/articalList.html?articleId=',
     resource: ekexiuUrl + '/resourceShow.html?resourceId=',
-    service: ekexiuUrl + '/sevriceShow.html?sevriceId='
+    service: ekexiuUrl + '/sevriceShow.html?sevriceId=',
+    demand: ekexiuUrl + '/demandShow.html?demandId='
   }
+};
+
+/**
+ * 跳转序列化页面
+ */
+util.pageUrl = function(type, item) {
+  return (ekexiuUrl + '/shtml/' + type + '/' + item.createTime.substring(0, 8) + '/' + item.shareId + '.html');
 };
 
 /**
@@ -33,6 +41,9 @@ util.defaultSet = {
  */
 util.Dictionary = {
   durationTime: [{ // 预计合作周期
+      value: '',
+      label: '全部'
+    }, {
       value: '1',
       label: '1个月内'
     }, {
@@ -49,6 +60,9 @@ util.Dictionary = {
       label: '1年以上'
     }],
   costRange: [{ // 费用预算
+      value: '',
+      label: '全部'
+    }, {
       value: '1',
       label: '1万元以内'
     }, {

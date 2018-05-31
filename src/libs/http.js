@@ -38,8 +38,8 @@ http.hQuery = {
       del: utilUrl + '/platform/buttedProfessor/delete'
     },
     platNews: { // 平台新闻
-      nopq: utilUrl + '/article/qaPublish',
-      pq: utilUrl + '/article/pageQueryPublish'
+      nopq: utilUrl + '/article/qa',
+      pq: utilUrl + '/article/pageQuery'
     },
     orgTrends: { // 企业动态
       nopq: utilUrl + '/article/publishInPlatform',
@@ -53,18 +53,43 @@ http.hQuery = {
       add: utilUrl + '/platform/resident',
       del: utilUrl + '/platform/resident/delete'
     },
+    demand: {
+      nopq: utilUrl + '/demand/search/platform', // 查询在平台发布的需求
+      add: utilUrl + '/demand/publishInPlatform', // 平台新增需求
+    },
     addOrgs: utilUrl + '/platform/add/info', // 增加企业
-    addDemand: utilUrl + '/demand/publishInPlatform', // 平台新增需求
     queryWare: utilUrl + '/platform/info/wares', // 找服务
     queryResource: utilUrl + '/platform/info/resources' // 找资源
 };
 
 http.kxQurey = {
     sign: {
-      login: utilUrl + '/phoneValidCode', // 登录科袖
+      isReg: utilUrl + '/isReg', // 手机是否注册
+      msgLogin: utilUrl + '/mobileLogin', // 手机登录科袖
+      msgLoginVc: utilUrl + '/sendMobileForLogin', // 登录科袖所需的短信验证码
       msgVC: utilUrl + '/phoneValidCode', // 发送手机验证码
       imgVC: utilUrl + '/PictureVC' // 图形验证
-    }
+    },
+    demand: {
+      add: utilUrl + '/demand', // 新增需求
+    },
+    article: {
+      save: utilUrl + '/article/save', // 新增文章
+      draft: utilUrl + '/article/draft', // 存草稿/预览
+      timing: utilUrl + '/article/timing', // 定时发布文章
+      del: utilUrl + '/article/deleteArticle', // 删除文章
+      query: utilUrl + '/article/query', // 文章详细内容
+      pqpublish: utilUrl + '/article/pqpublish' // 已发布的文章列表
+    },
+    professor: {
+      info: utilUrl + '/professor/baseInfo/' // 专家基础信息
+    },
+    org: {
+      info: utilUrl + '/org/' // 企业基础信息
+    },
+    cachedFile: utilUrl + '/cachedFileUpload', // 上传缓存地址
+    qaHotKey: utilUrl + '/dataDict/qaHotKey', // 检索关键词
+    editor: utilUrl + '/editor/controller' // 图文编辑访问的地址
 };
 
 export default http;

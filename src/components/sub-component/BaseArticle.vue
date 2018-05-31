@@ -28,7 +28,7 @@
         return item.articleImg ? util.ImageUrl('article/' + item.articleImg) : util.defaultSet.img.article;
       },
       linkArticle(item) {
-        return util.defaultSet.link.article + item.articleId;
+        return util.pageUrl('a', item);
       },
       formTime(item) {
         return util.commenTime(item.publishTime);

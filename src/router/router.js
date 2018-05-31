@@ -91,6 +91,11 @@ export const appRouter = {
       component: () => import('@/components/bench-views/contentManagement/PublishArticle.vue')
     },
     {
+      path: 'PreviewArticle',
+      titile: '文章预览',
+      component: () => import('@/components/bench-views/contentManagement/PreviewArticle.vue')
+    },
+    {
       path: 'BusinessManagement',
       titile: '企业管理',
       component: () => import('@/components/bench-views/businessManagement/EnterBusiness.vue')

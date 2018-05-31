@@ -1,7 +1,7 @@
 <template>
-  <div class="workbench">
+  <div class="updateInfo">
     <div class="content-wrapper block-wrapper">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="update-wrapper demo-ruleForm">
+      <el-form :model="ruleFormUpdate" :rules="rules" ref="ruleFormUpdate" label-width="80px" class="update-wrapper demo-ruleForm">
         <div class="update-logo">
           <el-upload
             class="avatar-uploader"
@@ -18,27 +18,27 @@
         <div class="update-main">
           <div class="update-title">{{plf_name}}</div>
           <el-form-item label="联系人" prop="linkman">
-            <el-input v-model="ruleForm.linkman" class="shortW" placeholder="请填写平台联系人姓名"></el-input>
+            <el-input v-model="ruleFormUpdate.linkman" class="shortW" placeholder="请填写平台联系人姓名"></el-input>
           </el-form-item>
           <el-form-item label="联系电话" prop="tel">
-            <el-input v-model="ruleForm.tel" placeholder="请填写联系电话"></el-input>
+            <el-input v-model="ruleFormUpdate.tel" placeholder="请填写联系电话"></el-input>
           </el-form-item>
           <el-form-item label="联系邮箱" prop="mail">
-            <el-input v-model="ruleForm.mail" placeholder="请填写联系邮箱"></el-input>
+            <el-input v-model="ruleFormUpdate.mail" placeholder="请填写联系邮箱"></el-input>
           </el-form-item>
           <el-form-item label="所在城市" prop="selectedOptions">
             <el-cascader
               :options="optionsCity"
               v-model="selectedOptions"
-              @change="handleChange" class="shortW"
+              class="shortW"
               placeholder="请选择所在的城市">
             </el-cascader>
           </el-form-item>
           <el-form-item label="联系地址" prop="address">
-            <el-input v-model="ruleForm.address" placeholder="如：北京市海淀区学院路方兴大厦"></el-input>
+            <el-input v-model="ruleFormUpdate.address" placeholder="如：北京市海淀区学院路方兴大厦"></el-input>
           </el-form-item>
           <el-form-item label="官方网址" prop="website">
-            <el-input v-model="ruleForm.website" placeholder="如：www.ekexiu.com"></el-input>
+            <el-input v-model="ruleFormUpdate.website" placeholder="如：www.ekexiu.com"></el-input>
           </el-form-item>
           <el-form-item label="面向行业" prop="industry">
             <el-tag
@@ -62,11 +62,11 @@
             <el-button v-else class="button-new-tag" v-show="isShowAdd" size="small" @click="showInput">+ 请填写园区面向的行业，如：互联网/智能制造/新材料</el-button>
           </el-form-item>
           <el-form-item label="平台介绍" prop="desc">
-            <el-input type="textarea" :rows="8" v-model="ruleForm.desc" placeholder="请填写一个简单的介绍，让大家更好地了解平台"></el-input>
+            <el-input type="textarea" :rows="8" v-model="ruleFormUpdate.desc" placeholder="请填写一个简单的介绍，让大家更好地了解平台"></el-input>
           </el-form-item>
           <el-form-item></el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+            <el-button type="primary" @click="submitForm('ruleFormUpdate')">保存</el-button>
             <el-button @click="resetForm">取消</el-button>
           </el-form-item>
         </div>
@@ -106,7 +106,7 @@
         isShowAdd: true,
         inputVisible: false,
         inputValue: '',
-        ruleForm: {
+        ruleFormUpdate: {
           linkman: '',
           tel: '',
           mail: '',
@@ -160,25 +160,25 @@
           this.plf_name = str.name;
           this.imageUrl = util.ImageUrl('platform' + str.logo);
           this.imgName = str.logo;
-          this.ruleForm.linkman = str.linkman;
-          this.ruleForm.tel = str.linkphone;
-          this.ruleForm.mail = str.linkemail;
+          this.ruleFormUpdate.linkman = str.linkman;
+          this.ruleFormUpdate.tel = str.linkphone;
+          this.ruleFormUpdate.mail = str.linkemail;
           if (str.province) {
             Vue.set(this.selectedOptions, 0, TextToCode[str.province].code);
           }
           if (str.city) {
             Vue.set(this.selectedOptions, 1, TextToCode[str.province][str.city].code);
           }
-          this.ruleForm.address = str.addr;
-          this.ruleForm.website = str.url;
+          this.ruleFormUpdate.address = str.addr;
+          this.ruleFormUpdate.website = str.url;
           if (str.industry) {
-            this.ruleForm.industry = str.industry;
+            this.ruleFormUpdate.industry = str.industry;
             this.dynamicTags = str.industry.split(',');
             if (this.dynamicTags.length === 10) {
               this.isShowAdd = false;
             }
           }
-          this.ruleForm.desc = str.descp;
+          this.ruleFormUpdate.desc = str.descp;
         });
       },
       submitForm(formName) {
@@ -189,16 +189,16 @@
             let paramsData = {
               'id': this.plf_user,
               'name': this.plf_name,
-              'linkman': this.ruleForm.linkman,
+              'linkman': this.ruleFormUpdate.linkman,
               'logo': this.imgName,
-              'linkphone': this.ruleForm.tel,
-              'linkemail': this.ruleForm.mail,
+              'linkphone': this.ruleFormUpdate.tel,
+              'linkemail': this.ruleFormUpdate.mail,
               'province': CodeToText[this.selectedOptions[0]],
               'city': CodeToText[this.selectedOptions[1]],
-              'addr': this.ruleForm.address,
-              'url': this.ruleForm.website,
-              'industry': this.ruleForm.industry,
-              'descp': this.ruleForm.desc
+              'addr': this.ruleFormUpdate.address,
+              'url': this.ruleFormUpdate.website,
+              'industry': this.ruleFormUpdate.industry,
+              'descp': this.ruleFormUpdate.desc
             };
             this.$axios.post(httpUrl.hQuery.baseInfo.update, paramsData).then((res) => {
               this.$message({
@@ -218,10 +218,6 @@
       },
       resetForm(formName) {
         this.$router.push({path: '/WorkHome'});
-      },
-      // cityPicker
-      handleChange (value) {
-        console.log(value);
       },
       // cityPicker
       // upload img
@@ -245,7 +241,7 @@
       // add tag
       handleClose(tag) {
         this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
-        this.ruleForm.industry = this.dynamicTags.join(',');
+        this.ruleFormUpdate.industry = this.dynamicTags.join(',');
         if (this.dynamicTags.length < 10) {
           this.isShowAdd = true;
         }
@@ -267,7 +263,7 @@
         if (inputValue && inputValue.length < 15 && this.dynamicTags.length < 10) {
           this.dynamicTags.push(inputValue);
         }
-        this.ruleForm.industry = this.dynamicTags.join(',');
+        this.ruleFormUpdate.industry = this.dynamicTags.join(',');
         this.inputVisible = false;
         this.inputValue = '';
       }
@@ -277,21 +273,17 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+.updateInfo
   .update-wrapper
     display:flex
     .update-logo
       width:280px
       .avatar-uploader
         .el-upload
-          display:flex
-          align-items:center
+          center-items(280px,187px)
           border: 1px dashed #d9d9d9
-          border-radius: 6px
           cursor: pointer
           position: relative
-          width: 280px
-          height: 187px
-          overflow: hidden
           &:hover
             border-color: $mainColor
           .avatar-uploader-icon
@@ -301,10 +293,6 @@
             height: 187px
             line-height: 187px
             text-align: center
-          .avatar
-            max-width: 280px
-            max-height: 187px
-            display: block
       .update-tip
         margin-top:15px
         text-align:center

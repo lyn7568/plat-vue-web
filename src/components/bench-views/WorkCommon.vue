@@ -1,7 +1,7 @@
 <template>
   <div class="main Site">
     <TheHeader></TheHeader>
-    <div class="Site-content">
+    <div class="Site-content paddingTop">
       <div class="contain-wrapper">
         <transition name="router-fade" mode="out-in">
           <keep-alive>
@@ -50,7 +50,8 @@
     flex-direction: column
     .Site-content
       flex: 1
-      padding-top:80px
+      &.paddingTop
+        padding-top:80px
       .router-fade-enter-active,
       .router-fade-leave-active
         transition: opacity 0.2s

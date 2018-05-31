@@ -9,6 +9,11 @@ import Loading from './components/global-component/loading';
 import BackTop from './components/global-component/backtop';
 import defaultPage from './components/global-component/default';
 
+import '../static/ueditor/ueditor.config.js';
+import '../static/ueditor/ueditor.all.js';
+import '../static/ueditor/lang/zh-cn/zh-cn.js';
+import '../static/ueditor/ueditor.parse.js';
+
 Vue.use(axiosH);
 Vue.use(ElementUI);
 Vue.use(Loading);

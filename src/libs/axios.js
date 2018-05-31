@@ -12,7 +12,10 @@ import qs from 'qs';
 
 let axiosUtil = axios.create({
     // baseURL: ajaxUrl,
-    timeout: 30000
+    timeout: 30000,
+    paramsSerializer: function(params) {
+        return qs.stringify(params, {arrayFormat: 'repeat'});
+    }
 });
 
 axiosUtil.interceptors.request.use(function (config) {

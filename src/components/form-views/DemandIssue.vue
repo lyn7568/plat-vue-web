@@ -1,68 +1,92 @@
 <template>
-  <div class="workbench content-wrapper">
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="140px" class="form-main">
+  <div class="demandIssue content-wrapper">
+    <el-form :model="ruleFormDem" :rules="rules" ref="ruleFormDem" class="form-main">
       <el-form-item label="需求主题" prop="demandTit">
-        <el-input v-model="ruleForm.demandTit" placeholder="请用一句话概括您的需求"></el-input>
+        <el-input v-model="ruleFormDem.demandTit" placeholder="请用一句话概括您的需求"></el-input>
       </el-form-item>
       <el-form-item label="需求内容" prop="demandDesc">
-        <el-input type="textarea" :rows="4" v-model="ruleForm.demandDesc" placeholder="请描述您的需求背景、具体问题、对专家的要求等等"></el-input>
+        <el-input type="textarea" :rows="4" v-model="ruleFormDem.demandDesc" placeholder="请描述您的需求背景、具体问题、对专家的要求等等"></el-input>
       </el-form-item>
-      <el-form-item label="所在城市" prop="citys">
-        <el-cascader
-          :options="optionsCity"
-          v-model="ruleForm.citys"
-          class="shortW"
-          placeholder="请选择所在的城市">
-        </el-cascader>
-      </el-form-item>
-      <el-form-item label="需求有效期" prop="lastDate">
-        <el-date-picker
-          v-model="ruleForm.lastDate"
-          type="date" class="shortW"
-          format="yyyy-MM-dd"
-          placeholder="请选择截止日期">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="预计合作周期" prop="longTime">
-        <el-select v-model="selectLongTime" placeholder="请选择预计合作周期" class="shortW">
-          <el-option
-            v-for="item in longTime"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-            @current-change="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="费用预算" prop="costRange">
-        <el-select v-model="selectCostRange" placeholder="请选择预算范围" class="shortW">
-          <el-option
-            v-for="item in costRange"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <div class="form-line"></div>
-
-      <el-form-item label="联系人" prop="linkman">
-        <el-input v-model="ruleForm.linkman" placeholder="请填写您的姓名"></el-input>
-      </el-form-item>
-      <el-form-item label="您所在的企业名称" prop="orgName">
-        <el-input v-model="ruleForm.orgName" placeholder="建议填写与营业执照一致的企业名称"></el-input>
-      </el-form-item>
-      <el-form-item label="联系电话" prop="linkTel">
-        <el-input v-model="ruleForm.linkTel" placeholder="请输入您的手机号码，可用于登录科袖网"></el-input>
-      </el-form-item>
-      <el-form-item label="图形验证码" prop="imgVerifyCode">
-        <el-input v-model="ruleForm.imgVerifyCode" placeholder="请输入图形验证码" class="shortW code-btn">
-        <img slot="append" :src="imgVcUrl" @click="changeImgVc" /></el-input>
-      </el-form-item>
-      <el-form-item label="短信验证码" prop="msgVerifyCode">
-        <el-input v-model="ruleForm.msgVerifyCode" placeholder="请输入短信验证码" class="shortW">
-        <el-button slot="append" :disabled="phoneCodeBol" @click="getPhoneCode">{{phoneCodeBtn}}</el-button></el-input>
-      </el-form-item>
+      <el-col :span="12">
+        <el-form-item label="所在城市" prop="citys">
+          <el-cascader
+            :options="optionsCity"
+            v-model="ruleFormDem.citys"
+            class="shortW"
+            placeholder="请选择所在的城市">
+          </el-cascader>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="需求有效期" prop="lastDate">
+          <el-date-picker
+            v-model="ruleFormDem.lastDate"
+            type="date" class="shortW"
+            format="yyyy-MM-dd"
+            placeholder="请选择截止日期">
+          </el-date-picker>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="预计合作周期" prop="longTime">
+          <el-select v-model="selectLongTime" placeholder="请选择预计合作周期" class="shortW">
+            <el-option
+              v-for="item in longTime"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              @current-change="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="费用预算" prop="costRange">
+          <el-select v-model="selectCostRange" placeholder="请选择预算范围" class="shortW">
+            <el-option
+              v-for="item in costRange"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-col>
+      <el-col :span="24"><div class="form-line"></div></el-col>
+      <el-col :span="12">
+        <el-form-item label="联系人" prop="linkman">
+          <el-input v-model="ruleFormDem.linkman" placeholder="请填写您的姓名" class="shortW"></el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="您所在的企业名称" prop="orgName">
+          <el-input v-model="ruleFormDem.orgName" placeholder="建议填写与营业执照一致的企业名称" class="shortW"></el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="联系电话" prop="linkTel">
+          <el-input v-model="ruleFormDem.linkTel" placeholder="请输入您的手机号码，可用于登录科袖网" class="shortW"></el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="图形验证码" prop="imgVerifyCode">
+          <el-input v-model="ruleFormDem.imgVerifyCode" placeholder="请输入图形验证码" class="shortW code-btn">
+          <img slot="append" :src="imgVcUrl" @click="changeImgVc" /></el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="短信验证码" prop="msgVerifyCode">
+          <el-input v-model="ruleFormDem.msgVerifyCode" placeholder="请输入短信验证码" class="shortW">
+          <el-button slot="append" :disabled="phoneCodeBol" @click="getPhoneCode">{{phoneCodeBtn}}</el-button></el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="24" ><el-form-item style="height:20px"></el-form-item></el-col>
+      <el-col :span="24" >
+        <el-form-item style="text-align:center">
+          <el-button type="primary" @click="submitForm('ruleFormDem')" style="padding: 12px 50px">立即发布</el-button><br/>
+          <el-checkbox checked disabled>我已阅读并同意<a :href="kexiuLink + '/privacy.html'">《科袖用户协议》</a></el-checkbox>
+        </el-form-item>
+      </el-col>
     </el-form>
   </div>
 </template>
@@ -89,13 +113,9 @@
   };
 
   export default {
-    // props: {
-    //   dialogFormVisible: {
-    //     type: Boolean
-    //   }
-    // },
     data() {
       return {
+        kexiuLink: util.ekexiuUrl,
         platSource: '',
         phoneCodeBol: false,
         phoneCodeBtn: '获取短信验证码',
@@ -106,7 +126,7 @@
         selectLongTime: '',
         longTime: util.Dictionary.durationTime,
         costRange: util.Dictionary.costRange,
-        ruleForm: {
+        ruleFormDem: {
           demandTit: '',
           demandDesc: '',
           citys: [],
@@ -156,11 +176,11 @@
     },
     methods: {
       getPhoneCode() {
-        if (this.ruleForm.linkTel && this.ruleForm.imgVerifyCode) {
+        if (this.ruleFormDem.linkTel && this.ruleFormDem.imgVerifyCode) {
           this.$axios.get(httpUrl.kxQurey.sign.msgVC, {
             params: {
-              phone: this.ruleForm.linkTel,
-              vcode: this.ruleForm.imgVerifyCode
+              phone: this.ruleFormDem.linkTel,
+              vcode: this.ruleFormDem.imgVerifyCode
             }
           }).then((res) => {
             if (res.success) {
@@ -204,32 +224,38 @@
         this.imgVcUrl = httpUrl.kxQurey.sign.imgVC + '?' + new Date().getTime();
       },
       submitForm(formName) {
-        this.$emit('dialogFormVisible', false);
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let paramsData = {
-              'title': this.ruleForm.demandTit,
-              'descp': this.ruleForm.demandDesc,
-              'province': CodeToText[this.ruleForm.citys[0]],
-              'city': CodeToText[this.ruleForm.citys[1]],
-              'invalidDay': util.dateFormatter(this.ruleForm.lastDate, false, true),
+              'title': this.ruleFormDem.demandTit,
+              'descp': this.ruleFormDem.demandDesc,
+              'province': CodeToText[this.ruleFormDem.citys[0]],
+              'city': CodeToText[this.ruleFormDem.citys[1]],
+              'invalidDay': util.dateFormatter(this.ruleFormDem.lastDate, false, true),
               'cost': this.selectCostRange,
               'duration': this.selectLongTime,
-              'name': this.ruleForm.linkman,
-              'orgName': this.ruleForm.orgName,
-              'contactNum': this.ruleForm.linkTel,
-              'vc': this.ruleForm.msgVerifyCode,
+              'name': this.ruleFormDem.linkman,
+              'orgName': this.ruleFormDem.orgName,
+              'contactNum': this.ruleFormDem.linkTel,
+              'vc': this.ruleFormDem.msgVerifyCode,
               'state': this.phoneResBack,
               'source': this.platSource
             };
             console.log(paramsData);
-            this.$axios.post(httpUrl.hQuery.addDemand, paramsData).then((res) => {
+            this.$axios.post(httpUrl.hQuery.demand.add, paramsData).then((res) => {
               if (res.success) {
-                this.$message({
-                  message: '需求发布成功！',
-                  type: 'success'
+                this.$alert('我们已收到您的需求，马上为您对接合适的专家和专业机构，您可以登录科袖网与对方做进一步沟通。', '需求发布成功！', {
+                  confirmButtonText: '进入科袖网，发现更多服务和资源',
+                  type: 'success',
+                  center: true,
+                  cancelButtonText: '取消',
+                  callback: action => {
+                    if (action === 'confirm') {
+                      window.open(util.ekexiuUrl, '科袖网首页');
+                    };
+                  }
                 });
-                this.$emit('dialogFormVisible', false);
+                this.$emit('dialogChanged', false);
               } else {
                 this.$message({
                   message: '需求发布失败，请重新发布！',
@@ -251,7 +277,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-.workbench
+.demandIssue
   padding-top:10px
   .form-main
     width:100%

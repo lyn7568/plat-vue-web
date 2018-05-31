@@ -7,16 +7,16 @@
       </div>
       <el-tabs class="tab-show" v-model="activeName" type="card" >
         <el-tab-pane label="注册科袖网，发布需求" name="first">
-          <demandIssue ref="issueDemand" :dialogFormVisible="dialogFormVisible"></demandIssue>
+          <demandIssue ref="issueDemand" :dialogFormVisible="dialogFormVisible" v-on:dialogChanged="getChildrenChange($event)"></demandIssue>
         </el-tab-pane>
         <el-tab-pane label="已有账户，快速发布" name="second">
-          <demandIssue></demandIssue>
+          <demandIssueLogin ref="issueDemand" :dialogFormVisible="dialogFormVisible" v-on:dialogChangedLogin="getChildrenChangeLogin($event)"></demandIssueLogin>
         </el-tab-pane>
       </el-tabs>
-      <div slot="footer" class="dialog-footer">
+      <!-- <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="pubDemand">立即发布</el-button><br/>
         <el-checkbox checked disabled>我已阅读并同意<a :href="kexiuLink + '/privacy.html'">《科袖用户协议》</a></el-checkbox>
-      </div>
+      </div> -->
     </el-dialog>
 
     <div class="block-wrapper">
@@ -45,7 +45,7 @@
             <router-link class="content-more" to="/platTrends?flag=first">更多</router-link>
           </div>
           <div class="content">
-            <div class="pictures" :style="{backgroundImage: 'url(' + articleUrl(0) + ')'}"></div>
+            <div class="pictures" v-if="paltNews.length" :style="{backgroundImage: 'url(' + articleUrl(paltNews[0]) + ')'}"></div>
             <ul class="maincon">
               <li v-for="item in paltNews" :key="item.index">
                 <a :href="linkArticle(item)">
@@ -205,6 +205,7 @@
   import baseAgency from '../sub-component/BaseAgency';
   import baseExpert from '../sub-component/BaseExpert';
   import demandIssue from '../form-views/DemandIssue';
+  import demandIssueLogin from '../form-views/DemandIssueLogin';
 
   export default {
     props: {
@@ -214,7 +215,6 @@
     },
     data() {
       return {
-        kexiuLink: util.ekexiuUrl,
         activeName: 'first',
         platId: '',
         rows: 20,
@@ -274,15 +274,21 @@
       });
     },
     methods: {
-      pubDemand() {
-        this.$refs.issueDemand.submitForm('ruleForm');
-        this.$on('dialogFormVisible', this.dialogFormVisible);
+      getChildrenChange(msg) {
+        this.dialogFormVisible = msg;
       },
+      getChildrenChangeLogin(msg) {
+        this.dialogFormVisible = msg;
+      },
+      // pubDemand() {
+      //   this.$refs.issueDemand.submitForm('ruleForm');
+      // },
       queryPaltNews(id) {
         this.$axios.get(httpUrl.hQuery.platNews.nopq, {
           params: {
             ownerId: id,
             articleType: '3',
+            status: 1,
             rows: 5
           }
         }).then((res) => {
@@ -370,7 +376,7 @@
         return util.defaultSet.link.org + item.id;
       },
       linkArticle(item) {
-        return util.defaultSet.link.article + item.articleId;
+        return util.pageUrl('a', item);
       },
       getAboutUs(id) {
         this.$axios.get(httpUrl.hQuery.baseInfo.query, {
@@ -409,7 +415,8 @@
     components: {
       baseAgency,
       baseExpert,
-      demandIssue
+      demandIssue,
+      demandIssueLogin
     }
   };
 </script>
@@ -571,4 +578,10 @@
           margin-bottom:10px
         a
           color:$mainColor
+
+    .login-box
+      position:relative
+      width:400px
+      margin:auto
+
 </style>
