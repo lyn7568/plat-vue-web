@@ -12,7 +12,8 @@
         </ul>
       </div>
     </li>
-    <div class="taglist">
+    <defaultPage v-show="ifDefault"></defaultPage>
+    <div class="taglist" v-show="!ifDefault">
       <el-pagination background layout="prev, pager, next" :total="total" :page-size="10" @current-change="handleCurrentChange">
       </el-pagination>
     </div>
@@ -28,7 +29,8 @@
       return {
         expertParameters: {},
         dataList: [],
-        total: 0
+        total: 0,
+        ifDefault: false
       };
     },
     created() {
@@ -50,6 +52,11 @@
           params: this.expertParameters
         }).then((res) => {
           if (res.success) {
+            if (res.data.data.length === 0) {
+              this.ifDefault = true;
+            } else {
+              this.ifDefault = false;
+            }
             this.disposeData(res.data.data);
             this.total = res.data.total;
           }

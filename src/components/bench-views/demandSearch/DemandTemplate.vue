@@ -2,14 +2,14 @@
   <div class="listMain">
     <div class="search">
       <div class="search-wrapper">
-        <el-input placeholder="输入关键词"></el-input>
-        <el-button type="primary" icon="el-icon-search">搜索</el-button>
+        <el-input placeholder="输入关键词" v-model="searchValue" maxlength=50></el-input>
+        <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
       </div>
     </div>
     <div class="select">
       <div class="week">
         <span class="weekText">周期：</span>
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="value" placeholder="请选择" @change="changeDate">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -20,7 +20,7 @@
       </div>
       <div class="week">
         <span class="weekText">预算：</span>
-        <el-select v-model="budgetValue" placeholder="请选择">
+        <el-select v-model="budgetValue" placeholder="请选择" @change="changeBudget">
           <el-option
             v-for="item in budget"
             :key="item.value"
@@ -29,9 +29,9 @@
           </el-option>
         </el-select>
       </div>
-      <div class="week">
+      <div class="week" v-if="flag==1">
         <span class="weekText">排序：</span>
-        <el-select v-model="sortValue" placeholder="请选择">
+        <el-select v-model="sortValue" placeholder="请选择" @change="changeSort">
           <el-option
             v-for="item in sort"
             :key="item.value"
@@ -43,29 +43,30 @@
     </div>
     <div class="searchList">
       <ul>
-        <li class="list-item">
+        <li class="list-item" v-for="(item, index) in dataList" :key="index" @click="kexiuExpert(item.id)">
           <div class="list-info">
-            <div class="list-tit list-tig">2017年“浙江杰出青年”揭晓，祝贺中科院宁波材料所王立平研究员上榜中科院宁波材料所王立平研究员上榜！</div>
+            <div class="list-tit list-tig">{{item.title}}</div>
             <ul class="list-tag">
-              <li>北京科袖科技有限公司</li>
-              <li>发布于</li>
-              <li>5月8日 18:00</li>
-              <li>浏览量 1000</li>
+              <li>{{item.orgName}}</li>
+              <li>发布于 {{comTime(item.createTime)}}</li>
+              <li>浏览量 {{item.pageViews}}</li>
             </ul>
             <ul class="list-tag list-tagl">
-              <li>北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司北京科袖科技有限公司11</li>
+              <li>{{item.descp}}</li>
             </ul>
             <ul class="list-tag list-tagy">
-              <li>所在城市：北京市</li>
-              <li>预计周期：1个月内</li>
-              <li>费用预算：1万元以内</li>
-              <li class="coRed">有效期至：2018年8月17日</li>
+              <li>所在城市：{{item.city}}</li>
+              <li v-if="item.duration !== '0'">预计周期：{{options[item.duration].label}}</li>
+              <li v-if="item.cost !== '0'">费用预算：{{budget[item.cost].label}}</li>
+              <li :class="{ coRed: sty(item)}" v-if="flag==1">有效期至：{{timeCh(item)}}</li>
+              <li class="coGreen" v-if="flag==2">有效期至：{{timeCh(item)}}</li>
             </ul>
           </div>
         </li>
       </ul>
-      <div class="taglist">
-        <el-pagination background layout="prev, pager, next" :total="100">
+      <defaultPage v-show="ifDefault"></defaultPage>
+      <div class="taglist" v-show="!ifDefault">
+        <el-pagination background layout="prev, pager, next" :total="total" :page-size="10" @current-change="handleCurrentChange">
         </el-pagination>
       </div>
     </div>
@@ -73,62 +74,123 @@
 </template>
 
 <script>
-   import DemandTemplate from './DemandTemplate.vue';
+   import Cookies from 'js-cookie';
+   import httpUrl from '@/libs/http';
+   import util from '@/libs/util';
    export default {
+     props: ['flag'],
      data() {
        return {
-         options: [{
-           value: '选项1',
-           label: '全部'
-         }, {
-           value: '选项2',
-           label: '1个月内'
-         }, {
-           value: '选项3',
-           label: '1-3个月'
-         }, {
-           value: '选项4',
-           label: '3-6个月'
-         }, {
-           value: '选项5',
-           label: '6-12个月'
-         }, {
-           value: '选项6',
-           label: '1年以上'
-         }],
-         value: '全部',
-         budget: [{
-           value: '选项1',
-           label: '1万元以内'
-         }, {
-           value: '选项2',
-           label: '5-10万元'
-         }, {
-           value: '选项3',
-           label: '10-20万元'
-         }, {
-           value: '选项4',
-           label: '20-50万元'
-         }, {
-           value: '选项5',
-           label: '50万元以上'
-         }, {
-           value: '选项6',
-           label: '全部'
-         }],
-         budgetValue: '全部',
+         ifDefault: false,
+         expertParameters: {},
+         dataList: [],
+         total: 0,
+         platId: '',
+         searchValue: '',
+         isActive: '',
+         options: util.Dictionary.durationTime,
+         value: '',
+         budget: util.Dictionary.costRange,
+         budgetValue: '',
          sort: [{
-           value: '选项1',
+           value: '1',
            label: '最新发布'
          }, {
-           value: '选项2',
+           value: '0',
            label: '即将到期'
          }],
-         sortValue: '最新发布'
+         sortValue: ''
        };
      },
-     components: {
-         DemandTemplate
-     }
+     created() {
+      this.platId = Cookies.get('platId');
+      this.expertParameters = {
+        source: 'xttjpt',
+        key: this.searchValue,
+        pageSize: 10,
+        pageNo: 1
+      };
+      if (this.flag === 2) {
+        this.expertParameters.byCreateTime = 2;
+        this.expertParameters.state = 2;
+      } else {
+        this.expertParameters.byCreateTime = 1;
+        this.expertParameters.state = 1;
+      }
+      this.expertList();
+    },
+    methods: {
+      search() {
+        this.expertParameters.key = this.searchValue;
+        this.expertList();
+      },
+      sty(item) {
+        var nowDate = new Date();
+        var year = nowDate.getFullYear();
+        var month = nowDate.getMonth() + 1 < 10 ? '0' + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+        var day = nowDate.getDate() < 10 ? '0' + nowDate.getDate() : nowDate.getDate();
+        var day1 = new Date(year + '-' + month + '-' + day);
+        var day2 = new Date(item.invalidDay.substr(0, 4) + '-' + item.invalidDay.substr(4, 2) + '-' + item.invalidDay.substr(6, 2));
+        if ((day2 - day1) / (1000 * 60 * 60 * 24) < 7) {
+             return true;
+        }
+        return false;
+      },
+      timeCh(item) {
+        if (item.invalidDay.substr(4, 1) === '0') {
+          if (item.invalidDay.substr(6, 1) === '0') {
+            return item.invalidDay.substr(0, 4) + '年' + item.invalidDay.substr(5, 1) + '月' + item.invalidDay.substr(7, 1) + '日';
+          } else {
+            return item.invalidDay.substr(0, 4) + '年' + item.invalidDay.substr(5, 1) + '月' + item.invalidDay.substr(6, 2) + '日';
+          }
+        } else {
+          return item.invalidDay.substr(0, 4) + '年' + item.invalidDay.substr(4, 2) + '月' + item.invalidDay.substr(6, 2) + '日';
+        }
+      },
+      changeDate(p) {
+        if (p === '') {
+          this.$delete(this.expertParameters, 'duration');
+        } else {
+          this.expertParameters.duration = p;
+        }
+        this.expertList();
+      },
+      changeBudget(p) {
+        if (p === '') {
+          this.$delete(this.expertParameters, 'cost');
+        } else {
+          this.expertParameters.cost = p;
+        }
+        this.expertList();
+      },
+      changeSort(p) {
+        this.expertParameters.byCreateTime = p;
+        this.expertList();
+      },
+      comTime: util.commenTime,
+      expertList() {
+        this.dataList = [];
+        this.$axios.get(httpUrl.hQuery.demand.nopq, {
+          params: this.expertParameters
+        }).then((res) => {
+          if (res.success) {
+            this.dataList = res.data.data;
+            if (res.data.data.length === 0) {
+              this.ifDefault = true;
+            } else {
+              this.ifDefault = false;
+            }
+            this.total = res.data.total;
+          }
+        });
+      },
+      kexiuExpert(id) {
+        window.open(util.defaultSet.link.demand + id);
+      },
+      handleCurrentChange(val) {
+        this.expertParameters.pageNo = val;
+        this.expertList();
+      }
+    }
    };
 </script>

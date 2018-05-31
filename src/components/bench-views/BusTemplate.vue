@@ -14,10 +14,11 @@
         </ul>
       </div>
       <div class="dele" v-show="(flag == 1)">
-        <el-button type="danger" icon="el-icon-delete" circle @click="dele(item.id)"></el-button>
+        <el-button type="danger" icon="el-icon-delete" circle @click.stop="delet(item.id)"></el-button>
       </div>
     </li>
-    <div class="taglist">
+    <defaultPage v-show="ifDefault"></defaultPage>
+    <div class="taglist" v-show="!ifDefault">
       <el-pagination background layout="prev, pager, next" :total="total" :page-size="10" @current-change="handleCurrentChange">
       </el-pagination>
     </div>
@@ -32,6 +33,7 @@
     props: ['keyValue', 'url', 'flag'],
     data() {
       return {
+        ifDefault: false,
         expertParameters: {},
         dataList: [],
         total: 0,
@@ -70,8 +72,12 @@
           params: this.expertParameters
         }).then((res) => {
           if (res.success) {
-            this.dataList = [];
             this.dataList = res.data.data;
+            if (res.data.data.length === 0) {
+              this.ifDefault = true;
+            } else {
+              this.ifDefault = false;
+            }
             this.total = res.data.total;
           }
         });
@@ -83,12 +89,10 @@
         this.expertParameters.pageNo = val;
         this.expertList();
       },
-      dele(id, index) {
+      delet(id, index) {
         this.$axios.post(httpUrl.hQuery.residentOrgs.del, {
-            params: {
               pid: this.platId,
               oid: id
-            }
           }).then((res) => {
             if (res.success) {
               this.dataList.splice(index, 1);

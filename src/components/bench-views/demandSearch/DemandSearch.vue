@@ -4,10 +4,10 @@
     <div class="newsRight">
       <el-tabs v-model="activeName">
         <el-tab-pane label="发布中的需求" name="first">
-          <DemandTemplate></DemandTemplate>
+          <DemandTemplate :flag='1'></DemandTemplate>
         </el-tab-pane>
         <el-tab-pane label="已完成的需求" name="second">
-          <DemandTemplate></DemandTemplate>
+          <DemandTemplate :flag='2'></DemandTemplate>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -33,6 +33,7 @@
 <style lang="stylus" rel="stylesheet/stylus">
   ul
     .list-item
+      cursor: pointer
       .list-info
         .list-tig
           height: 30px
@@ -44,6 +45,8 @@
           li
             margin-right: 70px
   .listMain
+    .coGreen
+      color: green
     .select
       margin-top: 20px
       .week
