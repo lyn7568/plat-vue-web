@@ -17,6 +17,14 @@ export const pwdRouter = {
     },
     component: () => import('@/components/form-views/findPwd.vue')
 };
+export const upMail = {
+    path: '/upMail',
+    name: 'upMail',
+    meta: {
+        title: '邮箱更换'
+    },
+    component: () => import('@/components/form-views/upMail.vue')
+};
 
 // 作为Main组件的子页面展示
 export const otherRouter = {
@@ -127,6 +135,7 @@ export const appRouter = {
 export const routers = [
     loginRouter,
     pwdRouter,
+    upMail,
     otherRouter,
     appRouter
 ];
