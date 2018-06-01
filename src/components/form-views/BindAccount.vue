@@ -3,8 +3,8 @@
     <div class="newsLeft">
       <ul>
         <li>工作台</li>
-        <li>密码修改</li>
-        <li class='band'>账号绑定</li>
+        <li  @click="passxiu">密码修改</li>
+        <li class='band bg' @click="mailUp">账号绑定</li>
       </ul>
     </div>
     <div class="newsRight">
@@ -59,6 +59,12 @@
       };
     },
     methods: {
+      passxiu() {
+        this.$router.push({ path: '/AccountSettings' });
+      },
+      mailUp(){
+        this.$router.push({ path: '/BindAccount' });
+      },
       loginMail() {
         var hash = {
               'qq.com': 'http://mail.qq.com',
@@ -85,16 +91,16 @@
               'foxmail.coom': 'http://www.foxmail.com'
             };
             var url = this.emailName.split('@')[1];
-            if (hash[url] == undefined){
+            if (hash[url] === undefined) {
               location.href = 'http://mail.' + url;
-            }else{
-              location.href =  hash[url];
+            } else {
+              location.href = hash[url];
             }
       },
       cblur(ar) {
-        var gunf = gunf = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        var gunf = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
         if (gunf.test(this.emailName.trim())) {
-          this.$axios.get(util.ekexiuUrl + '/ajax/isRegOrg', {
+          this.$axios.get(util.ekexiuUrl + '/ajax/platform/checkEmail', {
                     params: {
                       email: this.emailName
                     }
@@ -108,7 +114,7 @@
                               this.$axios.post(util.ekexiuUrl + '/ajax/platform/reqBindMail', {
                                   id: this.platId,
                                   mail: this.emailName,
-                                  url: 'http://localhost/account-binding.html?sc'
+                                  url: 'http://localhost:7070/upMail?sc'
                               }).then((res) => {
                                 if (res.success) {
                                   this.dias = true;
@@ -171,6 +177,9 @@
           margin-left: 50px
           padding: 12px 40px
     .newsLeft
+      .bg
+        background-color: $mainColor
+        color: #fff
       .band
         margin-top: 0px
         border-top: none

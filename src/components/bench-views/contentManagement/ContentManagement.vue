@@ -1,6 +1,6 @@
 <template>
   <div class="newsmMain">
-    <Sidebar></Sidebar>
+    <Sidebar :manage='true' :compan='false' :searDemand='false' :servi='false'></Sidebar>
     <div class="newsRight">
       <el-tabs v-model="activeName">
         <el-tab-pane label="平台管理" name="first">

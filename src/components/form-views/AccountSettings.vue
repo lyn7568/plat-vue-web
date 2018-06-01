@@ -3,8 +3,8 @@
     <div class="newsLeft">
       <ul>
         <li>工作台</li>
-        <li>密码修改</li>
-        <li class='band'>账号绑定</li>
+        <li class='bg' @click="passxiu">密码修改</li>
+        <li class='band' @click="mailUp">账号绑定</li>
       </ul>
     </div>
     <div class="newsRight">
@@ -13,7 +13,7 @@
           <div class="updataPa">
             <el-form label-width="100px" class="demo-ruleForm" size="medium" :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2">
               <el-form-item label="当前密码" prop="loginPass">
-                <el-input type="password" auto-complete="off" v-model="ruleForm2.loginPass"></el-input><span class="forgetPass">忘记密码？</span>
+                <el-input type="password" auto-complete="off" v-model="ruleForm2.loginPass"></el-input><span class="forgetPass" @click="forget">忘记密码？</span>
               </el-form-item>
               <el-form-item label="新密码" prop="pass">
                 <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
@@ -96,6 +96,15 @@
       };
     },
     methods: {
+      forget() {
+        this.$router.push({ path: '/findPwd' });
+      },
+      passxiu() {
+        this.$router.push({ path: '/AccountSettings' });
+      },
+      mailUp(){
+        this.$router.push({ path: '/BindAccount' });
+      },
       open() {
         this.$confirm('密码修改成功！', '提示', {
           confirmButtonText: '确定',
@@ -151,8 +160,14 @@
           position: absolute
           top: 0
           right: -80px
+          cursor: pointer
     .newsLeft
+      .bg
+        background-color: $mainColor
+        color: #fff
       .band
         margin-top: 0px
         border-top: none
+
+    
 </style>

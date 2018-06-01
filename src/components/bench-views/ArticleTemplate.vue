@@ -19,28 +19,29 @@
             <li>留言 {{item.leverNumber}}</li>
           </ul>
           <ul class="list-tag" v-if="(flag==1) && (item.status==2)">
-            <li v-show="item.status">修改于{{comTime(item.publishTime)}}</li>
+            <li v-show="item.status">修改于{{comTime(item.modifyTime)}}</li>
             <li class="coRed">草稿</li>
-            <li class="coRed">将在 定时发布</li>
+            <li class="coRed">将在 {{comTime(item.modifyTime)}}定时发布</li>
           </ul>
           <ul class="list-tag" v-if="(flag==1) && (item.status==0)">
-            <li v-show="item.status">修改于{{comTime(item.publishTime)}}</li>
+            <li v-show="item.status">修改于{{comTime(item.modifyTime)}}</li>
             <li class="coRed">草稿</li>
           </ul>
         </div>
         <div class="dele" v-if='flag === 1'>
           <el-button type="primary" size="small" v-if="(item.status == 0 || item.status == 2)">修改</el-button>
-          <el-button type="danger" icon="el-icon-delete" circle  @click="delet(item.articleId, index)"></el-button>
+          <el-button type="danger" icon="el-icon-delete" circle  @click.stop="delet(item.articleId, index)"></el-button>
         </div>
         <div class="dele" v-else-if='flag === 2'>
-          <el-button type="danger" icon="el-icon-delete" circle @click="delet(item.articleId, index)"></el-button>
+          <el-button type="danger" icon="el-icon-delete" circle @click.stop="delet(item.articleId, index)"></el-button>
         </div>
         <div class="dele" v-else-if='flag === 3'>
-          <el-button type="primary" size="small" @click.once="add(item.articleId)">{{addText}}</el-button>
+          <el-button type="primary" size="small" @click.once.stop="add(item.articleId)">{{addText}}</el-button>
         </div>
       </li>
     </ul>
-    <div class="taglist">
+    <defaultPage v-show="ifDefault"></defaultPage>
+    <div class="taglist" v-show="!ifDefault">
       <el-pagination background layout="prev, pager, next" :total="total" :page-size="10" @current-change="handleCurrentChange">
       </el-pagination>
     </div>
@@ -61,7 +62,8 @@
         orgDefaultImage: util.defaultSet.img.article,
         orgImageAddId: util.ImageUrl('article/', true),
         platId: '',
-        addText: '添加'
+        addText: '添加',
+        ifDefault: false
       };
     },
     watch: {
@@ -85,22 +87,25 @@
       if (this.flag === 1) {
         this.expertParameters.ownerId = this.platId;
         this.expertParameters.articleType = 3;
+        this.expertParameters.status = [0, 1, 2];
       } else {
         this.expertParameters.pid = this.platId;
       }
       this.expertList();
     },
     methods: {
-      comTime: util.commenTime,
+      comTime: util.dateChange,
       expertList() {
         this.dataList = [];
         this.$axios.get(util.ekexiuUrl + this.url, {
           params: this.expertParameters
         }).then((res) => {
           if (res.success) {
-            this.dataList = [];
             this.dataList = res.data.data;
             this.total = res.data.total;
+            if (res.data.total.length === 0) {
+              this.ifDefault = true;
+            }
             for (let i = 0; i < res.data.data.length; i++) {
               if (this.flag !== 1) {
                 this.leaveWordTotal(res.data.data[i]);
@@ -145,10 +150,8 @@
       },
       delet(id, index) {
         this.$axios.post(httpUrl.hQuery.orgTrends.del, {
-            params: {
               pid: this.platId,
               aid: id
-            }
           }).then((res) => {
             if (res.success) {
               this.dataList.splice(index, 1);
