@@ -13,20 +13,20 @@
         </div>
 
         <div class="step-contain">
-          <el-form v-show="!isStepShow" :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+          <el-form v-show="stepFisrt" :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
             <el-form-item prop="mail">
               <el-input v-model="ruleForm.mail" placeholder="请输入邮箱账号"></el-input>
             </el-form-item>
             <el-form-item></el-form-item>
-            <el-form-item>
-              <el-button type="primary" :disabled="isDisabl" @click="nextStep">下一步</el-button>
-              <el-button type="text" @click="goLogin">又想起来了</el-button>
+            <el-form-item class="textButton-box">
+              <el-button type="primary" :disabled="isDisabl" @click="nextStep('ruleForm')">下一步</el-button>
+              <el-button class="textButton" type="text" @click="goLogin">又想起来了</el-button>
             </el-form-item>
           </el-form>
-          <el-form v-show="isStepShow" class="demo-ruleForm">
+          <el-form v-show="stepSecond" class="demo-ruleForm">
             <el-form-item>
               <p class="importTip">密码找回邮件已发送至：<br />
-                <span class="mainTip" id="emailShow">jdksgjksdgjsdhgs</span>
+                <span class="mainTip" id="emailShow">{{ruleForm.mail}}</span>
               </p>
               <p class="smallTip">请您在10分钟内登录您的企业邮箱，接收邮件，<br />点击链接后即可重置密码。</p>
             </el-form-item>
@@ -35,7 +35,7 @@
               <el-button type="primary" @click="goToMail">登录邮箱</el-button>
             </el-form-item>
           </el-form>
-          <el-form v-show="!isStepShow" :model="ruleForm2" :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
+          <el-form v-show="stepThird" :model="ruleForm2" :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
             <el-form-item prop="pass">
               <el-input type="password" v-model="ruleForm2.pass" placeholder="请设置您的新密码" auto-complete="off"></el-input>
             </el-form-item>
@@ -44,7 +44,7 @@
             </el-form-item>
             <el-form-item></el-form-item>
             <el-form-item>
-              <el-button type="primary" :disabled="isDisabl" @click="resetPwd">重置密码</el-button>
+              <el-button type="primary" :disabled="isDisabl" @click="resetPwd('ruleForm2')">重置密码</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -54,8 +54,12 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import Cookies from 'js-cookie';
+  import httpUrl from '@/libs/http';
+  import util from '@/libs/util';
+
   export default {
-     data() {
+    data() {
       var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请设置您的新密码'));
@@ -78,8 +82,13 @@
         }
       };
       return {
+        platId: '',
+        resetStepNum: '',
+        resetCode: '',
         stepVal: 0,
-        isStepShow: true,
+        stepFisrt: true,
+        stepSecond: false,
+        stepThird: false,
         isDisabl: false,
         ruleForm: {
           mail: ''
@@ -104,51 +113,104 @@
         }
       };
     },
+    created() {
+      this.platId = Cookies.get('platId');
+      this.resetStepNum = util.urlParse('step');
+      this.resetCode = util.urlParse('sc');
+      if (this.resetStepNum === '2') {
+        this.stepFisrt = false;
+        this.stepSecond = false;
+        this.stepThird = true;
+        this.stepVal = 2;
+      }
+    },
     methods: {
-      nextStep() {
-        return this.stepVal++ > 2;
+      nextStep(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.$axios.post(httpUrl.hQuery.sign.reqResetPw, {
+              id: this.platId,
+              mail: this.ruleForm.mail,
+              url: httpUrl.platUrl + '/findPwd?step=2&sc'
+            }).then(res => {
+              console.log(res);
+              if (res.success) {
+                this.stepFisrt = false;
+                this.stepSecond = true;
+                this.stepVal = 1;
+              } else {
+                let errorCode = [{
+                  code: -600001,
+                  msg: '用户不存在'
+                }, {
+                  code: -600002,
+                  msg: '发送邮箱错误'
+                }];
+                for (let i = 0; i < errorCode.length; i++) {
+                  if (res.code === errorCode[i].code) {
+                    this.$message.error(errorCode[i].msg);
+                    return;
+                  };
+                };
+              }
+            });
+          } else {
+            return false;
+          }
+        });
+      },
+      goToMail() {
+        var url = this.ruleForm.mail.split('@')[1];
+        if (util.mailHash[url] === undefined) {
+          window.open('http://mail.' + url);
+        } else {
+          window.open(util.mailHash[url]);
+        }
       },
       resetPwd(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            // this.$axios.post(httpUrl.workbench.fingPwd, paramsData).then(res => {
-            //   this.logining = false;
-            //   console.log(res);
-            //   if (res.success) {
-            //     this.$router.push({path: '/loginPlat'});
-            //   } else {
-            //     let errorCode = [{
-            //       code: -600001,
-            //       msg: '用户不存在'
-            //     }, {
-            //       code: -600002,
-            //       msg: '密码不正确'
-            //     }, {
-            //       code: -600003,
-            //       msg: '平台信息不存在'
-            //     }, {
-            //       code: -600004,
-            //       msg: '用户被禁用'
-            //     }];
-            //     for (let i = 0; i < errorCode.length; i++) {
-            //       if (res.code === errorCode[i].code) {
-            //         this.$message.error(errorCode[i].msg);
-            //         return;
-            //       };
-            //     };
-            //   }
-            // }).catch(error => {
-            //   console.log(error);
-            // });
+            this.$axios.post(httpUrl.hQuery.sign.resetpw, {
+              code: this.resetCode,
+              pw: this.ruleForm2.pass
+            }).then(res => {
+              console.log(res);
+              if (res.success) {
+                this.$alert('您可以使用新密码登录您的账户了', '恭喜您，您的密码重置成功！', {
+                  confirmButtonText: '重新登录',
+                  type: 'success',
+                  center: true,
+                  callback: action => {
+                    if (action === 'confirm') {
+                      this.$router.push({path: '/loginPlat'});
+                    };
+                  }
+                });
+              } else {
+                if (res.code === -600001) {
+                  this.$alert('小提示：邮件内的链接有效时长为10分钟', '很抱歉，当前的链接已失效。', {
+                    confirmButtonText: '重新找回密码',
+                    type: 'warning',
+                    center: true,
+                    callback: action => {
+                      if (action === 'confirm') {
+                        this.stepFisrt = true;
+                        this.stepSecond = false;
+                        this.stepThird = false;
+                        this.stepVal = 0;
+                      };
+                    }
+                  });
+                  return;
+                };
+              };
+            });
           } else {
             return false;
           }
         });
       },
       goLogin() {
-        this.$router.push({path: '/loginPlat'});
-      },
-      goToMail() {
         this.$router.push({path: '/loginPlat'});
       }
     }

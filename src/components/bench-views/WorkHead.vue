@@ -17,8 +17,8 @@
                   <div class="triangle"></div>
                   <ul>
                     <li @click="updateInfo"> <span class="icon1"></span>修改资料</li>
-                    <li> <span class="icon2"></span>账户设置</li>
-                    <li> <span class="icon3"></span>退出登录</li>
+                    <li @click="accoountInfo"> <span class="icon2"></span>账户设置</li>
+                    <li @click="exitOut"> <span class="icon3"></span>退出登录</li>
                   </ul>
                 </div>
               </el-collapse-transition>
@@ -50,6 +50,16 @@
       },
       updateInfo() {
         this.$router.push({path: '/updateInfo'});
+      },
+      accoountInfo() {
+        this.$router.push({path: '/AccountSettings'});
+      },
+      exitOut() {
+        Cookies.set('plf_user', null, { path: '/' });
+        Cookies.set('plf_name', null, { path: '/' });
+        Cookies.set('plf_logo', null, { path: '/' });
+        Cookies.set('plf_email', null, { path: '/' });
+        this.$router.push({path: '/home'});
       }
     },
     created() {

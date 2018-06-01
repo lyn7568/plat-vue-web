@@ -13,24 +13,24 @@
 
 <script>
   import ArticleTemplate from '../ArticleTemplate.vue';
-   export default {
-     data() {
-      return {
-        keyValue: '',
-        url: '/ajax/article/pageQuery',
-        inValue: ''
-       };
-     },
-     components: {
-          ArticleTemplate
-     },
-     methods: {
-     	 goPublishArt() {
-         this.$router.push({path: '/PublishArticle'});
-       },
-       search() {
-         this.keyValue = this.inValue;
-       }
-     }
-   };
+    export default {
+      data() {
+        return {
+          keyValue: '',
+          url: '/ajax/article/pageQuery',
+          inValue: ''
+        };
+      },
+      components: {
+        ArticleTemplate
+      },
+      methods: {
+        goPublishArt() {
+          this.$router.push({path: '/PublishArticle'});
+        },
+        search() {
+          this.keyValue = this.inValue;
+        }
+      }
+    };
 </script>
