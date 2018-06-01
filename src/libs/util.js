@@ -1,6 +1,6 @@
-import http from './http.js';
+import httpUrl from './http.js';
 
-let ekexiuUrl = http.kexiuUrl;
+let ekexiuUrl = httpUrl.kexiuUrl;
 
 let util = {
 
@@ -34,6 +34,48 @@ util.defaultSet = {
  */
 util.pageUrl = function(type, item) {
   return (ekexiuUrl + '/shtml/' + type + '/' + item.createTime.substring(0, 8) + '/' + item.shareId + '.html');
+};
+
+/**
+ * 正则匹配邮箱、手机
+ * flag === 'mail' 是邮箱, flag === 'tel' 是手机
+ */
+util.regular = function(str, flag) {
+  if (flag === 'mail') {
+    var regMail = /^[a-zA-Z0-9_-] + @[a-zA-Z0-9_-] + (\.[a-zA-Z0-9_-]+) + $/;
+    return regMail.test(str);
+  } else if (flag === 'tel') {
+    var regTel = /^1[3|4|5|7|8][0-9]\d{8}$/;
+    return regTel.test(str);
+  };
+};
+
+/**
+ * 邮箱mailHash
+ */
+util.mailHash = {
+  'qq.com': 'http://mail.qq.com',
+  'gmail.com': 'http://mail.google.com',
+  'sina.com': 'http://mail.sina.com.cn',
+  '163.com': 'http://mail.163.com',
+  '126.com': 'http://mail.126.com',
+  'yeah.net': 'http://www.yeah.net/',
+  'sohu.com': 'http://mail.sohu.com/',
+  'tom.com': 'http://mail.tom.com/',
+  'sogou.com': 'http://mail.sogou.com/',
+  '139.com': 'http://mail.10086.cn/',
+  'hotmail.com': 'http://www.hotmail.com',
+  'live.com': 'http://login.live.com/',
+  'live.cn': 'http://login.live.cn/',
+  'live.com.cn': 'http://login.live.com.cn',
+  '189.com': 'http://webmail16.189.cn/webmail/',
+  'yahoo.com.cn': 'http://mail.cn.yahoo.com/',
+  'yahoo.cn': 'http://mail.cn.yahoo.com/',
+  'eyou.com': 'http://www.eyou.com/',
+  '21cn.com': 'http://mail.21cn.com/',
+  '188.com': 'http://www.188.com/',
+  'ustb.edu.cn': 'http://mail.ustb.edu.cn/',
+  'foxmail.coom': 'http://www.foxmail.com'
 };
 
 /**
@@ -215,6 +257,36 @@ util.dateFormatter = function(str, fl, bol) { // 默认返回yyyy-MM-dd HH-mm-ss
         return [year, month, day].join('-');
       }
     }
+};
+
+util.dateChange = function(startTime) { // 默认返回yyyy月MM日dd HH:mm
+    var nowTimg = new Date();
+    if (nowTimg.getFullYear() !== startTime.substring(0, 4)) {
+        return startTime.substring(4, 6).replace(/\b(0+)/gi, '') + '月' + startTime.substring(6, 8).replace(/\b(0+)/gi, '') + '日 ' + startTime.substring(8, 10) + ':' + startTime.substring(10, 12);
+    } else {
+        return startTime.substring(0, 4) + '年' + startTime.substring(4, 6).replace(/\b(0+)/gi, '') + '月' + startTime.substring(6, 8).replace(/\b(0+)/gi, '') + '日 ' + startTime.substring(8, 10) + ':' + startTime.substring(10, 12);
+    }
+};
+
+/**
+ * 获取ownerInfo(org\professor)
+ * fl === 'professor' 或者 fl === 'org'
+ */
+util.ownerInfo = function(vm, type, ownerId) {
+  var url;
+  if (type === '1') {
+    url = httpUrl.kxQurey.professor.query;
+  } else if (type === '2') {
+    url = httpUrl.kxQurey.org.query;
+  };
+
+  vm.$axios.get(url + '/' + ownerId, {
+  }).then((res) => {
+    if (res.success) {
+      var $info = res.data;
+      return $info;
+    };
+  });
 };
 
 export default util;

@@ -23,6 +23,11 @@
         type: Object
       }
     },
+    // data() {
+    //   return: {
+    //     ownerInfo: util.ownerInfo(this, item.articleType, item.owmerId)
+    //   };
+    // },
     methods: {
       articleUrl(item) {
         return item.articleImg ? util.ImageUrl('article/' + item.articleImg) : util.defaultSet.img.article;
@@ -30,6 +35,9 @@
       linkArticle(item) {
         return util.pageUrl('a', item);
       },
+      // ownerBeyond(item) {
+      //   return util.ownerInfo(this, item.articleType, item.owmerId);
+      // },
       formTime(item) {
         return util.commenTime(item.publishTime);
       }

@@ -3,9 +3,10 @@ let http = { };
 
 // const kexiuUrl = 'https://www.ekexiu.com';
 const kexiuUrl = 'http://192.168.3.233:81';
+const platUrl = 'http://localhost:7070';
+const utilUrl = platUrl + '/ajax';
 
-const utilUrl = 'http://localhost:7070/ajax';
-
+http.platUrl = platUrl;
 http.utilUrl = utilUrl;
 http.kexiuUrl = kexiuUrl;
 
@@ -55,7 +56,7 @@ http.hQuery = {
     },
     demand: {
       nopq: utilUrl + '/demand/search/platform', // 查询在平台发布的需求
-      add: utilUrl + '/demand/publishInPlatform', // 平台新增需求
+      add: utilUrl + '/demand/publishInPlatform' // 平台新增需求
     },
     addOrgs: utilUrl + '/platform/add/info', // 增加企业
     queryWare: utilUrl + '/platform/info/wares', // 找服务
@@ -71,7 +72,7 @@ http.kxQurey = {
       imgVC: utilUrl + '/PictureVC' // 图形验证
     },
     demand: {
-      add: utilUrl + '/demand', // 新增需求
+      add: utilUrl + '/demand' // 新增需求
     },
     article: {
       save: utilUrl + '/article/save', // 新增文章
