@@ -36,6 +36,12 @@
       },
       industry: {
         type: String
+      },
+      dy: {
+        type: String
+      },
+      dynamicTagsLength: {
+        type: Number
       }
     },
     data() {
@@ -50,9 +56,14 @@
     },
     created() {
       this.dynamicTags = this.industry.split(',');
-      if (this.dynamicTags.length === 10) {
+      if (this.dynamicTags.length === this.dynamicTagsLength) {
         this.isShowAdd = false;
       };
+    },
+    watch: {
+      dy() {
+        this.dynamicTags = this.dy.split(',');
+      }
     },
     methods: {
       // add tag
@@ -74,7 +85,7 @@
         if (inputValue.length > 15) {
           this.$message.error(`${this.tagInfo.lableTit}不得超过15个字,添加失败！`);
         }
-        if (this.dynamicTags.length === 10) {
+        if (this.dynamicTags.length === this.dynamicTagsLength) {
           this.isShowAdd = false;
         }
         if (inputValue && inputValue.length < 15 && this.dynamicTags.length < 10) {

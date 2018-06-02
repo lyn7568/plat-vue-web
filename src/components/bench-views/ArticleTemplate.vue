@@ -29,7 +29,7 @@
           </ul>
         </div>
         <div class="dele" v-if='flag === 1'>
-          <el-button type="primary" size="small" v-if="(item.status == 0 || item.status == 2)">修改</el-button>
+          <el-button type="primary" size="small" v-if="(item.status == 0 || item.status == 2)" @click.stop="revise(item)">修改</el-button>
           <el-button type="danger" icon="el-icon-delete" circle  @click.stop="delet(item.articleId, index)"></el-button>
         </div>
         <div class="dele" v-else-if='flag === 2'>
@@ -94,6 +94,9 @@
       this.expertList();
     },
     methods: {
+      revise(item) {
+        this.$router.push({ path: '/PublishArticle?arId=' + item.articleId});
+      },
       comTime: util.dateChange,
       expertList() {
         this.dataList = [];

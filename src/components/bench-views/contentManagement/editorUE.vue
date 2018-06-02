@@ -43,6 +43,12 @@
       getUEContent() { // 获取内容方法
         return this.editor.getContent();
       },
+      setUEContent(uhtml) { // 获取内容方法
+        var self = this;
+        this.editor.addListener('ready', function () {
+          self.editor.setContent(uhtml); // 确保UE加载完成后放入内容
+        });
+      },
       testMsg() {
         const self = this;
         this.defaultMsg = this.text;

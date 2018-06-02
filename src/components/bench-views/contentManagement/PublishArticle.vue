@@ -24,7 +24,7 @@
         <el-form-item label="文章标题" prop="artTit">
           <el-input v-model="ruleForm.artTit" placeholder="请填写文章标题"></el-input>
         </el-form-item>
-        <dynamicTags :tagInfo="tagInfo" :industry="ruleForm.industry" ref="subjectTags" v-on:turnTags="turnTags($event)"></dynamicTags>
+        <dynamicTags :tagInfo="tagInfo" :industry="ruleForm.industry" ref="subjectTags" v-on:turnTags="turnTags($event)" :dy="dy" :dynamicTagsLength="5"></dynamicTags>
         <el-form-item label="文章正文">
           <!-- <el-input type="textarea" :rows="4" v-model="ruleForm.artDesc" placeholder="
   请填写详细描述"></el-input> -->
@@ -95,6 +95,7 @@
   export default {
     data() {
       return {
+        dy:'',
         plf_user: '',
         platSource: '',
         tagInfo: {
@@ -123,8 +124,13 @@
       };
     },
     created() {
+      this.articleId = util.urlParse('arId');
+      if (this.articleId) {
+        this.getArticle();
+      }
       this.plf_user = Cookies.get('plf_user');
       this.platSource = Cookies.get('platSource');
+      this.ifDelete = true;
       // this.$refs.subjectTags
     },
     computed: {
@@ -134,6 +140,21 @@
       }
     },
     methods: {
+      getArticle() {
+        this.$axios.get(httpUrl.kxQurey.article.query, {
+          params: {
+            articleId: this.articleId
+          }
+        }).then((res) => {
+          if (res.success) {
+            this.ruleForm.artTit = res.data.articleTitle;
+            this.ruleForm.imageUrl = util.ImageUrl('article/' + res.data.articleImg, false);
+            this.ruleForm.industry = res.data.subject;
+            this.dy = res.data.subject;
+            this.$refs.ueBox.setUEContent(res.data.articleContent);
+          }
+        });
+      },
       turnTags(msg) {
         this.ruleForm.industry = msg;
       },
