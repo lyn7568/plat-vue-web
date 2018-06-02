@@ -16,7 +16,7 @@
         </div> -->
         <div class="tab-contain">
           <div v-show="!ifDefault">
-            <baseResource v-if="platResources.length" v-for="item in platResources" :key="item.index" :itemResources="item"></baseResource>
+            <baseResource v-if="platResources.length" v-for="item in platResources" :key="item.index" :itemSingle="item"></baseResource>
             <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
           </div>
           <defaultPage v-show="ifDefault"></defaultPage>

@@ -66,7 +66,7 @@
               <li v-for="item in orgTrends" :key="item.index">
                 <a :href="linkArticle(item)">
                   <span class="topic">{{item.articleTitle}}</span>
-                  <span class="owner">北京科技大学北京科技大学</span>
+                  <span class="owner">{{item.ownerName}}</span>
                   <span class="time">{{formTime(item)}}</span>
                 </a>
               </li>
@@ -126,7 +126,7 @@
                 <div class="item-text">
                   <p class="title">{{item.name}}</p>
                   <p class="desc">{{item.cnt}}</p>
-                  <p class="owner">北京科袖科技有限公司北京科袖科技有限公司有限公司有限公司</p>
+                  <p class="owner">{{item.ownerName}}</p>
                 </div>
               </div>
             </a>
@@ -160,7 +160,7 @@
                 <div class="item-text">
                   <p class="title">{{item.name}}</p>
                   <p class="desc">{{item.cnt}}</p>
-                  <p class="owner">北京科袖科技</p>
+                  <p class="owner">{{item.ownerName}}</p>
                 </div>
               </div>
             </a>
@@ -307,7 +307,14 @@
           }
         }).then((res) => {
           if (res.success) {
+            var _this = this;
             var $info = res.data;
+            console.log(res);
+            for (let i = 0; i < $info.length; i++) {
+              (function(m) {
+                _this.ownerByond($info[m], true);
+              }(i));
+            };
             this.orgTrends = $info;
           };
         });
@@ -319,7 +326,6 @@
             rows: this.rows
           }
         }).then((res) => {
-          console.log(res);
           if (res.success) {
             var $info = res.data;
             this.residentOrgs = $info;
@@ -333,9 +339,15 @@
             rows: this.rows
           }
         }).then((res) => {
+          var _this = this;
           console.log(res);
           if (res.success) {
             var $info = res.data;
+            for (let i = 0; i < $info.length; i++) {
+              (function(m) {
+                _this.ownerByond($info[m]);
+              }(i));
+            };
             this.platResources = $info;
           };
         });
@@ -347,9 +359,15 @@
             rows: this.rows
           }
         }).then((res) => {
+          var _this = this;
           console.log(res);
           if (res.success) {
             var $info = res.data;
+            for (let i = 0; i < $info.length; i++) {
+              (function(m) {
+                _this.ownerByond($info[m]);
+              }(i));
+            };
             this.platWares = $info;
           };
         });
@@ -408,6 +426,36 @@
           this.$message({
             message: '请填写搜索服务的关键词',
             type: 'warning'
+          });
+        }
+      },
+      ownerByond(item, flag) {
+        var _this = this;
+        var type, id;
+        if (flag) {
+          type = item.articleType;
+          id = item.ownerId;
+        } else {
+          type = item.otype;
+          id = item.oid;
+        };
+        if (type === '1') {
+          _this.$axios.get(httpUrl.kxQurey.professor.query + id, {
+            }).then((res) => {
+            if (res.success) {
+              let $info = res.data;
+              item.ownerName = $info.name;
+              _this.$forceUpdate();
+            }
+          });
+        } else if (type === '2') {
+          _this.$axios.get(httpUrl.kxQurey.org.query + id, {
+            }).then((res) => {
+            if (res.success) {
+              let $info = res.data;
+              item.ownerName = $info.forShort ? $info.forShort : $info.name;
+              _this.$forceUpdate();
+            }
           });
         }
       }

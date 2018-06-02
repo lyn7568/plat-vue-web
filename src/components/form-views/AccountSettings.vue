@@ -102,7 +102,7 @@
       passxiu() {
         this.$router.push({ path: '/AccountSettings' });
       },
-      mailUp(){
+      mailUp() {
         this.$router.push({ path: '/BindAccount' });
       },
       open() {
@@ -169,5 +169,4 @@
         margin-top: 0px
         border-top: none
 
-    
 </style>

@@ -2,7 +2,7 @@
   <div class="searchList">
     <ul>
       <li class="list-item" v-for="(item, index) in dataList" :key="index" @click="kexiuExpert(item.articleId)">
-        <div class="list-head" :style="{ backgroundImage: 'url('+ imageDis+')'}" ></div>
+        <div class="list-head" :style="{ backgroundImage: 'url('+ imageDis(item)+')'}" ></div>
         <div class="list-info">
           <div class="list-tit">{{item.articleTitle}}</div>
           <ul class="list-tag" v-if="flag!=1">
@@ -60,7 +60,7 @@
         dataList: [],
         total: 0,
         orgDefaultImage: util.defaultSet.img.article,
-        orgImageAddId: util.ImageUrl('article/', true),
+        orgImageAddId: util.ImageUrl('article/'),
         platId: '',
         addText: '添加',
         ifDefault: false
@@ -70,11 +70,6 @@
       keyValue: function () {
         this.expertParameters.key = this.keyValue;
         this.expertList();
-      }
-    },
-    computed: {
-      imageDis: function (item) {
-        return (item.hasOrgLogo) ? this.orgImageAddId + item.articleImg : this.orgDefaultImage;
       }
     },
     created() {
@@ -95,7 +90,10 @@
     },
     methods: {
       revise(item) {
-        this.$router.push({ path: '/PublishArticle?arId=' + item.articleId});
+        this.$router.push({path: '/PublishArticle?arId=' + item.articleId});
+      },
+      imageDis: function (item) {
+        return (item.articleImg) ? this.orgImageAddId + item.articleImg : this.orgDefaultImage;
       },
       comTime: util.dateChange,
       expertList() {
@@ -157,7 +155,17 @@
               aid: id
           }).then((res) => {
             if (res.success) {
-              this.dataList.splice(index, 1);
+              this.$alert('确认删除该文章', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+                center: true,
+                callback: action => {
+                  if (action === 'confirm') {
+                    this.dataList.splice(index, 1);
+                  };
+                }
+              });
             }
           });
       },

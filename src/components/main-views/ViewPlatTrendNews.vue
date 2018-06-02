@@ -1,6 +1,6 @@
 <template>
 	<div class="tab-contain">
-		<baseArticle v-for="item in paltNews" :key="item.index" :itemInfo="item"></baseArticle>
+		<baseArticle v-for="item in paltNews" :key="item.index" :itemSingle="item" :showOwner="false"></baseArticle>
 		<Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower"></Loading>
 	</div>
 </template>
@@ -20,7 +20,7 @@
           bId: '',
           bTime: ''
         },
-        paltNews: '',
+        paltNews: [],
         loadingModalShow: true, // 是否显示按钮
         loadingComplete: false, // 是否全部加载
         isFormSearch: false, // 数据加载

@@ -77,7 +77,11 @@
       <el-col :span="12">
         <el-form-item label="短信验证码" prop="msgVerifyCode">
           <el-input v-model="ruleFormDem.msgVerifyCode" placeholder="请输入短信验证码" class="shortW">
-          <el-button slot="append" :disabled="phoneCodeBol" @click="getPhoneCode">{{phoneCodeBtn}}</el-button></el-input>
+            <el-button slot="append" :disabled="phoneCodeBol" @click="getPhoneCode">
+              <span v-if="sendMsgDisabled">{{seconds + '秒后获取'}}</span>
+              <span v-if="!sendMsgDisabled">获取短信验证码</span>
+            </el-button>
+          </el-input>
         </el-form-item>
       </el-col>
       <el-col :span="24" ><el-form-item style="height:20px"></el-form-item></el-col>
@@ -118,7 +122,8 @@
         kexiuLink: util.ekexiuUrl,
         platSource: '',
         phoneCodeBol: false,
-        phoneCodeBtn: '获取短信验证码',
+        sendMsgDisabled: false,
+        seconds: 60,
         phoneResBack: '',
         imgVcUrl: httpUrl.kxQurey.sign.imgVC,
         optionsCity: provinceAndCityData,
@@ -202,22 +207,16 @@
         }
       },
       clickMsgVc() {
-        this.phoneCodeBtn = '60s后重新获取';
-        this.phoneCodeBol = true;
-        var clickTime = new Date().getTime();
-        var Timer = setInterval(function() {
-          var nowTime = new Date().getTime();
-          var second = Math.ceil(60 - (nowTime - clickTime) / 1000);
-          if (second > 0) {
-            this.phoneCodeBtn = second + 's后重新获取';
-            if (second === 1) {
-              this.imgVcUrl = httpUrl.kxQurey.sign.imgVC + '?' + new Date().getTime();
-            }
-          } else {
-            clearInterval(Timer);
-            this.phoneCodeBtn = '获取短信验证码';
-            this.phoneCodeBol = false;
-          }
+        let me = this;
+        me.sendMsgDisabled = true;
+        me.phoneCodeBol = true;
+        let interval = window.setInterval(function() {
+         if ((me.seconds--) <= 0) {
+          me.seconds = 60;
+          me.sendMsgDisabled = false;
+          me.phoneCodeBol = false;
+          window.clearInterval(interval);
+         }
         }, 1000);
       },
       changeImgVc() {

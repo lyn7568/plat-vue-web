@@ -268,25 +268,4 @@ util.dateChange = function(startTime) { // 默认返回yyyy月MM日dd HH:mm
     }
 };
 
-/**
- * 获取ownerInfo(org\professor)
- * fl === 'professor' 或者 fl === 'org'
- */
-util.ownerInfo = function(vm, type, ownerId) {
-  var url;
-  if (type === '1') {
-    url = httpUrl.kxQurey.professor.query;
-  } else if (type === '2') {
-    url = httpUrl.kxQurey.org.query;
-  };
-
-  vm.$axios.get(url + '/' + ownerId, {
-  }).then((res) => {
-    if (res.success) {
-      var $info = res.data;
-      return $info;
-    };
-  });
-};
-
 export default util;

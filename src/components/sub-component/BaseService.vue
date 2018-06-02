@@ -1,29 +1,56 @@
 <template>
-  <a class="list-item" :href="linkWare(itemServices)">
-    <div class="list-head" :style="{backgroundImage: 'url(' + waresUrl(itemServices) + ')'}"></div>
+  <a class="list-item" :href="linkway">
+    <div class="list-head" :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
     <div class="list-info">
-      <div class="list-tit list-topic">{{itemServices.name}}</div>
-      <div class="list-owner">发布者<em class="authicon icon-pro"></em></div>
-      <div class="list-desc">内容：{{itemServices.cnt}}</div>
+      <div class="list-tit list-topic">{{itemSingle.name}}</div>
+      <div class="list-owner">{{ownerName}}<em class="authicon" :class="ownerAuth"></em></div>
+      <div class="list-desc" v-if="itemSingle.cnt">内容：{{itemSingle.cnt}}</div>
     </div>
   </a>
 </template>
 
 <script type="text/ecmascript-6">
   import util from '@/libs/util';
+  import httpUrl from '@/libs/http';
 
   export default {
     props: {
-      itemServices: {
+      itemSingle: {
         type: Object
       }
     },
+    data() {
+      return {
+        linkway: util.defaultSet.link.service + this.itemSingle.id,
+        imgUrl: this.itemSingle.images ? util.ImageUrl('ware/' + this.itemSingle.images.split(',')[0]) : util.defaultSet.img.service,
+        ownerName: '',
+        ownerAuth: ''
+      };
+    },
+    created() {
+      this.ownerByond(this.itemSingle);
+    },
     methods: {
-      waresUrl(item) {
-        return item.images ? util.ImageUrl('ware/' + item.images.split(',')[0]) : util.defaultSet.img.service;
-      },
-      linkWare(item) {
-        return util.defaultSet.link.service + item.id;
+      ownerByond(item) {
+        if (item.otype === '1') {
+          this.$axios.get(httpUrl.kxQurey.professor.query + item.oid, {
+            }).then((res) => {
+            if (res.success) {
+              let $info = res.data;
+              this.ownerName = $info.name;
+              this.ownerAuth = util.autho($info.authType, $info.orgAuth, $info.authStatus);
+            }
+          });
+        } else if (item.otype === '2') {
+          this.$axios.get(httpUrl.kxQurey.org.query + item.oid, {
+            }).then((res) => {
+            if (res.success) {
+              let $info = res.data;
+              this.ownerName = $info.forShort ? $info.forShort : $info.name;
+              this.ownerAuth = $info.authStatus === '3' ? 'icon-com' : '';
+            }
+          });
+        }
       }
     }
   };

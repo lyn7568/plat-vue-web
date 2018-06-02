@@ -47,6 +47,7 @@
 <script>
   import Cookies from 'js-cookie';
   import util from '@/libs/util';
+  import httpUrl from '@/libs/http';
   export default {
     data() {
       return {
@@ -62,68 +63,43 @@
       passxiu() {
         this.$router.push({ path: '/AccountSettings' });
       },
-      mailUp(){
+      mailUp() {
         this.$router.push({ path: '/BindAccount' });
       },
       loginMail() {
-        var hash = {
-              'qq.com': 'http://mail.qq.com',
-              'gmail.com': 'http://mail.google.com',
-              'sina.com': 'http://mail.sina.com.cn',
-              '163.com': 'http://mail.163.com',
-              '126.com': 'http://mail.126.com',
-              'yeah.net': 'http://www.yeah.net/',
-              'sohu.com': 'http://mail.sohu.com/',
-              'tom.com': 'http://mail.tom.com/',
-              'sogou.com': 'http://mail.sogou.com/',
-              '139.com': 'http://mail.10086.cn/',
-              'hotmail.com': 'http://www.hotmail.com',
-              'live.com': 'http://login.live.com/',
-              'live.cn': 'http://login.live.cn/',
-              'live.com.cn': 'http://login.live.com.cn',
-              '189.com': 'http://webmail16.189.cn/webmail/',
-              'yahoo.com.cn': 'http://mail.cn.yahoo.com/',
-              'yahoo.cn': 'http://mail.cn.yahoo.com/',
-              'eyou.com': 'http://www.eyou.com/',
-              '21cn.com': 'http://mail.21cn.com/',
-              '188.com': 'http://www.188.com/',
-              'ustb.edu.cn': 'http://mail.ustb.edu.cn/',
-              'foxmail.coom': 'http://www.foxmail.com'
-            };
-            var url = this.emailName.split('@')[1];
-            if (hash[url] === undefined) {
-              location.href = 'http://mail.' + url;
-            } else {
-              location.href = hash[url];
-            }
+        var url = this.emailName.split('@')[1];
+        if (util.mailHash[url] === undefined) {
+          location.href = 'http://mail.' + url;
+        } else {
+          location.href = util.mailHash[url];
+        }
       },
       cblur(ar) {
-        var gunf = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-        if (gunf.test(this.emailName.trim())) {
-          this.$axios.get(util.ekexiuUrl + '/ajax/platform/checkEmail', {
-                    params: {
-                      email: this.emailName
+        if (util.regular(this.emailName.trim(), 'mail')) {
+          this.$axios.get(httpUrl.platUrl + '/ajax/platform/checkEmail', {
+            params: {
+              email: this.emailName
+            }
+          }).then((res) => {
+            if (res.success) {
+              if (res.data === false) {
+                  this.titler = '该邮箱已绑定账户，请使用其他邮箱';
+              } else {
+                    if (ar === 1) {
+                      this.dialogFormVisible = false;
+                      this.$axios.post(httpUrl.platUrl + '/ajax/platform/reqBindMail', {
+                          id: this.platId,
+                          mail: this.emailName,
+                          url: 'http://localhost:7070/upMail?sc'
+                      }).then((res) => {
+                        if (res.success) {
+                          this.dias = true;
+                        }
+                      });
                     }
-                  }).then((res) => {
-                    if (res.success) {
-                      if (res.data === false) {
-                          this.titler = '该邮箱已绑定账户，请使用其他邮箱';
-                      } else {
-                            if (ar === 1) {
-                              this.dialogFormVisible = false;
-                              this.$axios.post(util.ekexiuUrl + '/ajax/platform/reqBindMail', {
-                                  id: this.platId,
-                                  mail: this.emailName,
-                                  url: 'http://localhost:7070/upMail?sc'
-                              }).then((res) => {
-                                if (res.success) {
-                                  this.dias = true;
-                                }
-                              });
-                            }
-                      }
-                    }
-                  });
+              }
+            }
+          });
         } else {
            this.titler = '请输入正确的邮箱地址。';
         }

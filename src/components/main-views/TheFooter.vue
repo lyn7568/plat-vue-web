@@ -48,7 +48,7 @@
         this.plf_user = Cookies.get('plf_user');
       },
       goWorkBench() {
-        if (this.plf_user && this.plf_user != "null" && this.plf_user != null) {
+        if (this.plf_user && this.plf_user !== 'null' && this.plf_user !== null) {
           this.$router.push({path: '/WorkHome'});
         } else {
           this.$router.push({path: '/loginPlat'});

@@ -1,7 +1,7 @@
 <template>
   <div class="publishArticle block-wrapper main-content">
     <div class="wrapper-left content-wrapper">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="form-main">
+      <el-form :model="ruleFormArt" :rules="rules" ref="ruleFormArt" class="form-main">
         <el-form-item class="upload-fa">
           <div class="update-rw">
             <div class="up">
@@ -16,38 +16,36 @@
             ref="uploadLogo"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload" prop="imageUrl">
-            <div v-if="ruleForm.imageUrl" :style="{backgroundImage: 'url(' + ruleForm.imageUrl + ')'}" class="avatar"></div>
+            <div v-if="ruleFormArt.imageUrl" :style="{backgroundImage: 'url(' + ruleFormArt.imageUrl + ')'}" class="avatar"></div>
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <input type="hidden" v-model="articleId">
         <el-form-item label="文章标题" prop="artTit">
-          <el-input v-model="ruleForm.artTit" placeholder="请填写文章标题"></el-input>
+          <el-input v-model="ruleFormArt.artTit" placeholder="请填写文章标题"></el-input>
         </el-form-item>
-        <dynamicTags :tagInfo="tagInfo" :industry="ruleForm.industry" ref="subjectTags" v-on:turnTags="turnTags($event)" :dy="dy" :dynamicTagsLength="5"></dynamicTags>
+        <dynamicTags :tagInfo="tagInfo" :dyStr="ruleFormArt.industry" v-on:turnTags="turnTags($event)" :dynamicTagsLength="5"></dynamicTags>
         <el-form-item label="文章正文">
-          <!-- <el-input type="textarea" :rows="4" v-model="ruleForm.artDesc" placeholder="
-  请填写详细描述"></el-input> -->
-          <UE :id="artUe" :text="ruleForm.artDesc" ref="ueBox"></UE>
+          <UE :id="artUe" :contentText="ruleFormArt.artDesc" ref="ueBox"></UE>
         </el-form-item>
         <el-form-item></el-form-item>
       </el-form>
     </div>
     <div class="wrapper-right">
       <el-row class="content-wrapper operate-box">
-        <el-col :span="8" @click.native="articleAdd('ruleForm')">
+        <el-col :span="8" @click.native="articleAdd('ruleFormArt')">
           <em class="operateicon icon-issue"></em>
           <p style="color:#28b8fa">发布</p>
         </el-col>
-        <el-col :span="8" @click.native="clickTiming('ruleForm')">
+        <el-col :span="8" @click.native="clickTiming('ruleFormArt')">
           <em class="operateicon icon-timeissue"></em>
           <p>定时发布</p>
         </el-col>
-        <el-col :span="8" @click.native="articleDraft('ruleForm', 2)">
+        <el-col :span="8" @click.native="articleDraft('ruleFormArt', 2)">
           <em class="operateicon icon-preview"></em>
           <p>预览</p>
         </el-col>
-        <el-col :span="8" @click.native="articleDraft('ruleForm', 1)">
+        <el-col :span="8" @click.native="articleDraft('ruleFormArt', 1)">
           <em class="operateicon icon-draft"></em>
           <p>存草稿</p>
         </el-col>
@@ -95,9 +93,7 @@
   export default {
     data() {
       return {
-        dy:'',
         plf_user: '',
-        platSource: '',
         tagInfo: {
           lableTit: '关键词',
           placeholder: '请填写相关的关键词，如：腐蚀防护、石墨烯、纳米材料'
@@ -107,7 +103,7 @@
         articleId: '',
         timingDate: '',
         defaultTime: new Date().toISOString(),
-        ruleForm: {
+        ruleFormArt: {
           artTit: '',
           artDesc: '',
           industry: '',
@@ -129,9 +125,7 @@
         this.getArticle();
       }
       this.plf_user = Cookies.get('plf_user');
-      this.platSource = Cookies.get('platSource');
       this.ifDelete = true;
-      // this.$refs.subjectTags
     },
     computed: {
       placeTime: function() {
@@ -147,26 +141,25 @@
           }
         }).then((res) => {
           if (res.success) {
-            this.ruleForm.artTit = res.data.articleTitle;
-            this.ruleForm.imageUrl = util.ImageUrl('article/' + res.data.articleImg, false);
-            this.ruleForm.industry = res.data.subject;
-            this.dy = res.data.subject;
-            this.$refs.ueBox.setUEContent(res.data.articleContent);
+            this.ruleFormArt.artTit = res.data.articleTitle;
+            this.ruleFormArt.imageUrl = util.ImageUrl('article/' + res.data.articleImg, false);
+            this.ruleFormArt.industry = res.data.subject;
+            this.ruleFormArt.artDesc = res.data.articleContent;
           }
         });
       },
       turnTags(msg) {
-        this.ruleForm.industry = msg;
+        this.ruleFormArt.industry = msg;
       },
       getDataParams(publishTime) {
-        this.ruleForm.artDesc = this.$refs.ueBox.getUEContent(); // 调用子组件方法
+        this.ruleFormArt.artDesc = this.$refs.ueBox.getUEContent(); // 调用子组件方法
         let $data = {};
         $data.ownerId = this.plf_user;
         $data.articleType = '3';
-        $data.articleTitle = this.ruleForm.artTit;
-        $data.articleContent = this.ruleForm.artDesc;
-        $data.subject = this.ruleForm.industry;
-        $data.articleImg = this.ruleForm.imgName;
+        $data.articleTitle = this.ruleFormArt.artTit;
+        $data.articleContent = this.ruleFormArt.artDesc;
+        $data.subject = this.ruleFormArt.industry;
+        $data.articleImg = this.ruleFormArt.imgName;
         $data.colNum = '7';
         if (this.articleId) {
           $data.articleId = this.articleId;
@@ -177,7 +170,7 @@
         return $data;
       },
       validImgIfVoid() { // 判断图片是否上传
-        if (!this.ruleForm.imageUrl) {
+        if (!this.ruleFormArt.imageUrl) {
           this.$alert('请上传文章封面图片', '提示', {
             confirmButtonText: '确定',
             type: 'warning',
@@ -315,8 +308,8 @@
       },
       // upload img
       handleAvatarSuccess(res, file) {
-        this.ruleForm.imageUrl = URL.createObjectURL(file.raw);
-        this.ruleForm.imgName = res.data[0].cacheKey;
+        this.ruleFormArt.imageUrl = URL.createObjectURL(file.raw);
+        this.ruleFormArt.imgName = res.data[0].cacheKey;
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';

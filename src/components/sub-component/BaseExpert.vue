@@ -4,11 +4,8 @@
       <div class="show-head" :style="{backgroundImage:'url('+ headUrl(item) +')'}"></div>
       <div class="show-info">
         <div class="info-tit">{{item.name}}<em class="authicon" :class="headIcon(item)"></em></div>
-        <div class="info-tag">职称/职位，所在机构</div>
-        <div class="info-desc">
-
-研究方向：研究方向A；研究方向B；研究方向C；研究方向A；研究方向B；研究方向C；研究方...
-</div>
+        <div class="info-tag">{{item.offt}}</div>
+        <div class="info-desc" v-if="item.reserachs">研究方向：{{item.reserachs}}</div>
       </div>
     </a>
   </div>
@@ -52,13 +49,50 @@
         }).then((res) => {
           console.log(res);
           if (res.success) {
-            var $info = res.data;
-            if ($info.length > 0) {
-              this.dataO.bUid = $info[$info.length - 1].id;
-              this.dataO.bTime = $info[$info.length - 1].buttedTime;
-              this.userData = $info;
-            };
-            if ($info.length < this.rows) {
+            var $data = res.data;
+            if ($data.length > 0) {
+              this.dataO.bUid = $data[$data.length - 1].id;
+              this.dataO.bTime = $data[$data.length - 1].buttedTime;
+              for (let i = 0; i < $data.length; i++) {
+                if ($data[i].title) {
+                  if ($data[i].orgName) {
+                    $data[i].offt = $data[i].title + '，' + $data[i].orgName;
+                  } else {
+                    $data[i].offt = $data[i].title;
+                  }
+                } else {
+                  if ($data[i].office) {
+                    if ($data[i].orgName) {
+                      $data[i].offt = $data[i].office + '，' + $data[i].orgName;
+                    } else {
+                      $data[i].offt = $data[i].office;
+                    }
+                  } else {
+                    $data[i].offt = '';
+                  }
+                }
+                $data[i].className = util.autho($data[i].authType, $data[i].orgAuth, $data[i].authStatus);
+                if ($data[i].hasHeadImage) {
+                  $data[i].image = util.ImageUrl('head/' + $data[i].id + '_l.jpg', true);
+                } else {
+                  $data[i].image = util.defaultSet.expert;
+                }
+                this.$axios.get(httpUrl.utilUrl + '/researchArea/' + $data[i].id).then(res => {
+                  const $info = res.data;
+                  let arr = [];
+                  for (let j = 0; j < $info.length; j++) {
+                    arr.push($info[i].caption);
+                    if (j === $info.length - 1) {
+                      $data[i].reserachs = arr.join('，');
+                      this.$forceUpdate();
+                    }
+                  }
+                  if ($info.lenth === 0) {
+                    $data[i].reserachs = '';
+                  }
+                });
+              }
+              this.userData = $data;
             };
           };
         });

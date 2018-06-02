@@ -1,5 +1,5 @@
 <template>
-  <el-form-item :label="tagInfo.lableTit" prop="dynamicTags" ref="tagComponent">
+  <el-form-item :label="tagInfo.lableTit" ref="tagComponent">
     <el-tag
       :key="tag"
       v-for="tag in dynamicTags"
@@ -19,25 +19,24 @@
       :trigger-on-focus="false"
       @select="handleSelect"
       @keyup.enter.native="handleInputConfirm"
-      @blur="handleInputConfirm"
-    ></el-autocomplete>
+    >
+      <template slot-scope="{ item }">
+        <div class="name">{{ item.caption }}</div>
+      </template>
+    </el-autocomplete>
     <el-button v-else class="button-new-tag" v-show="isShowAdd" size="medium" @click="showInput">+ {{tagInfo.placeholder}}</el-button>
   </el-form-item>
 </template>
 
 <script type="text/ecmascript-6">
   import httpUrl from '@/libs/http';
-  // import util from '@/libs/util';
 
   export default {
     props: {
       tagInfo: {
         type: Object
       },
-      industry: {
-        type: String
-      },
-      dy: {
+      dyStr: {
         type: String
       },
       dynamicTagsLength: {
@@ -54,15 +53,14 @@
         loadAllKeys: []
       };
     },
-    created() {
-      this.dynamicTags = this.industry.split(',');
-      if (this.dynamicTags.length === this.dynamicTagsLength) {
-        this.isShowAdd = false;
-      };
-    },
     watch: {
-      dy() {
-        this.dynamicTags = this.dy.split(',');
+      dyStr() {
+        if (this.dyStr) {
+          this.dynamicTags = this.dyStr.split(',');
+          if (this.dynamicTags.length === this.dynamicTagsLength) {
+            this.isShowAdd = false;
+          };
+        };
       }
     },
     methods: {
@@ -70,7 +68,7 @@
       handleClose(tag) {
         this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
         this.$emit('turnTags', this.dynamicTags.join(',')); // 传给父组件
-        if (this.dynamicTags.length < 10) {
+        if (this.dynamicTags.length < this.dynamicTagsLength) {
           this.isShowAdd = true;
         }
       },
@@ -88,7 +86,7 @@
         if (this.dynamicTags.length === this.dynamicTagsLength) {
           this.isShowAdd = false;
         }
-        if (inputValue && inputValue.length < 15 && this.dynamicTags.length < 10) {
+        if (inputValue && inputValue.length < 15 && this.dynamicTags.length < this.dynamicTagsLength) {
           this.dynamicTags.push(inputValue);
         }
         this.$emit('turnTags', this.dynamicTags.join(',')); // 传给父组件
@@ -98,39 +96,27 @@
       // add tag
 
       querySearch(queryString, cb) {
-        if (this.inputValue) {
-          this.loadAllHotKey(this.inputValue);
-          this.restaurants = this.loadAllKeys;
-          var restaurants = this.restaurants;
-          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-          // 调用 callback 返回建议列表的数据
-          cb(results);
-        }
-      },
-      createFilter(queryString) {
-        return (restaurant) => {
-          return (restaurant.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-        };
-      },
-      loadAllHotKey(key) {
         this.$axios.get(httpUrl.kxQurey.qaHotKey, {
           params: {
-            key: key
+            key: queryString
           }
         }).then((res) => {
           if (res.success) {
             var $info = res.data;
             var oSr = [];
-            for (var i = 0; i < Math.min($info.length, 5); i++) {
-               oSr.push($info[i].caption);
+            for (let i = 0; i < Math.min($info.length, 5); i++) {
+              oSr[i] = $info[i];
             };
             this.loadAllKeys = oSr;
-            console.log(this.loadAllKeys);
+            // if (this.loadAllKeys.length === 0) {
+            //   this.loadAllKeys = [{caption: '暂无数据'}]
+            // };
+            cb(this.loadAllKeys);
           };
         });
       },
       handleSelect(item) {
-        console.log(item);
+        this.inputValue = item.caption;
       }
     }
   };

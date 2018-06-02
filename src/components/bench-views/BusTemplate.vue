@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li class="list-item" v-for="(item, index) in dataList" :key="index" @click="kexiuExpert(item.id)">
-      <div class="list-head" :style="{ backgroundImage: 'url('+ imageDis+')'}"></div>
+      <div class="list-head" :style="{ backgroundImage: 'url('+ imageDis(item)+')'}"></div>
       <div class="list-info">
         <div class="list-tit list-tig">
           {{(item.forShort) ? item.forShort : item.name}}
@@ -48,11 +48,6 @@
         this.expertList();
       }
     },
-    computed: {
-      imageDis: function (item) {
-        return (item.hasOrgLogo) ? this.orgImageAddId + item.id + '.jpg' : this.orgDefaultImage;
-      }
-    },
     created() {
       this.platId = Cookies.get('platId');
       this.expertParameters = {
@@ -66,6 +61,9 @@
       this.expertList();
     },
     methods: {
+      imageDis: function (item) {
+        return (item.hasOrgLogo) ? this.orgImageAddId + item.id + '.jpg' : this.orgDefaultImage;
+      },
       expertList() {
         this.dataList = [];
         this.$axios.get(util.ekexiuUrl + this.url, {

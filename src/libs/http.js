@@ -83,10 +83,14 @@ http.kxQurey = {
       pqpublish: utilUrl + '/article/pqpublish' // 已发布的文章列表
     },
     professor: {
-      info: utilUrl + '/professor/baseInfo/' // 专家基础信息
+      query: utilUrl + '/professor/baseInfo/', // 专家基础信息
+      researchArea: utilUrl + '/researchArea/' // 研究方向
     },
     org: {
-      info: utilUrl + '/org/' // 企业基础信息
+      query: utilUrl + '/org/' // 企业基础信息
+    },
+    leaveMsg: {
+      count: utilUrl + '/leavemsg/count' // 留言数量
     },
     cachedFile: utilUrl + '/cachedFileUpload', // 上传缓存地址
     qaHotKey: utilUrl + '/dataDict/qaHotKey', // 检索关键词

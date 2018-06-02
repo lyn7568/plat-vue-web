@@ -16,7 +16,7 @@
 				</div> -->
 				<div class="tab-contain">
           <div v-show="!ifDefault">
-            <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemServices="item"></baseService>
+            <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
             <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
           </div>
           <defaultPage v-show="ifDefault"></defaultPage>

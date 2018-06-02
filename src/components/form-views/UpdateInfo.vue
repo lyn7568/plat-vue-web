@@ -40,27 +40,7 @@
           <el-form-item label="官方网址" prop="website">
             <el-input v-model="ruleFormUpdate.website" placeholder="如：www.ekexiu.com"></el-input>
           </el-form-item>
-          <el-form-item label="面向行业" prop="industry">
-            <el-tag
-              :key="tag"
-              v-for="tag in dynamicTags"
-              closable
-              :disable-transitions="false"
-              @close="handleClose(tag)">
-              {{tag}}
-            </el-tag>
-            <el-input
-              class="input-new-tag"
-              v-if="inputVisible"
-              v-model="inputValue"
-              ref="saveTagInput"
-              size="small"
-              @keyup.enter.native="handleInputConfirm"
-              @blur="handleInputConfirm"
-            >
-            </el-input>
-            <el-button v-else class="button-new-tag" v-show="isShowAdd" size="small" @click="showInput">+ 请填写园区面向的行业，如：互联网/智能制造/新材料</el-button>
-          </el-form-item>
+          <dynamicTags :tagInfo="tagInfo" :dyStr="ruleFormUpdate.industry" v-on:turnTags="turnTags($event)" :dynamicTagsLength="10"></dynamicTags>
           <el-form-item label="平台介绍" prop="desc">
             <el-input type="textarea" :rows="8" v-model="ruleFormUpdate.desc" placeholder="请填写一个简单的介绍，让大家更好地了解平台"></el-input>
           </el-form-item>
@@ -87,6 +67,8 @@
   import util from '@/libs/util';
   import httpUrl from '@/libs/http';
 
+  import dynamicTags from '../sub-component/DynamicTags';
+
   export default {
     props: {
       plat: {
@@ -95,6 +77,10 @@
     },
     data() {
       return {
+        tagInfo: {
+          lableTit: '面向行业',
+          placeholder: '请填写园区面向的行业，如：互联网/智能制造/新材料'
+        },
         plf_user: '',
         plf_name: '',
         imageUrl: '', // 临时地址
@@ -149,6 +135,9 @@
       this.getPlatInfo(this.plf_user);
     },
     methods: {
+      turnTags(msg) {
+        this.ruleFormUpdate.industry = msg;
+      },
       getPlatInfo(id) {
         this.$axios.get(httpUrl.hQuery.baseInfo.query, {
           params: {
@@ -268,6 +257,9 @@
         this.inputValue = '';
       }
       // add tag
+    },
+    components: {
+      dynamicTags
     }
   };
 </script>

@@ -1,6 +1,6 @@
 <template>
 	<div class="tab-contain">
-		<baseArticle v-for="item in orgTrends" :key="item.index" :itemInfo="item"></baseArticle>
+		<baseArticle v-for="item in orgTrends" :key="item.index" :itemSingle="item" :showOwner="true"></baseArticle>
 		<Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower"></Loading>
 	</div>
 </template>
@@ -28,8 +28,8 @@
       };
     },
     created() {
-       this.platId = Cookies.get('platId');
-       this.queryOrgTrends();
+      this.platId = Cookies.get('platId');
+      this.queryOrgTrends();
     },
     methods: {
       queryOrgTrends(id) {
