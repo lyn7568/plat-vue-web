@@ -24,7 +24,7 @@
           <router-link to='findResource' active-class="active" tag="li">找资源</router-link>
           <router-link to='expertPool' active-class="active" tag="li">专家顾问</router-link>
           <router-link to='cooperationAgency' active-class="active" tag="li">合作机构</router-link>
-          <router-link to='aboutUs' active-class="active" tag="li">关于我们</router-link>
+          <router-link to='about' active-class="active" tag="li">关于我们</router-link>
         </ul>
       </div>
     </div>

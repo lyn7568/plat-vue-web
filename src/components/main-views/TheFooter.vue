@@ -5,7 +5,7 @@
 				<div class="wrapper-left">
 					<img class="logo-block" :src="plat.logourl">
 					<div>
-						<router-link to='aboutUs'>关于我们 |</router-link>
+						<router-link to='about'>关于我们 |</router-link>
 						<a :href="plat.website">{{plat.name}} |</a>
 						<a :href="kexiuLink" target="_blank">科袖网 |</a>
 						<a @click="goWorkBench">平台管理员登录</a>

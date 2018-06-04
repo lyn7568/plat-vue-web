@@ -63,9 +63,9 @@ export const otherRouter = {
       name: 'cooperationAgency',
       component: () => import('@/components/main-views/ViewCooperationAgency.vue')
     },
-    { path: 'aboutUs',
+    { path: 'about',
       title: '关于我们',
-      name: 'aboutUs',
+      name: 'about',
       component: () => import('@/components/main-views/ViewAboutUs.vue')
       // component: resolve => { require(['../components/ViewAboutUs.vue'], resolve); }
     }
