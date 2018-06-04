@@ -4,7 +4,7 @@
     <div class="Site-content paddingTop">
       <div class="contain-wrapper">
         <transition name="router-fade" mode="out-in">
-          <router-view :plat="plat"></router-view>
+          <router-view></router-view>
         </transition>
       </div>
     </div>
@@ -15,23 +15,16 @@
 <script type="text/ecmascript-6">
   import TheHeader from './WorkHead.vue';
   import TheFooter from '../main-views/TheFooter.vue';
-  import httpUrl from '@/libs/http';
-
-  const ERR_OK = 0;
+  import PLAT from '../../../static/plat-info';
 
   export default {
     data() {
       return {
-        plat: {}
+        plat: ''
       };
     },
-    created() {
-      this.$axios.get(httpUrl.webbase).then(res => {
-        console.log(res);
-        if (res.errno === ERR_OK) {
-          this.plat = res.data;
-        };
-      });
+    mounted() {
+      this.plat = PLAT.info;
     },
     components: {
       TheHeader,

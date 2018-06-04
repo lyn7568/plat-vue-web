@@ -131,7 +131,7 @@
             this.$axios.post(httpUrl.hQuery.sign.reqResetPw, {
               id: this.platId,
               mail: this.ruleForm.mail,
-              url: httpUrl.platUrl + '/findPwd?step=2&sc'
+              url: httpUrl.platUrl + '/#/findPwd?step=2&sc'
             }).then(res => {
               console.log(res);
               if (res.success) {

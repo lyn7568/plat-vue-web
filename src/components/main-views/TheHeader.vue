@@ -33,17 +33,17 @@
 
 <script type="text/javascript">
   import util from '@/libs/util';
+  import PLAT from '../../../static/plat-info';
 
   export default {
-    props: {
-      plat: {
-        type: Object
-      }
-    },
     data() {
       return {
-        kexiuLink: util.ekexiuUrl
+        kexiuLink: util.ekexiuUrl,
+        plat: ''
       };
+    },
+    mounted() {
+      this.plat = PLAT.info;
     }
   };
 </script>

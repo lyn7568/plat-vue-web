@@ -55,7 +55,7 @@
                   type: 'success',
                   confirmButtonText: '重新登录',
                   callback: action => {
-                    this.$router.push({path: '/loginPlat'});
+                    this.$router.push({path: '/#/loginPlat'});
                   }
                 });
               } else {

@@ -10,17 +10,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
-// 通过express导入路由
-const express = require('express')
-const app = express()
+// // 通过express导入路由
+// const express = require('express')
+// const app = express()
 
-//模拟服务器返回数据--开始
-var appData = require('../plat-info.json')
-var plat = appData.plat
-// 编写路由
-var apiRoutes = express.Router()
+// //模拟服务器返回数据--开始
+// var appData = require('../static/plat-info.json')
+// var plat = appData.plat
+// // 编写路由
+// var apiRoutes = express.Router()
 
-app.use('/api', apiRoutes)
+// app.use('/api', apiRoutes)
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -54,15 +54,15 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
-    },
-    before(app) {
-      app.get('/api/plat', function (req, res) {
-        res.json({
-          errno: 0,
-          data: plat
-        });
-      });
     }
+    // before(app) {
+    //   app.get('/api/plat', function (req, res) {
+    //     res.json({
+    //       errno: 0,
+    //       data: plat
+    //     });
+    //   });
+    // }
   },
   plugins: [
     new webpack.DefinePlugin({

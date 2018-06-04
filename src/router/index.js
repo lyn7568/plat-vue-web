@@ -7,8 +7,8 @@ Vue.use(VueRouter);
 
 // 路由配置
 const RouterConfig = {
-		hashbang: false,
-    mode: 'history',
+		// hashbang: false,
+  //   mode: 'history',
     routes: routers
 };
 

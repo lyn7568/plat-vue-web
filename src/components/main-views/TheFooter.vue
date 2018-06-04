@@ -30,17 +30,14 @@
 <script type="text/javascript">
   import Cookies from 'js-cookie';
   import util from '@/libs/util';
+  import PLAT from '../../../static/plat-info';
 
   export default {
-    props: {
-      plat: {
-        type: Object
-      }
-    },
     data() {
       return {
         kexiuLink: util.ekexiuUrl,
-        plf_user: ''
+        plf_user: '',
+        plat: ''
       };
     },
     methods: {
@@ -56,6 +53,7 @@
       }
     },
     mounted () {
+      this.plat = PLAT.info;
       this.init();
     }
   };

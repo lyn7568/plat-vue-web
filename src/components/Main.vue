@@ -1,6 +1,6 @@
 <template>
   <div class="main Site">
-    <TheHeader :plat="plat"></TheHeader>
+    <TheHeader></TheHeader>
     <div class="Site-content">
       <div class="contain-wrapper">
         <transition name="router-fade" mode="out-in">
@@ -8,7 +8,7 @@
         </transition>
       </div>
     </div>
-    <TheFooter :plat="plat"></TheFooter>
+    <TheFooter></TheFooter>
   </div>
 </template>
 
@@ -16,25 +16,18 @@
   import TheHeader from './main-views/TheHeader.vue';
   import TheFooter from './main-views/TheFooter.vue';
   import Cookies from 'js-cookie';
-  import httpUrl from '@/libs/http';
-
-  const ERR_OK = 0;
+  import PLAT from '../../static/plat-info';
 
   export default {
     data() {
       return {
-        plat: {}
+        plat: ''
       };
     },
-    created() {
-      this.$axios.get(httpUrl.webbase).then(res => {
-        console.log(res);
-        if (res.errno === ERR_OK) {
-          this.plat = res.data;
-          Cookies.set('platId', res.data.id);
-          Cookies.set('platSource', res.data.source);
-        };
-      });
+    mounted() {
+      this.plat = PLAT.info;
+      Cookies.set('platId', this.plat.id);
+      Cookies.set('platSource', this.plat.source);
     },
     components: {
       TheHeader,
