@@ -36,7 +36,7 @@
           <el-button type="danger" icon="el-icon-delete" circle @click.stop="delet(item.articleId, index)"></el-button>
         </div>
         <div class="dele" v-else-if='flag === 3'>
-          <el-button type="primary" size="small" @click.once.stop="add(item)">{{item.addText}}</el-button>
+          <el-button type="primary" size="small" @click.stop="add(item)">{{item.addText}}</el-button>
         </div>
       </li>
     </ul>
@@ -53,7 +53,7 @@
   import httpUrl from '@/libs/http';
   import util from '@/libs/util';
   export default {
-    props: ['keyValue', 'url', 'flag', 'date1', 'date2'],
+    props: ['keyValue', 'url', 'flag', 'addA', 'Delele'],
     data() {
       return {
         expertParameters: {},
@@ -71,10 +71,10 @@
         this.expertParameters.key = this.keyValue;
         this.expertList();
       },
-      date1: function () {
+      addA: function () {
         this.expertList();
       },
-      date2: function () {
+      Delele: function () {
         this.expertList();
       }
     },
@@ -109,7 +109,7 @@
           if (res.success) {
             this.dataList = res.data.data;
             this.total = res.data.total;
-            if (res.data.total.length === 0) {
+            if (res.data.data.length === 0) {
               this.ifDefault = true;
             }
             for (let i = 0; i < res.data.data.length; i++) {
@@ -160,44 +160,44 @@
         this.expertList();
       },
       delet(id, index) {
-        this.$axios.post(httpUrl.hQuery.orgTrends.del, {
-              pid: this.platId,
-              aid: id
-          }).then((res) => {
-            if (res.success) {
-              this.$alert('确认删除该文章', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning',
-                center: true,
-                callback: action => {
-                  if (action === 'confirm') {
+        this.$alert('确认删除该文章', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true,
+          callback: action => {
+            if (action === 'confirm') {
+              this.$axios.post(httpUrl.hQuery.orgTrends.del, {
+                  pid: this.platId,
+                  aid: id
+                }).then((res) => {
+                  if (res.success) {
                     this.dataList.splice(index, 1);
-                     this.$emit('isLogFn', '2');
-                  };
-                }
+                    this.$emit('isLogFn', '2');
+                  }
               });
-            }
-          });
+            };
+          }
+        });
       },
       delet1(id, index) {
-        this.$axios.post(httpUrl.kxQurey.article.del, {
-              articleId: id
-          }).then((res) => {
-            if (res.success) {
-              this.$alert('确认删除该文章', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning',
-                center: true,
-                callback: action => {
-                  if (action === 'confirm') {
-                    this.dataList.splice(index, 1);
-                  };
+        this.$alert('确认删除该文章', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true,
+          callback: action => {
+            if (action === 'confirm') {
+              this.$axios.post(httpUrl.kxQurey.article.del, {
+                articleId: id
+              }).then((res) => {
+                if (res.success) {
+                  this.dataList.splice(index, 1);
                 }
               });
             }
-          });
+          }
+        });
       },
       add(item) {
         this.$axios.post(httpUrl.hQuery.orgTrends.add, {
@@ -207,7 +207,7 @@
             if (res.success) {
               item.addText = '已添加';
               this.$forceUpdate();
-               this.$emit('isLogFn', '1');
+              this.$emit('isLogFn', '1');
             }
           });
       }

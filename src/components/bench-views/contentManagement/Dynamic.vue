@@ -9,9 +9,9 @@
         </el-button>
       </div>
     </div>
-    <ArticleTemplate :url='url' :keyValue='keyValue' :flag='2' :date1='date1' :date2='date2' v-on:isLogFn = "lisLogFn($event)"></ArticleTemplate>
+    <ArticleTemplate :url='url' :keyValue='keyValue' :flag='2' :Delele='Delele' v-on:isLogFn = "lisLogFn($event)"></ArticleTemplate>
     <el-dialog title="添加企业发布的文章至【企业动态】栏目" :visible.sync="dialogVisible" width="930px">
-        <AlertBox></AlertBox>
+        <AlertBox :addA='addA' v-on:isLogFn = "lisLogFn($event)"></AlertBox>
     </el-dialog>
   </div>
 </template>
@@ -26,8 +26,8 @@
         keyValue: '',
         url: '/ajax/article/pgPublishInPlatform',
         inValue: '',
-        date1: false,
-        date2: false
+        Delele: false,
+        addA: false
       };
     },
     components: {
@@ -36,14 +36,10 @@
     },
     methods: {
       lisLogFn (par) {
-        
         if (par === '1') {
-          this.date1 = !this.date1;
-           console.log(this.date1);
+          this.Delele = !this.Delele;
         } else {
-          alert(par)
-          this.date2 = !this.date2;
-          console.log(this.date2);
+          this.addA = !this.addA;
         }
       },
       search() {

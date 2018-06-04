@@ -88,9 +88,9 @@
          platId: '',
          searchValue: '',
          isActive: '',
-         options: util.Dictionary.durationTime,
+         options: util.workComm.durationTime,
          value: '',
-         budget: util.Dictionary.costRange,
+         budget: util.workComm.costRange,
          budgetValue: '',
          sort: [{
            value: '1',

@@ -83,7 +83,48 @@ util.mailHash = {
  * 数据字典
  */
 util.Dictionary = {
-  durationTime: [{ // 预计合作周期
+  durationTime: [{
+      value: '1',
+      label: '1个月内'
+    }, {
+      value: '2',
+      label: '1-3个月'
+    }, {
+      value: '3',
+      label: '3-6个月'
+    }, {
+      value: '4',
+      label: '6-12个月'
+    }, {
+      value: '5',
+      label: '1年以上'
+    }],
+  costRange: [{
+      value: '1',
+      label: '1万元以内'
+    }, {
+      value: '2',
+      label: '1-5万元'
+    }, {
+      value: '3',
+      label: '5-10万元'
+    }, {
+      value: '4',
+      label: '10-20万元'
+    }, {
+      value: '5',
+      label: '20-50万元'
+    }, {
+      value: '6',
+      label: '50万元以上'
+    }]
+};
+
+/**
+ * 数据字典
+ */
+util.workComm = {
+  durationTime: [{ // 费用预算
       value: '',
       label: '全部'
     }, {
@@ -125,7 +166,6 @@ util.Dictionary = {
       label: '50万元以上'
     }]
 };
-
 /**
  * expert head symbol icon
  */
