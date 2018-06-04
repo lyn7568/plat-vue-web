@@ -103,7 +103,7 @@
       },
       comTime: util.dateChange,
       expertList() {
-        this.$axios.get(util.ekexiuUrl + this.url, {
+        this.$axios.get(httpUrl.utilUrl + this.url, {
           params: this.expertParameters
         }).then((res) => {
           if (res.success) {
@@ -127,7 +127,7 @@
         });
       },
       leaveWordTotal($data) {
-         this.$axios.get(util.ekexiuUrl + '/ajax/leavemsg/count', {
+         this.$axios.get(httpUrl.utilUrl + '/leavemsg/count', {
           params: {
             sid: $data.articleId,
             stype: 1
@@ -140,7 +140,7 @@
         });
       },
       companyName($data) {
-          this.$axios.get(util.ekexiuUrl + '/ajax/org/' + $data.ownerId, {
+          this.$axios.get(httpUrl.utilUrl + '/org/' + $data.ownerId, {
             }).then((res) => {
             if (res.success) {
               $data.company = (res.data.forShort) ? res.data.forShort : res.data.name;

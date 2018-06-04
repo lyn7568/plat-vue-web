@@ -17,7 +17,7 @@
      data() {
       return {
         keyValue: '',
-        url: '/ajax/article/pgPublishNotInPlatform',
+        url: '/article/pgPublishNotInPlatform',
         inValue: ''
        };
      },

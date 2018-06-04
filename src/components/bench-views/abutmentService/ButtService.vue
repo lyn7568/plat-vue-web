@@ -23,7 +23,7 @@
     data() {
       return {
         activeName: 'first',
-        url: '/ajax/platform/info/pqButtedOrgs'
+        url: '/platform/info/pqButtedOrgs'
       };
     },
     components: {

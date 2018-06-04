@@ -17,7 +17,7 @@
       data() {
         return {
           keyValue: '',
-          url: '/ajax/article/pageQuery',
+          url: '/article/pageQuery',
           inValue: ''
         };
       },

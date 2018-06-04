@@ -24,7 +24,7 @@
       return {
         dialogVisible: false,
         keyValue: '',
-        url: '/ajax/article/pgPublishInPlatform',
+        url: '/article/pgPublishInPlatform',
         inValue: '',
         Delele: false,
         addA: false

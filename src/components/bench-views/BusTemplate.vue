@@ -66,7 +66,7 @@
       },
       expertList() {
         this.dataList = [];
-        this.$axios.get(util.ekexiuUrl + this.url, {
+        this.$axios.get(httpUrl.utilUrl + this.url, {
           params: this.expertParameters
         }).then((res) => {
           if (res.success) {
