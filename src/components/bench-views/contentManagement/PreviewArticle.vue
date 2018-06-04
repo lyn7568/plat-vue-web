@@ -104,6 +104,8 @@
       word-break: break-word
       p
         margin-bottom: 16px
+        img
+          width:100%
     .tagList
       margin: 16px 0 2px
       display:flex;
