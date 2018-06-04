@@ -1,7 +1,7 @@
 <template>
   <div class="searchList">
     <ul>
-      <li class="list-item" v-for="(item, index) in dataList" :key="index" @click="kexiuExpert(item.articleId)">
+      <li class="list-item" v-for="(item, index) in dataList" :key="index" @click="kexiuExpert(item)">
         <div class="list-head" :style="{ backgroundImage: 'url('+ imageDis(item)+')'}" ></div>
         <div class="list-info">
           <div class="list-tit">{{item.articleTitle}}</div>
@@ -30,13 +30,13 @@
         </div>
         <div class="dele" v-if='flag === 1'>
           <el-button type="primary" size="small" v-if="(item.status == 0 || item.status == 2)" @click.stop="revise(item)">修改</el-button>
-          <el-button type="danger" icon="el-icon-delete" circle  @click.stop="delet(item.articleId, index)"></el-button>
+          <el-button type="danger" icon="el-icon-delete" circle  @click.stop="delet1(item.articleId, index)"></el-button>
         </div>
         <div class="dele" v-else-if='flag === 2'>
           <el-button type="danger" icon="el-icon-delete" circle @click.stop="delet(item.articleId, index)"></el-button>
         </div>
         <div class="dele" v-else-if='flag === 3'>
-          <el-button type="primary" size="small" @click.once.stop="add(item.articleId)">{{addText}}</el-button>
+          <el-button type="primary" size="small" @click.once.stop="add(item)">{{item.addText}}</el-button>
         </div>
       </li>
     </ul>
@@ -53,7 +53,7 @@
   import httpUrl from '@/libs/http';
   import util from '@/libs/util';
   export default {
-    props: ['keyValue', 'url', 'flag'],
+    props: ['keyValue', 'url', 'flag', 'date1', 'date2'],
     data() {
       return {
         expertParameters: {},
@@ -69,6 +69,12 @@
     watch: {
       keyValue: function () {
         this.expertParameters.key = this.keyValue;
+        this.expertList();
+      },
+      date1: function () {
+        this.expertList();
+      },
+      date2: function () {
         this.expertList();
       }
     },
@@ -97,7 +103,6 @@
       },
       comTime: util.dateChange,
       expertList() {
-        this.dataList = [];
         this.$axios.get(util.ekexiuUrl + this.url, {
           params: this.expertParameters
         }).then((res) => {
@@ -108,6 +113,7 @@
               this.ifDefault = true;
             }
             for (let i = 0; i < res.data.data.length; i++) {
+              res.data.data[i].addText = this.addText;
               if (this.flag !== 1) {
                 this.leaveWordTotal(res.data.data[i]);
                 this.companyName(res.data.data[i]);
@@ -142,8 +148,12 @@
             }
          });
       },
-      kexiuExpert(id) {
-        window.open(util.defaultSet.link.article + id);
+      kexiuExpert(item) {
+        if (item.status === '0' || item.status === '2') {
+          this.$router.push({path: '/PublishArticle?arId=' + item.articleId});
+        } else {
+          window.open(util.defaultSet.link.article + item.articleId);
+        }
       },
       handleCurrentChange(val) {
         this.expertParameters.pageNo = val;
@@ -163,21 +173,41 @@
                 callback: action => {
                   if (action === 'confirm') {
                     this.dataList.splice(index, 1);
+                     this.$emit('isLogFn', '2');
                   };
                 }
               });
             }
           });
       },
-      add(id) {
-        this.$axios.post(httpUrl.hQuery.orgTrends.add, {
-            params: {
-              pid: this.platId,
-              aid: id
-            }
+      delet1(id, index) {
+        this.$axios.post(httpUrl.kxQurey.article.del, {
+              articleId: id
           }).then((res) => {
             if (res.success) {
-              this.addText = '已添加';
+              this.$alert('确认删除该文章', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+                center: true,
+                callback: action => {
+                  if (action === 'confirm') {
+                    this.dataList.splice(index, 1);
+                  };
+                }
+              });
+            }
+          });
+      },
+      add(item) {
+        this.$axios.post(httpUrl.hQuery.orgTrends.add, {
+              pid: this.platId,
+              aid: item.articleId
+          }).then((res) => {
+            if (res.success) {
+              item.addText = '已添加';
+              this.$forceUpdate();
+               this.$emit('isLogFn', '1');
             }
           });
       }

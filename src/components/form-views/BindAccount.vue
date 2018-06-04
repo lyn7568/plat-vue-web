@@ -76,7 +76,7 @@
       },
       cblur(ar) {
         if (util.regular(this.emailName.trim(), 'mail')) {
-          this.$axios.get(httpUrl.platUrl + '/ajax/platform/checkEmail', {
+          this.$axios.get(util.ekexiuUrl + '/ajax/platform/checkEmail', {
             params: {
               email: this.emailName
             }
@@ -87,10 +87,10 @@
               } else {
                     if (ar === 1) {
                       this.dialogFormVisible = false;
-                      this.$axios.post(httpUrl.platUrl + '/ajax/platform/reqBindMail', {
+                      this.$axios.post(util.ekexiuUrl + '/ajax/platform/reqBindMail', {
                           id: this.platId,
                           mail: this.emailName,
-                          url: 'http://localhost:7070/upMail?sc'
+                          url: httpUrl.platUrl + '/upMail?sc'
                       }).then((res) => {
                         if (res.success) {
                           this.dias = true;

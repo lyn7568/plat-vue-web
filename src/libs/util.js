@@ -23,7 +23,7 @@ util.defaultSet = {
   link: {
     expert: ekexiuUrl + '/userInforShow.html?professorId=',
     org: ekexiuUrl + '/cmpInforShow.html?orgId=',
-    article: ekexiuUrl + '/articalList.html?articleId=',
+    article: ekexiuUrl + '/articalShow.html?articleId=',
     resource: ekexiuUrl + '/resourceShow.html?resourceId=',
     service: ekexiuUrl + '/sevriceShow.html?sevriceId=',
     demand: ekexiuUrl + '/demandShow.html?demandId='
