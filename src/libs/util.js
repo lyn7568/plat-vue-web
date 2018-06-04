@@ -17,7 +17,8 @@ util.defaultSet = {
     org: '/static/comimg/default-org.jpg',
     article: '/static/comimg/default-article.jpg',
     resource: '/static/comimg/default-resource.jpg',
-    service: '/static/comimg/default-service.jpg'
+    service: '/static/comimg/default-service.jpg',
+    plat: '/static/comimg/default-plat.jpg'
   },
   link: {
     expert: ekexiuUrl + '/userInforShow.html?professorId=',

@@ -81,14 +81,30 @@
       handleInputConfirm() {
         let inputValue = this.inputValue;
         if (inputValue.length > 15) {
-          this.$message.error(`${this.tagInfo.lableTit}不得超过15个字,添加失败！`);
+          this.$alert(`${this.tagInfo.lableTit}不得超过15个字,添加失败！`, '提示', {
+            confirmButtonText: '确定',
+            type: 'warning',
+            center: true
+          });
+          return false;
+        }
+        for (var i = 0; i < this.dynamicTags.length; i++) {
+          if (inputValue === this.dynamicTags[i]) {
+            this.$alert('添加的内容不能重复', '提示', {
+              confirmButtonText: '确定',
+              type: 'warning',
+              center: true
+            });
+            return false;
+          }
         }
         if (this.dynamicTags.length === this.dynamicTagsLength) {
           this.isShowAdd = false;
+          return false;
         }
-        if (inputValue && inputValue.length < 15 && this.dynamicTags.length < this.dynamicTagsLength) {
-          this.dynamicTags.push(inputValue);
-        }
+
+        this.dynamicTags.push(inputValue);
+
         this.$emit('turnTags', this.dynamicTags.join(',')); // 传给父组件
         this.inputVisible = false;
         this.inputValue = '';

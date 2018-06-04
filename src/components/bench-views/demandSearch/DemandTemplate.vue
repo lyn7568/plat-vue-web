@@ -102,6 +102,25 @@
          sortValue: ''
        };
      },
+     computed: {
+      // optionsNew: function() {
+      //   let arr = util.Dictionary.durationTime;
+      //   arr.unshift({
+      //     value: '',
+      //     label: '全部'
+      //   });
+      //   return arr;
+      // },
+      // budgetNew: function() {
+      //   let arr = util.Dictionary.costRange;
+      //   arr.unshift({
+      //     value: '',
+      //     label: '全部'
+      //   });
+      //   console.log(arr)
+      //   return arr;
+      // }
+     },
      created() {
       this.platId = Cookies.get('platId');
       this.expertParameters = {

@@ -4,9 +4,7 @@
     <div class="Site-content">
       <div class="contain-wrapper">
         <transition name="router-fade" mode="out-in">
-          <keep-alive>
-            <router-view :plat="plat"></router-view>
-          </keep-alive>
+          <router-view :plat="plat"></router-view>
         </transition>
       </div>
     </div>

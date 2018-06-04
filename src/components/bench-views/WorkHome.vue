@@ -79,7 +79,7 @@
         }).then((res) => {
           console.log(res);
           this.platInfo = res.data;
-          this.imgUrl = util.ImageUrl('platform' + res.data.logo);
+          this.imgUrl = res.data.logo ? util.ImageUrl('platform' + res.data.logo) : util.defaultSet.img.plat;
         });
       },
       updateInfo() {
