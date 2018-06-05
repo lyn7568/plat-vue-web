@@ -43,7 +43,7 @@ util.pageUrl = function(type, item) {
  */
 util.regular = function(str, flag) {
   if (flag === 'mail') {
-    var regMail = /^[a-zA-Z0-9_-] + @[a-zA-Z0-9_-] + (\.[a-zA-Z0-9_-]+) + $/;
+    var regMail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
     return regMail.test(str);
   } else if (flag === 'tel') {
     var regTel = /^1[3|4|5|7|8][0-9]\d{8}$/;
