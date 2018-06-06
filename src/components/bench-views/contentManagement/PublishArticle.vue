@@ -190,22 +190,33 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let paramsData = this.getDataParams();
-            this.$axios.post(httpUrl.kxQurey.article.save, paramsData).then((res) => {
-              if (res.success) {
-                this.$alert('文章发布成功！', '提示', {
-                  confirmButtonText: '确定',
-                  type: 'success',
-                  center: true
-                });
-              } else {
-                this.$message({
-                  message: '需求发布失败，请重新发布！',
-                  type: 'warning'
-                });
-              };
-              console.log(res);
-            }).catch(error => {
-              console.log(error);
+            this.$confirm('确认删除该文章', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.$axios.post(httpUrl.kxQurey.article.save, paramsData).then((res) => {
+                if (res.success) {
+                  this.$alert('文章发布成功！', '提示', {
+                    confirmButtonText: '确定',
+                    type: 'success',
+                    center: true,
+                    callback: action => {
+                      if (action === 'confirm') {
+                        this.$router.push({path: '/ContentManagement'});
+                      };
+                    }
+                  });
+                } else {
+                  this.$message({
+                    message: '文章发布失败，请重新发布！',
+                    type: 'warning'
+                  });
+                };
+                console.log(res);
+              }).catch(error => {
+                console.log(error);
+              });
             });
           } else {
             console.log('error submit!!');

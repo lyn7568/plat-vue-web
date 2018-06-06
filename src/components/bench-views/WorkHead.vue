@@ -3,9 +3,7 @@
 		<div class="workHeaderWrapper">
 				<ul class="contain-wrapper workHeaderMain">
 					<li>
-						<a :href="kexiuLink" target="_blank">
-							<h1 class="kexiuLogo"></h1>
-						</a>
+						<router-link to="/Workhome"><h1 class="kexiuLogo"></h1></router-link>
 					</li>
 					<li>
             <div @mouseover="overShow" @mouseout="outHide" class="logoBox">
@@ -36,7 +34,6 @@
 	export default {
     data() {
       return {
-        kexiuLink: util.ekexiuUrl,
         plf_logo: '',
         animateStatus: false
       };

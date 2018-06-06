@@ -27,7 +27,7 @@
         this.$router.push({ path: '/ButtService' });
       },
       goHome() {
-        this.$router.push({ path: '/home' });
+        this.$router.push({ path: '/WorkHome' });
       }
     }
   };

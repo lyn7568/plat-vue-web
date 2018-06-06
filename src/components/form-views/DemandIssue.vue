@@ -81,7 +81,7 @@
           <el-input v-model="ruleFormDem.msgVerifyCode" placeholder="请输入短信验证码" class="shortW">
             <el-button slot="append" :disabled="phoneCodeBol" @click="getPhoneCode">
               <span v-if="sendMsgDisabled">{{seconds + '秒后获取'}}</span>
-              <span v-if="!sendMsgDisabled">获取短信验证码</span>
+              <span v-if="!sendMsgDisabled">获取验证码</span>
             </el-button>
           </el-input>
         </el-form-item>
@@ -310,4 +310,7 @@
         width:100px
         height:38px
         cursor: pointer
+  .el-checkbox__label
+    a
+      color:#c0c4cc
 </style>

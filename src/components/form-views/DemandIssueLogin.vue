@@ -3,13 +3,13 @@
     <div class="login-box content-wrapper" v-show="ifLogin">
       <el-form :model="ruleLogin" :rules="ruleLogins" ref="ruleLogin" class="demo-ruleForm">
         <el-form-item prop="phoneNum">
-          <el-input v-model="ruleLogin.phoneNum" placeholder="请输入您的手机号码" class="shortW"></el-input>
+          <el-input v-model="ruleLogin.phoneNum" placeholder="请输入您的手机号码"></el-input>
         </el-form-item>
         <el-form-item prop="msgVC">
-          <el-input v-model="ruleLogin.msgVC" placeholder="请输入短信验证码" class="shortW">
+          <el-input v-model="ruleLogin.msgVC" placeholder="请输入短信验证码">
             <el-button slot="append" :disabled="phoneCodeBol" @click="clickMsgVcLogin">
               <span v-if="sendMsgDisabled">{{seconds + '秒后获取'}}</span>
-              <span v-if="!sendMsgDisabled">获取短信验证码</span>
+              <span v-if="!sendMsgDisabled">获取验证码</span>
             </el-button>
          </el-input>
         </el-form-item>
@@ -83,7 +83,7 @@
       <el-col :span="24" >
         <el-form-item style="text-align:center">
           <el-button type="primary" @click="submitForm('ruleFormDem')" style="padding: 12px 50px">立即发布</el-button><br/>
-          <el-checkbox checked disabled>我已阅读并同意<a :href="kexiuLink + '/privacy.html'">《科袖用户协议》</a></el-checkbox>
+          <el-checkbox checked disabled>我已阅读并同意<a :href="kexiuLink + '/privacy.html'" target="_blank">《科袖用户协议》</a></el-checkbox>
         </el-form-item>
       </el-col>
     </el-form>
@@ -91,10 +91,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // import {
-  //   provinceAndCityData,
-  //   CodeToText
-  // } from 'element-china-area-data'; // TextToCode
 
   import Cookies from 'js-cookie';
   import httpUrl from '@/libs/http';
@@ -128,7 +124,6 @@
         kexiuLink: util.ekexiuUrl,
         platSource: '',
         imgVcUrl: httpUrl.kxQurey.sign.imgVC,
-        // optionsCity: provinceAndCityData,
         selectCostRange: '',
         selectLongTime: '',
         longTime: util.Dictionary.durationTime,
@@ -343,22 +338,6 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
 .demandIssue
-  padding-top:10px
-  .form-main
-    width:100%
-    .form-line
-      border-top:1px dashed #ccc
-      margin-bottom:20px
-  .shortW
-    width:300px
-  .code-btn
-    .el-input-group__append
-      padding:0
-      overflow:hidden
-      img
-        width:100px
-        height:38px
-        cursor: pointer
   .link-man
     margin-bottom:10px
     span
