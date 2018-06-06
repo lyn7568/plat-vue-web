@@ -3,13 +3,13 @@
     <div class="top-wrapper">
       <div class="contain-wrapper">
         <div class="wrapper-left">
-          <a :href="plat.website" class="a-link">{{plat.name}}</a>
+          <a :href="plat.website" class="a-link" target="_blank">{{plat.name}}</a>
           <span> X </span>
-          <a :href="kexiuLink" class="a-link">科袖网</a>
+          <a :href="kexiuLink" target="_blank" class="a-link">科袖网</a>
           <span>联合为您服务</span>
         </div>
         <div class="wrapper-right">
-          <a :href="kexiuLink + '/cmp-portal/cmp-settled-log.html'" class="a-link">进入企业版</a>
+          <a :href="kexiuLink + '/cmp-portal/cmp-settled-log.html'" class="a-link" target="_blank">进入企业版</a>
         </div>
       </div>
     </div>

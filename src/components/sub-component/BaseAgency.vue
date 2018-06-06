@@ -1,6 +1,6 @@
 <template>
   <div class="block-container">
-    <a class="block-item org-item" v-for="item in orgData" :key="item.index" :href="linkUrl(item)">
+    <a class="block-item org-item" v-for="item in orgData" :key="item.index" :href="linkUrl(item)" target="_blank">
       <div class="item-block-org">
         <div class="item-pic-org">
           <img :src="orgLogoUrl(item)">

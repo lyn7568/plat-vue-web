@@ -1,5 +1,5 @@
 <template>
-  <a class="list-item" :href="linkway">
+  <a class="list-item" :href="linkway" target="_blank">
     <div class="list-head" :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
     <div class="list-info">
       <div class="list-tit">{{itemSingle.articleTitle}}</div>

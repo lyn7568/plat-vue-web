@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="scroll" :class="{show:isActive}">
-            <div id="toTop" @click="toTop(step)">&lt;</div>
-            <div id="toBottom" @click="toBottom(step)">&gt;</div>
+            <div id="toTop" @click="toTop(step)"><i class="el-icon-arrow-up"></i></div>
+            <div id="toBottom" @click="toBottom(step)"><i class="el-icon-arrow-down"></i></div>
         </div>
     </div>
 </template>
@@ -65,11 +65,9 @@
     div
       width: 45px
       height: 45px
-      transform: rotate(90deg)
       line-height: 45px
       text-align: center
       font-size: 35px
-      font-family:"黑体"
       background-color: rgba(0,0,0,.2)
       color: #fff
       &:hover

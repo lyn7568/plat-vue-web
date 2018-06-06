@@ -25,6 +25,7 @@
       const self = this;
       /* eslint-disable no-undef */
       this.editor = UE.getEditor(this.id, {
+        BaseUrl: '',
         initialFrameWidth: null,
         initialFrameHeight: 500,
         serverUrl: httpUrl.kxQurey.editor,

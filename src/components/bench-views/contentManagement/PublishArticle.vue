@@ -68,6 +68,7 @@
             v-model="timingDate"
             type="datetime"
             default-time="12:00:00"
+            :picker-options="pickerOptions0"
             :default-value="defaultTime" :placeholder="placeTime" format="yyyy-MM-dd HH:mm:ss" style="width:100%">
           </el-date-picker>
         </el-form-item>
@@ -93,6 +94,11 @@
   export default {
     data() {
       return {
+        pickerOptions0: {
+          disabledDate(time) {
+            return time.getTime() < Date.now();
+          }
+        },
         plf_user: '',
         tagInfo: {
           lableTit: '关键词',
@@ -258,7 +264,13 @@
                   });
                 } else if (num === 2) {
                   this.articleId = res.data;
-                  this.$router.push({path: '/PreviewArticle', query: {id: res.data}});
+                  const {href} = this.$router.resolve({
+                      path: '/PreviewArticle',
+                      query: {
+                        id: res.data
+                      }
+                  });
+                  window.open(href, '_blank');
                 }
                 this.ifDelete = true;
               } else {

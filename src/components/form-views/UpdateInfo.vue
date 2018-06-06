@@ -26,14 +26,22 @@
           <el-form-item label="联系邮箱" prop="mail">
             <el-input v-model="ruleFormUpdate.mail" placeholder="请填写联系邮箱"></el-input>
           </el-form-item>
-          <el-form-item label="所在城市" prop="selectedOptions">
+          <CityPick
+            :labelW="80"
+            :widthselect="200"
+            :prov="province"
+            :city="city"
+            v-on:selectProv="getSelectProv($event)"
+            v-on:selectCity="getSelectCity($event)">
+          </CityPick>
+          <!-- <el-form-item label="所在城市" prop="selectedOptions">
             <el-cascader
               :options="optionsCity"
               v-model="selectedOptions"
               class="shortW"
               placeholder="请选择所在的城市">
             </el-cascader>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="联系地址" prop="address">
             <el-input v-model="ruleFormUpdate.address" placeholder="如：北京市海淀区学院路方兴大厦"></el-input>
           </el-form-item>
@@ -56,12 +64,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Vue from 'vue';
-  import {
-    provinceAndCityData,
-    CodeToText,
-    TextToCode
-  } from 'element-china-area-data';
+  // import Vue from 'vue';
+  // import {
+  //   provinceAndCityData,
+  //   CodeToText,
+  //   TextToCode
+  // } from 'element-china-area-data';
 
   import Cookies from 'js-cookie';
   import util from '@/libs/util';
@@ -86,12 +94,14 @@
         imageUrl: '', // 临时地址
         imgName: '', // 图片的name
         uploadUrl: httpUrl.hQuery.baseInfo.upload,
-        optionsCity: provinceAndCityData,
-        selectedOptions: [],
+        // optionsCity: provinceAndCityData,
+        // selectedOptions: [],
         dynamicTags: [],
         isShowAdd: true,
         inputVisible: false,
         inputValue: '',
+        province: '',
+        city: '',
         ruleFormUpdate: {
           linkman: '',
           tel: '',
@@ -138,6 +148,12 @@
       turnTags(msg) {
         this.ruleFormUpdate.industry = msg;
       },
+      getSelectProv(prov) {
+        this.province = prov;
+      },
+      getSelectCity(city) {
+        this.city = city;
+      },
       getPlatInfo(id) {
         this.$axios.get(httpUrl.hQuery.baseInfo.query, {
           params: {
@@ -153,10 +169,10 @@
           this.ruleFormUpdate.tel = str.linkphone;
           this.ruleFormUpdate.mail = str.linkemail;
           if (str.province) {
-            Vue.set(this.selectedOptions, 0, TextToCode[str.province].code);
+            this.province = str.province;
           }
           if (str.city) {
-            Vue.set(this.selectedOptions, 1, TextToCode[str.province][str.city].code);
+            this.city = str.city;
           }
           this.ruleFormUpdate.address = str.addr;
           this.ruleFormUpdate.website = str.url;
@@ -174,7 +190,16 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.$refs.uploadLogo.submit(); // 确认上传图片
-
+            if (this.province) {
+              if (!this.city) {
+                this.$alert('请您选择所在城市', '提示', {
+                  confirmButtonText: '确定',
+                  type: 'warning',
+                  center: true
+                });
+                return;
+              }
+            }
             let paramsData = {
               'id': this.plf_user,
               'name': this.plf_name,
@@ -182,8 +207,8 @@
               'logo': this.imgName,
               'linkphone': this.ruleFormUpdate.tel,
               'linkemail': this.ruleFormUpdate.mail,
-              'province': CodeToText[this.selectedOptions[0]],
-              'city': CodeToText[this.selectedOptions[1]],
+              'province': this.province,
+              'city': this.city,
               'addr': this.ruleFormUpdate.address,
               'url': this.ruleFormUpdate.website,
               'industry': this.ruleFormUpdate.industry,
@@ -208,7 +233,6 @@
       resetForm(formName) {
         this.$router.push({path: '/WorkHome'});
       },
-      // cityPicker
       // upload img
       handleAvatarSuccess(res, file) {
         this.imageUrl = URL.createObjectURL(file.raw);

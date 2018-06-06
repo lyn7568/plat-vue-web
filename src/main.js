@@ -8,6 +8,7 @@ import axiosH from './libs/axios';
 import Loading from './components/global-component/loading';
 import BackTop from './components/global-component/backtop';
 import defaultPage from './components/global-component/default';
+import CityPick from './components/global-component/CityPick';
 
 import '../static/ueditor/ueditor.config.js';
 import '../static/ueditor/ueditor.all.js';
@@ -19,6 +20,7 @@ Vue.use(ElementUI);
 Vue.use(Loading);
 Vue.use(BackTop);
 Vue.use(defaultPage);
+Vue.use(CityPick);
 
 /* eslint-disable no-new */
 new Vue({

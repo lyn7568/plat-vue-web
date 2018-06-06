@@ -8,14 +8,15 @@
         <el-input type="textarea" :rows="4" v-model="ruleFormDem.demandDesc" placeholder="请描述您的需求背景、具体问题、对专家的要求等等"></el-input>
       </el-form-item>
       <el-col :span="12">
-        <el-form-item label="所在城市" prop="citys">
+        <CityPick :widthselect="148" :prov="ruleFormDem.province" :city="ruleFormDem.city" v-on:selectProv="getSelectProv($event)" v-on:selectCity="getSelectCity($event)"></CityPick>
+        <!-- <el-form-item label="所在城市" prop="citys">
           <el-cascader
             :options="optionsCity"
             v-model="ruleFormDem.citys"
             class="shortW"
             placeholder="请选择所在的城市">
           </el-cascader>
-        </el-form-item>
+        </el-form-item> -->
       </el-col>
       <el-col :span="12">
         <el-form-item label="需求有效期" prop="lastDate">
@@ -23,7 +24,8 @@
             v-model="ruleFormDem.lastDate"
             type="date" class="shortW"
             format="yyyy-MM-dd"
-            placeholder="请选择截止日期">
+            placeholder="请选择截止日期"
+            :picker-options="pickerOptions0">
           </el-date-picker>
         </el-form-item>
       </el-col>
@@ -96,10 +98,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {
-    provinceAndCityData,
-    CodeToText
-  } from 'element-china-area-data'; // TextToCode
+  // import {
+  //   provinceAndCityData,
+  //   CodeToText
+  // } from 'element-china-area-data'; // TextToCode
 
   import Cookies from 'js-cookie';
   import httpUrl from '@/libs/http';
@@ -119,6 +121,11 @@
   export default {
     data() {
       return {
+        pickerOptions0: {
+          disabledDate(time) {
+            return time.getTime() < Date.now();
+          }
+        },
         kexiuLink: util.ekexiuUrl,
         platSource: '',
         phoneCodeBol: false,
@@ -126,7 +133,7 @@
         seconds: 60,
         phoneResBack: '',
         imgVcUrl: httpUrl.kxQurey.sign.imgVC,
-        optionsCity: provinceAndCityData,
+        // optionsCity: provinceAndCityData,
         selectCostRange: '',
         selectLongTime: '',
         longTime: util.Dictionary.durationTime,
@@ -134,7 +141,8 @@
         ruleFormDem: {
           demandTit: '',
           demandDesc: '',
-          citys: [],
+          province: '',
+          city: '',
           lastDate: '',
           linkman: '',
           orgName: '',
@@ -150,8 +158,11 @@
             { required: true, message: '请填写需求内容', trigger: 'blur' },
             { max: 1000, message: '不得超过1000个字', trigger: 'blur' }
           ],
-          citys: [
-            { required: true, message: '请选择所在城市', trigger: 'blur' }
+          province: [
+            { required: true, message: '请填写所在省', trigger: 'blur' }
+          ],
+          city: [
+            { required: true, message: '请填写所在城市', trigger: 'blur' }
           ],
           lastDate: [
             { required: true, message: '请选择截止日期', trigger: 'blur' }
@@ -180,6 +191,12 @@
       this.platSource = Cookies.get('platSource');
     },
     methods: {
+      getSelectProv(prov) {
+        this.ruleFormDem.province = prov;
+      },
+      getSelectCity(city) {
+        this.ruleFormDem.city = city;
+      },
       getPhoneCode() {
         if (this.ruleFormDem.linkTel && this.ruleFormDem.imgVerifyCode) {
           this.$axios.get(httpUrl.kxQurey.sign.msgVC, {
@@ -228,8 +245,8 @@
             let paramsData = {
               'title': this.ruleFormDem.demandTit,
               'descp': this.ruleFormDem.demandDesc,
-              'province': CodeToText[this.ruleFormDem.citys[0]],
-              'city': CodeToText[this.ruleFormDem.citys[1]],
+              'province': this.ruleFormDem.province,
+              'city': this.ruleFormDem.city,
               'invalidDay': util.dateFormatter(this.ruleFormDem.lastDate, false, true),
               'cost': this.selectCostRange,
               'duration': this.selectLongTime,

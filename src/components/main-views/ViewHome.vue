@@ -48,7 +48,7 @@
             <div class="pictures" v-if="paltNews.length" :style="{backgroundImage: 'url(' + articleUrl(paltNews[0]) + ')'}"></div>
             <ul class="maincon">
               <li v-for="item in paltNews" :key="item.index">
-                <a :href="linkArticle(item)">
+                <a :href="linkArticle(item)" target="_blank">
                   <span class="topic">{{item.articleTitle}}</span>
                   <span class="time">{{formTime(item)}}</span>
                 </a>
@@ -64,7 +64,7 @@
           <div class="content">
             <ul class="maincon maincon2">
               <li v-for="item in orgTrends" :key="item.index">
-                <a :href="linkArticle(item)">
+                <a :href="linkArticle(item)" target="_blank">
                   <span class="topic">{{item.articleTitle}}</span>
                   <span class="owner">{{item.ownerName}}</span>
                   <span class="time">{{formTime(item)}}</span>
@@ -90,7 +90,7 @@
         </div>
         <div class="swiper-container" ref="latestCmp">
           <div class="swiper-wrapper">
-            <a class="swiper-slide" v-for="item in residentOrgs" :key="item.index" :href="linkOrg(item)">
+            <a class="swiper-slide" v-for="item in residentOrgs" :key="item.index" :href="linkOrg(item)" target="_blank">
               <div class="item-block">
                 <div class="item-pic">
                   <img :src="orgsUrl(item)">
@@ -120,7 +120,7 @@
         </div>
         <div class="swiper-container" ref="findService">
           <div class="swiper-wrapper">
-            <a class="swiper-slide" v-for="item in platWares" :key="item.index" :href="linkWare(item)">
+            <a class="swiper-slide" v-for="item in platWares" :key="item.index" :href="linkWare(item)" target="_blank">
               <div class="item-block">
                 <div class="item-pic" :style="{backgroundImage: 'url(' + waresUrl(item) + ')'}"></div>
                 <div class="item-text">
@@ -154,7 +154,7 @@
         </div>
         <div class="swiper-container" ref="findResource">
           <div class="swiper-wrapper">
-            <a class="swiper-slide" v-for="item in platResources" :key="item.index" :href="linkResource(item)">
+            <a class="swiper-slide" v-for="item in platResources" :key="item.index" :href="linkResource(item)" target="_blank">
               <div class="item-block" >
                 <div class="item-pic" :style="{backgroundImage: 'url(' + resourcesUrl(item) + ')'}"></div>
                 <div class="item-text">

@@ -1,6 +1,6 @@
 <template>
   <div class="block-container">
-    <a class="block-item" v-for="item in userData" :key="item.index" :href="linkUrl(item)">
+    <a class="block-item" v-for="item in userData" :key="item.index" :href="linkUrl(item)" target="_blank">
       <div class="show-head" :style="{backgroundImage:'url('+ headUrl(item) +')'}"></div>
       <div class="show-info">
         <div class="info-tit">{{item.name}}<em class="authicon" :class="headIcon(item)"></em></div>
