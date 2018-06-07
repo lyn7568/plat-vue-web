@@ -36,7 +36,7 @@
           <el-button type="danger" icon="el-icon-delete" circle @click.stop="delet(item.articleId, index)"></el-button>
         </div>
         <div class="dele" v-else-if='flag === 3'>
-          <el-button type="primary" size="small" @click.stop="add(item)">{{item.addText}}</el-button>
+          <el-button type="primary" size="small" @click.stop.once="add(item)">{{item.addText}}</el-button>
         </div>
       </li>
     </ul>

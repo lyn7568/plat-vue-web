@@ -9,7 +9,7 @@
           {{keyValue}}
         </div>
         <ul class="list-tag">
-          <li>{{(item.orgType == 2) ? '上市企业' : ''}}</li>
+          <li :class='{maginNone:(item.orgType != 2)}'>{{(item.orgType == 2) ? '上市企业' : ''}}</li>
           <li>{{(item.industry) ? item.industry.split(',').join(' | ') : '' }}</li>
         </ul>
       </div>
@@ -113,6 +113,10 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   ul
-    .list-tag
-      cursor: pointer
+    .list-item
+      .list-info
+        .list-tag
+          cursor: pointer
+          .maginNone
+            margin-right: 0px
 </style>
