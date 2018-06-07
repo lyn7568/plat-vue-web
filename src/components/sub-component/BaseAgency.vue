@@ -13,7 +13,7 @@
         </div>
       </a>
     </div>
-    <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower"></Loading>
+    <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower" v-if="!num"></Loading>
   </div>
 </template>
 
@@ -64,7 +64,7 @@
               this.dataO.bOid = $info[$info.length - 1].id;
               this.dataO.bTime = $info[$info.length - 1].buttedTime;
               this.isFormSearch = true;
-              this.orgData = this.orgData.concat($data);
+              this.orgData = this.orgData.concat($info);
               console.log(this.orgData);
             };
             if ($info.length < this.rows) {

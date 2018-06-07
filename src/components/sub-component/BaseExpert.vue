@@ -10,7 +10,7 @@
         </div>
       </a>
     </div>
-    <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower"></Loading>
+    <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower" v-if="!num"></Loading>
   </div>
 </template>
 
@@ -28,7 +28,7 @@
     data() {
       return {
         platId: '',
-        rows: 20,
+        rows: 21,
         userData: [],
         dataO: {
           bUid: '',
