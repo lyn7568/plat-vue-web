@@ -15,6 +15,9 @@ import '../static/ueditor/ueditor.all.js';
 import '../static/ueditor/lang/zh-cn/zh-cn.js';
 import '../static/ueditor/ueditor.parse.js';
 
+import Cookies from 'js-cookie';
+import PLAT from '../static/plat-info';
+
 Vue.use(axiosH);
 Vue.use(ElementUI);
 Vue.use(Loading);
@@ -27,11 +30,15 @@ new Vue({
   el: '#app',
   router: router,
   render: h => h(App),
-  data: {
-
+  data() {
+    return {
+      plat: {}
+    };
   },
-  mounted () {
-
+  mounted() {
+    this.plat = PLAT.info;
+    Cookies.set('platId', this.plat.id);
+    Cookies.set('platSource', this.plat.source);
   },
   created () {
     router.afterEach((to, from, next) => {

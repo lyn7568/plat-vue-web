@@ -15,20 +15,8 @@
 <script type="text/ecmascript-6">
   import TheHeader from './main-views/TheHeader.vue';
   import TheFooter from './main-views/TheFooter.vue';
-  import Cookies from 'js-cookie';
-  import PLAT from '../../static/plat-info';
 
   export default {
-    data() {
-      return {
-        plat: {}
-      };
-    },
-    mounted() {
-      this.plat = PLAT.info;
-      Cookies.set('platId', this.plat.id);
-      Cookies.set('platSource', this.plat.source);
-    },
     components: {
       TheHeader,
       TheFooter
