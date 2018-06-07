@@ -111,6 +111,8 @@
             this.total = res.data.total;
             if (res.data.data.length === 0) {
               this.ifDefault = true;
+            } else {
+              this.ifDefault = false;
             }
             for (let i = 0; i < res.data.data.length; i++) {
               res.data.data[i].addText = this.addText;
