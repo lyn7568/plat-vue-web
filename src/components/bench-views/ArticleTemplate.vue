@@ -79,7 +79,7 @@
       }
     },
     created() {
-      this.platId = Cookies.get('platId');
+      this.platId = Cookies.get('plf_user');
       this.expertParameters = {
         key: this.keyValue,
         pageSize: 10,

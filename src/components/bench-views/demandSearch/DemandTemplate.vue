@@ -122,7 +122,7 @@
       // }
      },
      created() {
-      this.platId = Cookies.get('platId');
+      this.platId = Cookies.get('plf_user');
       this.expertParameters = {
         source: 'xttjpt',
         key: this.searchValue,

@@ -117,7 +117,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.$axios.post(httpUrl.hQuery.sign.modifypw, {
-              id: Cookies.get('platId'),
+              id: Cookies.get('plf_user'),
               npw: this.ruleForm2.pass,
               opw: this.ruleForm2.loginPass
             }).then((res) => {

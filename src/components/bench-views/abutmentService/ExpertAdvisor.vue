@@ -34,7 +34,7 @@
       };
     },
     created() {
-      const platId = Cookies.get('platId');
+      const platId = Cookies.get('plf_user');
       this.expertParameters = {
         pid: platId,
         pageSize: 10,

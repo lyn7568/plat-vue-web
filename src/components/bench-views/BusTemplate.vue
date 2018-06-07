@@ -49,7 +49,7 @@
       }
     },
     created() {
-      this.platId = Cookies.get('platId');
+      this.platId = Cookies.get('plf_user');
       this.expertParameters = {
         pid: this.platId,
         pageSize: 10,

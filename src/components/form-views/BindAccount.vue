@@ -52,7 +52,7 @@
     data() {
       return {
         mail: Cookies.get('plf_email'),
-        platId: Cookies.get('platId'),
+        platId: Cookies.get('plf_user'),
         dialogFormVisible: false,
         emailName: '',
         titler: '',
