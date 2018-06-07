@@ -4,7 +4,7 @@
       <div class="show-head" :style="{backgroundImage:'url('+ headUrl(item) +')'}"></div>
       <div class="show-info">
         <div class="info-tit">{{item.name}}<em class="authicon" :class="headIcon(item)"></em></div>
-        <div class="info-tag">{{item.offt}}</div>
+        <div class="info-tag" v-if="item.offt">{{item.offt}}</div>
         <div class="info-desc" v-if="item.reserachs">研究方向：{{item.reserachs}}</div>
       </div>
     </a>
