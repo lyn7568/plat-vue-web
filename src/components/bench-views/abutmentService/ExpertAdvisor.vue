@@ -4,10 +4,10 @@
       <div class="list-head header" :style="{ backgroundImage: 'url('+ item.image +')'}"></div>
       <div class="list-info">
         <div class="list-tit list-tig">{{item.name}} <em class="authicon" :class='item.className'></em></div>
-        <ul class="list-tag">
+        <ul class="list-tag" v-if="item.offt">
           <li>{{item.offt}}</li>
         </ul>
-        <ul class="list-tag headerTag">
+        <ul class="list-tag headerTag" v-if="item.reserachs">
           <li>研究方向：{{item.reserachs}}</li>
         </ul>
       </div>
@@ -86,7 +86,7 @@
           if ($data[i].hasHeadImage) {
             $data[i].image = util.ImageUrl('head/' + $data[i].id + '_l.jpg', true);
           } else {
-            $data[i].image = util.defaultSet.expert;
+            $data[i].image = util.defaultSet.img.expert;
           }
           this.$axios.get(httpUrl.utilUrl + '/researchArea/' + $data[i].id).then(res => {
             const $info = res.data;
