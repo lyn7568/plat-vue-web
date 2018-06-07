@@ -71,17 +71,13 @@
                     $data[i].offt = '';
                   }
                 }
-                $data[i].className = util.autho($data[i].authType, $data[i].orgAuth, $data[i].authStatus);
-                if ($data[i].hasHeadImage) {
-                  $data[i].image = util.ImageUrl('head/' + $data[i].id + '_l.jpg', true);
-                } else {
-                  $data[i].image = util.defaultSet.expert;
-                }
                 this.$axios.get(httpUrl.utilUrl + '/researchArea/' + $data[i].id).then(res => {
                   const $info = res.data;
                   let arr = [];
                   for (let j = 0; j < $info.length; j++) {
-                    arr.push($info[j].caption);
+                    if ($info[j].caption) {
+                      arr.push($info[j].caption);
+                    };
                     if (j === $info.length - 1) {
                       $data[i].reserachs = arr.join('，');
                       this.$forceUpdate();
