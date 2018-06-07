@@ -1,16 +1,19 @@
 <template>
-  <div class="block-container">
-    <a class="block-item org-item" v-for="item in orgData" :key="item.index" :href="linkUrl(item)" target="_blank">
-      <div class="item-block-org">
-        <div class="item-pic-org">
-          <img :src="orgLogoUrl(item)">
+  <div>
+    <div class="block-container">
+      <a class="block-item org-item" v-for="item in orgData" :key="item.index" :href="linkUrl(item)" target="_blank">
+        <div class="item-block-org">
+          <div class="item-pic-org">
+            <img :src="orgLogoUrl(item)">
+          </div>
+          <div class="item-text-org">
+            <div class="item-tit-org"><span>{{item.name}}</span><em class="authicon" :class="{'icon-com': item.authStatus==='3'}"></em></div>
+            <p class="item-tag-org">{{item.industry.replace(/,/gi, ' | ')}}</p>
+          </div>
         </div>
-        <div class="item-text-org">
-          <div class="item-tit-org"><span>{{item.name}}</span><em class="authicon" :class="{'icon-com': item.authStatus==='3'}"></em></div>
-          <p class="item-tag-org">{{item.industry.replace(/,/gi, ' | ')}}</p>
-        </div>
-      </div>
-    </a>
+      </a>
+    </div>
+    <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower"></Loading>
   </div>
 </template>
 
@@ -28,12 +31,16 @@
     data() {
       return {
         platId: '',
-        rows: 20,
-        orgData: '',
+        rows: 21,
+        orgData: [],
         dataO: {
           bOid: '',
           bTime: ''
-        }
+        },
+        loadingModalShow: true, // 是否显示按钮
+        loadingComplete: false, // 是否全部加载
+        isFormSearch: false, // 数据加载
+        isLoading: false // button style...
       };
     },
     created() {
@@ -56,10 +63,13 @@
             if ($info.length > 0) {
               this.dataO.bOid = $info[$info.length - 1].id;
               this.dataO.bTime = $info[$info.length - 1].buttedTime;
-              this.orgData = $info;
+              this.isFormSearch = true;
+              this.orgData = this.orgData.concat($data);
               console.log(this.orgData);
             };
             if ($info.length < this.rows) {
+              this.loadingModalShow = false;
+              this.isFormSearch = false;
             };
           };
         });
@@ -69,6 +79,11 @@
       },
       linkUrl(item) {
         return util.defaultSet.link.org + item.id;
+      },
+      loadLower() {
+        if (this.loadingModalShow && !this.isLoading) {
+          this.ResidentOrgs(this.platId);
+        }
       }
     }
   };

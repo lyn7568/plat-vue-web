@@ -15,7 +15,7 @@
     data() {
       return {
         platId: '',
-        rows: 2,
+        rows: 20,
         dataO: {
           bShareId: '',
           bTime: ''
