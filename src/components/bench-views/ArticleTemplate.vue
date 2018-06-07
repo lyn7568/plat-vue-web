@@ -36,7 +36,7 @@
           <el-button type="danger" icon="el-icon-delete" circle @click.stop="delet(item.articleId, index)"></el-button>
         </div>
         <div class="dele" v-else-if='flag === 3'>
-          <el-button type="primary" size="small" @click.stop.once="add(item)">{{item.addText}}</el-button>
+          <el-button type="primary" size="small" @click.stop="add(item)">{{item.addText}}</el-button>
         </div>
       </li>
     </ul>
@@ -160,7 +160,7 @@
         this.expertList();
       },
       delet(id, index) {
-        this.$alert('确认删除该文章', '提示', {
+        this.$alert('确认将该文章移出【企业动态】栏目？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
@@ -200,6 +200,9 @@
         });
       },
       add(item) {
+        if(item.addText === '已添加') {
+          return;
+        }
         this.$axios.post(httpUrl.hQuery.orgTrends.add, {
               pid: this.platId,
               aid: item.articleId
