@@ -8,7 +8,7 @@
         <el-input type="textarea" :rows="4" v-model="ruleFormDem.demandDesc" placeholder="请描述您的需求背景、具体问题、对专家的要求等等"></el-input>
       </el-form-item>
       <el-col :span="12">
-        <CityPick :widthselect="148" :prov="ruleFormDem.province" :city="ruleFormDem.city" v-on:selectProv="getSelectProv($event)" v-on:selectCity="getSelectCity($event)"></CityPick>
+        <CityPick ref="cityPick" :widthselect="148" :prov="ruleFormDem.province" :city="ruleFormDem.city" v-on:selectProv="getSelectProv($event)" v-on:selectCity="getSelectCity($event)"></CityPick>
         <!-- <el-form-item label="所在城市" prop="citys">
           <el-cascader
             :options="optionsCity"
@@ -90,7 +90,7 @@
       <el-col :span="24" >
         <el-form-item style="text-align:center">
           <el-button type="primary" @click="submitForm('ruleFormDem')" style="padding: 12px 50px">立即发布</el-button><br/>
-          <el-checkbox checked disabled>我已阅读并同意<a :href="kexiuLink + '/privacy.html'">《科袖用户协议》</a></el-checkbox>
+          <el-checkbox checked disabled>我已阅读并同意<a :href="kexiuLink + '/privacy.html'" target="_blank">《科袖用户协议》</a></el-checkbox>
         </el-form-item>
       </el-col>
     </el-form>
@@ -239,6 +239,12 @@
       changeImgVc() {
         this.imgVcUrl = httpUrl.kxQurey.sign.imgVC + '?' + new Date().getTime();
       },
+      resetForm(formName) {
+        this.$refs.cityPick.resetProvCity();
+        this.selectCostRange = '';
+        this.selectLongTime = '';
+        this.$refs[formName].resetFields();
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -271,6 +277,7 @@
                     };
                   }
                 });
+                this.resetForm(formName);
                 this.$emit('dialogChanged', false);
               } else {
                 this.$message({

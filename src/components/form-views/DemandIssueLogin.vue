@@ -27,7 +27,7 @@
         <el-input type="textarea" :rows="4" v-model="ruleFormDem.demandDesc" placeholder="请描述您的需求背景、具体问题、对专家的要求等等"></el-input>
       </el-form-item>
       <el-col :span="12">
-        <CityPick :widthselect="148" :prov="ruleFormDem.province" :city="ruleFormDem.city" v-on:selectProv="getSelectProv($event)" v-on:selectCity="getSelectCity($event)"></CityPick>
+        <CityPick ref="cityPick" :widthselect="148" :prov="ruleFormDem.province" :city="ruleFormDem.city" v-on:selectProv="getSelectProv($event)" v-on:selectCity="getSelectCity($event)"></CityPick>
       </el-col>
       <el-col :span="12">
         <el-form-item label="需求有效期" prop="lastDate">
@@ -211,6 +211,7 @@
                   center: true,
                   callback: action => {
                     this.ifLogin = false;
+                    this.$refs[formName].resetFields();
                   }
                 });
               };
@@ -286,7 +287,15 @@
         });
       },
       // 获取科袖账户信息
+
       // 发布需求
+      resetForm(formName) {
+        this.$refs.cityPick.resetProvCity();
+        this.selectCostRange = '';
+        this.selectLongTime = '';
+        this.ifLogin = true;
+        this.$refs[formName].resetFields();
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -316,6 +325,7 @@
                     };
                   }
                 });
+                this.resetForm(formName);
                 this.$emit('dialogChangedLogin', false);
               } else {
                 this.$message({

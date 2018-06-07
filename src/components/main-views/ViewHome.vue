@@ -33,7 +33,7 @@
           将您的需求发布到科袖网，<br>
           我们为您对接专家和各类专业机构。
         </p>
-        <el-button type="primary" @click="dialogFormVisible = true" style="margin-top:30px">免费发布需求</el-button>
+        <el-button type="primary" @click="clickAlertDemand" style="margin-top:30px">免费发布需求</el-button>
       </div>
     </div>
 
@@ -279,6 +279,10 @@
       },
       getChildrenChangeLogin(msg) {
         this.dialogFormVisible = msg;
+      },
+      clickAlertDemand() {
+        this.dialogFormVisible = true;
+        this.activeName = 'first';
       },
       // pubDemand() {
       //   this.$refs.issueDemand.submitForm('ruleForm');

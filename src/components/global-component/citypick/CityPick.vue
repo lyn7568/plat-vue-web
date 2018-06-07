@@ -71,7 +71,7 @@
       }
     },
     methods: { // 二级联动选择地区
-      getProv: function (prov) {
+      getProv(prov) {
         let tempCity = [];
         this.citys = [];
         this.selectCity = '';
@@ -84,9 +84,15 @@
         this.$emit('selectProv', this.selectProv);
         this.$emit('selectCity', this.selectCity);
       },
-      getCity: function (city) {
+      getCity(city) {
         console.log(city);
         console.log(this.selectCity);
+        this.$emit('selectProv', this.selectProv);
+        this.$emit('selectCity', this.selectCity);
+      },
+      resetProvCity() {
+        this.selectProv = '';
+        this.selectCity = '';
         this.$emit('selectProv', this.selectProv);
         this.$emit('selectCity', this.selectCity);
       }
