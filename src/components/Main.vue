@@ -15,8 +15,17 @@
 <script type="text/ecmascript-6">
   import TheHeader from './main-views/TheHeader.vue';
   import TheFooter from './main-views/TheFooter.vue';
+  import PLAT from '../../static/plat-info';
 
   export default {
+    data() {
+      return {
+        plat: {}
+      };
+    },
+    mounted() {
+      this.plat = PLAT.info;
+    },
     components: {
       TheHeader,
       TheFooter
