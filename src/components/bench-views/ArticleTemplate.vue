@@ -120,7 +120,7 @@
                 this.leaveWordTotal(res.data.data[i]);
                 this.companyName(res.data.data[i]);
               } else {
-                if (res.data.data[i].status === 1) {
+                if (res.data.data[i].status === '1') {
                   this.leaveWordTotal(res.data.data[i]);
                 }
               }
