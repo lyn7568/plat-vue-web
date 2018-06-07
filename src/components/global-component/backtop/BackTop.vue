@@ -1,9 +1,7 @@
 <template>
-    <div>
-        <div class="scroll" :class="{show:isActive}">
-            <div id="toTop" @click="toTop(step)"><i class="el-icon-arrow-up"></i></div>
-            <div id="toBottom" @click="toBottom(step)"><i class="el-icon-arrow-down"></i></div>
-        </div>
+    <div class="scroll" :class="{'showScroll':isActive}">
+        <div id="toTop" @click="toTop(step)"><i class="el-icon-arrow-up"></i></div>
+        <div id="toBottom" @click="toBottom(step)"><i class="el-icon-arrow-down"></i></div>
     </div>
 </template>
 <script>
@@ -62,6 +60,7 @@
     height: 90px
     cursor: pointer
     display: none
+    z-index: 10
     div
       width: 45px
       height: 45px
@@ -73,6 +72,6 @@
       &:hover
         background-color: rgba(0,0,0,.5)
 
-  .show
+  &.showScroll
     display: block;
 </style>
