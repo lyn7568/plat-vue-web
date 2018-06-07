@@ -202,7 +202,7 @@
         });
       },
       add(item) {
-        if(item.addText === '已添加') {
+        if (item.addText === '已添加') {
           return;
         }
         this.$axios.post(httpUrl.hQuery.orgTrends.add, {

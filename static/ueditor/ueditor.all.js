@@ -17546,9 +17546,8 @@ UE.plugins['autofloat'] = function() {
                 toolbarBox.style.left =  domUtils.getXY(toolbarBox).x - document.documentElement.getBoundingClientRect().left+2  + 'px';
             }
             if(toolbarBox.style.position != 'fixed'){
-            	var ffff=document.getElementById('header').offsetHeight
                 toolbarBox.style.position = 'fixed';
-                toolbarBox.style.top = topOffset+ffff+"px";
+                toolbarBox.style.top = topOffset+60+"px";
                 ((origalFloat == 'absolute' || origalFloat == 'relative') && parseFloat(origalLeft)) && (toolbarBox.style.left = toobarBoxPos.x + 'px');
             }
         }
