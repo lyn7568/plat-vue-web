@@ -60,7 +60,8 @@
       }
     },
     created() {
-      this.plf_logo = util.ImageUrl('platform' + Cookies.get('plf_logo'));
+      var logo = Cookies.get('plf_logo');
+      this.plf_logo = logo ? util.ImageUrl('platform' + logo) : util.defaultSet.img.plat;
     }
 	};
 </script>

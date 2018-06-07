@@ -163,7 +163,7 @@
           console.log(res);
           let str = res.data;
           this.plf_name = str.name;
-          this.imageUrl = util.ImageUrl('platform' + str.logo);
+          this.imageUrl = str.logo ? util.ImageUrl('platform' + str.logo) : util.defaultSet.img.plat;
           this.imgName = str.logo;
           this.ruleFormUpdate.linkman = str.linkman;
           this.ruleFormUpdate.tel = str.linkphone;
