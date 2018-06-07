@@ -407,7 +407,11 @@
           }
         }).then((res) => {
           console.log(res);
-          this.aboutUs = res.data.descp;
+          if (res.data) {
+            if (res.data.descp) {
+              this.aboutUs = res.data.descp;
+            }
+          }
         });
       },
       formTime(item) {
