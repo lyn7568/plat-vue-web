@@ -253,6 +253,7 @@
 
       this.findServiceSwiper = new Swiper(this.$refs.findService, {
         slidesPerView: 4.8,
+        loopedSlides: 20,
         spaceBetween: 20,
         navigation: {
           nextEl: this.$refs.nextService,

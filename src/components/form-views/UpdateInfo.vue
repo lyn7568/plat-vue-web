@@ -78,6 +78,7 @@
   import dynamicTags from '../sub-component/DynamicTags';
 
   export default {
+    inject: ['reload'],
     props: {
       plat: {
         type: Object
@@ -221,6 +222,7 @@
               });
               Cookies.set('plf_logo', this.imgName);
               this.$router.push({path: '/WorkHome'});
+              this.reload();
             }).catch(error => {
               console.log(error);
             });

@@ -92,7 +92,7 @@
             const $info = res.data;
             let arr = [];
             for (let j = 0; j < $info.length; j++) {
-              arr.push($info[i].caption);
+              arr.push($info[j].caption);
               if (j === $info.length - 1) {
                 $data[i].reserachs = arr.join('，');
                 this.$forceUpdate();

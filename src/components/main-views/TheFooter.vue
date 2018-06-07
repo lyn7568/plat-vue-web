@@ -3,7 +3,9 @@
 		<div class="contain-wrapper">
 			<div class="footer-wrapper">
 				<div class="wrapper-left">
-					<img class="logo-block" :src="plat.logourl">
+          <router-link to='home'>
+            <img class="logo-block" :src="plat.logourl">
+          </router-link>
 					<div>
 						<router-link to='about'>关于我们 |</router-link>
 						<a :href="plat.website" target="_blank">{{plat.name}} |</a>

@@ -3,7 +3,7 @@ var PLAT = {}
 PLAT.info = {
   "id":"9619237FAF5E4B908F0F88A5845C8C9F",
   "source":"xttjpt",
-  "name": "邢台科技条件平台",
+  "name": "邢台经济开发区",
   "website": "http://www.xtkfq.gov.cn",
   "address": "中国河北省邢台市中兴东大街1888号",
   "tel": "?",
@@ -15,8 +15,8 @@ PLAT.info = {
   "platimgurl": "/static/xtkfq/platimg.jpg",
   "adinfo":[
     {
-      "adUrl": "http://www.ecorr.org",
-      "imgUrl": "/static/xtkfq/ad/fengying.jpg"
+      "adUrl": "javascript:void(0)",
+      "imgUrl": "/static/xtkfq/ad/xtfh.jpg"
     }
   ]
 };
