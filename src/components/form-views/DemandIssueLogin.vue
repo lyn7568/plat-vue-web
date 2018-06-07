@@ -275,7 +275,7 @@
       // 短信验证登录科袖
       // 获取科袖账户信息
       getUserInfo(id) {
-        this.$axios.get(httpUrl.kxQurey.professor.info + id, {
+        this.$axios.get(httpUrl.kxQurey.professor.query + id, {
 
         }).then((res) => {
           if (res.success) {

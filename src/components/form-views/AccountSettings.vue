@@ -125,6 +125,13 @@
                 if (res.data === 1) {
                   this.open();
                   this.$refs[formName].resetFields();
+                } else {
+                  this.$confirm('密码输入错误，请检查后重试', '提示', {
+                    confirmButtonText: '确定',
+                    type: 'error',
+                    showCancelButton: false,
+                    center: true
+                  });
                 }
               }
             });
