@@ -88,15 +88,25 @@
         this.expertList();
       },
       delet(id, index) {
-        this.$axios.post(httpUrl.hQuery.residentOrgs.del, {
-              pid: this.platId,
-              oid: id
-          }).then((res) => {
-            if (res.success) {
-              this.dataList.splice(index, 1);
+        this.$alert('确认将该企业移出平台？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true,
+          callback: action => {
+            if (action === 'confirm') {
+              this.$axios.post(httpUrl.hQuery.residentOrgs.del, {
+                pid: this.platId,
+                oid: id
+                }).then((res) => {
+                  if (res.success) {
+                    this.dataList.splice(index, 1);
+                  }
+              });
             }
-          });
-        }
+          }
+        });
+      }
     }
   };
 </script>
