@@ -190,10 +190,11 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let paramsData = this.getDataParams();
-            this.$confirm('确认删除该文章', '提示', {
+            this.$confirm('确认发布该文章', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
-              type: 'warning'
+              type: 'warning',
+              center: true
             }).then(() => {
               this.$axios.post(httpUrl.kxQurey.article.save, paramsData).then((res) => {
                 if (res.success) {
