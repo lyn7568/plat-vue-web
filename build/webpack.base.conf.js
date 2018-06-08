@@ -19,6 +19,9 @@ const createLintingRule = () => ({
   }
 })
 
+//过滤自己本地的文件  
+nodeModules['./static/plat-info.js'] = 'commonjs ./static/plat-info.js'; 
+
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
