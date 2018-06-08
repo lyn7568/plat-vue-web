@@ -2,6 +2,7 @@ var PLAT = {}
 
 PLAT.info = {
   "id":"9619237FAF5E4B908F0F88A5845C8C9F",
+  // "id":"F5DEA8EDB12E421A9FC4B701BB6176A6",
   "source":"xttjpt",
   "title": "邢台科技条件平台",
   "name": "邢台经济开发区",
