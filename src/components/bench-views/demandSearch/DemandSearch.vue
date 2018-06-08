@@ -39,7 +39,7 @@
           height: 30px
         .list-tagl
           li
-            text-ellipsis(2)
+            text-ellipsis-n(2)
             color: $commonFont
         .list-tagy
           li

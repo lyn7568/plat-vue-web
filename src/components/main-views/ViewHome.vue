@@ -254,7 +254,11 @@
       this.findServiceSwiper = new Swiper(this.$refs.findService, {
         slidesPerView: 4.8,
         loopedSlides: 20,
+        loop: true,
         spaceBetween: 20,
+        autoplay: {
+          disableOnInteraction: false
+        },
         navigation: {
           nextEl: this.$refs.nextService,
           prevEl: this.$refs.prevService
@@ -266,6 +270,11 @@
       this.findResourceSwiper = new Swiper(this.$refs.findResource, {
         slidesPerView: 4.8,
         spaceBetween: 20,
+        loopedSlides: 20,
+        loop: true,
+        autoplay: {
+          disableOnInteraction: false
+        },
         navigation: {
           nextEl: this.$refs.nextResource,
           prevEl: this.$refs.prevResource
@@ -535,7 +544,7 @@
         width:280px
         height:420px
         .content
-          text-ellipsis(12,28px)
+          text-ellipsis-n(12,28px)
       .full-wrapper
         width:100%
         .swiper-container:hover
@@ -595,12 +604,15 @@
               text-align:center
               text-ellipsis()
             .title
+              color:$mainFont
               text-ellipsis()
             .desc
               margin-top:3px
-              text-ellipsis(2,20px)
+              color:$commonFont
+              text-ellipsis-n(2,20px)
             .owner
               margin-top:10px
+              color:$secondaryFont
               text-ellipsis()
 
     .tip-show

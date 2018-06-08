@@ -53,7 +53,13 @@ border-none()
 /*border-about e*/
 
 /*text-about s*/
-text-ellipsis($n = 1,$lineH = 30px)
+text-ellipsis()
+  line-height: 30px
+  white-space: nowrap
+  text-overflow: ellipsis
+  overflow: hidden
+
+text-ellipsis-n($n = 1,$lineH = 30px)
   display: -webkit-box
   line-height: $lineH
   max-height: $lineH*$n

@@ -43,5 +43,5 @@
           height: 30px
         .headerTag
           li
-            text-ellipsis(1)
+            text-ellipsis()
 </style>
