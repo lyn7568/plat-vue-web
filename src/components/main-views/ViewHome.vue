@@ -303,7 +303,7 @@
             ownerId: id,
             articleType: '3',
             status: 1,
-            rows: 5
+            rows: 4
           }
         }).then((res) => {
           console.log(res);
@@ -317,7 +317,7 @@
         this.$axios.get(httpUrl.hQuery.orgTrends.nopq, {
           params: {
             pid: id,
-            rows: 5
+            rows: 4
           }
         }).then((res) => {
           if (res.success) {
@@ -532,6 +532,8 @@
                 width:400px
                 text-ellipsis()
               .time
+                width: 100px
+                text-align: right
                 color:$secondaryFont
             &.maincon2
               width:100%
@@ -610,6 +612,7 @@
               margin-top:3px
               color:$commonFont
               text-ellipsis-n(2,20px)
+              height:40px
             .owner
               margin-top:10px
               color:$secondaryFont

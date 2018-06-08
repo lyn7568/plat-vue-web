@@ -38,7 +38,7 @@
             pid: this.platId,
             rows: this.rows,
             publishTime: this.dataO.bTime,
-            shardId: this.dataO.bShareId
+            shareId: this.dataO.bShareId
           }
         }).then((res) => {
           console.log(res);
