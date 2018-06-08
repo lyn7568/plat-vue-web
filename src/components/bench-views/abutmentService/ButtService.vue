@@ -39,9 +39,11 @@
   ul
     .list-item
       .list-info
+        width:86%
         .list-tig
           height: 30px
         .headerTag
           li
             text-ellipsis()
+            width: 100%
 </style>
