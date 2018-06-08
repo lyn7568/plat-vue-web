@@ -37,6 +37,7 @@ new Vue({
   },
   mounted() {
     this.plat = PLAT.info;
+    document.title = this.plat.title;
     Cookies.set('platId', this.plat.id);
     Cookies.set('platSource', this.plat.source);
   },
