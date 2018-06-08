@@ -90,7 +90,7 @@
                       this.$axios.post(httpUrl.utilUrl + '/platform/reqBindMail', {
                           id: this.platId,
                           mail: this.emailName,
-                          url: httpUrl.platUrl + '/upMail?sc'
+                          url: httpUrl.platUrl + '/#/upMail?sc'
                       }).then((res) => {
                         if (res.success) {
                           this.dias = true;
