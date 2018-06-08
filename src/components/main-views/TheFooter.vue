@@ -32,7 +32,6 @@
 <script type="text/javascript">
   import Cookies from 'js-cookie';
   import util from '@/libs/util';
-  import PLAT from '../../../static/plat-info';
 
   export default {
     data() {
@@ -55,6 +54,7 @@
       }
     },
     mounted () {
+      /* eslint-disable no-undef */
       this.plat = PLAT.info;
       this.init();
     }

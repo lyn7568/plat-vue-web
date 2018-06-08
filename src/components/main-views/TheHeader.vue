@@ -33,7 +33,6 @@
 
 <script type="text/javascript">
   import util from '@/libs/util';
-  import PLAT from '../../../static/plat-info';
 
   export default {
     data() {
@@ -43,6 +42,7 @@
       };
     },
     mounted() {
+      /* eslint-disable no-undef */
       this.plat = PLAT.info;
     }
   };

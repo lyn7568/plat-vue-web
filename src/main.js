@@ -16,7 +16,7 @@ import '../static/ueditor/lang/zh-cn/zh-cn.js';
 import '../static/ueditor/ueditor.parse.js';
 
 import Cookies from 'js-cookie';
-import PLAT from '../static/plat-info';
+import '../static/plat-info';
 
 Vue.use(axiosH);
 Vue.use(ElementUI);
@@ -24,6 +24,8 @@ Vue.use(Loading);
 Vue.use(BackTop);
 Vue.use(defaultPage);
 Vue.use(CityPick);
+
+var PLAT = global.PLAT;
 
 /* eslint-disable no-new */
 new Vue({

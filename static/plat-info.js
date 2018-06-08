@@ -23,4 +23,5 @@ PLAT.info = {
   ]
 };
 
-export default PLAT;
+global.PLAT = PLAT;
+// export default PLAT;

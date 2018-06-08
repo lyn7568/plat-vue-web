@@ -15,7 +15,6 @@
 <script type="text/ecmascript-6">
   import TheHeader from './main-views/TheHeader.vue';
   import TheFooter from './main-views/TheFooter.vue';
-  import PLAT from '../../static/plat-info';
 
   export default {
     data() {
@@ -24,6 +23,7 @@
       };
     },
     mounted() {
+      /* eslint-disable no-undef */
       this.plat = PLAT.info;
     },
     components: {
