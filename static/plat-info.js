@@ -23,5 +23,5 @@ PLAT.info = {
   ]
 };
 
-global.PLAT = PLAT;
+window.PLAT = PLAT;
 // export default PLAT;
