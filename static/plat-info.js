@@ -24,4 +24,3 @@ PLAT.info = {
 };
 
 window.PLAT = PLAT;
-// export default PLAT;

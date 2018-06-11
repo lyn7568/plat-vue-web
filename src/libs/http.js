@@ -4,6 +4,9 @@ let http = { };
 const kexiuUrl = 'http://192.168.3.233:81';
 const platUrl = 'http://localhost:7070';
 
+// const kexiuUrl = 'http://www.ekexiu.com';
+// const platUrl = 'http://120.27.36.244';
+
 // const kexiuUrl = 'http://192.168.3.233'; // 跳转科袖链接地址、图片访问路径
 // const platUrl = 'http://192.168.3.233:2080'; // 邮箱配置的地址
 
