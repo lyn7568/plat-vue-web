@@ -77,7 +77,7 @@
       <div class="wrapper-right content-wrapper about-us">
         <div class="content-title">
           <span>关于我们</span>
-          <router-link class="content-more" to="/aboutUs">更多</router-link>
+          <router-link class="content-more" to="/about">更多</router-link>
         </div>
         <div class="content">{{aboutUs}}</div>
       </div>
