@@ -22,8 +22,8 @@
 				</div>
 			</div>
 			<div class="copy-wrapper">
-				<span>Copyright © 2016-2018 北京科袖科技有限公司 | 京ICP备16042588号-1 | </span>
-				<a class="beian" target="_black" rel="nofollow" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010802022306"><em></em> 京公网安备11010802022306号</a>
+				<span>Copyright © {{plat.foot_cl}} | {{plat.foot_cn}}</span>
+				<a class="beian" v-if="plat.foot_bn || plat.foot_bl" target="_black" rel="nofollow" :href="plat.foot_bl"> | <em></em> {{plat.foot_bn}}</a>
 			</div>
 		</div>
   </div>
