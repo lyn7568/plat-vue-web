@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="top-wrapper">
+    <div class="top-wrapper minw-block">
       <div class="contain-wrapper">
         <div class="wrapper-left">
           <a :href="plat.website" class="a-link" target="_blank">{{plat.name}}</a>
@@ -13,9 +13,9 @@
         </div>
       </div>
     </div>
-    <div class="banner-wrapper" :style="{backgroundImage: 'url(' + plat.bannerurl + ')'}">
+    <div class="banner-wrapper minw-block" :style="{backgroundImage: 'url(' + plat.bannerurl + ')'}">
     </div>
-    <div class="nav-wrapper">
+    <div class="nav-wrapper minw-block">
       <div class="contain-wrapper">
         <ul>
           <router-link to="home" active-class="active" tag="li">首页</router-link>
@@ -64,7 +64,6 @@
     .banner-wrapper
       width:100%
       height:200px
-      min-width:1100px
       background-size:cover
       background-position:center
     .nav-wrapper

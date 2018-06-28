@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer minw-block">
 		<div class="contain-wrapper">
 			<div class="footer-wrapper">
 				<div class="wrapper-left">
