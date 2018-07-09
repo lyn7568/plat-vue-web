@@ -18,12 +18,12 @@
 			</div>
 		</div>
 		<div class="wrapper-right">
-			<div class="block-wrapper" v-if="plat.adinfo">
-				<a class="ad-wrapper" :href="plat.adinfo[0].adUrl" target="_blank">
-					<img :src="plat.adinfo[0].imgUrl" width="280" height="200">
-				</a>
-			</div>
-		</div>
+      <div class="block-wrapper" v-if="plat.adinfo.length" v-for="item in plat.adinfo" :key="item.index">
+        <a class="ad-wrapper" :href="item.adUrl" target="_blank">
+          <img :src="item.imgUrl" width="280" height="200">
+        </a>
+      </div>
+    </div>
 		<BackTop></BackTop>
   </div>
 </template>

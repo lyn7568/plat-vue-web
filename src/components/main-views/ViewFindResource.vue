@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="wrapper-right">
-      <div class="block-wrapper" v-if="plat.adinfo">
+      <div class="block-wrapper" v-if="plat.adinfo.length">
         <a class="ad-wrapper" :href="plat.adinfo[0].adUrl" target="_blank">
           <img :src="plat.adinfo[0].imgUrl" width="280" height="200">
         </a>
