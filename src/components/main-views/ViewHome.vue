@@ -16,7 +16,7 @@
     </el-dialog>
 
     <el-dialog class="videoShow" title="邢台科技条件平台宣传片" :visible.sync="videoVisible" width="940px" @close='closeVideo'>
-      <video class="video-box" v-if="videoVisible" :poster="posterImg" autoplay controls loop controlsList="nodownload">
+      <video class="video-box" v-if="videoVisible" :poster="plat.posterImg" autoplay controls loop controlsList="nodownload">
           <source :src="videoSrc" type="video/mp4">
       </video>
     </el-dialog>
@@ -232,10 +232,13 @@
         inputSer: '',
         inputRes: '',
         dialogFormVisible: false,
-        videoVisible: false,
-        posterImg: require('../../../static/xtkfq/video/xt.png'),
-        videoSrc: this.plat.videoSrc ? this.plat.videoSrc : ''
+        videoVisible: false
       };
+    },
+    computed: {
+       videoSrc() {
+          return this.plat.videoSrc;
+       }
     },
     created() {
        this.platId = Cookies.get('platId');
@@ -680,7 +683,6 @@
       .video-box
         width:100%
         height:530px
-        bg-image('/static/xtkfq/video/xt.png')
       .el-dialog
         background:rgba(0,0,0,.1)
         position:relative

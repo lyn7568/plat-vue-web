@@ -19,8 +19,8 @@ PLAT.info = {
     //   "imgUrl": "/static/xtkfq/ad/xtfh.jpg"
     // }
   ],
-  "videoSrc": "http://localhost/xtvideo.mp4",
-  // "videoSrc": "http://xttjpt.cn/xtvideo.mp4",
+  "posterImg": "/static/xtkfq/video/xt.png",
+  "videoSrc": "http://192.168.3.233/xtvideo.mp4",
   "foot_cl": "2016-2018 邢台市科智创新服务中心",
   "foot_cn": "冀ICP备18020508号",
   "foot_bl": "",

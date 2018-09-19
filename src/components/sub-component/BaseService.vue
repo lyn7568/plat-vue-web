@@ -22,7 +22,7 @@
     data() {
       return {
         linkway: util.defaultSet.link.service + this.itemSingle.id,
-        imgUrl: this.itemSingle.images ? util.ImageUrl('ware/' + this.itemSingle.images.split(',')[0]) : util.defaultSet.img.service,
+        imgUrl: (this.itemSingle && this.itemSingle.images) ? util.ImageUrl('ware/' + this.itemSingle.images.split(',')[0]) : util.defaultSet.img.service,
         ownerName: '',
         ownerAuth: ''
       };
