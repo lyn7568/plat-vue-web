@@ -18,7 +18,7 @@
     data() {
       return {
         keyValue: '',
-        url: '/platform/info/pqResidentOrgs',
+        url: '/ajax/platform/info/pqResidentOrgs',
         inValue: ''
       };
     },

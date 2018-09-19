@@ -1,17 +1,19 @@
 <template>
   <ul>
-    <li class="list-item" v-for="(item,index) in dataList" :key="index" @click="kexiuExpert(item.id)">
-      <div class="list-head header" :style="{ backgroundImage: 'url('+ item.image +')'}"></div>
-      <div class="list-info">
-        <div class="list-tit list-tig">{{item.name}} <em class="authicon" :class='item.className'></em></div>
-        <ul class="list-tag" v-if="item.offt">
-          <li>{{item.offt}}</li>
-        </ul>
-        <ul class="list-tag headerTag" v-if="item.reserachs">
-          <li>研究方向：{{item.reserachs}}</li>
-        </ul>
-      </div>
-    </li>
+    <draggable v-if="dataList" v-model="dataList" @start="drag=true" @end="drag=false">
+      <li class="list-item" v-for="(item,index) in dataList" :key="index" @click="kexiuExpert(item.id)">
+        <div class="list-head header" :style="{ backgroundImage: 'url('+ item.image +')'}"></div>
+        <div class="list-info">
+          <div class="list-tit list-tig">{{item.name}} <em class="authicon" :class='item.className'></em></div>
+          <ul class="list-tag" v-if="item.offt">
+            <li>{{item.offt}}</li>
+          </ul>
+          <ul class="list-tag headerTag" v-if="item.reserachs">
+            <li>研究方向：{{item.reserachs}}</li>
+          </ul>
+        </div>
+      </li>
+    </draggable>
     <defaultPage v-show="ifDefault"></defaultPage>
     <div class="taglist" v-show="!ifDefault">
       <el-pagination background layout="prev, pager, next" :total="total" :page-size="10" @current-change="handleCurrentChange">
@@ -21,6 +23,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import draggable from 'vuedraggable';
   import Cookies from 'js-cookie';
   import httpUrl from '@/libs/http';
   import util from '@/libs/util';
@@ -88,7 +91,7 @@
           } else {
             $data[i].image = util.defaultSet.img.expert;
           }
-          this.$axios.get(httpUrl.utilUrl + '/researchArea/' + $data[i].id).then(res => {
+          this.$axios.get('/ajax/researchArea/' + $data[i].id).then(res => {
             const $info = res.data;
             let arr = [];
             for (let j = 0; j < $info.length; j++) {
@@ -113,6 +116,9 @@
         this.expertParameters.pageNo = val;
         this.expertList();
       }
+    },
+    components: {
+        draggable
     }
   };
 </script>

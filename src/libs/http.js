@@ -1,106 +1,97 @@
 
 let http = { };
 
-const kexiuUrl = 'http://192.168.3.233:81';
-const platUrl = 'http://localhost:7070';
-
-// const kexiuUrl = 'https://www.ekexiu.com';
-// const platUrl = 'http://xttjpt.cn';
-
-// const kexiuUrl = 'http://192.168.3.233'; // 跳转科袖链接地址、图片访问路径
-// const platUrl = 'http://192.168.3.233:2080'; // 邮箱配置的地址
-
-const utilUrl = '/ajax'; // 平台访问的接口地址
+const kexiuUrl = process.env.KX_API; // 跳转科袖链接地址、图片访问路径
+const platUrl = process.env.BASE_API; // api/邮箱配置的地址
 
 http.platUrl = platUrl;
-http.utilUrl = utilUrl;
 http.kexiuUrl = kexiuUrl;
 
 http.webbase = '/api/plat';
 
 http.hQuery = {
     sign: {
-      login: utilUrl + '/platform/login',
-      modifypw: utilUrl + '/platform/modifypw', // 修改密码
-      resetpw: utilUrl + '/platform/resetpw', // 重置密码
-      reqResetPw: utilUrl + '/platform/reqResetPw', // 请求重置密码
-      bindMail: utilUrl + '/platform/bindMail', // 绑定新邮箱
-      reqBindMail: utilUrl + '/platform/reqBindMail' // 请求绑定新邮箱
+      login: '/ajax/platform/login',
+      modifypw: '/ajax/platform/modifypw', // 修改密码
+      resetpw: '/ajax/platform/resetpw', // 重置密码
+      reqResetPw: '/ajax/platform/reqResetPw', // 请求重置密码
+      bindMail: '/ajax/platform/bindMail', // 绑定新邮箱
+      reqBindMail: '/ajax/platform/reqBindMail' // 请求绑定新邮箱
     },
     baseInfo: {
-      query: utilUrl + '/platform/info',
-      update: utilUrl + '/platform/info',
-      upload: utilUrl + '/platform/upload' // 上传平台图片
+      query: '/ajax/platform/info',
+      update: '/ajax/platform/info',
+      upload: '/ajax/platform/upload' // 上传平台图片
     },
     buttedOrgs: { // 对接平台机构
-      nopq: utilUrl + '/platform/info/buttedOrgs',
-      pq: utilUrl + '/platform/info/pqButtedOrgs',
-      add: utilUrl + '/platform/buttedOrg',
-      del: utilUrl + '/platform/buttedOrg/delete'
+      nopq: '/ajax/platform/info/buttedOrgs',
+      pq: '/ajax/platform/info/pqButtedOrgs',
+      add: '/ajax/platform/buttedOrg',
+      del: '/ajax/platform/buttedOrg/delete'
     },
     buttedProfessors: { // 对接专家
-      nopq: utilUrl + '/platform/info/buttedProfessors',
-      pq: utilUrl + '/platform/info/pqButtedProfessors',
-      add: utilUrl + '/platform/buttedProfessor',
-      del: utilUrl + '/platform/buttedProfessor/delete'
+      nopq: '/ajax/platform/info/buttedProfessors',
+      pq: '/ajax/platform/info/pqButtedProfessors',
+      add: '/ajax/platform/buttedProfessor',
+      del: '/ajax/platform/buttedProfessor/delete'
     },
     platNews: { // 平台新闻
-      nopq: utilUrl + '/article/qa',
-      pq: utilUrl + '/article/pageQuery'
+      nopq: '/ajax/article/qa',
+      pq: '/ajax/article/pageQuery'
     },
     orgTrends: { // 企业动态
-      nopq: utilUrl + '/article/publishInPlatform',
-      pq: utilUrl + '/article/pgPublishInPlatform',
-      pqun: utilUrl + '/article/pgPublishNotInPlatform', // 查询未加入企业动态的入驻企业发布中的文章(分页)
-      add: utilUrl + '/platform/referencedArticle',
-      del: utilUrl + '/platform/referencedArticle/delete'
+      nopq: '/ajax/article/publishInPlatform',
+      pq: '/ajax/article/pgPublishInPlatform',
+      pqun: '/ajax/article/pgPublishNotInPlatform', // 查询未加入企业动态的入驻企业发布中的文章(分页)
+      add: '/ajax/platform/referencedArticle',
+      del: '/ajax/platform/referencedArticle/delete'
     },
     residentOrgs: { // 入驻企业
-      nopq: utilUrl + '/platform/info/residentOrgs',
-      add: utilUrl + '/platform/resident',
-      del: utilUrl + '/platform/resident/delete'
+      nopq: '/ajax/platform/info/residentOrgs',
+      add: '/ajax/platform/resident',
+      del: '/ajax/platform/resident/delete'
     },
     demand: {
-      nopq: utilUrl + '/demand/search/platform', // 查询在平台发布的需求
-      add: utilUrl + '/demand/publishInPlatform' // 平台新增需求
+      nopq: '/ajax/demand/search/platform', // 查询在平台发布的需求
+      add: '/ajax/demand/publishInPlatform' // 平台新增需求
     },
-    addOrgs: utilUrl + '/platform/add/info', // 增加企业
-    queryWare: utilUrl + '/platform/info/wares', // 找服务
-    queryResource: utilUrl + '/platform/info/resources' // 找资源
+    addOrgs: '/ajax/platform/add/info', // 增加企业
+    queryWare: '/ajax/platform/info/wares', // 找服务
+    queryResource: '/ajax/platform/info/resources' // 找资源
 };
 
 http.kxQurey = {
     sign: {
-      isReg: utilUrl + '/isReg', // 手机是否注册
-      msgLogin: utilUrl + '/mobileLogin', // 手机登录科袖
-      msgLoginVc: utilUrl + '/sendMobileForLogin', // 登录科袖所需的短信验证码
-      msgVC: utilUrl + '/phoneValidCode', // 发送手机验证码
-      imgVC: utilUrl + '/PictureVC' // 图形验证
+      isReg: '/ajax/isReg', // 手机是否注册
+      msgLogin: '/ajax/mobileLogin', // 手机登录科袖
+      msgLoginVc: '/ajax/sendMobileForLogin', // 登录科袖所需的短信验证码
+      msgVC: '/ajax/phoneValidCode', // 发送手机验证码
+      imgVC: '/ajax/PictureVC' // 图形验证
     },
     demand: {
-      add: utilUrl + '/demand' // 新增需求
+      add: '/ajax/demand' // 新增需求
     },
     article: {
-      save: utilUrl + '/article/save', // 新增文章
-      draft: utilUrl + '/article/draft', // 存草稿/预览
-      timing: utilUrl + '/article/timing', // 定时发布文章
-      del: utilUrl + '/article/deleteArticle', // 删除文章
-      query: utilUrl + '/article/query', // 文章详细内容
-      pqpublish: utilUrl + '/article/pqpublish' // 已发布的文章列表
+      save: '/ajax/article/save', // 新增文章
+      draft: '/ajax/article/draft', // 存草稿/预览
+      timing: '/ajax/article/timing', // 定时发布文章
+      del: '/ajax/article/deleteArticle', // 删除文章
+      query: '/ajax/article/query', // 文章详细内容
+      pqpublish: '/ajax/article/pqpublish' // 已发布的文章列表
     },
     professor: {
-      query: utilUrl + '/professor/baseInfo/', // 专家基础信息
-      researchArea: utilUrl + '/researchArea/' // 研究方向
+      query: '/ajax/professor/baseInfo/', // 专家基础信息
+      researchArea: '/ajax/researchArea/' // 研究方向
     },
     org: {
-      query: utilUrl + '/org/' // 企业基础信息
+      query: '/ajax/org/' // 企业基础信息
     },
     leaveMsg: {
-      count: utilUrl + '/leavemsg/count' // 留言数量
+      count: '/ajax/leavemsg/count' // 留言数量
     },
-    cachedFile: utilUrl + '/cachedFileUpload', // 上传缓存地址
-    qaHotKey: utilUrl + '/dataDict/qaHotKey', // 检索关键词
-    editor: utilUrl + '/editor/controller' // 图文编辑访问的地址
+    cachedFile: '/ajax/cachedFileUpload', // 上传缓存地址
+    qaHotKey: '/ajax/dataDict/qaHotKey', // 检索关键词
+    editor: '/ajax/editor/controller' // 图文编辑访问的地址
 };
 
 export default http;

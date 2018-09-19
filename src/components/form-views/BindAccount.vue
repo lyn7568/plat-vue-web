@@ -76,7 +76,7 @@
       },
       cblur(ar) {
         if (util.regular(this.emailName.trim(), 'mail')) {
-          this.$axios.get(httpUrl.utilUrl + '/platform/checkEmail', {
+          this.$axios.get('/ajax/platform/checkEmail', {
             params: {
               email: this.emailName
             }
@@ -87,7 +87,7 @@
               } else {
                     if (ar === 1) {
                       this.dialogFormVisible = false;
-                      this.$axios.post(httpUrl.utilUrl + '/platform/reqBindMail', {
+                      this.$axios.post('/ajax/platform/reqBindMail', {
                           id: this.platId,
                           mail: this.emailName,
                           url: httpUrl.platUrl + '/#/upMail?sc'

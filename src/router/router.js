@@ -30,7 +30,7 @@ export const upMail = {
 export const otherRouter = {
   path: '/',
   name: 'otherRouter',
-  redirect: '/home',
+  redirect: 'home',
   component: Main,
   children: [
     { path: 'home',
@@ -67,14 +67,13 @@ export const otherRouter = {
       title: '关于我们',
       name: 'about',
       component: () => import('@/components/main-views/ViewAboutUs.vue')
-      // component: resolve => { require(['../components/ViewAboutUs.vue'], resolve); }
     }
   ]
 };
 
 // 作为工作台bench子页面展示
 export const appRouter = {
-  path: '/',
+  path: '',
   name: 'appRouter',
   component: WorkMain,
   children: [

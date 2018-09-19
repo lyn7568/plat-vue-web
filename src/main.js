@@ -1,3 +1,5 @@
+import 'babel-polyfill';
+
 import Vue from 'vue';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -24,8 +26,6 @@ Vue.use(BackTop);
 Vue.use(defaultPage);
 Vue.use(CityPick);
 
-// var PLAT = window.PLAT;
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -40,7 +40,7 @@ new Vue({
     /* eslint-disable no-undef */
     this.plat = PLAT.info;
     document.title = this.plat.title;
-    Cookies.set('platId', this.plat.id);
+    Cookies.set('platId', process.env.PLAT_ID);
     Cookies.set('platSource', this.plat.source);
   },
   created () {

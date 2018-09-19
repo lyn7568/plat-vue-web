@@ -1,17 +1,10 @@
 import Vue from 'vue';
 import axios from 'axios';
 import qs from 'qs';
-// import http from './http';
-
-// const ajaxUrl = 'http://192.168.3.233:81';
-// const ajaxUrl = env === 'development'
-//     ? 'http://192.168.3.233:81'
-//     : env === 'production'
-//         ? 'https://www.url.com'
-//         : 'https://debug.url.com';
+import http from './http';
 
 let axiosUtil = axios.create({
-    // baseURL: ajaxUrl,
+    baseURL: http.platUrl,
     timeout: 30000,
     paramsSerializer: function(params) {
         return qs.stringify(params, {arrayFormat: 'repeat'});

@@ -78,7 +78,7 @@
                     $data[i].offt = '';
                   }
                 }
-                this.$axios.get(httpUrl.utilUrl + '/researchArea/' + $data[i].id).then(res => {
+                this.$axios.get('/ajax/researchArea/' + $data[i].id).then(res => {
                   const $info = res.data;
                   let arr = [];
                   for (let j = 0; j < $info.length; j++) {

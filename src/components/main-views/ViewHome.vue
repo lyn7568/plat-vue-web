@@ -13,14 +13,18 @@
           <demandIssueLogin ref="issueDemand" :dialogFormVisible="dialogFormVisible" v-on:dialogChangedLogin="getChildrenChangeLogin($event)"></demandIssueLogin>
         </el-tab-pane>
       </el-tabs>
-      <!-- <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="pubDemand">立即发布</el-button><br/>
-        <el-checkbox checked disabled>我已阅读并同意<a :href="kexiuLink + '/privacy.html'">《科袖用户协议》</a></el-checkbox>
-      </div> -->
     </el-dialog>
 
+    <el-dialog class="videoShow" title="邢台科技条件平台宣传片" :visible.sync="videoVisible" width="940px" @close='closeVideo'>
+      <video class="video-box" v-if="videoVisible" :poster="posterImg" autoplay controls loop controlsList="nodownload">
+          <source :src="videoSrc" type="video/mp4">
+      </video>
+    </el-dialog>
     <div class="block-wrapper">
-      <div class="wrapper-left">
+      <div class="wrapper-left video-wrapper">
+        <div class="video-mask" @click="showVideo">
+          <img src="./img/video.png" width="80">
+        </div>
         <img :src="plat.platimgurl" width="800" height="280">
       </div>
       <div class="wrapper-right content-wrapper">
@@ -227,7 +231,10 @@
         aboutUs: '',
         inputSer: '',
         inputRes: '',
-        dialogFormVisible: false
+        dialogFormVisible: false,
+        videoVisible: false,
+        posterImg: require('../../../static/xtkfq/video/xt.png'),
+        videoSrc: this.plat.videoSrc ? this.plat.videoSrc : ''
       };
     },
     created() {
@@ -284,6 +291,12 @@
       });
     },
     methods: {
+      showVideo() {
+        this.videoVisible = true;
+      },
+      closeVideo() {
+        this.videoVisible = false;
+      },
       getChildrenChange(msg) {
         this.dialogFormVisible = msg;
       },
@@ -499,6 +512,19 @@
         display: flex
         flex-direction: column
         justify-content: space-between
+      .video-wrapper
+        position: relative
+        display: block
+        .video-mask
+          display: flex
+          justify-content: center
+          align-items: center
+          width:100%
+          height:100%
+          position:absolute
+          top:0
+          background:rgba(0,0,0,.3)
+          cursor:pointer
       .wrapper-right
         width: 280px
         height: 280px
@@ -650,6 +676,27 @@
           margin-bottom:10px
         a
           color:$mainColor
+    .videoShow
+      .video-box
+        width:100%
+        height:530px
+        bg-image('/static/xtkfq/video/xt.png')
+      .el-dialog
+        background:rgba(0,0,0,.1)
+        position:relative
+        .el-dialog__header
+          width:100%
+          position:absolute
+          box-sizing:border-box
+          z-index:8
+          .el-dialog__title
+            color:#fff
+          .el-dialog__headerbtn
+            z-index:10
+            .el-dialog__headerbtn .el-dialog__close
+              color:#fff
+        .el-dialog__body
+          padding:0
 
     .login-box
       position:relative

@@ -4,25 +4,13 @@
 
 const path = require('path')
 
-// var ServerPost = {
-//   'api': 'http://192.168.3.233:81'
-// }
-
 module.exports = {
   dev: {
 
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
-    	// '/api': {
-     //    target: ServerPost.api,
-     //    changeOrigin: true,
-     //    pathRewrite: {
-     //      '^/api': ''
-     //    }
-     //  }
-    },
+    proxyTable: {},
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
@@ -68,7 +56,7 @@ module.exports = {
      * Source Maps
      */
 
-    productionSourceMap: true,
+    productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 
