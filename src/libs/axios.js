@@ -5,7 +5,7 @@ import http from './http';
 
 let axiosUtil = axios.create({
     baseURL: http.platUrl,
-    timeout: 30000,
+    // timeout: 30000,
     paramsSerializer: function(params) {
         return qs.stringify(params, {arrayFormat: 'repeat'});
     }
