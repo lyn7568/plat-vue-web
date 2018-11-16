@@ -113,10 +113,8 @@
 
       querySearch(queryString, cb) {
         this.$axios.get(httpUrl.kxQurey.qaHotKey, {
-          params: {
-            key: queryString
-          }
-        }).then((res) => {
+          key: queryString
+        }, (res) => {
           if (res.success) {
             var $info = res.data;
             var oSr = [];

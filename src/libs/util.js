@@ -120,6 +120,31 @@ util.Dictionary = {
     }]
 };
 
+// 企业规模
+util.orgSizeShow = {
+  '1': '50人以内',
+  '2': '50-100人',
+  '3': '100-200人',
+  '4': '200-500人',
+  '5': '500-1000人',
+  '6': '1000人以上'
+};
+
+// 企业类型
+util.orgTypeShow = {
+  '2': '上市企业',
+  '3': '外资企业',
+  '4': '合资企业',
+  '5': '独资企业',
+  '6': '个体经营',
+  '7': '政府机构',
+  '8': '公益组织',
+  '9': '协会学会',
+  '10': '新闻媒体',
+  '11': '教育机构',
+  'undefined': ''
+};
+
 /**
  * 数据字典
  */
@@ -196,7 +221,64 @@ util.urlParse = function (name) {
  * 拼接图片链接地址
  */
 util.ImageUrl = function (str, bol) {
-    return bol ? (ekexiuUrl + '/images/' + str) : (ekexiuUrl + '/data/' + str);
+  return bol ? (ekexiuUrl + '/images/' + str) : (ekexiuUrl + '/data/' + str);
+};
+
+/**
+ * 拼接用户-所在机构，所属部门，职位
+ * 拼接用户-职称/职位，所在机构 bol
+ */
+util.formatOfft = function (str, bol) {
+  var proOther = '';
+  var proOtherBol = '';
+  if (!bol) {
+    if (str.orgName) {
+      if (str.department) {
+        if (str.office) {
+          proOther = str.orgName + '，' + str.department + '，' + str.office;
+        } else {
+          proOther = str.orgName + '，' + str.department;
+        };
+      } else {
+        if (str.office) {
+          proOther = str.orgName + '，' + str.office;
+        } else {
+          proOther = str.orgName;
+        };
+      };
+    } else {
+      if (str.department) {
+        if (str.office) {
+          proOther = str.department + '，' + str.office;
+        } else {
+          proOther = str.department;
+        };
+      } else {
+        if (str.office) {
+          proOther = str.office;
+        };
+      };
+    };
+  } else {
+    if (str.title) {
+      if (str.orgName) {
+        proOtherBol = str.title + '，' + str.orgName;
+      } else {
+        proOtherBol = str.title;
+      }
+    } else {
+      if (str.office) {
+        if (str.orgName) {
+          proOtherBol = str.office + '，' + str.orgName;
+        } else {
+          proOtherBol = str.office;
+        }
+      } else {
+        proOtherBol = '';
+      }
+    }
+  }
+  return bol ? proOtherBol : proOther;
 };
 
 // util.cutOutUrl = function (str) {
@@ -208,28 +290,28 @@ util.ImageUrl = function (str, bol) {
 /**
  * String与Array之间的转换
  */
-// util.strToArr = function (str) {
-//     if (str) {
-//         var subs = new Array();
-//         if (subs.indexOf(',')) {
-//             subs = str.split(',');
-//         } else {
-//             subs[0] = str;
-//         }
-//         return subs;
-//     }
-// };
-// util.arrToStr = function (arr) {
-//     var newStr = arr.join(',');
-//     return newStr;
-// };
+util.strToArr = function (str) {
+  if (str) {
+    var subs = [];
+    if (str.indexOf(',')) {
+        subs = str.split(',');
+    } else {
+        subs[0] = str;
+    }
+    return subs;
+  }
+};
+util.arrToStr = function (arr) {
+  var newStr = arr.join(',');
+  return newStr;
+};
 
 /*
  * 根据Value格式化为带有换行、空格格式的HTML代码
  * @param strValue {String} 需要转换的值
  * @return  {String}转换后的HTML代码
  * @example
- * getFormatCode("测\r\n\s试")  =>  “测<br/> 试”
+ * getFormatCode('测\r\n\s试')  =>  “测<br/> 试”
  */
 util.getFormatCode = function(strValue) {
   return strValue.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, ' ');
@@ -307,6 +389,31 @@ util.dateChange = function(startTime) { // 默认返回yyyy月MM日dd HH:mm
     } else {
         return startTime.substring(0, 4) + '年' + startTime.substring(4, 6).replace(/\b(0+)/gi, '') + '月' + startTime.substring(6, 8).replace(/\b(0+)/gi, '') + '日 ' + startTime.substring(8, 10) + ':' + startTime.substring(10, 12);
     }
+};
+
+util.TimeTr = function(dealtime) {
+  var myDate = new Date();
+  var s = dealtime;
+  var y = s.substr(0, 4);
+  var m = s.substr(4, 2);
+  var d = s.substr(6, 2);
+  var h = s.substr(8, 2);
+  var minute = s.substr(10, 2);
+  var formatTime;
+  if (s.length <= 6) {
+    formatTime = y + '年' + m.replace(/\b(0+)/gi, '') + '月';
+  } else if (s.length > 6 && s.length <= 8) {
+    formatTime = m.replace(/\b(0+)/gi, '') + '月' + d.replace(/\b(0+)/gi, '') + '日 ';
+    if (y !== myDate.getFullYear()) {
+      formatTime = y + '年' + m.replace(/\b(0+)/gi, '') + '月' + d.replace(/\b(0+)/gi, '') + '日 ';
+    }
+  } else {
+    formatTime = m.replace(/\b(0+)/gi, '') + '月' + d.replace(/\b(0+)/gi, '') + '日 ' + h + ':' + minute;
+    if (y !== myDate.getFullYear()) {
+      formatTime = y + '年' + m.replace(/\b(0+)/gi, '') + '月' + d.replace(/\b(0+)/gi, '') + '日 ' + h + ':' + minute;
+    }
+  }
+  return formatTime;
 };
 
 export default util;

@@ -34,15 +34,13 @@
     methods: {
       queryPaltNews() {
         this.$axios.get(httpUrl.hQuery.platNews.nopq, {
-          params: {
-            ownerId: this.platId,
-            articleType: '3',
-            status: 1,
-            rows: this.rows,
-            publishTime: this.dataO.bTime,
-            articleId: this.dataO.bId
-          }
-        }).then((res) => {
+          ownerId: this.platId,
+          articleType: '3',
+          status: 1,
+          rows: this.rows,
+          publishTime: this.dataO.bTime,
+          articleId: this.dataO.bId
+        }, (res) => {
           console.log(res);
           if (res.success) {
             var $info = res.data;

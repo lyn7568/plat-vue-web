@@ -1,18 +1,19 @@
 <template>
 	<div class="cooperation">
 		<div class="content-wrapper block-wrapper">
-			<baseAgency></baseAgency>
+			<div class="content-title content-title-center">平台合作机构</div>
+			<baseCompany></baseCompany>
 		</div>
 		<BackTop></BackTop>
 	</div>
 </template>
 
 <script>
-	import baseAgency from '@/views/sub-component/BaseAgency';
+	import baseCompany from '@/views/sub-component/BaseCompany';
 
 	export default {
     components: {
-      baseAgency
+      baseCompany
     }
   };
 </script>

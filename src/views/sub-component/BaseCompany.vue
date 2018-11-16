@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="block-container">
-      <router-link class="block-item org-item" v-for="item in orgData" :key="item.index" :to="'org_show?id='+item.id" target="_blank">
+      <router-link class="block-item org-item" v-for="item in orgData" :key="item.index" :to="'comp_show?id='+item.id" target="_blank">
         <div class="item-block-org">
           <div class="item-pic-org">
             <img :src="orgLogoUrl(item)">

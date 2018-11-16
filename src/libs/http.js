@@ -79,12 +79,21 @@ http.kxQurey = {
       query: '/ajax/article/query', // 文章详细内容
       pqpublish: '/ajax/article/pqpublish' // 已发布的文章列表
     },
+    resource: {
+      query: '/ajax/resource/queryOne'
+    },
+    patent: {
+      query: '/ajax/ppatent/qo',
+      author: '/ajax/ppatent/authors'
+    },
     professor: {
       query: '/ajax/professor/baseInfo/', // 专家基础信息
+      query2: '/ajax/professor/info/',
       researchArea: '/ajax/researchArea/' // 研究方向
     },
     org: {
-      query: '/ajax/org/' // 企业基础信息
+      query: '/ajax/org/', // 企业基础信息
+      reg: '/ajax/org/regInfo' // 机构资质
     },
     leaveMsg: {
       count: '/ajax/leavemsg/count' // 留言数量

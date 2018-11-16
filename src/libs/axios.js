@@ -50,9 +50,34 @@ axiosUtil.interceptors.response.use(function (response) {
     return Promise.reject(error);
 });
 
+var ret = {
+  get: function(url, data, sh, eh) {
+    axiosUtil({
+      method: 'get',
+      url: url,
+      params: data
+    }).then(res => {
+      sh(res);
+    }).catch(err => {
+      if (eh) eh(err);
+    });
+  },
+  post: function(url, data, sh, eh) {
+    axiosUtil({
+      method: 'post',
+      url: url,
+      data: data
+    }).then(res => {
+      sh(res);
+    }).catch(err => {
+      if (eh) eh(err);
+    });
+  }
+};
+
 export default {
   install () {
-    Vue.prototype.$axios = axiosUtil;
-    Vue.axios = axiosUtil;
+    Vue.prototype.$axios = ret;
+    Vue.axios = ret;
   }
 };

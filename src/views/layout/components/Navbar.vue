@@ -1,5 +1,5 @@
 <template>
-  <div class="contain-wrapper" v-if="showBol">
+  <div class="contain-wrapper">
     <el-menu class="navbar" mode="horizontal">
       <div class="tag-breadcrumb">当前位置：</div><breadcrumb></breadcrumb>
     </el-menu>

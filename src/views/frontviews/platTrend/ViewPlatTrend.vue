@@ -10,9 +10,15 @@
 						<el-tab-pane label="平台新闻" name="first">
 							<platNews></platNews>
 						</el-tab-pane>
-						<el-tab-pane label="企业动态" name="second">
+						<el-tab-pane label="采访专栏" name="second">
 							<platTrends></platTrends>
 						</el-tab-pane>
+            <el-tab-pane label="政策法规" name="third">
+              <platTrends></platTrends>
+            </el-tab-pane>
+            <el-tab-pane label="通知公告" name="fourth">
+              <platTrends></platTrends>
+            </el-tab-pane>
 					</el-tabs>
 				</div>
 			</div>

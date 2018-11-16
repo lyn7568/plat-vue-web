@@ -1,5 +1,5 @@
 <template>
-  <router-link class="list-item" :to="'reso_show?id='+itemSingle.id" target="_blank">
+  <router-link class="list-item" :to="'resu_patent?id='+itemSingle.id" target="_blank">
     <div class="list-head" :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
     <div class="list-info">
       <div class="list-tit list-topic">{{itemSingle.name}}</div>

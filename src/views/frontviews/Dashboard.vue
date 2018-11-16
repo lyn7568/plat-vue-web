@@ -344,13 +344,11 @@
       // },
       queryPaltNews(id) {
         this.$axios.get(httpUrl.hQuery.platNews.nopq, {
-          params: {
-            ownerId: id,
-            articleType: '3',
-            status: 1,
-            rows: 4
-          }
-        }).then((res) => {
+          ownerId: id,
+          articleType: '3',
+          status: 1,
+          rows: 4
+        }, (res) => {
           if (res.success) {
             var $info = res.data;
             this.paltNews = $info;
@@ -359,11 +357,9 @@
       },
       queryOrgTrends(id) {
         this.$axios.get(httpUrl.hQuery.orgTrends.nopq, {
-          params: {
-            pid: id,
-            rows: 4
-          }
-        }).then((res) => {
+          pid: id,
+          rows: 4
+        }, (res) => {
           if (res.success) {
             var _this = this;
             var $info = res.data;
@@ -378,11 +374,9 @@
       },
       queryResidentOrgs(id) {
         this.$axios.get(httpUrl.hQuery.residentOrgs.nopq, {
-          params: {
-            pid: id,
-            rows: this.rows
-          }
-        }).then((res) => {
+          pid: id,
+          rows: this.rows
+        }, (res) => {
           if (res.success) {
             var $info = res.data;
             this.residentOrgs = $info;
@@ -391,11 +385,9 @@
       },
       queryPlatResources(id) {
         this.$axios.get(httpUrl.hQuery.queryResource, {
-          params: {
-            pid: id,
-            rows: this.rows
-          }
-        }).then((res) => {
+          pid: id,
+          rows: this.rows
+        }, (res) => {
           var _this = this;
           if (res.success) {
             var $info = res.data;
@@ -410,11 +402,9 @@
       },
       queryPlatWares(id) {
         this.$axios.get(httpUrl.hQuery.queryWare, {
-          params: {
-            pid: id,
-            rows: this.rows
-          }
-        }).then((res) => {
+          pid: id,
+          rows: this.rows
+        }, (res) => {
           var _this = this;
           if (res.success) {
             var $info = res.data;
@@ -453,10 +443,8 @@
       },
       getAboutUs(id) {
         this.$axios.get(httpUrl.hQuery.baseInfo.query, {
-          params: {
-            id: id
-          }
-        }).then((res) => {
+          id: id
+        }, (res) => {
           if (res.data) {
             if (res.data.descp) {
               this.aboutUs = res.data.descp;
@@ -499,7 +487,7 @@
         };
         if (type === '1') {
           _this.$axios.get(httpUrl.kxQurey.professor.query + id, {
-            }).then((res) => {
+            }, (res) => {
             if (res.success) {
               let $info = res.data;
               item.ownerName = $info.name;
@@ -508,7 +496,7 @@
           });
         } else if (type === '2') {
           _this.$axios.get(httpUrl.kxQurey.org.query + id, {
-            }).then((res) => {
+            }, (res) => {
             if (res.success) {
               let $info = res.data;
               item.ownerName = $info.forShort ? $info.forShort : $info.name;
@@ -612,7 +600,7 @@
         width:280px
         height:470px
         .content
-          text-ellipsis-n(12,28px)
+          text-ellipsis-n(14,28px)
       .full-wrapper
         width:100%
         .swiper-container:hover

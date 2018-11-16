@@ -34,13 +34,11 @@
     methods: {
       queryOrgTrends(id) {
         this.$axios.get(httpUrl.hQuery.orgTrends.nopq, {
-           params: {
-            pid: this.platId,
-            rows: this.rows,
-            publishTime: this.dataO.bTime,
-            shareId: this.dataO.bShareId
-          }
-        }).then((res) => {
+          pid: this.platId,
+          rows: this.rows,
+          publishTime: this.dataO.bTime,
+          shareId: this.dataO.bShareId
+        }, (res) => {
           console.log(res);
           if (res.success) {
             var $info = res.data;

@@ -46,11 +46,9 @@
       leaveWordTotal(item) {
         var _this = this;
          this.$axios.get(httpUrl.kxQurey.leaveMsg.count, {
-          params: {
-            sid: item.articleId,
-            stype: 1
-          }
-        }).then((res) => {
+          sid: item.articleId,
+          stype: 1
+        }, (res) => {
           if (res.success) {
             _this.leverNumber = res.data;
             _this.$forceUpdate();
@@ -61,7 +59,7 @@
         var _this = this;
         if (item.articleType) {
           this.$axios.get(httpUrl.kxQurey.org.query + item.ownerId, {
-            }).then((res) => {
+            }, (res) => {
             if (res.success) {
               let $info = res.data;
               _this.ownerName = $info.forShort ? $info.forShort : $info.name;

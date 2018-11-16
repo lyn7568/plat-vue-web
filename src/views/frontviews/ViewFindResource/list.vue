@@ -72,14 +72,12 @@
     methods: {
       searchResource() {
         this.$axios.get(httpUrl.hQuery.queryResource, {
-          params: {
-            key: this.keyVal,
-            pid: this.platId,
-            shareId: this.dataO.bShareId,
-            time: this.dataO.bTime,
-            rows: this.rows
-          }
-        }).then((res) => {
+          key: this.keyVal,
+          pid: this.platId,
+          shareId: this.dataO.bShareId,
+          time: this.dataO.bTime,
+          rows: this.rows
+        }, (res) => {
           if (res.success) {
             var $info = res.data;
             if ($info.length > 0) {

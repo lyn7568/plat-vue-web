@@ -1,36 +1,36 @@
 <template>
   <div class="main-content">
-		<div class="wrapper-left">
-			<div class="block-wrapper search-wrapper">
-				<el-input v-model="keyVal" @keyup.enter.native="keywordSearch" placeholder="请输入服务内容、发布者或相关关键词" class="input-with-select">
-					<el-button slot="append" icon="el-icon-search" @click="keywordSearch">搜索</el-button>
-				</el-input>
-			</div>
-			<div class="block-wrapper">
-				<!-- <div class="content-wrapper tab-wrapper">
-					<div class="tab-lable">服务类型：</div>
-					<ul class="tab-sort">
-						<li>不限</li>
-						<li>检测服务</li>
-					</ul>
-				</div> -->
-				<div class="tab-contain">
+    <div class="wrapper-left">
+      <div class="block-wrapper search-wrapper">
+        <el-input v-model="keyVal" @keyup.enter.native="keywordSearch" placeholder="请输入服务内容、发布者或相关关键词" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="keywordSearch">搜索</el-button>
+        </el-input>
+      </div>
+      <div class="block-wrapper">
+        <!-- <div class="content-wrapper tab-wrapper">
+          <div class="tab-lable">服务类型：</div>
+          <ul class="tab-sort">
+            <li>不限</li>
+            <li>检测服务</li>
+          </ul>
+        </div> -->
+        <div class="tab-contain">
           <div v-show="!ifDefault">
             <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
             <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
           </div>
           <defaultPage v-show="ifDefault"></defaultPage>
-				</div>
-			</div>
-		</div>
-		<div class="wrapper-right">
-			<div class="block-wrapper" v-if="plat.adinfo.length" v-for="item in plat.adinfo" :key="item.index">
-				<a class="ad-wrapper" :href="item.adUrl" target="_blank">
-					<img :src="item.imgUrl" width="280" height="200">
-				</a>
-			</div>
-		</div>
-		<BackTop></BackTop>
+        </div>
+      </div>
+    </div>
+    <div class="wrapper-right">
+      <div class="block-wrapper" v-if="plat.adinfo.length" v-for="item in plat.adinfo" :key="item.index">
+        <a class="ad-wrapper" :href="item.adUrl" target="_blank">
+          <img :src="item.imgUrl" width="280" height="200">
+        </a>
+      </div>
+    </div>
+    <BackTop></BackTop>
   </div>
 </template>
 
@@ -41,8 +41,8 @@
 
   import baseService from '@/views/sub-component/BaseService';
 
-	export default {
-		props: {
+  export default {
+    props: {
       plat: {
         type: Object
       }
@@ -72,14 +72,12 @@
     methods: {
       searchService() {
         this.$axios.get(httpUrl.hQuery.queryWare, {
-          params: {
             key: this.keyVal,
             pid: this.platId,
             shareId: this.dataO.bShareId,
             time: this.dataO.bTime,
             rows: this.rows
-          }
-        }).then((res) => {
+        }, (res) => {
           if (res.success) {
             var $info = res.data;
             if ($info.length > 0) {

@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="block-container">
-      <a class="block-item" v-for="item in userData" :key="item.index" @click="linkUrl(item)">
+      <router-link class="block-item" v-for="item in userData" :key="item.index" :to="'exp_show?id='+item.id" target="_blank">
         <div class="show-head" :style="{backgroundImage:'url('+ headUrl(item) +')'}"></div>
         <div class="show-info">
           <div class="info-tit">{{item.name}}<em class="authicon" :class="headIcon(item)"></em></div>
           <div class="info-tag" v-if="item.offt">{{item.offt}}</div>
           <div class="info-desc" v-if="item.reserachs">研究方向：{{item.reserachs}}</div>
         </div>
-      </a>
+      </router-link>
     </div>
     <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower" v-if="!num"></Loading>
   </div>
@@ -47,13 +47,11 @@
     methods: {
       buttedProfessors(id) {
         this.$axios.get(httpUrl.hQuery.buttedProfessors.nopq, {
-          params: {
-            pid: id,
-            uid: this.dataO.bUid,
-            time: this.dataO.bTime,
-            rows: this.num ? this.num : this.rows
-          }
-        }).then((res) => {
+          pid: id,
+          uid: this.dataO.bUid,
+          time: this.dataO.bTime,
+          rows: this.num ? this.num : this.rows
+        }, (res) => {
           if (res.success) {
             var $data = res.data;
             if ($data.length > 0) {
@@ -78,7 +76,7 @@
                     $data[i].offt = '';
                   }
                 }
-                this.$axios.get('/ajax/researchArea/' + $data[i].id).then(res => {
+                this.$axios.get('/ajax/researchArea/' + $data[i].id, {}, (res) => {
                   const $info = res.data;
                   let arr = [];
                   for (let j = 0; j < $info.length; j++) {
@@ -109,9 +107,6 @@
       },
       headIcon(item) {
         return util.autho(item.authType, item.orgAuth, item.authStatus);
-      },
-      linkUrl(item) {
-        this.$router.push({ path: 'expertShow', params: { id: item.id } });
       },
       loadLower() {
         if (this.loadingModalShow && !this.isLoading) {

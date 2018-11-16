@@ -25,10 +25,8 @@
     methods: {
       getAboutUs(id) {
         this.$axios.get(httpUrl.hQuery.baseInfo.query, {
-          params: {
-            id: id
-          }
-        }).then((res) => {
+          id: id
+        }, (res) => {
           this.aboutUs = util.getFormatCode(res.data.descp);
         });
       }

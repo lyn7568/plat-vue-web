@@ -1,47 +1,3 @@
-
-
-
-/*.bottomShow .shareCode{bottom:auto;top:30px;}
-.bottomShow .shareCode:after{border:12px solid transparent;border-bottom-color:rgba(0,0,0,.6);top:-24px;left:22px;bottom:auto;}*/
-
-.headconBox .cmpimgBox{width:210px;border-radius:0;background:#fff;}
-.headconBox .cmpimgBox .boxBlock{width:210px;}
-.headconBox .reInfoBlock{width:100%;padding-left:170px;}
-.headconBox .reInfoBlock .h1Font{font-size: 18px;color:#666;margin-bottom:10px;}
-.headconBox .reInfoBlock .h2Font{font-size: 16px;color:#666;margin-bottom:8px;}
-.headconBox .reInfoBlock .h3Font{font-size: 14px;color:#999;line-height: 20px;}
-.headconBox .reInfoBlock.head-center{}
-.headconBox .head-center .h1Font{margin-bottom:0;}
-.headconBox .head-center .h2Font{margin-bottom:0;}
-.headconBox .head-center .proEdit{font-size: 14px;padding-left:24px;right: 34px;top:40px;}
-.headconBox .goSpan{position: absolute;right: 30px;top:50%;margin-top:-35px;}
-.operateBlock{font-size: 14px;color:#999;}
-.operateBlock>ul>li{float: left;font-size: 14px;color:#999;min-height: 24px;margin-right: 20px;}
-.operateBlock>ul>li .operateicon{margin-left:5px;cursor: pointer;}
-.operateBlock>ul>li>span{position: relative;top:-2px;font-size: 14px;}
-.headconBox .operateBlock>ul>li{margin-right:0;}
-/*
-.navconBox{padding:0 30px;background: #fff;border-bottom: 20px #f4f6f8 solid;position: relative;}
-.navconBox .rightbtn{position: relative;top:0;width:54px;}
-.navconBox .rightbtn .foldtr {top: 26px;right:32px;}
-.navconBox .rightbtn .foldtr:before{border-top-color:#666;}
-.navconBox>ul{position: relative}
-.navconBox>ul>li{position:relative;float: left;padding:20px 0;cursor:pointer;margin-right:36px;font-size: 16px;color: #999;}
-.navconBox>ul>li:last-child{margin-right: 0;}
-.navconBox>ul>li>.counts{font-size: 15px;}
-.navconBox>ul>li.liNow:after{position: absolute;left: 0;bottom: 0;content:"";height:3px;background:#000;width: 100%;}
-.navconBox>ul>li.liNow{color: #000;}
-.navconBox .moreNav{display:none;border-top: 1px solid #E5E5E5;margin:0 -30px;padding:0 30px}
-.navconBox .moreNav .moreNavUl{}
-.navconBox .moreNav .moreNavUl>li{position: relative;float: left;padding: 20px 0;cursor: pointer;margin-right: 60px; font-size: 16px;color: #999;}
-.navconBox .moreNav .moreNavUl>li:last-child{margin-right: 0;}
-.navconBox .moreNav .moreNavUl>li.liNow{color: #000;}
-.navconBox .moreNav .moreNavUl .rightbtn{width:110px;}
-.navconBox .moreNav .table-drop{height:auto;top:50px;right:-8px;width:140px;}
-.navconBox .moreNav .table-drop>li{position: relative;padding:10px 0;text-align:center;cursor: pointer;font-size: 16px;color: #999;}
-.navconBox .moreNav .table-drop>li.liNow{color: #000;}
-.navconBox .moreNav .moreNavUl .rightbtn .foldtr{right:24px;}*/
-
   .browse-main
     .block-wrapper
       display: flex
@@ -50,12 +6,34 @@
       .content-wrapper
         width:100%
         box-sizing:border-box
+        text-align:justify
+        .tag-item
+          margin: 10px 0
+          .el-tag
+            margin:5px
+            &.tag-line
+              display:inline-block
+              width:auto
+        .rel-detail
+          font-size:15px
+          line-height:26px
+          .rel-item
+            margin-bottom:15px
+            &:last-child
+              margin-bottom:0
+            .rel-tit
+              font-size: 16px
+              line-height:30px
+      .split-other
+        margin-bottom:20px
       .headcon-box
         min-height:160px
         background: #fff
         position: relative
         display:flex
         align-items: center
+        &.detail-box
+          min-height:auto
         .headimg-box
           position:absolute
           top:50%
@@ -66,130 +44,128 @@
           border:1px solid #E5E5E5
           border-radius:50%
           background-size: cover
-        .reInfo-box
+        .zoom-box
+          width: 362px
+        .show-info
           width:100%
-          padding-left:170px
+          &.reInfo-box
+            padding-left:170px
           .info-tit
             font-size: 18px
-            color:#666
+            color:$commonFont
             margin-bottom:10px
+            &.info-tit-big
+              font-size: 22px
+              line-height: 32px
           .info-tag
             font-size: 16px
-            color:#666
-            margin-bottom:8px
-          .h3Font{font-size: 14px;color:#999;line-height: 20px;}
+            color:$commonFont
+            margin-bottom:10px
+          .info-operate
+            display:flex
+            color:$secondaryFont
+            .addr
+              margin-right: 10px
+        .goSpan
+          min-width: 180px
+        &.org-head
+          .headimg-box
+            border-radius(4px)
+            center-items(200px, 140px)
+          .reInfo-box
+            padding-left:230px
+        &.hdetail-box
+          align-items:flex-start
+          .reInfo-box
+            padding-left:15px
+            position: relative
+            min-height: 270px
+            padding-bottom: 24px
+            .zoom-operate
+              position:absolute
+              bottom:0
       .wrapper-left
         padding: 0
         display: flex
         flex-direction: column
-        justify-content: space-between
+        .el-menu-demo
+         margin-bottom:20px
       .wrapper-right
         width: 280px
-        height: 280px
-        .info-main
-          font-size: 24px
-          line-height: 34px
-          color:$mainFont
-        .info-tip
-          margin-top:12px
-          font-size: 14px
-          line-height: 22px
-          color:$secondaryFont
-      .plat-news
-        width:800px
-        height:210px
-        .content-title
-          .el-tabs__item
-            font-size:16px
-            font-weight:bold
-          .el-tabs__item.is-active
-            background:$mainColor
-            color:#ffffff
-          .el-tabs--top .el-tabs__item.is-top:nth-child(2)
-            padding-left:20px
-          .el-tabs--top .el-tabs__item.is-top:last-child
-            padding-right:20px
-        .content
-          display: flex
-          font-size: 15px
-          line-height: 30px
-          font-weight:normal
-          .pictures
-            center-items()
-          .maincon.maincon2
-            flex:1 0 180px
-            padding-left:15px
-            height:120px
-            overflow:hidden
-            li>a
-              display: flex
-              justify-content: space-between
-              line-height:30px
-              .topic
-                display:inline-block
-                width:400px
-                text-ellipsis()
-              .time
-                width: 100px
-                text-align: right
-                color:$secondaryFont
-            &.maincon2
-              width:100%
-              padding:0
-              .owner
-                display:inline-block
-                width:180px
-                text-ellipsis()
-      .about-us
-        width:280px
-        height:470px
-        .content
-          text-ellipsis-n(12,28px)
-      .full-wrapper
-        width:100%
-        .content-title
-          .content-search
-            display:flex
-            align-items:center
-            .search-wrapper
-              display:flex
-              margin-left:15px
-              .el-input__inner
-                line-height:32px
-                height:32px
-                border-top-right-radius:0
-                border-bottom-right-radius:0
-              .el-button
-                padding:8px 10px
-                border-top-left-radius:0
-                border-bottom-left-radius:0
-          .content-more
-          .item-more
-            display:inline-block
-            padding-left:20px
+        .content-wrapper
+          width: 100%
+          box-sizing: border-box
+          margin-bottom: 20px
+          .right-split
+            margin-top: 20px
+            padding-top: 10px
+            position: relative
+            &::before
+              position: absolute
+              right: 0
+              left: 0
+              top: 0
+              content:''
+              border-top:1px solid #dadada
+            &:first-child
+              margin-top: 0
+              padding-top: 0
+              &::before
+                content: none
+          .info-main
+            font-size: 24px
+            line-height: 34px
+            color:$mainFont
+          .info-tip
+            margin-top:12px
+            font-size: 14px
+            line-height: 22px
             color:$secondaryFont
-        .item-block
-          width:182px
-          overflow:hidden
-          .item-pic
-            center-items()
-          .item-text
-            margin-top:6px
-            line-height:30px
-            &.item-left
-              text-align:center
-              text-ellipsis()
-            .title
-              color:$mainFont
-              text-ellipsis()
-            .desc
-              margin-top:3px
-              color:$commonFont
-              text-ellipsis-n(2,20px)
-              height:40px
-            .owner
-              margin-top:10px
-              color:$secondaryFont
-              text-ellipsis()
-
-
+      .left-main
+        width:800px
+        .el-tabs__nav-wrap.is-top
+          background-color: #ffffff
+          border:none
+          padding:10px 20px
+          &::after
+            content:none
+        .el-tabs__item
+          font-size:15px
+        .el-tabs__header
+          margin-bottom:20px
+        .inner-wrapper
+          margin-bottom:20px
+          &:last-child
+            margin-bottom:0
+          .content-title
+            margin-bottom:2px
+          .content
+            display: flex
+            font-size: 15px
+            line-height: 30px
+            font-weight:normal
+            word-break: break-all
+            .ulM
+              width:100%
+              .liM
+                padding-left:15px
+                margin-bottom:6px
+                &:last-child
+                  margin-bottom:0
+                .liM-tit
+                  position:relative
+                  color:$mainFont
+                  small
+                    margin-left:10px
+                    color:$secondaryFont
+                  &::before
+                    content:''
+                    position: absolute
+                    left:-12px
+                    top:13px
+                    width:6px
+                    height:6px
+                    background:$mainColor
+                    border-radius: 50%
+                .liM-con
+                  color:$commonFont
