@@ -34,7 +34,6 @@
 
 <script type="text/ecmascript-6">
   import cityData from './city-data.js';
-
   export default {
     props: {
       prov: {

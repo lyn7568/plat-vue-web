@@ -1,12 +1,15 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Layout from '@/views/layout/Layout';
+import Layout from '@/views/layout/layout';
+import Common from '@/views/layout/common';
 
 Vue.use(Router);
 
 const constantRouterMap = [
   { path: '/loginPlat', component: () => import('@/views/logforms/loginPlat') },
   { path: '/findPwd', component: () => import('@/views/logforms/findPwd') },
+  { path: '/register', component: () => import('@/views/logforms/register') },
+  { path: '/enterRegister', component: () => import('@/views/logforms/enteringRegister') },
   {
     path: '/',
     component: Layout,
@@ -216,6 +219,70 @@ const constantRouterMap = [
       name: 'about',
       meta: { title: '关于平台' }
     }]
+  },
+  {
+    path: '',
+    name: 'personalCenter',
+    meta: { title: '个人中心' },
+    component: Common,
+      children: [{
+        path: '/modifyData',
+        component: () => import('@/views/personalCenter/modifyData'),
+        name: 'modifyData',
+        meta: { title: '修改资料' }
+      }, {
+        path: '/modifyPassword',
+        component: () => import('@/views/personalCenter/modifyPassword'),
+        name: 'modifyPassword',
+        meta: { title: '修改密码' }
+      }, {
+        path: '/attentionCollect',
+        component: () => import('@/views/personalCenter/attentionCollect'),
+        name: 'attentionCollect',
+        meta: { title: '关注收藏' }
+      }, {
+        path: '/myNeeds',
+        component: () => import('@/views/personalCenter/myNeeds/index'),
+        name: 'myNeeds',
+        meta: { title: '我的需求' },
+        children: [{
+          path: '/modifyDemand',
+          component: () => import('@/views/personalCenter/myNeeds/modifyDemand'),
+          name: 'modifyDemand',
+          meta: { title: '修改需求' }
+        }, {
+          path: '/examineDemand',
+          component: () => import('@/views/personalCenter/myNeeds/examineDemand'),
+          name: 'examineDemand',
+          meta: { title: '查看需求' }
+        }, {
+          path: '/myDemand',
+          component: () => import('@/views/personalCenter/myNeeds/myNeed'),
+          name: 'myDemand',
+          meta: { title: '我的需求' }
+        }]
+      }, {
+        path: '/myBusiness',
+        component: () => import('@/views/personalCenter/myNeeds/index'),
+        name: 'myBusiness',
+        meta: { title: '我的企业' },
+        children: [{
+          path: '/companyInformation',
+          component: () => import('@/views/personalCenter/myBusiness/companyInformation'),
+          name: 'companyInformation',
+          meta: { title: '企业信息' }
+        }, {
+          path: '/companyProduct',
+          component: () => import('@/views/personalCenter/myBusiness/companyProduct'),
+          name: 'companyProduct',
+          meta: { title: '企业产品' }
+        }, {
+          path: '/publishProduct',
+          component: () => import('@/views/personalCenter/myBusiness/publishProduct'),
+          name: 'publishProduct',
+          meta: { title: '发布产品' }
+        }]
+      }]
   }
 ];
 

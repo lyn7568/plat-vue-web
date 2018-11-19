@@ -3,11 +3,10 @@
     <div class="logo-wrapper"></div>
     <div class="form-wrapper">
       <div class="form-contain">
-        <p class="form-title">找回密码</p>
+        <p class="form-title">密码重置</p>
         <div class="step-wrapper">
           <el-steps :active="stepVal" finish-status="success" align-center>
-            <el-step title="输入邮箱"></el-step>
-            <el-step title="接收密码找回邮件"></el-step>
+            <el-step title="验证手机"></el-step>
             <el-step title="重置密码"></el-step>
           </el-steps>
         </div>
@@ -15,24 +14,15 @@
         <div class="step-contain">
           <el-form v-show="stepFisrt" :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
             <el-form-item prop="mail">
-              <el-input v-model="ruleForm.mail" placeholder="请输入邮箱账号"></el-input>
+              <el-input v-model="ruleForm.mail" placeholder="请输入手机号码"></el-input>
+            </el-form-item>
+            <el-form-item prop="mail">
+              <el-input v-model="ruleForm.mail" placeholder="请输入短信验证码" class='codeWidth'></el-input>
+              <el-button type="primary" class='codeWidth codeButton'>获取短信验证码</el-button>
             </el-form-item>
             <el-form-item></el-form-item>
             <el-form-item class="textButton-box">
               <el-button type="primary" :disabled="isDisabl" @click="nextStep('ruleForm')">下一步</el-button>
-              <el-button class="textButton" type="text" @click="goLogin">又想起来了</el-button>
-            </el-form-item>
-          </el-form>
-          <el-form v-show="stepSecond" class="demo-ruleForm">
-            <el-form-item>
-              <p class="importTip">密码找回邮件已发送至：<br />
-                <span class="mainTip" id="emailShow">{{ruleForm.mail}}</span>
-              </p>
-              <p class="smallTip">请您在10分钟内登录您的企业邮箱，接收邮件，<br />点击链接后即可重置密码。</p>
-            </el-form-item>
-            <el-form-item></el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="goToMail">登录邮箱</el-button>
             </el-form-item>
           </el-form>
           <el-form v-show="stepThird" :model="ruleForm2" :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
@@ -44,7 +34,7 @@
             </el-form-item>
             <el-form-item></el-form-item>
             <el-form-item>
-              <el-button type="primary" :disabled="isDisabl" @click="resetPwd('ruleForm2')">重置密码</el-button>
+              <el-button type="primary" :disabled="isDisabl" @click="resetPwd('ruleForm2')">确认</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -87,7 +77,6 @@
         resetCode: '',
         stepVal: 0,
         stepFisrt: true,
-        stepSecond: false,
         stepThird: false,
         isDisabl: false,
         ruleForm: {
@@ -119,7 +108,6 @@
       this.resetCode = util.urlParse('sc');
       if (this.resetStepNum === '2') {
         this.stepFisrt = false;
-        this.stepSecond = false;
         this.stepThird = true;
         this.stepVal = 2;
       }
@@ -136,7 +124,6 @@
               console.log(res);
               if (res.success) {
                 this.stepFisrt = false;
-                this.stepSecond = true;
                 this.stepVal = 1;
               } else {
                 let errorCode = [{
@@ -158,14 +145,6 @@
             return false;
           }
         });
-      },
-      goToMail() {
-        var url = this.ruleForm.mail.split('@')[1];
-        if (util.mailHash[url] === undefined) {
-          window.open('http://mail.' + url);
-        } else {
-          window.open(util.mailHash[url]);
-        }
       },
       resetPwd(formName) {
         this.$refs[formName].validate((valid) => {
@@ -195,7 +174,6 @@
                     callback: action => {
                       if (action === 'confirm') {
                         this.stepFisrt = true;
-                        this.stepSecond = false;
                         this.stepThird = false;
                         this.stepVal = 0;
                       };
@@ -209,9 +187,6 @@
             return false;
           }
         });
-      },
-      goLogin() {
-        this.$router.push({path: '/loginPlat'});
       }
     }
   };

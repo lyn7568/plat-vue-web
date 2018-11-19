@@ -3,35 +3,35 @@
     <div class="logo-wrapper"></div>
     <div class="form-wrapper">
       <div class="form-contain">
-        <p class="form-title">登录</p>
-        <ul class='table-panel'>
-          <li class="table-panel-single" v-bind:class="{ tablePanelActive: isActive }" @click="panelSwitch">密码登录</li>
-          <li class="table-panel-single" v-bind:class="{ tablePanelActive: !isActive }" @click="panelSwitch">邀请码登录</li>
-        </ul>
+        <p class="form-title">注册</p>
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
           <el-form-item prop="phone">
             <el-input v-model="ruleForm.phone" placeholder="请输入手机号码"></el-input>
           </el-form-item>
-          <el-form-item prop="mail">
-            <el-input v-model="ruleForm.mail" placeholder="请输入邮箱账号"></el-input>
-          </el-form-item>
           <el-form-item prop="pass">
             <el-input type="password" v-model="ruleForm.pass" placeholder="请输入登录密码" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item></el-form-item>
+          <el-form-item prop="mail">
+            <el-input v-model="ruleForm.mail" placeholder="请输入短信验证码" class='codeWidth'></el-input>
+            <el-button type="primary" class='codeWidth codeButton'>获取短信验证码</el-button>
+          </el-form-item>
+           <el-form-item>
+             <i class="el-icon-check successSelect"></i><span class="protocol">我已阅读并同意<a href='#/loginPlat'>《邢台科技条件平台用户协议》</a></span>
+           </el-form-item>
           <el-form-item>
-            <el-button type="primary" :disabled="isDisabl" :loading="logining" @click="submitForm('ruleForm')">登录</el-button>
-            <el-button type="text" @click="goBackPwd">忘记密码？</el-button>
-            <span class='existing-account registerButton'>还没有账号<a href="#/register">立即注册</a></span>
+            <el-button type="primary" :disabled="isDisabl" :loading="logining" @click="submitForm('ruleForm')">注册</el-button>
+            <div class='existing-account'>已有账号<a href="#/loginPlat">立即登录</a></div>
           </el-form-item>
         </el-form>
       </div>
     </div>
+    <Captcha ref="obj"></Captcha>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import httpUrl from '@/libs/http';
+  import Captcha from './Captcha.vue';
 
   export default {
      data() {
@@ -56,6 +56,12 @@
           ]
         }
       };
+    },
+    components: {
+      Captcha
+    },
+    mounted() {
+      this.$refs.obj.capShow();
     },
     methods: {
       panelSwitch(event) {
@@ -118,25 +124,4 @@
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import './style';
-    .table-panel
-      border-bottom: 2px solid #ebebeb
-      margin-bottom: 15px
-      overflow: hidden
-      .table-panel-single
-        height: 40px
-        line-height: 40px
-        font-size: 14px
-        font-weight: 500
-        color: #303133
-        cursor: pointer
-        display: inline-block
-        &:nth-child(2)
-          float: right
-        &:hover
-          color: #409eff
-      .tablePanelActive
-        border-bottom: 2px solid #409eff
-        color: #409eff
-    .registerButton
-      float: right
 </style>
