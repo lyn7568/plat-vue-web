@@ -25,20 +25,24 @@
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus" scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
 
-  .Site
-    display: flex
-    min-height: 100vh
-    flex-direction: column
-    .Site-content
-      flex: 1
-      padding-top:20px
+  .Site{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    .Site-content{
+      flex: 1;
+      padding-top:20px;
       .router-fade-enter-active,
-      .router-fade-leave-active
-        transition: opacity 0.2s
+      .router-fade-leave-active{
+        transition: opacity 0.2s;
+      }
 
       .router-fade-enter,
-      .router-fade-leave-active
-        opacity: 0
+      .router-fade-leave-active{
+        opacity: 0;
+      }
+    }
+  }
 </style>

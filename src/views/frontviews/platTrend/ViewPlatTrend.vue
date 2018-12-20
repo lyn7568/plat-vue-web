@@ -34,7 +34,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 	import platNews from './ViewPlatTrendNews';
   import platTrends from './ViewPlatTrendTrends';
 

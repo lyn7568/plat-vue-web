@@ -37,47 +37,53 @@ export default {
 };
 </script>
 
-<style lang="stylus" type="text/stylus">
-  .ev_content
-    width: 100%
-    height: 42%
-    z-index: 11
-    padding:40px
-    box-sizing: border-box
-    display: flex
-    justify-content:center
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .ev_content{
+    width: 100%;
+    height: 42%;
+    z-index: 11;
+    padding:40px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content:center;
+  }
 
-  .notice_d
-    width: 100%
-    height: auto
-    text-align: center
+  .notice_d{
+    width: 100%;
+    height: auto;
+    text-align: center;
+  }
 
-  .notice_d .d_photo
-    width: 140px
-    height: 140px
-    margin: 20px auto 30px
+  .notice_d .d_photo{
+    width: 140px;
+    height: 140px;
+    margin: 20px auto 30px;
+  }
 
-  .d_prompt p
-    margin: 0
-    font-size: 0
+  .d_prompt p{
+    margin: 0;
+    font-size: 0;
+  }
 
-  .d_prompt .d_1
-    width: 40%
-    margin: 0 auto
-    height: auto
-    word-break: break-word
-    font-size: 16px
-    color: #666666
-    text-align: center
+  .d_prompt .d_1{
+    width: 40%;
+    margin: 0 auto;
+    height: auto;
+    word-break: break-word;
+    font-size: 16px;
+    color: #666666;
+    text-align: center;
+  }
 
-  .d_prompt .d_2
-    width: 60%
-    height: auto
-    margin: 0 auto
-    word-break: break-word
-    font-size: 13px
-    color: #999999
-    text-align: center
-    margin-top: 10px
+  .d_prompt .d_2{
+    width: 60%;
+    height: auto;
+    margin: 0 auto;
+    word-break: break-word;
+    font-size: 13px;
+    color: #999999;
+    text-align: center;
+    margin-top: 10px;
+  }
 
 </style>

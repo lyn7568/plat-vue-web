@@ -7,8 +7,6 @@ const platUrl = process.env.BASE_API; // api/邮箱配置的地址
 http.platUrl = platUrl;
 http.kexiuUrl = kexiuUrl;
 
-http.webbase = '/api/plat';
-
 http.hQuery = {
     sign: {
       login: '/ajax/platform/login',
@@ -82,14 +80,17 @@ http.kxQurey = {
     resource: {
       query: '/ajax/resource/queryOne'
     },
+    server: {
+      query: '/ajax/ware/qo'
+    },
     patent: {
       query: '/ajax/ppatent/qo',
       author: '/ajax/ppatent/authors'
     },
     professor: {
       query: '/ajax/professor/baseInfo/', // 专家基础信息
-      query2: '/ajax/professor/info/',
-      researchArea: '/ajax/researchArea/' // 研究方向
+      query2: '/ajax/professor/info/'
+
     },
     org: {
       query: '/ajax/org/', // 企业基础信息

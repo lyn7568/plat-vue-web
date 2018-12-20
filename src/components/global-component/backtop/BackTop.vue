@@ -51,27 +51,30 @@
     }
   };
 </script>
-<style lang="stylus" rel="stylesheet/stylus">
-  .scroll
-    position: fixed
-    right: 10px
-    bottom: 60px
-    width: 45px
-    height: 90px
-    cursor: pointer
-    display: none
-    z-index: 10
-    div
-      width: 45px
-      height: 45px
-      line-height: 45px
-      text-align: center
-      font-size: 35px
-      background-color: rgba(0,0,0,.2)
-      color: #fff
-      &:hover
-        background-color: rgba(0,0,0,.5)
-
-  &.showScroll
-    display: block;
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .scroll{
+    position: fixed;
+    right: 10px;
+    bottom: 60px;
+    width: 45px;
+    height: 90px;
+    cursor: pointer;
+    display: none;
+    z-index: 10;
+    div{
+      width: 45px;
+      height: 45px;
+      line-height: 45px;
+      text-align: center;
+      font-size: 35px;
+      background-color: rgba(0,0,0,.2);
+      color: #fff;
+      &:hover{
+        background-color: rgba(0,0,0,.5);
+      }
+    }
+    &.showScroll{
+      display: block;
+    }
+  }
 </style>

@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   export default {
     props: {
       isLoading: {
@@ -39,9 +39,10 @@
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
-  .loadSty
-    display:flex
-    justify-content: center
-    padding:20px 0
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .loadSty{
+    display:flex;
+    justify-content: center;
+    padding:20px 0;
+  }
 </style>

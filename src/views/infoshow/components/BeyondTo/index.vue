@@ -71,37 +71,45 @@
     }
   };
 </script>
-<style lang="stylus" rel="stylesheet/stylus" scoded>
-.beyond-block
-  text-align:center
-  .show-head
-    display: block
-    width: 120px
-    height: 120px
-    border: 1px solid #E5E5E5
-    margin: 0 auto 10px
-    background-position: center
-    background-size: cover
-    border-radius: 50%
-    &.orgimg-box
-      center-items(200px, 120px)
-  .show-info
-    width:100%
-    .info-tit
-      color:$commonFont
-      text-ellipsis()
-      font-size: 18px
-      line-height: 24px
-    .info-tag
-      color:$commonFont
-      text-ellipsis()
-      font-size: 16px
-      line-height: 24px
-    .info-desc
-      color:$secondaryFont
-      text-ellipsis()
-      font-size: 15px
-      line-height: 24px
-  .goSpan
-    margin-top:15px
+<style rel="stylesheet/scss" lang="scss" scoped>
+.beyond-block{
+  text-align:center;
+  .show-head{
+    display: block;
+    width: 120px;
+    height: 120px;
+    border: 1px solid #E5E5E5;
+    margin: 0 auto 10px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+    &.orgimg-box{
+      @include center-items(200px, 120px);
+    }
+  }
+  .show-info{
+    width:100%;
+    .info-tit{
+      color:$commonFont;
+      @include text-ellipsis();
+      font-size: 18px;
+      line-height: 24px;
+    }
+    .info-tag{
+      color:$commonFont;
+      @include text-ellipsis();
+      font-size: 16px;
+      line-height: 24px;
+    }
+    .info-desc{
+      color:$secondaryFont;
+      @include text-ellipsis();
+      font-size: 15px;
+      line-height: 24px;
+    }
+  }
+  .goSpan{
+    margin-top:15px;
+  }
+}
 </style>

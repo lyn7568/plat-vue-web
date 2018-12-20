@@ -20,7 +20,6 @@
 <script>
   import Cookies from 'js-cookie';
   import util from '@/libs/util';
-  import httpUrl from '@/libs/http';
 
   export default {
     props: {
@@ -45,12 +44,12 @@
     },
     created() {
        this.platId = Cookies.get('platId');
-       this.ResidentOrgs(this.platId);
+       this.ResidentOrgs();
     },
     methods: {
-      ResidentOrgs(id) {
-        this.$axios.get(httpUrl.hQuery.buttedOrgs.nopq, {
-          pid: id,
+      ResidentOrgs() {
+        this.$axios.getp('/ajax/platform/info/buttedOrgs', {
+          pid: this.platId,
           oid: this.dataO.bOid,
           time: this.dataO.bTime,
           rows: this.num ? this.num : this.rows

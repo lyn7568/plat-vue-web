@@ -1,25 +1,15 @@
-import Vue from 'vue';
 import axios from 'axios';
 import qs from 'qs';
-import http from './http';
 
-let axiosUtil = axios.create({
-    baseURL: http.platUrl,
-    // timeout: 30000,
-    paramsSerializer: function(params) {
-        return qs.stringify(params, {arrayFormat: 'repeat'});
-    }
-});
+let axiosUtil = axios.create();
 
 axiosUtil.interceptors.request.use(function (config) {
     // 配置config
     config.headers.Accept = 'application/json';
     if (config.method === 'post') {
-        // if (config.url !== http.sample.list && config.url !== http.manage.kit.save) {
-            config.data = qs.stringify(config.data);
-            // 处理后后台无需添加RequestBody
-            config.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-        // };
+      config.data = qs.stringify(config.data, {arrayFormat: 'repeat'});
+      // 处理后后台无需添加RequestBody
+      config.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     };
     return config;
 });
@@ -50,34 +40,4 @@ axiosUtil.interceptors.response.use(function (response) {
     return Promise.reject(error);
 });
 
-var ret = {
-  get: function(url, data, sh, eh) {
-    axiosUtil({
-      method: 'get',
-      url: url,
-      params: data
-    }).then(res => {
-      sh(res);
-    }).catch(err => {
-      if (eh) eh(err);
-    });
-  },
-  post: function(url, data, sh, eh) {
-    axiosUtil({
-      method: 'post',
-      url: url,
-      data: data
-    }).then(res => {
-      sh(res);
-    }).catch(err => {
-      if (eh) eh(err);
-    });
-  }
-};
-
-export default {
-  install () {
-    Vue.prototype.$axios = ret;
-    Vue.axios = ret;
-  }
-};
+export default axiosUtil;

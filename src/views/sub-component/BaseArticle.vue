@@ -16,7 +16,6 @@
 
 <script type="text/ecmascript-6">
   import util from '@/libs/util';
-  import httpUrl from '@/libs/http';
 
   export default {
     props: {
@@ -45,7 +44,7 @@
     methods: {
       leaveWordTotal(item) {
         var _this = this;
-         this.$axios.get(httpUrl.kxQurey.leaveMsg.count, {
+         this.$axios.getk('/ajax/leavemsg/count', {
           sid: item.articleId,
           stype: 1
         }, (res) => {
@@ -58,7 +57,7 @@
       ownerByond(item) {
         var _this = this;
         if (item.articleType) {
-          this.$axios.get(httpUrl.kxQurey.org.query + item.ownerId, {
+          this.$axios.getk('/ajax/org/' + item.ownerId, {
             }, (res) => {
             if (res.success) {
               let $info = res.data;

@@ -1,26 +1,17 @@
 'use strict'
+const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')
 const merge = require('webpack-merge')
-const path = require('path')
 const baseWebpackConfig = require('./webpack.base.conf')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
-// // 通过express导入路由
-// const express = require('express')
-// const app = express()
-
-// //模拟服务器返回数据--开始
-// var appData = require('../static/plat-info.json')
-// var plat = appData.plat
-// // 编写路由
-// var apiRoutes = express.Router()
-
-// app.use('/api', apiRoutes)
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -35,13 +26,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   // these devServer options should be customized in /config/index.js
   devServer: {
     clientLogLevel: 'warning',
-    historyApiFallback: {
-      rewrites: [
-        { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
-      ],
-    },
+    historyApiFallback: true,
     hot: true,
-    contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
@@ -55,14 +41,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll,
     }
-    // before(app) {
-    //   app.get('/api/plat', function (req, res) {
-    //     res.json({
-    //       errno: 0,
-    //       data: plat
-    //     });
-    //   });
-    // }
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -76,16 +54,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       filename: 'index.html',
       template: 'index.html',
       inject: true,
-      favicon: path.resolve('favicon.ico')
-    }),
-    // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../static'),
-        to: config.dev.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ])
+      favicon: resolve('favicon.ico')
+    })
   ]
 })
 

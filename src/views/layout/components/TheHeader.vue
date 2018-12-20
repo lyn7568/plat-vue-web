@@ -53,7 +53,7 @@
   </div>
 </template>
 
-<script type="text/javascript">
+<script>
   import util from '@/libs/util';
   import Cookies from 'js-cookie';
 
@@ -73,53 +73,68 @@
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
-  .el-menu-item,.el-menu--horizontal,.el-menu--horizontal .el-menu-item
-    border:none
-  .header
-    .top-wrapper
-      width: 100%
-      height: 30px
-      line-height: 30px
-      bg-grey-color()
-      .contain-wrapper
-        font-size:14px
-        overflow:hidden
-        .marLeft
-          display:inline-block
-          margin-left:20px
-          min-width:62px
-          &.marLeft_1
-            min-width:0
-        .wrapper-left
-          float:left
-        .wrapper-right
-          float:right
-          .el-dropdown
-            color:#c4c3c3
-            margin-left:20px
-          .el-menu-item,.el-submenu__title
-            padding:0 10px
-            margin-left:20px
-            line-height:30px
-            height:30px
-    .banner-wrapper
-      width:100%
-      height:200px
-      background-size:cover
-      background-position:center
-    .nav-wrapper
-      bg-blue-color()
-      ul
-        display: flex
-        li
-          display: inline-block
-          padding:0 25px
-          height:40px
-          line-height:40px
-          text-align: center
-          cursor: pointer
-        .active
-          bg-blue-active-color()
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .el-menu-item,.el-menu--horizontal,.el-menu--horizontal .el-menu-item{
+    border:none;
+  }
+  .header{
+    .top-wrapper{
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      @include bg-grey-color();
+      .contain-wrapper{
+        font-size:14px;
+        overflow:hidden;
+        .marLeft{
+          display:inline-block;
+          margin-left:20px;
+          min-width:62px;
+          &.marLeft_1{
+            min-width:0;
+          }
+        }
+        .wrapper-left{
+          float:left;
+        }
+        .wrapper-right{
+          float:right;
+          .el-dropdown{
+            color:#c4c3c3;
+            margin-left:20px;
+          }
+          .el-menu-item,.el-submenu__title{
+            padding:0 10px;
+            margin-left:20px;
+            line-height:30px;
+            height:30px;
+          }
+        }
+      }
+    }
+    .banner-wrapper{
+      width:100%;
+      height:200px;
+      background-size:cover;
+      background-position:center;
+    }
+    .nav-wrapper{
+      @include bg-blue-color();
+      ul{
+        display: flex;
+        li{
+          display: inline-block;
+          padding:0 25px;
+          height:40px;
+          line-height:40px;
+          text-align: center;
+          cursor: pointer;
+        }
+        .active{
+          @include bg-blue-active-color();
+        }
+      }
+    }
+  }
 
 </style>

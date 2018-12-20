@@ -32,12 +32,12 @@ const constantRouterMap = [
     }]
   },
   {
-    path: '',
+    path: '/findServe',
     component: Layout,
     children: [
       {
         name: 'findServe',
-        path: '/findServe',
+        path: '',
         redirect: { name: 'serve_list' },
         component: () => import('@/views/frontviews/ViewFindServe/index'),
         meta: { title: '找服务' },
@@ -182,24 +182,24 @@ const constantRouterMap = [
         meta: { title: '入驻企业' },
         children: [
           {
-            path: '/comp_list',
+            path: 'comp_list',
             name: 'comp_list',
             component: () => import('@/views/frontviews/ViewRegCompany/list')
           },
           {
-            path: 'comp_home',
-            name: 'comp_home',
-            redirect: { name: 'comp_show' },
+            path: 'comp_show',
+            name: 'comp_show',
+            redirect: { name: 'comp_desc' },
             component: () => import('@/views/infoshow/compShow/index'),
             meta: { title: '企业名称' },
             children: [
               {
-                path: '/comp_show',
-                name: 'comp_show',
+                path: 'comp_desc',
+                name: 'comp_desc',
                 component: () => import('@/views/infoshow/compShow/comp')
               },
               {
-                path: '/comp_product',
+                path: 'comp_product',
                 name: 'comp_product',
                 component: () => import('@/views/infoshow/compShow/product'),
                 meta: { title: '产品名称' }

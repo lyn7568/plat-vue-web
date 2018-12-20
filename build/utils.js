@@ -54,14 +54,37 @@ exports.cssLoaders = function (options) {
     }
   }
 
-  var stylusOptions = {
-      import: [
-          path.join(__dirname, "../src/common/stylus/mixin.styl"), // mixin.styl全局变量文件
-      ],
-      paths: [
-          path.join(__dirname, "../src/common/stylus/"),
-          path.join(__dirname, "../"),
-      ],
+  /**
+  * sass Less 源文件
+  * @param name classFile
+  * @returns {string}
+  */
+  function resolveResouce(name) {
+    return path.resolve(__dirname, '../src/styles/' + name);
+  }
+   
+  //导入全局sass mixin function等
+  function generateSassResourceLoader(){
+    var loaders = [
+     cssLoader,
+     //'postcss-loader',
+     'sass-loader',
+     {
+      loader:'sass-resources-loader',
+      options: {
+       //需要一个全局路径
+       resources: [resolveResouce('mixin.scss')]
+      }
+     }
+    ]
+    if(options.extract){
+     return ExtractTextPlugin.extract({
+      use:loaders,
+      fallback: 'vue-style-loader'
+     })
+    }else{
+     return ['vue-style-loader'].concat(loaders)
+    }
   }
 
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
@@ -69,10 +92,10 @@ exports.cssLoaders = function (options) {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
-    sass: generateLoaders('sass', { indentedSyntax: true }),
-    scss: generateLoaders('sass'),
-    stylus: generateLoaders('stylus', stylusOptions),
-    styl: generateLoaders('stylus', stylusOptions)
+    sass: generateSassResourceLoader(),
+    scss: generateSassResourceLoader(),
+    stylus: generateLoaders('stylus'),
+    styl: generateLoaders('stylus')
   }
 }
 

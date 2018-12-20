@@ -27,10 +27,11 @@
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
-  @import './common/stylus/index';
+<style rel="stylesheet/scss" lang="scss" scoped>
+  @import './styles/index';
 
-  .app-main
-    width: 100%
-    height: 100%
+  .app-main{
+    width: 100%;
+    height: 100%;
+  }
 </style>

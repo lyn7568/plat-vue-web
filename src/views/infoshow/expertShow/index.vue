@@ -30,7 +30,7 @@
                   <span class="content-more" @click="activeName='second'">更多</span>
                 </div>
                 <div class="content">
-                  <!-- <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService> -->
+                  <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
                 </div>
               </div>
             </div>
@@ -79,16 +79,24 @@
                   <span class="content-more" @click="activeName='third'">更多</span>
                 </div>
                 <div class="content">
-                  <!-- <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService> -->
+                  <baseResult v-if="platPatents.length" v-for="item in platPatents" :key="item.index" :itemSingle="item"></baseResult>
                 </div>
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="服务" name="second">
-            <!-- <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService> -->
+          <el-tab-pane :label="'服务 ' + (serCount>0 ? serCount : '')" name="second">
+            <div v-show="!ifDefault">
+              <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
+              <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
+            </div>
+            <defaultPage v-show="ifDefault"></defaultPage>
           </el-tab-pane>
-          <el-tab-pane label="专利" name="third">
-            <!-- <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService> -->
+          <el-tab-pane :label="'专利 ' + (patCount>0 ? patCount : '')" name="third">
+            <div v-show="!ifDefault2">
+              <baseResult v-if="platPatents.length" v-for="item in platPatents" :key="item.index" :itemSingle="item"></baseResult>
+              <Loading v-show="loadingModalShow2" :loadingComplete="loadingComplete2" :isLoading="isLoading2" v-on:upup="searchLower2"></Loading>
+            </div>
+            <defaultPage v-show="ifDefault2"></defaultPage>
           </el-tab-pane>
           <el-tab-pane label="资料" name="fourth">
             <div class="content-wrapper">
@@ -178,13 +186,13 @@
 </template>
 
 <script>
-  import '@/common/stylus/listitem.styl';
-  import '@/common/stylus/browse.styl';
+  import '@/styles/listitem.scss';
+  import '@/styles/browse.scss';
   import util from '@/libs/util';
-  import httpUrl from '@/libs/http';
 
   import shareOut from '../components/ShareOut';
   import baseService from '@/views/sub-component/BaseService';
+  import baseResult from '@/views/sub-component/baseResult';
 
   export default {
     data() {
@@ -194,21 +202,44 @@
         expertInfo: '',
         elurl: '',
         platServices: [],
-        platPatents: []
+        serCount: 0,
+        loadingModalShow: true, // 是否显示按钮
+        loadingComplete: false, // 是否全部加载
+        isFormSearch: false, // 数据加载
+        isLoading: false, // button style...
+        ifDefault: false, // 是否缺省
+        platPatents: [],
+        patCount: 0,
+        loadingModalShow2: true,
+        loadingComplete2: false,
+        isFormSearch2: false,
+        isLoading2: false,
+        ifDefault2: false,
+        dataO: {
+          serModifyTime: '',
+
+          patTime: '',
+          patId: ''
+        },
+        rows: 10
       };
     },
     created() {
       this.expertId = util.urlParse('id');
       this.elurl = window.location.href;
       this.getExpertInfo();
+      this.getExpertWave();
+      this.getExpertPatent();
+      this.queryPubCount();
     },
     components: {
       shareOut,
-      baseService
+      baseService,
+      baseResult
     },
     methods: {
       getExpertInfo() {
-        this.$axios.get(httpUrl.kxQurey.professor.query2 + this.expertId, {
+        this.$axios.getk('/ajax/professor/info/' + this.expertId, {
         }, (res) => {
           if (res.success) {
             var $info = res.data;
@@ -227,6 +258,91 @@
             }
             this.expertInfo = $info;
           };
+        });
+      },
+      getExpertWave() {
+        this.$axios.getk('/ajax/ware/publish', {
+          category: '1',
+          owner: this.expertId,
+          modifyTime: this.dataO.serModifyTime,
+          rows: this.rows
+        }, (res) => {
+          if (res.success) {
+            var $info = res.data;
+            if ($info.length > 0) {
+              this.dataO.modifyTime = $info[$info.length - 1].modifyTime;
+              this.platServices = this.isFormSearch ? this.platServices.concat($info) : $info;
+              this.isFormSearch = true;
+            };
+            var liLen = this.platServices.length;
+            if ($info.length === 0 && liLen === 0) {
+              this.ifDefault = true;
+            };
+            if ($info.length < this.rows) {
+              this.loadingModalShow = false;
+              this.isFormSearch = false;
+            };
+          };
+        });
+      },
+      searchLower() {
+        if (this.loadingModalShow && !this.isLoading) {
+          this.getExpertWave();
+        }
+      },
+      getExpertPatent() {
+        this.$axios.getk('/ajax/ppatent/professor', {
+          owner: this.expertId,
+          assTime: this.dataO.patTime,
+          id: this.dataO.patId,
+          rows: this.rows
+        }, (res) => {
+          if (res.success) {
+            var $info = res.data;
+            if ($info.length > 0) {
+              this.dataO.patTime = $info[$info.length - 1].assTime;
+              this.dataO.patId = $info[$info.length - 1].id;
+              this.platPatents = this.isFormSearch2 ? this.platPatents.concat($info) : $info;
+              this.isFormSearch2 = true;
+            };
+            var liLen = this.platPatents.length;
+            if ($info.length === 0 && liLen === 0) {
+              this.ifDefault2 = true;
+            };
+            if ($info.length < this.rows) {
+              this.loadingModalShow2 = false;
+              this.isFormSearch2 = false;
+            };
+          };
+        });
+      },
+      searchLower2() {
+        if (this.loadingModalShow2 && !this.isLoading2) {
+          this.getExpertPatent();
+        }
+      },
+      queryPubCount() {
+        var that = this
+        this.$axios.getk('/ajax/ware/count/publish', {
+          owner: that.expertId,
+          category: '1'
+        }, function(data) {
+          if (data.data > 0 && data.data < 99) {
+            that.serCount = data.data;
+          }
+          if (data.data > 99) {
+           that.serCount = '99+';
+          }
+        });
+        this.$axios.getk('/ajax/ppatent/count/publish', {
+          owner: that.expertId
+        }, function(data) {
+          if (data.data > 0 && data.data < 99) {
+            that.patCount = data.data;
+          }
+          if (data.data > 99) {
+           that.patCount = '99+';
+          }
         });
       },
       headUrl(item) {

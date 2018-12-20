@@ -11,7 +11,6 @@
 
 <script>
   import util from '@/libs/util';
-  import httpUrl from '@/libs/http';
 
   export default {
     props: {
@@ -33,7 +32,7 @@
     methods: {
       ownerByond(item) {
         if (item.otype === '1') {
-          this.$axios.get(httpUrl.kxQurey.professor.query + item.oid, {
+          this.$axios.getk('/ajax/professor/baseInfo/' + item.oid, {
             }, (res) => {
             if (res.success) {
               let $info = res.data;
@@ -42,7 +41,7 @@
             }
           });
         } else if (item.otype === '2') {
-          this.$axios.get(httpUrl.kxQurey.org.query + item.oid, {
+          this.$axios.getk('/ajax/org/' + item.oid, {
             }, (res) => {
             if (res.success) {
               let $info = res.data;

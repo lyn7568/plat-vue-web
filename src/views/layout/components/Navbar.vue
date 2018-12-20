@@ -31,23 +31,27 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/stylus" lang="stylus" scoped>
-.navbar
-  height: 50px
-  line-height: 50px
-  padding: 0 12px
-  border-radius: 0px !important
-  background:none
-  overflow:hidden
-  margin-bottom:-20px
-  .hamburger-container
-    line-height: 58px
-    height: 50px
-    float: left
-    padding: 0 10px
-  .tag-breadcrumb
-    float:left
-    font-size: 14px
-    line-height: 50px
-    margin-left: -10px
+<style rel="stylesheet/scss" lang="scss" scoped>
+.navbar{
+  height: 50px;
+  line-height: 50px;
+  padding: 0 12px;
+  border-radius: 0px !important;
+  background:none;
+  overflow:hidden;
+  margin-bottom:-20px;
+  border-bottom: none;
+  .hamburger-container{
+    line-height: 58px;
+    height: 50px;
+    float: left;
+    padding: 0 10px;
+  }
+  .tag-breadcrumb{
+    float:left;
+    font-size: 14px;
+    line-height: 50px;
+    margin-left: -10px;
+  }
+}
 </style>

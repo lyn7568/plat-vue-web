@@ -17,7 +17,6 @@
 <script>
   import Cookies from 'js-cookie';
   import util from '@/libs/util';
-  import httpUrl from '@/libs/http';
 
   export default {
     props: {
@@ -42,12 +41,12 @@
     },
     created() {
        this.platId = Cookies.get('platId');
-       this.buttedProfessors(this.platId);
+       this.buttedProfessors();
     },
     methods: {
       buttedProfessors(id) {
-        this.$axios.get(httpUrl.hQuery.buttedProfessors.nopq, {
-          pid: id,
+        this.$axios.getp('/ajax/platform/info/buttedProfessors', {
+          pid: this.platId,
           uid: this.dataO.bUid,
           time: this.dataO.bTime,
           rows: this.num ? this.num : this.rows
@@ -76,7 +75,7 @@
                     $data[i].offt = '';
                   }
                 }
-                this.$axios.get('/ajax/researchArea/' + $data[i].id, {}, (res) => {
+                this.$axios.getk('/ajax/researchArea/' + $data[i].id, {}, (res) => {
                   const $info = res.data;
                   let arr = [];
                   for (let j = 0; j < $info.length; j++) {

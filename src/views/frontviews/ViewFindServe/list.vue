@@ -36,7 +36,6 @@
 
 <script>
   import Cookies from 'js-cookie';
-  import httpUrl from '@/libs/http';
   import util from '@/libs/util';
 
   import baseService from '@/views/sub-component/BaseService';
@@ -71,7 +70,7 @@
     },
     methods: {
       searchService() {
-        this.$axios.get(httpUrl.hQuery.queryWare, {
+        this.$axios.getp('/ajax/platform/info/wares', {
             key: this.keyVal,
             pid: this.platId,
             shareId: this.dataO.bShareId,
@@ -128,36 +127,43 @@
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus" scoped>
-  .tab-wrapper
-    display:flex
-    align-items:baseline
-    padding:15px 20px
-    color: $commonFont
-    .tab-lable
-      width:100px
-    .tab-sort
-      display:flex
-      flex-wrap:wrap
-      margin-right:-10px
-      margin-bottom:-10px
-      li
-        display:inline-block
-        margin-right:10px
-        margin-bottom:10px
-        padding:2px 10px
-        border: 1px solid $borderColor
-        border-radius(10px)
-        cursor: pointer
-        &.active
-          color: $mainColor
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .tab-wrapper{
+    display:flex;
+    align-items:baseline;
+    padding:15px 20px;
+    color: $commonFont;
+    .tab-lable{
+      width:100px;
+    }
+    .tab-sort{
+      display:flex;
+      flex-wrap:wrap;
+      margin-right:-10px;
+      margin-bottom:-10px;
+      li{
+        display:inline-block;
+        margin-right:10px;
+        margin-bottom:10px;
+        padding:2px 10px;
+        border: 1px solid $borderColor;
+        @include border-radius(10px);
+        cursor: pointer;
+        &.active{
+          color: $mainColor;
+        }
+      }
+    }
+  }
 
-  .tab-contain
-    margin-top:20px
-    background:#fff
-  .el-input-group__append
-    background:$mainColor
-    color:#fff
-    padding:10px 40px
-    border-color:$mainColor
+  .tab-contain{
+    margin-top:20px;
+    background:#fff;
+  }
+  .el-input-group__append{
+    background:$mainColor;
+    color:#fff;
+    padding:10px 40px;
+    border-color:$mainColor;
+  }
 </style>

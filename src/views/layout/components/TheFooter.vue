@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script type="text/javascript">
+<script>
   // import Cookies from 'js-cookie';
   import util from '@/libs/util';
 
@@ -60,37 +60,47 @@
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style rel="stylesheet/scss" lang="scss" scoped>
 
-  .footer
-    bg-grey-color()
-    padding:30px 0
-    .footer-wrapper
-      display: flex
-      justify-content: space-between
-      font-size:14px
-      color:#888
-      line-height: 32px
-      .wrapper-left
-        .logo-block
-          margin:10px 0 20px
-        .listlink
-          margin-right:25px
-        a
-          color:#888
-          cursor:pointer
-    .copy-wrapper
-      margin-top:20px
-      font-size:12px
-      color:#666
-      a
-        color:#666
-      .beian
-        em
-          display: inline-block
-          width:14px
-          height:14px
-          bg-image('./img/home_icon_beian.png')
-          background-size: cover
+  .footer{
+    @include bg-grey-color();
+    padding:30px 0;
+    .footer-wrapper{
+      display: flex;
+      justify-content: space-between;
+      font-size:14px;
+      color:#888;
+      line-height: 32px;
+      .wrapper-left{
+        .logo-block{
+          margin:10px 0 20px;
+        }
+        .listlink{
+          margin-right:25px;
+        }
+        a{
+          color:#888;
+          cursor:pointer;
+        }
+      }
+    }
+    .copy-wrapper{
+      margin-top:20px;
+      font-size:12px;
+      color:#666;
+      a{
+        color:#666;
+      }
+      .beian{
+        em{
+          display: inline-block;
+          width:14px;
+          height:14px;
+          @include bg-image('./img/home_icon_beian.png');
+          background-size: cover;
+        }
+      }
+    }
+  }
 
 </style>

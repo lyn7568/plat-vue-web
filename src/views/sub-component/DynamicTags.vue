@@ -28,7 +28,7 @@
   </el-form-item>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   import httpUrl from '@/libs/http';
 
   export default {

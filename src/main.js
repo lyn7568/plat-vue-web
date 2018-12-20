@@ -1,11 +1,15 @@
 import 'babel-polyfill';
 
 import Vue from 'vue';
+
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import './element-variables.scss';
+
 import App from './App.vue';
 import router from './router';
-import axiosH from './libs/axios';
+import request from './libs/request';
+
+import '@/styles/index.scss'; // global css
 
 import Loading from './components/global-component/loading';
 import BackTop from './components/global-component/backtop';
@@ -19,7 +23,7 @@ import '../static/ueditor/ueditor.parse.js';
 
 import Cookies from 'js-cookie';
 
-Vue.use(axiosH);
+Vue.use(request);
 Vue.use(ElementUI);
 Vue.use(Loading);
 Vue.use(BackTop);
