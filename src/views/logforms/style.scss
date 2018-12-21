@@ -1,0 +1,134 @@
+.login {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  @include bg-image('./img/e-sign-on_bg_img_nor.png');
+  background-position: 0 bottom;
+  .logo-wrapper {
+    display: block;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    height: 64px;
+    width: 292px;
+    @include bg-image('./img/e-sign-on_bg_logo_nor.png');
+  }
+  .form-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .form-contain {
+      width: 420px;
+      background-color: #fff;
+      padding: 30px 20px;
+      @include border-radius();
+      .form-title {
+        font-size: 22px;
+        line-height: 36px;
+        color: $mainColor;
+        text-align: center;
+      }
+      .table-panel {
+        border-bottom: 2px solid $borderColor;
+        margin-bottom: 15px;
+        overflow: hidden;
+        .table-panel-single {
+          height: 40px;
+          line-height: 40px;
+          font-size: 14px;
+          font-weight: 500;
+          color: $commonFont;
+          cursor: pointer;
+          display: inline-block;
+          &:nth-child(2) {
+            float: right;
+          }
+          &:hover {
+            color: $mainColor;
+          }
+        }
+        .tablePanelActive {
+          border-bottom: 2px solid $mainColor;
+          color: $mainColor;
+        }
+      }
+      .el-button--primary {
+        width: 100%;
+      }
+      .codeWidth {
+        width: 65%;
+        float: left;
+      }
+      .codeButton {
+        width: 30%;
+        margin-left: 20px;
+      }
+      .successSelect {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        background-color: $mainColor;
+        color: #fff;
+        margin-right: 15px;
+      }
+      .protocol {
+        font-size: 14px;
+        a {
+          color: $mainColor;
+        }
+      }
+      .promptText {
+        text-align: center;
+        font-size: 14px;
+        margin: 20px 0;
+        color: $commonFont;
+      }
+      .existing-account {
+        text-align: right;
+        float: right;
+        a {
+          color: $mainColor;
+          margin-left: 15px;
+        }
+      }
+    }
+  }
+  .step-wrapper {
+    margin-bottom: 30px;
+    .el-step__head.is-process {
+      color: $mainColor;
+      border-color: $mainColor;
+    }
+    .el-step__title.is-process {
+      color: $mainColor;
+    }
+    .el-step__description.is-process {
+      color: $mainColor;
+    }
+  }
+  .step-contain {
+    text-align: center;
+    .textButton-box {
+      height: 60px;
+      .textButton {
+        position: absolute;
+        left: 0;
+      }
+    }
+    .importTip {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    .mainTip {
+      color:$mainColor;
+    }
+    .smallTip {
+      color: $secondaryFont;
+      line-height: 16px;
+      font-size: 13px;
+    }
+  }
+}

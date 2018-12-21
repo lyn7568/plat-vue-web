@@ -17,9 +17,9 @@
             <el-input v-model="ruleForm.mail" placeholder="请输入短信验证码" class='codeWidth'></el-input>
             <el-button type="primary" class='codeWidth codeButton'>获取短信验证码</el-button>
           </el-form-item>
-           <el-form-item>
-             <i class="el-icon-check successSelect"></i><span class="protocol">我已阅读并同意<a href='#/loginPlat'>《邢台科技条件平台用户协议》</a></span>
-           </el-form-item>
+          <el-form-item>
+            <i class="el-icon-check successSelect"></i><span class="protocol">我已阅读并同意<a href='#/userAgreement'>《邢台科技条件平台用户协议》</a></span>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" :disabled="isDisabl" :loading="logining" @click="submitForm('ruleForm')">绑定</el-button>
           </el-form-item>
@@ -33,13 +33,9 @@
 <script type="text/ecmascript-6">
   import httpUrl from '@/libs/http';
   import Captcha from './Captcha.vue';
-
   export default {
      data() {
       return {
-        isActive: true,
-        ActiveNumber: 1,
-        activeName: 'second',
         logining: false,
         isDisabl: false,
         ruleForm: {
@@ -65,15 +61,6 @@
       this.$refs.obj.capShow();
     },
     methods: {
-      panelSwitch(event) {
-       if (event.target.className.includes('tablePanelActive')) {
-         return;
-       }
-        this.isActive = !this.isActive;
-      },
-      handleClick(tab, event) {
-        console.log(tab, event);
-      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -115,14 +102,11 @@
             return false;
           }
         });
-      },
-      goBackPwd() {
-        this.$router.push({path: '/findPwd'});
       }
     }
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus" scoped>
+<style lang="scss" rel="stylesheet/scss" scoped>
   @import './style';
 </style>

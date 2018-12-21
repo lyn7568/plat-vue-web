@@ -5,18 +5,15 @@
       <div class="form-contain">
         <p class="form-title">登录</p>
         <ul class='table-panel'>
-          <li class="table-panel-single" v-bind:class="{ tablePanelActive: isActive }" @click="panelSwitch">密码登录</li>
-          <li class="table-panel-single" v-bind:class="{ tablePanelActive: !isActive }" @click="panelSwitch">邀请码登录</li>
+          <li class="table-panel-single tablePanelActive">密码登录</li>
+          <li class="table-panel-single"><a href="#/inviteCodeLogin">邀请码登录</a></li>
         </ul>
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
           <el-form-item prop="phone">
             <el-input v-model="ruleForm.phone" placeholder="请输入手机号码"></el-input>
           </el-form-item>
-          <el-form-item prop="mail">
-            <el-input v-model="ruleForm.mail" placeholder="请输入邮箱账号"></el-input>
-          </el-form-item>
-          <el-form-item prop="pass">
-            <el-input type="password" v-model="ruleForm.pass" placeholder="请输入登录密码" auto-complete="off"></el-input>
+          <el-form-item prop="pw">
+            <el-input type="password" v-model="ruleForm.pw" placeholder="请输入登录密码" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item></el-form-item>
           <el-form-item>
@@ -32,18 +29,14 @@
 
 <script type="text/ecmascript-6">
   import httpUrl from '@/libs/http';
-
   export default {
      data() {
       return {
-        isActive: true,
-        ActiveNumber: 1,
-        activeName: 'second',
         logining: false,
         isDisabl: false,
         ruleForm: {
-          mail: '',
-          pass: ''
+          phone: '',
+          pw: ''
         },
         rules: {
           mail: [
@@ -58,15 +51,6 @@
       };
     },
     methods: {
-      panelSwitch(event) {
-       if (event.target.className.includes('tablePanelActive')) {
-         return;
-       }
-        this.isActive = !this.isActive;
-      },
-      handleClick(tab, event) {
-        console.log(tab, event);
-      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -116,27 +100,6 @@
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus" scoped>
-  @import './style';
-    .table-panel
-      border-bottom: 2px solid #ebebeb
-      margin-bottom: 15px
-      overflow: hidden
-      .table-panel-single
-        height: 40px
-        line-height: 40px
-        font-size: 14px
-        font-weight: 500
-        color: #303133
-        cursor: pointer
-        display: inline-block
-        &:nth-child(2)
-          float: right
-        &:hover
-          color: #409eff
-      .tablePanelActive
-        border-bottom: 2px solid #409eff
-        color: #409eff
-    .registerButton
-      float: right
+<style lang="scss" rel="stylesheet/scss" scoped>
+  @import './style.scss';
 </style>

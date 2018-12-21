@@ -10,6 +10,17 @@ const constantRouterMap = [
   { path: '/findPwd', component: () => import('@/views/logforms/findPwd') },
   { path: '/register', component: () => import('@/views/logforms/register') },
   { path: '/enterRegister', component: () => import('@/views/logforms/enteringRegister') },
+  { path: '/inviteCodeLogin', component: () => import('@/views/logforms/inviteCodeLogin') },
+  {
+    path: '/userAgreement',
+    component: Layout,
+    children: [{
+      path: '',
+      component: () => import('@/views/logforms/userAgreement'),
+      name: 'userAgreement',
+      meta: { title: '用户协议' }
+    }]
+  },
   {
     path: '/',
     component: Layout,
