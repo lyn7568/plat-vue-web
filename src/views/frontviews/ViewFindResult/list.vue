@@ -2,21 +2,14 @@
   <div class="main-content">
     <div class="wrapper-left">
       <div class="block-wrapper search-wrapper">
-        <el-input v-model="keyVal" @keyup.enter.native="keywordSearch" placeholder="请输入资源名称、用途、发布者或相关关键词" class="input-with-select">
+        <el-input v-model="keyVal" @keyup.enter.native="keywordSearch" placeholder="请输入专利名称、发明人或相关关键词" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="keywordSearch">搜索</el-button>
         </el-input>
       </div>
       <div class="block-wrapper">
-        <!-- <div class="content-wrapper tab-wrapper">
-          <div class="tab-lable">资源类型：</div>
-          <ul class="tab-sort">
-            <li>不限</li>
-            <li>检测服务</li>
-          </ul>
-        </div> -->
         <div class="tab-contain">
           <div v-show="!ifDefault">
-            <baseResource v-if="platResources.length" v-for="item in platResources" :key="item.index" :itemSingle="item"></baseResource>
+            <baseResult v-if="platResources.length" v-for="item in platResources" :key="item.index" :itemSingle="item"></baseResult>
             <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
           </div>
           <defaultPage v-show="ifDefault"></defaultPage>
@@ -36,10 +29,9 @@
 
 <script>
   import Cookies from 'js-cookie';
-  import httpUrl from '@/libs/http';
   import util from '@/libs/util';
 
-  import baseResource from '@/views/sub-component/BaseResult';
+  import baseResult from '@/views/sub-component/BaseResult';
 
   export default {
     props: {
@@ -52,8 +44,9 @@
         platId: '',
         rows: 20,
         dataO: {
-          bShareId: '',
-          bTime: ''
+          patSortNum: '',
+          patCreateTime: '',
+          patId: ''
         },
         keyVal: '',
         platResources: [],
@@ -71,18 +64,19 @@
     },
     methods: {
       searchResource() {
-        this.$axios.get(httpUrl.hQuery.queryResource, {
+        this.$axios.getk('/ajax/ppatent/index/search', {
           key: this.keyVal,
-          pid: this.platId,
-          shareId: this.dataO.bShareId,
-          time: this.dataO.bTime,
+          sortNum: this.dataO.patSortNum,
+          createTime: this.dataO.patCreateTime,
+          id: this.dataO.patId,
           rows: this.rows
         }, (res) => {
           if (res.success) {
             var $info = res.data;
             if ($info.length > 0) {
-              this.dataO.bShareId = $info[$info.length - 1].shareId;
-              this.dataO.bTime = $info[$info.length - 1].time;
+              this.dataO.patSortNum = $info[$info.length - 1].sortNum;
+              this.dataO.patCreateTime = $info[$info.length - 1].createTime;
+              this.dataO.patId = $info[$info.length - 1].id;
               this.platResources = this.isFormSearch ? this.platResources.concat($info) : $info;
               this.isFormSearch = true;
             };
@@ -126,7 +120,7 @@
       }
     },
     components: {
-      baseResource
+      baseResult
     }
   };
 </script>

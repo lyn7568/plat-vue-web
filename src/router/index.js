@@ -22,33 +22,47 @@ const constantRouterMap = [
     }]
   },
   {
-    path: '/platTrends',
+    path: '',
     component: Layout,
     children: [{
-      path: '',
-      component: () => import('@/views/frontviews/platTrend/ViewPlatTrend'),
-      name: 'platTrends',
-      meta: { title: '平台动态' }
+      path: '/trends',
+      name: 'trends',
+      redirect: { name: 'con_list' },
+      component: () => import('@/views/frontviews/ViewPlatTrend/index'),
+      meta: { title: '平台动态' },
+      children: [
+        {
+          name: 'con_list',
+          path: 'con_list',
+          component: () => import('@/views/frontviews/ViewPlatTrend/list')
+        },
+        {
+          path: 'con_show',
+          name: 'con_show',
+          component: () => import('@/views/infoshow/contentShow'),
+          meta: { title: '内容名称' }
+        }
+      ]
     }]
   },
   {
-    path: '/findServe',
+    path: '',
     component: Layout,
     children: [
       {
-        name: 'findServe',
-        path: '',
+        name: 'serve',
+        path: '/serve',
         redirect: { name: 'serve_list' },
         component: () => import('@/views/frontviews/ViewFindServe/index'),
         meta: { title: '找服务' },
         children: [
           {
             name: 'serve_list',
-            path: '/serve_list',
+            path: 'serve_list',
             component: () => import('@/views/frontviews/ViewFindServe/list')
           },
           {
-            path: '/serve_show',
+            path: 'serve_show',
             name: 'serve_show',
             component: () => import('@/views/infoshow/serviceShow'),
             meta: { title: '服务名称' }
@@ -62,19 +76,19 @@ const constantRouterMap = [
     component: Layout,
     children: [
       {
-        name: 'findResource',
-        path: '/findResource',
+        name: 'reso',
+        path: '/reso',
         redirect: { name: 'reso_list' },
         component: () => import('@/views/frontviews/ViewFindResource/index'),
         meta: { title: '找资源' },
         children: [
           {
             name: 'reso_list',
-            path: '/reso_list',
+            path: 'reso_list',
             component: () => import('@/views/frontviews/ViewFindResource/list')
           },
           {
-            path: '/reso_show',
+            path: 'reso_show',
             name: 'reso_show',
             component: () => import('@/views/infoshow/resourceShow'),
             meta: { title: '资源名称' }
@@ -88,15 +102,15 @@ const constantRouterMap = [
     component: Layout,
     children: [
       {
-        name: 'findResult',
-        path: '/findResult',
+        name: 'resu',
+        path: '/resu',
         redirect: { name: 'resu_list' },
         component: () => import('@/views/frontviews/ViewFindResult/index'),
         meta: { title: '找成果' },
         children: [
           {
             name: 'resu_list',
-            path: '/resu_list',
+            path: 'resu_list',
             component: () => import('@/views/frontviews/ViewFindResult/list')
           },
           {
@@ -107,7 +121,7 @@ const constantRouterMap = [
             meta: { title: '专利' },
             children: [
               {
-                path: '/resu_patent',
+                path: 'resu_patent',
                 name: 'resu_patent',
                 component: () => import('@/views/infoshow/resultShow/patent'),
                 meta: { title: '专利名称' }
@@ -123,19 +137,19 @@ const constantRouterMap = [
     component: Layout,
     children: [
       {
-        path: '/expertPool',
-        name: 'expertPool',
+        path: '/exp',
+        name: 'exp',
         redirect: { name: 'exp_list' },
         component: () => import('@/views/frontviews/ViewExpertPool/index'),
         meta: { title: '专家库' },
         children: [
           {
-            path: '/exp_list',
+            path: 'exp_list',
             name: 'exp_list',
             component: () => import('@/views/frontviews/ViewExpertPool/list')
           },
           {
-            path: '/exp_show',
+            path: 'exp_show',
             name: 'exp_show',
             component: () => import('@/views/infoshow/expertShow'),
             meta: { title: '专家姓名' }
@@ -149,19 +163,19 @@ const constantRouterMap = [
     component: Layout,
     children: [
       {
-        path: '/CoAgency',
-        name: 'CoAgency',
+        path: '/org',
+        name: 'org',
         redirect: { name: 'org_list' },
         component: () => import('@/views/frontviews/ViewOrganization/index'),
         meta: { title: '服务机构' },
         children: [
           {
-            path: '/org_list',
+            path: 'org_list',
             name: 'org_list',
             component: () => import('@/views/frontviews/ViewOrganization/list')
           },
           {
-            path: '/org_show',
+            path: 'org_show',
             name: 'org_show',
             component: () => import('@/views/infoshow/orgShow'),
             meta: { title: '机构名称' }
@@ -175,8 +189,8 @@ const constantRouterMap = [
     component: Layout,
     children: [
       {
-        path: '/regCompany',
-        name: 'regCompany',
+        path: '/comp',
+        name: 'comp',
         redirect: { name: 'comp_list' },
         component: () => import('@/views/frontviews/ViewRegCompany/index'),
         meta: { title: '入驻企业' },

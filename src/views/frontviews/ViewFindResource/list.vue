@@ -70,7 +70,7 @@
     },
     methods: {
       searchResource() {
-        this.$axios.getp('/ajax/platform/info/resources', {
+        this.$axios.getk('/ajax/platform/info/resources', {
           key: this.keyVal,
           pid: this.platId,
           shareId: this.dataO.bShareId,

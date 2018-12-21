@@ -1,14 +1,9 @@
 import Vue from 'vue';
-import axiosUtil from './axios';
-
-let requestP = axiosUtil
-let requestK = axiosUtil
-
-requestP.defaults.baseURL = process.env.BASE_API
-requestK.defaults.baseURL = process.env.KX_API
+import requestP from './axios';
+import requestK from './axiosk';
 
 var ret = {
-  getp: function(url, data, sh, eh) {
+  get: function(url, data, sh, eh) {
     requestP({
       method: 'get',
       url: url,
@@ -19,7 +14,7 @@ var ret = {
       if (eh) eh(err);
     });
   },
-  postp: function(url, data, sh, eh) {
+  post: function(url, data, sh, eh) {
     requestP({
       method: 'post',
       url: url,

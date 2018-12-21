@@ -1,7 +1,7 @@
 <template>
   <div class="main Site">
     <TheHeader></TheHeader>
-    <Navbar></Navbar>
+    <!-- <Navbar></Navbar> -->
     <div class="Site-content">
       <div class="contain-wrapper">
         <AppMain></AppMain>

@@ -18,6 +18,7 @@ util.defaultSet = {
     article: '/static/comimg/default-article.jpg',
     resource: '/static/comimg/default-resource.jpg',
     service: '/static/comimg/default-service.jpg',
+    patent: '/static/comimg/default-patent.jpg',
     plat: '/static/comimg/default-plat.jpg'
   },
   link: {

@@ -3,7 +3,8 @@
  * professer, organization
  */
 /* eslint-disable one-var */
-import request from './request'
+import Vue from 'vue'
+
 var objCache = {
   professor: {},
   organization: {}
@@ -15,7 +16,7 @@ var objHcache = {
 var objCacheHandler = {
   professor: function(id) {
     var hc = objHcache.professor[id]
-    request.getk('/ajax/professor/baseInfo/' + id, {
+    Vue.axios.getk('/ajax/professor/baseInfo/' + id, {
     }, function(data) {
       delete objHcache.professor[id]
       if (data.success) {
@@ -36,7 +37,7 @@ var objCacheHandler = {
   },
   organization: function(id) {
     var hc = objHcache.organization[id]
-    request.getk('/ajax/org/' + id, {
+    Vue.axios.getk('/ajax/org/' + id, {
     }, function(data) {
       delete objHcache.organization[id]
       if (data.success) {

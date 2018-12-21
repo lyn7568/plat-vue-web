@@ -2,7 +2,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 let axiosUtil = axios.create({
-    baseURL: process.env.BASE_API
+    baseURL: process.env.KX_API
 });
 
 axiosUtil.interceptors.request.use(function (config) {

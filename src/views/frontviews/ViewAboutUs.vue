@@ -7,24 +7,20 @@
 </template>
 
 <script type="text/javascript">
-  import Cookies from 'js-cookie';
   import util from '@/libs/util';
 
   export default {
     data() {
       return {
-        platId: '',
         aboutUs: ''
       };
     },
     created() {
-       this.platId = Cookies.get('platId');
        this.getAboutUs();
     },
     methods: {
       getAboutUs() {
-        this.$axios.getp('/ajax/platform/info', {
-          id: this.platId
+        this.$axios.get('/ajax/platform/get', {
         }, (res) => {
           this.aboutUs = util.getFormatCode(res.data.descp);
         });

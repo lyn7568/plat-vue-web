@@ -192,7 +192,7 @@
 
   import shareOut from '../components/ShareOut';
   import baseService from '@/views/sub-component/BaseService';
-  import baseResult from '@/views/sub-component/baseResult';
+  import baseResult from '@/views/sub-component/BaseResult';
 
   export default {
     data() {

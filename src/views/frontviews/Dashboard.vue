@@ -40,81 +40,36 @@
       <div class="wrapper-left">
         <div class="content-wrapper plat-news">
           <div class="content-title" style="display: block;">
-            <el-tabs v-model="activeName">
-              <el-tab-pane label="平台新闻" name="first" class="content">
-                <ul class="maincon maincon2">
-                  <li v-for="item in orgTrends" :key="item.index">
-                    <a :href="linkArticle(item)" target="_blank">
-                      <span class="topic">{{item.articleTitle}}</span>
-                      <span class="owner">{{item.ownerName}}</span>
-                      <span class="time">{{formTime(item)}}</span>
-                    </a>
-                  </li>
-                </ul>
-              </el-tab-pane>
-              <el-tab-pane label="采访专栏" name="second" class="content">
-                <ul class="maincon maincon2">
-                  <li v-for="item in orgTrends" :key="item.index">
-                    <a :href="linkArticle(item)" target="_blank">
-                      <span class="topic">{{item.articleTitle}}</span>
-                      <span class="owner">{{item.ownerName}}</span>
-                      <span class="time">{{formTime(item)}}</span>
-                    </a>
-                  </li>
-                </ul>
-              </el-tab-pane>
-              <el-tab-pane label="政策法规" name="third" class="content">
-                <ul class="maincon maincon2">
-                  <li v-for="item in orgTrends" :key="item.index">
-                    <a :href="linkArticle(item)" target="_blank">
-                      <span class="topic">{{item.articleTitle}}</span>
-                      <span class="owner">{{item.ownerName}}</span>
-                      <span class="time">{{formTime(item)}}</span>
-                    </a>
-                  </li>
-                </ul>
-              </el-tab-pane>
-              <el-tab-pane label="通知公告" name="fourth" class="content">
-                <ul class="maincon maincon2">
-                  <li v-for="item in orgTrends" :key="item.index">
-                    <a :href="linkArticle(item)" target="_blank">
-                      <span class="topic">{{item.articleTitle}}</span>
-                      <span class="owner">{{item.ownerName}}</span>
-                      <span class="time">{{formTime(item)}}</span>
-                    </a>
+            <el-tabs v-model="activeName" @tab-click="queryPaltNews">
+              <el-tab-pane v-for="cata in conCatalog" :key="cata.index" :label="cata.tit" :name="cata.val" class="content">
+                <ul class="maincon">
+                  <li v-for="item in paltNews" :key="item.index">
+                    <router-link  :to="{name:'con_show',query:{id:item.id}}" target="_blank">
+                      <span class="topic">{{item.title}}</span>
+                      <span class="time">{{item.modifyTime}}</span>
+                    </router-link>
                   </li>
                 </ul>
               </el-tab-pane>
             </el-tabs>
-            <router-link class="content-more" to="/platTrends?flag=first">更多</router-link>
+            <router-link class="content-more" to="trends">更多</router-link>
           </div>
-          <!-- <div class="content">
-            <div class="pictures" v-if="paltNews.length" :style="{backgroundImage: 'url(' + articleUrl(paltNews[0]) + ')'}"></div>
-            <ul class="maincon">
-              <li v-for="item in paltNews" :key="item.index">
-                <a :href="linkArticle(item)" target="_blank">
-                  <span class="topic">{{item.articleTitle}}</span>
-                  <span class="time">{{formTime(item)}}</span>
-                </a>
-              </li>
-            </ul>
-          </div> -->
         </div>
         <div class="content-wrapper full-wrapper" style="margin-top:20px">
           <div class="content-title">
-              <span>最新入驻企业</span>
-              <router-link class="content-more" to="/regAgency">更多</router-link>
+            <span>最新入驻企业</span>
+            <router-link class="content-more" to="comp">更多</router-link>
           </div>
           <div class="swiper-container" ref="latestCmp">
             <div class="swiper-wrapper">
-              <a class="swiper-slide" v-for="item in residentOrgs" :key="item.index" :href="linkOrg(item)" target="_blank">
+              <router-link class="swiper-slide" v-for="item in residentComps" :key="item.index" :to="{name:'comp_show',query:{id:item.id}}" target="_blank">
                 <div class="item-block">
                   <div class="item-pic">
-                    <img :src="orgsUrl(item)">
+                    <img :src="item.logo">
                   </div>
                   <div class="item-text item-left">{{item.name}}</div>
                 </div>
-              </a>
+              </router-link>
             </div>
           </div>
         </div>
@@ -127,26 +82,6 @@
         <div class="content">{{aboutUs}}</div>
       </div>
     </div>
-
-    <!-- <div class="block-wrapper">
-      <div class="content-wrapper full-wrapper">
-        <div class="content-title">
-            <span>最新入驻企业</span>
-        </div>
-        <div class="swiper-container" ref="latestCmp">
-          <div class="swiper-wrapper">
-            <a class="swiper-slide" v-for="item in residentOrgs" :key="item.index" :href="linkOrg(item)" target="_blank">
-              <div class="item-block">
-                <div class="item-pic">
-                  <img :src="orgsUrl(item)">
-                </div>
-                <div class="item-text item-left">{{item.name}}</div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
     <div class="block-wrapper">
       <div class="content-wrapper full-wrapper">
@@ -220,7 +155,7 @@
       <div class="content-wrapper full-wrapper">
         <div class="content-title">
             <span>特约专家</span>
-            <router-link class="content-more" to="/expertPool">查看全部</router-link>
+            <router-link class="content-more" to="exp">查看全部</router-link>
         </div>
         <baseExpert :num="6"></baseExpert>
       </div>
@@ -230,7 +165,7 @@
       <div class="content-wrapper full-wrapper">
         <div class="content-title">
             <span>合作机构</span>
-            <router-link class="content-more" to="/cooperationAgency">查看全部</router-link>
+            <router-link class="content-more" to="org">查看全部</router-link>
         </div>
         <baseAgency :num="3"></baseAgency>
       </div>
@@ -260,12 +195,30 @@
     },
     data() {
       return {
-        activeName: 'first',
+        activeName: '1',
+        conCatalog: [
+          {
+            val: '1',
+            tit: '平台新闻'
+          },
+          {
+            val: '2',
+            tit: '采访专栏'
+          },
+          {
+            val: '3',
+            tit: '政策法规'
+          },
+          {
+            val: '4',
+            tit: '通知公告'
+          }
+        ],
         platId: '',
         rows: 20,
         orgTrends: '',
         paltNews: '',
-        residentOrgs: '',
+        residentComps: '',
         platResources: '',
         platWares: '',
         ownerInfo: '',
@@ -280,7 +233,7 @@
        this.getAboutUs();
        this.queryPaltNews();
        this.queryOrgTrends();
-       this.queryResidentOrgs();
+       this.queryResidentComps();
        this.queryPlatResources();
        this.queryPlatWares();
     },
@@ -343,22 +296,26 @@
       //   this.$refs.issueDemand.submitForm('ruleForm');
       // },
       queryPaltNews() {
-        this.$axios.getp('/ajax/article/qa', {
-          ownerId: this.platId,
-          articleType: '3',
-          status: 1,
-          rows: 4
+        var that = this
+        this.$axios.get('/ajax/article/pq', {
+          catalog: that.activeName,
+          published: 1,
+          pageSize: 4,
+          pageNo: 1
         }, (res) => {
           if (res.success) {
-            var $info = res.data;
-            this.paltNews = $info;
+            var $info = res.data.data;
+            for (let i = 0; i < $info.length; ++i) {
+              if ($info[i].modifyTime) {
+                $info[i].modifyTime = util.commenTime($info[i].modifyTime, true)
+              }
+            }
+            that.paltNews = $info;
           };
         });
       },
       queryOrgTrends() {
-        this.$axios.getp('/ajax/article/publishInPlatform', {
-          pid: this.platId,
-          rows: 4
+        this.$axios.get('/ajax/org/list', {
         }, (res) => {
           if (res.success) {
             var _this = this;
@@ -372,19 +329,24 @@
           };
         });
       },
-      queryResidentOrgs() {
-        this.$axios.getp('/ajax/platform/info/residentOrgs', {
-          pid: this.platId,
-          rows: this.rows
+      queryResidentComps() {
+        this.$axios.get('/ajax/company/pq', {
+          pageSize: 20,
+          pageNo: 1
         }, (res) => {
           if (res.success) {
-            var $info = res.data;
-            this.residentOrgs = $info;
+            var $info = res.data.data;
+            for (let i = 0; i < $info.length; ++i) {
+              if ($info[i].logo === '') {
+                $info[i].logo = util.defaultSet.img.org
+              }
+            }
+            this.residentComps = $info;
           };
         });
       },
       queryPlatResources() {
-        this.$axios.getp('/ajax/platform/info/resources', {
+        this.$axios.getk('/ajax/platform/info/resources', {
           pid: this.platId,
           rows: this.rows
         }, (res) => {
@@ -401,7 +363,7 @@
         });
       },
       queryPlatWares() {
-        this.$axios.getp('/ajax/platform/info/wares', {
+        this.$axios.getk('/ajax/platform/info/wares', {
           pid: this.platId,
           rows: this.rows
         }, (res) => {
@@ -418,8 +380,7 @@
         });
       },
       getAboutUs() {
-        this.$axios.getp('/ajax/platform/info', {
-          id: this.platId
+        this.$axios.get('/ajax/platform/get', {
         }, (res) => {
           if (res.data) {
             if (res.data.descp) {
@@ -438,7 +399,7 @@
         return item.images ? util.ImageUrl('ware' + item.images.split(',')[0]) : util.defaultSet.img.service;
       },
       orgsUrl(item) {
-        return item.hasOrgLogo ? util.ImageUrl(('org/' + item.id + '.jpg'), true) : util.defaultSet.img.org;
+        return item.logo || util.defaultSet.img.org;
       },
       linkResource(item) {
         return util.defaultSet.link.resource + item.id;
@@ -511,7 +472,7 @@
   };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
   .home-main{
     .block-wrapper{
       display: flex;
@@ -580,7 +541,7 @@
           .pictures{
             @include center-items();
           }
-          .maincon.maincon2{
+          .maincon{
             flex:1 0 180px;
             padding-left:15px;
             height:120px;
@@ -591,22 +552,13 @@
               line-height:30px;
               .topic{
                 display:inline-block;
-                width:400px;
+                width: 560px;
                 @include text-ellipsis();
               }
               .time{
                 width: 100px;
                 text-align: right;
                 color:$secondaryFont;
-              }
-            }
-            &.maincon2{
-              width:100%;
-              padding:0;
-              .owner{
-                display:inline-block;
-                width:180px;
-                @include text-ellipsis();
               }
             }
           }

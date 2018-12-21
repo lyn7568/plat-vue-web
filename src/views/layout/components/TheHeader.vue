@@ -39,13 +39,13 @@
       <div class="contain-wrapper">
         <ul>
           <router-link to="/home" active-class="active" tag="li">首页</router-link>
-          <router-link to="/platTrends" active-class="active" tag="li">平台动态</router-link>
-          <router-link to="/findServe" active-class="active" tag="li">找服务</router-link>
-          <router-link to='/findResource' active-class="active" tag="li">找资源</router-link>
-          <router-link to="/findResult" active-class="active" tag="li">找成果</router-link>
-          <router-link to='/expertPool' active-class="active" tag="li">专家库</router-link>
-          <router-link to='/CoAgency' active-class="active" tag="li">服务机构</router-link>
-          <router-link to='/regCompany' active-class="active" tag="li">入驻企业</router-link>
+          <router-link to="/trends" active-class="active" tag="li">平台动态</router-link>
+          <router-link to="/serve" active-class="active" tag="li">找服务</router-link>
+          <router-link to='/reso' active-class="active" tag="li">找资源</router-link>
+          <router-link to="/resu" active-class="active" tag="li">找成果</router-link>
+          <router-link to='/exp' active-class="active" tag="li">专家库</router-link>
+          <router-link to='/org' active-class="active" tag="li">服务机构</router-link>
+          <router-link to='/comp' active-class="active" tag="li">入驻企业</router-link>
           <router-link to='/about' active-class="active" tag="li">关于平台</router-link>
         </ul>
       </div>

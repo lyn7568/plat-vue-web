@@ -5,21 +5,18 @@
 	</div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   import Cookies from 'js-cookie';
-  import httpUrl from '@/libs/http';
-
+  import util from '@/libs/util';
 	import baseArticle from '@/views/sub-component/BaseArticle';
 
 	export default {
+    props: ['activeTab'],
     data() {
       return {
         platId: '',
-        rows: 20,
-        dataO: {
-          bId: '',
-          bTime: ''
-        },
+        pageSize: 20,
+        pageNo: 1,
         paltNews: [],
         loadingModalShow: true, // 是否显示按钮
         loadingComplete: false, // 是否全部加载
@@ -27,44 +24,46 @@
         isLoading: false // button style...
       };
     },
+    components: {
+      baseArticle
+    },
     created() {
-       this.platId = Cookies.get('platId');
-       this.queryPaltNews();
+      this.platId = Cookies.get('platId');
+      this.queryPaltNews();
     },
     methods: {
       queryPaltNews() {
-        this.$axios.get(httpUrl.hQuery.platNews.nopq, {
-          ownerId: this.platId,
-          articleType: '3',
-          status: 1,
-          rows: this.rows,
-          publishTime: this.dataO.bTime,
-          articleId: this.dataO.bId
+        var that = this
+        this.$axios.get('/ajax/article/pq', {
+          catalog: that.activeTab,
+          published: 1,
+          pageSize: that.pageSize,
+          pageNo: that.pageNo
         }, (res) => {
-          console.log(res);
           if (res.success) {
-            var $info = res.data;
+            var $info = res.data.data;
             if ($info.length > 0) {
-              this.dataO.bId = $info[$info.length - 1].articleId;
-              this.dataO.bTime = $info[$info.length - 1].publishTime;
-              this.paltNews = this.isFormSearch ? this.paltNews.concat($info) : $info;
-              this.isFormSearch = true;
-            };
-            if ($info.length < this.rows) {
-              this.loadingModalShow = false;
-              this.isFormSearch = false;
+              for (let i = 0; i < $info.length; ++i) {
+                if ($info[i].modifyTime) {
+                  $info[i].modifyTime = util.commenTime($info[i].modifyTime, true)
+                }
+              }
+              that.paltNews = that.isFormSearch ? that.paltNews.concat($info) : $info;
+              that.isFormSearch = true;
+            }
+            if ($info.length < that.pageSize) {
+              that.loadingModalShow = false;
+              that.isFormSearch = false;
             };
           };
         });
       },
       loadLower() {
         if (this.loadingModalShow && !this.isLoading) {
+          this.pageNo++;
           this.queryPaltNews();
         }
       }
-    },
-    components: {
-      baseArticle
     }
   };
 </script>

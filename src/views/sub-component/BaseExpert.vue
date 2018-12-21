@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="block-container">
-      <router-link class="block-item" v-for="item in userData" :key="item.index" :to="'exp_show?id='+item.id" target="_blank">
+      <router-link class="block-item" v-for="item in userData" :key="item.index" :to="{name:'exp_show',query:{id:itemSingle.id}}" target="_blank">
         <div class="show-head" :style="{backgroundImage:'url('+ headUrl(item) +')'}"></div>
         <div class="show-info">
           <div class="info-tit">{{item.name}}<em class="authicon" :class="headIcon(item)"></em></div>
@@ -45,7 +45,7 @@
     },
     methods: {
       buttedProfessors(id) {
-        this.$axios.getp('/ajax/platform/info/buttedProfessors', {
+        this.$axios.getk('/ajax/platform/info/buttedProfessors', {
           pid: this.platId,
           uid: this.dataO.bUid,
           time: this.dataO.bTime,

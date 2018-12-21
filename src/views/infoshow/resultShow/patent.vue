@@ -90,8 +90,8 @@
 </template>
 
 <script>
-  import '@/common/stylus/listitem.styl';
-  import '@/common/stylus/browse.styl';
+  import '@/styles/listitem.scss';
+  import '@/styles/browse.scss';
   import util from '@/libs/util';
   import httpUrl from '@/libs/http';
 
@@ -118,7 +118,7 @@
     created() {
       this.patentId = util.urlParse('id');
       this.elurl = window.location.href;
-      this.getExpertInfo();
+      this.getPatentInfo();
     },
     components: {
       shareOut,
@@ -126,8 +126,8 @@
       baseService
     },
     methods: {
-      getExpertInfo() {
-        this.$axios.get(httpUrl.kxQurey.patent.query, {
+      getPatentInfo() {
+        this.$axios.getk('/ajax/ppatent/qo', {
           id: this.patentId
         }, (res) => {
           if (res.success) {

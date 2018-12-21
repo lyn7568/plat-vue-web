@@ -70,7 +70,7 @@
     },
     methods: {
       searchService() {
-        this.$axios.getp('/ajax/platform/info/wares', {
+        this.$axios.getk('/ajax/platform/info/wares', {
             key: this.keyVal,
             pid: this.platId,
             shareId: this.dataO.bShareId,

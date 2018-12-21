@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="block-container">
-      <router-link class="block-item org-item" v-for="item in orgData" :key="item.index" :to="'comp_show?id='+item.id" target="_blank">
+      <router-link class="block-item org-item" v-for="item in orgData" :key="item.index" :to="{name:'comp_show',query:{id:item.id}}" target="_blank">
         <div class="item-block-org">
           <div class="item-pic-org">
-            <img :src="orgLogoUrl(item)">
+            <img :src="item.logo">
           </div>
           <div class="item-text-org">
-            <div class="item-tit-org"><span>{{item.name}}</span><em class="authicon" :class="{'icon-com': item.authStatus==='3'}"></em></div>
-            <p class="item-tag-org">{{item.industry.replace(/,/gi, ' | ')}}</p>
+            <div class="item-tit-org"><span>{{item.name}}</span></div>
+            <p class="item-tag-org" v-if="item.industry">{{item.industry.join(' | ')}}</p>
           </div>
         </div>
       </router-link>
@@ -18,7 +18,6 @@
 </template>
 
 <script>
-  import Cookies from 'js-cookie';
   import util from '@/libs/util';
 
   export default {
@@ -29,13 +28,9 @@
     },
     data() {
       return {
-        platId: '',
-        rows: 30,
+        pageSize: 30,
+        pageNo: 1,
         orgData: [],
-        dataO: {
-          bOid: '',
-          bTime: ''
-        },
         loadingModalShow: true, // 是否显示按钮
         loadingComplete: false, // 是否全部加载
         isFormSearch: false, // 数据加载
@@ -43,38 +38,57 @@
       };
     },
     created() {
-       this.platId = Cookies.get('platId');
        this.ResidentOrgs();
     },
     methods: {
       ResidentOrgs() {
-        this.$axios.getp('/ajax/platform/info/buttedOrgs', {
-          pid: this.platId,
-          oid: this.dataO.bOid,
-          time: this.dataO.bTime,
-          rows: this.num ? this.num : this.rows
+        var that = this
+        this.$axios.get('/ajax/company/pq', {
+          pageSize: that.pageSize,
+          pageNo: that.pageNo
         }, (res) => {
           if (res.success) {
-            var $info = res.data;
+            var $info = res.data.data;
             if ($info.length > 0) {
-              this.dataO.bOid = $info[$info.length - 1].id;
-              this.dataO.bTime = $info[$info.length - 1].buttedTime;
-              this.isFormSearch = true;
-              this.orgData = this.orgData.concat($info);
+              for (let i = 0; i < $info.length; ++i) {
+                if ($info[i].logo === '') {
+                  $info[i].logo = util.defaultSet.img.org
+                }
+                $info[i].industry = that.getCompanyKeyword($info[i].id)
+                that.$forceUpdate()
+              }
+              that.isFormSearch = true;
+              that.orgData = that.orgData.concat($info);
             };
-            if ($info.length < this.rows) {
-              this.loadingModalShow = false;
-              this.isFormSearch = false;
+            if ($info.length < that.pageSize) {
+              that.loadingModalShow = false;
+              that.isFormSearch = false;
             };
           };
         });
       },
-      orgLogoUrl(item) {
-        return item.hasOrgLogo ? util.ImageUrl(('org/' + item.id + '.jpg'), true) : util.defaultSet.img.org;
+      getCompanyKeyword(id) {
+        var that = this
+        var objKey = []
+        that.$axios.get('/ajax/company/qo/keyword', {
+          id: id,
+          type: 1
+        }, function(res) {
+          if (res.success && res.data) {
+            const str = res.data
+            if (str.length > 0) {
+              str.map(item => {
+                objKey.push(item.value)
+              })
+            }
+          }
+        })
+        return objKey
       },
       loadLower() {
         if (this.loadingModalShow && !this.isLoading) {
-          this.ResidentOrgs(this.platId);
+          this.pageNo++;
+          this.ResidentOrgs();
         }
       }
     }

@@ -4,13 +4,13 @@
       <div class="content-wrapper">
         <div class="headcon-box org-head">
           <div class="show-head headimg-box">
-            <img :src="orgLogoUrl(orgInfo)">
+            <img :src="orgInfo.logo">
           </div>
           <div class="show-info reInfo-box">
-            <div class="info-tit">{{orgInfo.forShort ? orgInfo.forShort : orgInfo.name}}<em class="authicon" :class="{'icon-com': orgInfo.authStatus==='3'}"></em></div>
-            <div class="info-tag"><span v-if="orgInfo.title" style="margin-right:10px">{{orgInfo.orgType}}</span> {{orgInfo.industry ? orgInfo.industry.replace(/,/gi, " | ") : ''}}</div>
+            <div class="info-tit">{{orgInfo.name}}</div>
+            <div class="info-tag"><span v-if="orgInfo.type === '1'" style="margin-right:10px">{{compType[orgInfo.type]}}</span> {{keywordObj[1] ? keywordObj[1].join(" | ") : ''}}</div>
             <div class="info-operate">
-              <div class="addr">{{orgInfo.city}}</div>
+              <div class="addr">{{orgInfo.addr}}</div>
               <shareOut :tUrl="elurl"></shareOut>
             </div>
           </div>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="content">
                   <el-row class="tag-item">
-                    <el-tag v-for="sub in orgInfo.subject" :key="sub.index">{{sub}}</el-tag>
+                    <el-tag v-for="sub in keywordObj[2]" :key="sub.index">{{sub}}</el-tag>
                   </el-row>
                 </div>
               </div>
@@ -66,36 +66,36 @@
                       <el-col :span="6">企业名称：</el-col>
                       <el-col :span="18">{{orgInfo.name}}</el-col>
                     </el-col>
-                    <el-col :span="12" v-if="orgInfo.orgSize">
+                    <el-col :span="12" v-if="orgInfo.size">
                       <el-col :span="6">企业规模：</el-col>
-                      <el-col :span="18">{{orgInfo.orgSize}}</el-col>
+                      <el-col :span="18">{{numRanger[orgInfo.size]}}</el-col>
                     </el-col>
-                    <el-col :span="12" v-if="orgInfo.orgType">
+                    <el-col :span="12" v-if="orgInfo.type">
                       <el-col :span="6">企业类型：</el-col>
-                      <el-col :span="18">{{orgInfo.orgType}}</el-col>
+                      <el-col :span="18">{{compType[orgInfo.type]}}</el-col>
                     </el-col>
-                    <el-col :span="12" v-if="orgInfo.addr">
+                    <el-col :span="12" v-if="orgInfo.location">
                       <el-col :span="6">企业地址：</el-col>
-                      <el-col :span="18">{{orgInfo.addr}}</el-col>
+                      <el-col :span="18">{{orgInfo.location}}</el-col>
                     </el-col>
-                    <el-col :span="12" v-if="orgInfo.foundTime">
+                    <el-col :span="12" v-if="orgInfo.foundYear">
                       <el-col :span="6">创立时间：</el-col>
-                      <el-col :span="18">{{orgInfo.foundTime}}</el-col>
+                      <el-col :span="18">{{orgInfo.foundYear}}</el-col>
                     </el-col>
-                    <el-col :span="12" v-if="orgInfo.orgUrl">
+                    <el-col :span="12" v-if="orgInfo.url">
                       <el-col :span="6">企业官网：</el-col>
-                      <el-col :span="18">{{orgInfo.orgUrl}}</el-col>
+                      <el-col :span="18">{{orgInfo.url}}</el-col>
                     </el-col>
                   </el-row>
                 </div>
               </div>
-              <div class="inner-wrapper" v-if="orgInfo.qualification && orgInfo.qualification.length">
+              <div class="inner-wrapper" v-if="keywordObj[2] && keywordObj[2].length">
                 <div class="content-title">
                   <span>企业资质</span>
                 </div>
                 <div class="content">
                    <div class="ulM">
-                    <div class="liM" v-for="item in orgInfo.qualification" :key="item.index">
+                    <div class="liM" v-for="item in keywordObj[2]" :key="item.index">
                       <div class="liM-tit">{{item}}</div>
                     </div>
                   </div>
@@ -129,10 +129,10 @@
 </template>
 
 <script>
-  import '@/common/stylus/listitem.styl';
-  import '@/common/stylus/browse.styl';
+  import '@/styles/listitem.scss';
+  import '@/styles/browse.scss';
   import util from '@/libs/util';
-  import httpUrl from '@/libs/http';
+  import queryDict from '@/libs/queryDict';
 
   import shareOut from '../components/ShareOut';
   import baseService from '@/views/sub-component/BaseService';
@@ -143,15 +143,18 @@
         activeIndex: '1',
         activeName: 'first',
         orgInfo: '',
-        orgRegInfo: '',
         elurl: '',
+        keywordObj: [],
+        numRanger: [],
+        compType: [],
         platServices: [],
         platResources: []
       };
     },
     created() {
-      this.orgId = util.urlParse('id');
+      this.companyId = util.urlParse('id');
       this.elurl = window.location.href;
+      this.getDictoryData();
       this.getorgInfo();
     },
     components: {
@@ -159,42 +162,53 @@
       baseService
     },
     methods: {
+      getDictoryData() {
+        const that = this
+        queryDict.applyDict('QYGM', function(dictData) {
+          dictData.map(item => {
+            that.numRanger.push({ value: item.code, label: item.caption })
+          })
+        }) // 企业规模
+        queryDict.applyDict('QYLX', function(dictData) {
+          dictData.map(item => {
+            that.compType.push({ value: item.code, label: item.caption })
+          })
+        }) // 企业类型
+      },
       getorgInfo() {
-        this.$axios.get(httpUrl.kxQurey.org.query + this.orgId, {
+        this.$axios.get('/ajax/company/qo', {
+          id: this.companyId
         }, (res) => {
           if (res.success) {
-            var $info = res.data;
-            if ($info.subject) {
-              $info.subject = util.strToArr($info.subject);
+            const obj = res.data
+            if (obj.logo === '') {
+              obj.logo = util.defaultSet.img.org
             }
-            if ($info.qualification) {
-              $info.qualification = util.strToArr($info.qualification);
-            }
-            if ($info.foundTime) {
-              $info.foundTime = util.TimeTr($info.foundTime);
-            }
-            if ($info.orgSize) {
-              $info.orgSize = util.orgSizeShow[$info.orgSize];
-            }
-            if ($info.orgType) {
-              $info.orgType = util.orgTypeShow[$info.orgType];
-            }
-            this.orgInfo = $info;
+            this.orgInfo = obj
           };
         });
       },
-      getorgRegInfo(oName) {
-        this.$axios.get(httpUrl.kxQurey.org.reg, {
-          name: oName
-        }, (res) => {
-          if (res.success) {
-            var $info = res.data;
-            this.orgRegInfo = $info;
-          };
-        });
-      },
-      orgLogoUrl(item) {
-        return item.hasOrgLogo ? util.ImageUrl(('org/' + item.id + '.jpg'), true) : util.defaultSet.img.org;
+      getCompanyKeyword() {
+        var that = this
+        that.$axios.get('/ajax/company/qo/keyword', {
+          id: that.companyId
+        }, function(res) {
+          if (res.success && res.data) {
+            const str = res.data
+            var objKey = {}
+            if (str.length > 0) {
+              str.map(item => {
+                if (!objKey[item.type]) {
+                  objKey[item.type] = []
+                  objKey[item.type].push(item.value)
+                } else {
+                  objKey[item.type].push(item.value)
+                }
+              })
+            }
+            that.keywordObj = objKey
+          }
+        })
       }
     }
   };

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="block-container">
-      <router-link class="block-item org-item" v-for="item in orgData" :key="item.index" :to="'org_show?id='+item.id" target="_blank">
+      <router-link class="block-item org-item" v-for="item in orgData" :key="item.index"  :to="{name:'org_show',query:{id:itemSingle.id}}" target="_blank">
         <div class="item-block-org">
           <div class="item-pic-org">
             <img :src="orgLogoUrl(item)">
@@ -32,10 +32,6 @@
         platId: '',
         rows: 30,
         orgData: [],
-        dataO: {
-          bOid: '',
-          bTime: ''
-        },
         loadingModalShow: true, // 是否显示按钮
         loadingComplete: false, // 是否全部加载
         isFormSearch: false, // 数据加载
@@ -48,17 +44,10 @@
     },
     methods: {
       ResidentOrgs(id) {
-        this.$axios.getp('/ajax/platform/info/buttedOrgs', {
-          pid: this.platId,
-          oid: this.dataO.bOid,
-          time: this.dataO.bTime,
-          rows: this.num ? this.num : this.rows
-        }, (res) => {
+        this.$axios.get('/ajax/org/list', {}, (res) => {
           if (res.success) {
             var $info = res.data;
             if ($info.length > 0) {
-              this.dataO.bOid = $info[$info.length - 1].id;
-              this.dataO.bTime = $info[$info.length - 1].buttedTime;
               this.isFormSearch = true;
               this.orgData = this.orgData.concat($info);
             };

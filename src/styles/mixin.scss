@@ -60,7 +60,7 @@ $mainColor:$--color-primary;
 }
 @mixin border-none(){
   &:after{
-    display:none;
+    border:none;
   }
 }
 /*border-about e*/

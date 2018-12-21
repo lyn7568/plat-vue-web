@@ -1,11 +1,11 @@
 /**
- * Created by luyanan on 18/11/22.
+ * Created by luyanan on 18/12/22.
  * 'QYGM'----'企业规模'
  * 'QYLX'----'企业类型'
  * 'XZQH'----'城市级联'
  */
 /* eslint-disable one-var */
-import request from '@/utils/request'
+import Vue from 'vue'
 
 var cacheDict = {
     bool: [
@@ -24,7 +24,7 @@ var cacheDict = {
     }
   },
   loadDict = function(code) {
-    request.get(uri, {
+    Vue.axios.get(uri, {
       dict: code
     }, function(res) {
       setDict(code, res.data)

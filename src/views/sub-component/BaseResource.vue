@@ -1,5 +1,5 @@
 <template>
-  <router-link class="list-item" :to="'reso_show?id='+itemSingle.id" target="_blank">
+  <router-link class="list-item"  :to="{name:'reso_show',query:{id:itemSingle.id}}" target="_blank">
     <div class="list-head" :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
     <div class="list-info">
       <div class="list-tit list-topic">{{itemSingle.name}}</div>
@@ -11,6 +11,7 @@
 
 <script>
   import util from '@/libs/util';
+  import queryBase from '@/libs/queryBase';
 
   export default {
     props: {
@@ -31,22 +32,21 @@
     },
     methods: {
       ownerByond(item) {
+        var _this = this
         if (item.otype === '1') {
-          this.$axios.getk('/ajax/professor/baseInfo/' + item.oid, {
-            }, (res) => {
-            if (res.success) {
-              let $info = res.data;
-              this.ownerName = $info.name;
-              this.ownerAuth = util.autho($info.authType, $info.orgAuth, $info.authStatus);
+          queryBase.getProfessor(item.oid, function(sc, value) {
+            if (sc) {
+              _this.ownerName = value.name;
+              _this.ownerAuth = util.autho(value.authType, value.orgAuth, value.authStatus);
+              _this.$forceUpdate();
             }
           });
         } else if (item.otype === '2') {
-          this.$axios.getk('/ajax/org/' + item.oid, {
-            }, (res) => {
-            if (res.success) {
-              let $info = res.data;
-              this.ownerName = $info.forShort ? $info.forShort : $info.name;
-              this.ownerAuth = $info.authStatus === '3' ? 'icon-com' : '';
+          queryBase.getOrganization(item.oid, function(sc, value) {
+            if (sc) {
+              _this.ownerName = value.forShort ? value.forShort : value.name;
+              _this.ownerAuth = value.authStatus === '3' ? 'icon-com' : '';
+              _this.$forceUpdate();
             }
           });
         }

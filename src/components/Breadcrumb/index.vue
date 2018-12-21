@@ -20,11 +20,6 @@ export default {
       levelList: null
     };
   },
-  watch: {
-    $route() {
-      this.getBreadcrumb();
-    }
-  },
   methods: {
     getBreadcrumb() {
       const bridgeName = Cookies.get('bridgeName');

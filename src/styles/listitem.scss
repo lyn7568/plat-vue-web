@@ -83,7 +83,7 @@
   padding:20px;
   @include border-1px();
   &:last-child{
-    @include border-none();
+    content:none;
   }
   .list-head{
     @include center-items(162px,108px);
@@ -117,6 +117,15 @@
       @include text-ellipsis-n(2,20px);
       color:$commonFont;
     }
+  }
+}
+.list-item-info{
+  .list-head{
+    display: none
+  }
+  .list-info{
+    flex: 1 1 0;
+    padding-left: 0;
   }
 }
 /*list*/
