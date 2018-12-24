@@ -83,7 +83,6 @@
   import '@/styles/listitem.scss';
   import '@/styles/browse.scss';
   import util from '@/libs/util';
-  import httpUrl from '@/libs/http';
 
   import previewMagnify from '../components/previewMagnify';
   import shareOut from '../components/ShareOut';

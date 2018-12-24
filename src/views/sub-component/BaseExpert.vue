@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="block-container">
-      <router-link class="block-item" v-for="item in userData" :key="item.index" :to="{name:'exp_show',query:{id:itemSingle.id}}" target="_blank">
-        <div class="show-head" :style="{backgroundImage:'url('+ headUrl(item) +')'}"></div>
+      <router-link class="block-item" v-for="item in userData" :key="item.index" :to="{name:'exp_show',query:{id:item.id}}" target="_blank">
+        <div class="show-head" :style="{backgroundImage:'url('+ item.img +')'}"></div>
         <div class="show-info">
           <div class="info-tit">{{item.name}}<em class="authicon" :class="headIcon(item)"></em></div>
           <div class="info-tag" v-if="item.offt">{{item.offt}}</div>
@@ -15,8 +15,8 @@
 </template>
 
 <script>
-  import Cookies from 'js-cookie';
   import util from '@/libs/util';
+  import queryBase from '@/libs/queryBase';
 
   export default {
     props: {
@@ -26,13 +26,8 @@
     },
     data() {
       return {
-        platId: '',
         rows: 30,
         userData: [],
-        dataO: {
-          bUid: '',
-          bTime: ''
-        },
         loadingModalShow: true, // 是否显示按钮
         loadingComplete: false, // 是否全部加载
         isFormSearch: false, // 数据加载
@@ -40,41 +35,28 @@
       };
     },
     created() {
-       this.platId = Cookies.get('platId');
        this.buttedProfessors();
     },
     methods: {
       buttedProfessors(id) {
-        this.$axios.getk('/ajax/platform/info/buttedProfessors', {
-          pid: this.platId,
-          uid: this.dataO.bUid,
-          time: this.dataO.bTime,
-          rows: this.num ? this.num : this.rows
-        }, (res) => {
+        this.$axios.get('/ajax/professor/list', {}, (res) => {
           if (res.success) {
             var $data = res.data;
             if ($data.length > 0) {
-              this.dataO.bUid = $data[$data.length - 1].id;
-              this.dataO.bTime = $data[$data.length - 1].buttedTime;
               this.isFormSearch = true;
               for (let i = 0; i < $data.length; i++) {
-                if ($data[i].title) {
-                  if ($data[i].orgName) {
-                    $data[i].offt = $data[i].title + '，' + $data[i].orgName;
-                  } else {
-                    $data[i].offt = $data[i].title;
-                  }
-                } else {
-                  if ($data[i].office) {
-                    if ($data[i].orgName) {
-                      $data[i].offt = $data[i].office + '，' + $data[i].orgName;
+                queryBase.getProfessor($data[i].id, function(sc, value) {
+                  if (sc) {
+                    var owner = $data[i]
+                    owner.name = value.name
+                    owner.offt = util.formatOfft(value, true)
+                    if (value.hasHeadImage) {
+                      owner.img = util.ImageUrl(('head/' + value.id + '_l.jpg'), true)
                     } else {
-                      $data[i].offt = $data[i].office;
+                      owner.img = util.defaultSet.img.expert
                     }
-                  } else {
-                    $data[i].offt = '';
                   }
-                }
+                })
                 this.$axios.getk('/ajax/researchArea/' + $data[i].id, {}, (res) => {
                   const $info = res.data;
                   let arr = [];

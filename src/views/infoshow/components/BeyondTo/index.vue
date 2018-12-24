@@ -1,39 +1,23 @@
 <template>
   <div class="beyond-block">
-    <div class="expert-block">
-      <div class="show-head"></div>
+    <div class="expert-block" v-if="ownerType==='1'">
+      <div class="show-head" :style="{backgroundImage:'url('+ ownerInfo.img +')'}"></div>
       <div class="show-info">
-        <div class="info-tit">ownerInfo.name<em class="authicon icon-pro"></em></div>
-        <div class="info-tag">ownerInfo.title</div>
-        <div class="info-desc">ownerInfo.offt</div>
+        <div class="info-tit">{{ownerInfo.name}}<em class="authicon icon-pro"></em></div>
+        <div class="info-tag">{{ownerInfo.title}}</div>
+        <div class="info-desc">{{ownerInfo.offt}}</div>
       </div>
     </div>
-    <div class="expert-block">
+    <div class="expert-block" v-else>
       <div class="show-head orgimg-box">
-        <img :src="orgLogoUrl(ownerInfo)">
+        <img :src="ownerInfo.logo">
       </div>
       <div class="show-info">
-        <div class="info-tit">ownerInfo.name<em class="authicon icon-com"></em></div>
-        <div class="info-desc">ownerInfo.title</div>
+        <div class="info-tit">{{ownerInfo.name}}</div>
+        <div class="info-desc">{{ownerInfo.title}}</div>
       </div>
     </div>
-    <!-- <div class="expert-block" v-if="ownerType===1">
-      <div class="show-head headimg-box" :style="{backgroundImage:'url('+ headUrl(ownerInfo) +')'}"></div>
-      <div class="show-info reInfo-box">
-        <div class="info-tit">{{ownerInfo.name}}<em class="authicon" :class="headIcon(ownerInfo)"></em></div>
-        <div class="info-tag"><span v-if="ownerInfo.title" style="margin-right:10px">{{ownerInfo.title}}</span> {{ownerInfo.offt}}</div>
-      </div>
-    </div>
-    <div class="org-block" v-if="ownerType===2">
-      <div class="show-head headimg-box">
-        <img :src="orgLogoUrl(ownerInfo)">
-      </div>
-      <div class="show-info reInfo-box">
-        <div class="info-tit">{{ownerInfo.forShort ? ownerInfo.forShort : ownerInfo.name}}<em class="authicon" :class="{'icon-com': ownerInfo.authStatus==='3'}"></em></div>
-        <div class="info-tag"><span v-if="ownerInfo.title" style="margin-right:10px">{{ownerInfo.orgType}}</span> {{ownerInfo.industry ? ownerInfo.industry.replace(/,/gi, " | ") : ''}}</div>
-      </div>
-    </div> -->
-    <el-row class="goSpan">
+    <el-row class="goSpan" v-if="ownerType">
       <el-button type="primary" icon="el-icon-plus">关注</el-button>
       <el-button type="primary">联系</el-button>
     </el-row>
@@ -41,7 +25,8 @@
 </template>
 <script>
   import util from '@/libs/util';
-  // import httpUrl from '@/libs/http';
+  import queryBase from '@/libs/queryBase';
+
   export default {
     props: {
       ownerId: {
@@ -56,14 +41,64 @@
         ownerInfo: ''
       };
     },
-    mounted() {
+    created() {
+      if (!this.ownerType) {
+        this.ownerCompInfo()
+      } else if (this.ownerType === '1') {
+        this.ownerProInfo()
+      } else if (this.ownerType === '2') {
+        this.ownerOrgInfo()
+      }
     },
     methods: {
-      orgLogoUrl(item) {
-        return item.hasOrgLogo ? util.ImageUrl(('org/' + item.id + '.jpg'), true) : util.defaultSet.img.org;
+      ownerProInfo() {
+        var that = this
+        queryBase.getProfessor(that.ownerId, function(sc, value) {
+          if (sc) {
+            that.ownerInfo.name = value.name
+            that.ownerInfo.title = value.title
+            if (that.ownerInfo.hasHeadImage) {
+              that.ownerInfo.img = util.ImageUrl(('head/' + value.id + '_l.jpg'), true)
+            } else {
+              that.ownerInfo.img = util.defaultSet.img.expert
+            }
+          }
+        })
       },
-      headUrl(item) {
-        return item.hasHeadImage ? util.ImageUrl(('head/' + item.id + '_l.jpg'), true) : util.defaultSet.img.expert;
+      ownerOrgInfo() {
+        var that = this
+        queryBase.getOrganization(that.ownerId, function(sc, value) {
+          if (sc) {
+            that.ownerInfo.name = value.name
+            that.ownerInfo.insdutry = value.insdutry.replace(/,/, ' | ')
+            if (that.ownerInfo.hasOrgLogo) {
+              that.ownerInfo.img = util.ImageUrl(('org/' + value.id + '.jpg'), true)
+            } else {
+              that.ownerInfo.img = util.defaultSet.img.org
+            }
+          }
+        })
+      },
+      ownerCompInfo() {
+        this.$axios.get('/ajax/company/qo', {
+          id: this.ownerId
+        }, (res) => {
+          if (res.success) {
+            const obj = res.data
+            if (obj.logo === '') {
+              obj.logo = util.defaultSet.img.org
+            }
+            this.ownerInfo = obj
+          };
+        });
+        // queryBase.getCompany(that.ownerId, function(sc, value) {
+        //   if (sc) {
+        //     that.ownerInfo.name = value.name
+        //     if (!that.ownerInfo.logo) {
+        //       that.ownerInfo.logo = util.defaultSet.img.org
+        //     }
+        //   }
+        // })
       },
       headIcon(item) {
         return util.autho(item.authType, item.orgAuth, item.authStatus);

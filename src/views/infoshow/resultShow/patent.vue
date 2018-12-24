@@ -93,7 +93,6 @@
   import '@/styles/listitem.scss';
   import '@/styles/browse.scss';
   import util from '@/libs/util';
-  import httpUrl from '@/libs/http';
 
   import shareOut from '../components/ShareOut';
   import collectCo from '../components/CollectCo';
