@@ -3,53 +3,94 @@
     <div class="logo-wrapper"></div>
     <div class="form-wrapper">
       <div class="form-contain">
-        <p class="form-title">北京科袖科技有限公司</p>
+        <p class="form-title">{{$route.query.orgName}}</p>
         <p class="form-title">欢迎入驻平台</p>
         <p class="promptText">请先绑定手机并设置密码</p>
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
           <el-form-item prop="phone">
             <el-input v-model="ruleForm.phone" placeholder="请输入手机号码"></el-input>
           </el-form-item>
-          <el-form-item prop="pass">
-            <el-input type="password" v-model="ruleForm.pass" placeholder="请输入登录密码" auto-complete="off"></el-input>
+          <el-form-item prop="pw">
+            <el-input type="password" v-model="ruleForm.pw" placeholder="请输入登录密码" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item prop="mail">
-            <el-input v-model="ruleForm.mail" placeholder="请输入短信验证码" class='codeWidth'></el-input>
-            <el-button type="primary" class='codeWidth codeButton'>获取短信验证码</el-button>
+          <el-form-item prop="vc">
+            <el-input v-model="ruleForm.vc" placeholder="请输入短信验证码" class='codeWidth'></el-input>
+            <el-button type="primary" class='codeWidth codeButton' :disabled='isDisabled' @click="buttonCheck">{{buttonMsg}}</el-button>
           </el-form-item>
           <el-form-item>
             <i class="el-icon-check successSelect"></i><span class="protocol">我已阅读并同意<a href='#/userAgreement'>《邢台科技条件平台用户协议》</a></span>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" :disabled="isDisabl" :loading="logining" @click="submitForm('ruleForm')">绑定</el-button>
+            <el-button type="primary" :disabled="isDisabl" :loading="logining" @click="submitForm('ruleForm')">注册</el-button>
+            <div class='existing-account'>已有账号<a href="#/loginPlat">立即登录</a></div>
           </el-form-item>
         </el-form>
       </div>
     </div>
-    <Captcha ref="obj"></Captcha>
+    <Captcha ref="obj" :phone="ruleForm.phone" v-on:touchSetin="touchSetin"></Captcha>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import httpUrl from '@/libs/http';
   import Captcha from './Captcha.vue';
+  import Cookies from 'js-cookie';
   export default {
      data() {
+      let validatePhone = (rule, value, callback) => {
+        const pattern = /^1[34578]\d{9}$/;
+        if (value === '') {
+          this.phoneFlag = false;
+          callback(new Error('请输入您的手机号码'));
+        } else {
+          if (!pattern.test(value)) {
+            this.phoneFlag = false;
+            callback(new Error('请输入正确的手机号码'));
+          } else {
+            let phone = this.ruleForm.phone;
+            this.$axios.get('/ajax/sys/user/exists', { phone }, response => {
+              if (response.success && response.data) {
+                this.phoneFlag = false;
+                callback(new Error('该账号已存在，请重新输入'))
+              } else {
+                this.phoneFlag = true;
+                callback();
+              }
+            });
+          }
+        }
+      };
+      let validatePw = (rule, value, callback) => {
+        const reg = /^[a-zA-Z0-9]{6,24}$/
+        if (value === '') {
+          callback(new Error('请设置您的登录密码'));
+        } else {
+          if (!reg.test(value)) {
+            callback(new Error('密码由6-24个数字和字母组成，区分大小写'));
+          } else {
+            callback();
+          }
+        }
+      }
       return {
         logining: false,
         isDisabl: false,
+        isDisabled: false,
+        buttonMsg: '获取短信验证码',
+        phoneFlag: false,
         ruleForm: {
-          mail: '',
-          pass: ''
+          phone: '',
+          vc: '',
+          pw: ''
         },
         rules: {
-          mail: [
-            { required: true, message: '请输入邮箱账号', trigger: 'blur' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur'] }
+          phone: [
+            { required: true, validator: validatePhone, trigger: 'blur' }
           ],
-          pass: [
-            { required: true, message: '请输入登录密码', trigger: 'blur' },
-            { min: 6, max: 24, message: '密码由6-24个字符组成，区分大小写', trigger: 'blur' }
+          pw: [
+            { required: true, validator: validatePw, trigger: 'blur' }
+          ],
+          vc: [
+            { required: true, message: '请输入验证码' }
           ]
         }
       };
@@ -57,51 +98,57 @@
     components: {
       Captcha
     },
-    mounted() {
-      this.$refs.obj.capShow();
-    },
     methods: {
+      touchSetin() {
+        this.setInt(60)
+      },
+      setInt(num) {
+        this.isDisabled = true;
+        let timer = setInterval(() => {
+          this.buttonMsg = `重新获取(${num--}秒)`
+          if (num === 0) {
+            this.isDisabled = false;
+            this.buttonMsg = '获取短信验证码';
+            clearInterval(timer);
+          }
+        }, 1000);
+      },
+      buttonCheck() {
+        this.$refs.ruleForm.validateField('phone');
+        if (this.phoneFlag) {
+          this.$refs.obj.capShow();
+        }
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.logining = true;
-            let paramsData = {
-              'email': this.ruleForm.mail,
-              'pw': this.ruleForm.pass
-            };
-            this.$axios.post(httpUrl.hQuery.sign.login, paramsData).then(res => {
+            this.ruleForm.companyId = this.$route.query.id;
+            this.$axios.post('/ajax/sys/registe/comp', this.ruleForm, res => {
               this.logining = false;
-              console.log(res);
               if (res.success) {
-                this.$router.push({path: '/WorkHome'});
+                this.$store.commit('SET_ACCOUNT', res.data.account);
+                this.$store.commit('SET_USERID', res.data.id);
+                this.$store.commit('SET_HEADPHOTO', res.data.head);
+                this.$store.commit('SET_BINDCOMPANY', res.data.bindCompany);
+                Cookies.set('userid', res.data.id);
+                this.$router.push({path: '/home'});
               } else {
-                let errorCode = [{
-                  code: -600001,
-                  msg: '用户不存在'
-                }, {
-                  code: -600002,
-                  msg: '密码不正确'
-                }, {
-                  code: -600003,
-                  msg: '平台信息不存在'
-                }, {
-                  code: -600004,
-                  msg: '用户被禁用'
-                }];
-                for (let i = 0; i < errorCode.length; i++) {
-                  if (res.code === errorCode[i].code) {
-                    this.$message.error(errorCode[i].msg);
-                    return;
-                  };
+                const errorCode = {
+                  '-60001': '验证码已过期，请重新获取',
+                  '-60002': '验证码错误，请重新输入',
+                  '-60003': '该账号已存在，请重新输入'
                 };
+                this.$message.error(errorCode[res.code]);
               }
-            }).catch(error => {
-              console.log(error);
-            });
+            })
           } else {
             return false;
           }
         });
+      },
+      goBackPwd() {
+        this.$router.push({path: '/findPwd'});
       }
     }
   };

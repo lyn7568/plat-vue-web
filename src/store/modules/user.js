@@ -1,14 +1,13 @@
-import { login, logout, getInfo } from '@/api/login'
-import { getCookiesName, setCookiesName, removeCookiesName } from '@/utils/auth'
+import http from '@/libs/axios'
+import Cookies from 'js-cookie'
+import util from '@/libs/util'
 
 const user = {
   state: {
     account: '',
     userid: '',
-    name: '',
-    roles: [],
-    logins: '',
-    session: getCookiesName()
+    bindCompany: '',
+    headPhoto: ''
   },
   mutations: {
     SET_ACCOUNT: (state, account) => {
@@ -17,61 +16,31 @@ const user = {
     SET_USERID: (state, userid) => {
       state.userid = userid
     },
-    SET_NAME: (state, name) => {
-      state.name = name
+    SET_BINDCOMPANY: (state, bindCompany) => {
+      state.bindCompany = bindCompany
     },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
-    },
-    SET_LOGIN: (state, logins) => {
-      state.logins = logins
-    },
-    SET_SESSION: (state, session) => {
-      state.session = session
+    SET_HEADPHOTO: (state, headPhoto) => {
+      state.headPhoto = headPhoto || util.defaultSet.img.expert;
     }
   },
 
   actions: {
-    // 用户名登录
-    LoginByUsername({ commit }, userInfo) {
-      const account = userInfo.username.trim()
-      const pw = userInfo.password
-      const vc = userInfo.imgVerifyCode.toLocaleUpperCase()
-      return new Promise((resolve, reject) => {
-        login(account, pw, vc).then((response) => {
-          if (response.success) {
-            if (response.data) {
-              const dataS = response.data
-              if (dataS.active) {
-                commit('SET_ACCOUNT', dataS.account)
-                commit('SET_USERID', dataS.id)
-                commit('SET_ROLES', [dataS.type.toString()])
-                commit('SET_NAME', dataS.name)
-                setCookiesName(dataS.name)
-              }
-            }
-          }
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
-
     // 获取用户信息
     GetUserInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo().then(response => {
-          if (response.success) {
-            if (response.data) {
-              const dataS = response.data
-              if (dataS.active) {
-                commit('SET_ACCOUNT', dataS.account)
-                commit('SET_USERID', dataS.id)
-                commit('SET_ROLES', [dataS.type.toString()])
-                commit('SET_NAME', dataS.name)
-              }
-            }
+        http.get('/ajax/sys/user').then(response => {
+          if (response.data) {
+            const dataS = response.data
+            commit('SET_USERID', dataS.id);
+            commit('SET_ACCOUNT', dataS.account);
+            commit('SET_HEADPHOTO', dataS.head);
+            commit('SET_BINDCOMPANY', dataS.bindCompany);
+            Cookies.set('userid', dataS.id);
+          } else {
+            commit('SET_USERID', '')
+            commit('SET_ACCOUNT', '')
+            commit('SET_HEADPHOTO', '');
+            Cookies.remove('userid')
           }
           resolve(response)
         }).catch(error => {
@@ -83,13 +52,12 @@ const user = {
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        logout().then(() => {
-          commit('SET_ACCOUNT', '')
+        http.get('/ajax/sys/logout').then(() => {
           commit('SET_USERID', '')
-          commit('SET_ROLES', [])
-          commit('SET_NAME', '')
-          commit('SET_SESSION', '')
-          removeCookiesName()
+          commit('SET_ACCOUNT', '')
+          commit('SET_BINDCOMPANY', '')
+          commit('SET_HEADPHOTO', '');
+          Cookies.remove('userid')
           resolve()
         }).catch(error => {
           reject(error)
@@ -100,8 +68,11 @@ const user = {
     // 前端 登出
     FedLogOut({ commit }) {
       return new Promise(resolve => {
-        commit('SET_SESSION', '')
-        removeCookiesName()
+        commit('SET_USERID', '')
+        commit('SET_ACCOUNT', '')
+        commit('SET_BINDCOMPANY', '')
+        commit('SET_HEADPHOTO', '');
+        Cookies.remove('userid')
         resolve()
       })
     }

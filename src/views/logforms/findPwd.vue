@@ -13,19 +13,19 @@
 
         <div class="step-contain">
           <el-form v-show="stepFisrt" :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
-            <el-form-item prop="mail">
-              <el-input v-model="ruleForm.mail" placeholder="请输入手机号码"></el-input>
+            <el-form-item prop="phone">
+              <el-input v-model="ruleForm.phone" placeholder="请输入手机号码"></el-input>
             </el-form-item>
-            <el-form-item prop="mail">
-              <el-input v-model="ruleForm.mail" placeholder="请输入短信验证码" class='codeWidth'></el-input>
-              <el-button type="primary" class='codeWidth codeButton'>获取短信验证码</el-button>
+            <el-form-item prop="vc">
+              <el-input v-model="ruleForm.vc" placeholder="请输入短信验证码" class='codeWidth'></el-input>
+              <el-button type="primary" class='codeWidth codeButton' @click.stop="buttonCheck" :disabled="isDisabled">{{buttonMsg}}</el-button>
             </el-form-item>
             <el-form-item></el-form-item>
             <el-form-item class="textButton-box">
               <el-button type="primary" :disabled="isDisabl" @click="nextStep('ruleForm')">下一步</el-button>
             </el-form-item>
           </el-form>
-          <el-form v-show="stepThird" :model="ruleForm2" :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
+          <el-form v-show="!stepFisrt" :model="ruleForm2" :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
             <el-form-item prop="pass">
               <el-input type="password" v-model="ruleForm2.pass" placeholder="请设置您的新密码" auto-complete="off"></el-input>
             </el-form-item>
@@ -44,17 +44,37 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Cookies from 'js-cookie';
-  import httpUrl from '@/libs/http';
-  import util from '@/libs/util';
-
   export default {
     data() {
+      let validatePhone = (rule, value, callback) => {
+        const pattern = /^1[34578]\d{9}$/;
+        if (value === '') {
+          this.phoneFlag = false;
+          callback(new Error('请输入您的手机号码'));
+        } else {
+          if (!pattern.test(value)) {
+            this.phoneFlag = false;
+            callback(new Error('请输入正确的手机号码'));
+          } else {
+            let phone = this.ruleForm.phone;
+            this.$axios.get('/ajax/sys/user/exists', { phone }, response => {
+              if (response.success && response.data) {
+                this.phoneFlag = true;
+                callback();
+              } else {
+                this.phoneFlag = false;
+                callback(new Error('该账号不存在，请重新输入'))
+              }
+            });
+          }
+        }
+      };
       var validatePass = (rule, value, callback) => {
+        const reg = /^[a-zA-Z0-9]{6,24}$/
         if (value === '') {
           callback(new Error('请设置您的新密码'));
-        } else if (value.length < 6 || value.length > 24) {
-         callback(new Error('密码由6-24个字符组成，区分大小写'));
+        } else if (!reg.test(value)) {
+          callback(new Error('密码由6-24个数字和字母组成，区分大小写'));
         } else {
           if (this.ruleForm2.checkPass !== '') {
             this.$refs.ruleForm2.validateField('checkPass');
@@ -63,30 +83,32 @@
         }
       };
       var validatePass2 = (rule, value, callback) => {
+        const reg = /^[a-zA-Z0-9]{6,24}$/
         if (value === '') {
           callback(new Error('请再次输入密码确认'));
-        } else if (value !== this.ruleForm2.pass) {
-          callback(new Error('两次输入密码不一致，请重新输入!'));
+        } else if (!reg.test(value)) {
+          callback(new Error('密码由6-24个数字和字母组成，区分大小写'));
         } else {
+          if (value !== this.ruleForm2.pass) {
+            callback(new Error('两次输入密码不一致，请重新输入!'));
+          }
           callback();
         }
       };
       return {
-        platId: '',
-        resetStepNum: '',
-        resetCode: '',
+        phoneFlag: false,
+        isDisabled: false,
+        buttonMsg: '获取短信验证码',
         stepVal: 0,
         stepFisrt: true,
-        stepThird: false,
         isDisabl: false,
         ruleForm: {
-          mail: ''
+          phone: '',
+          vc: ''
         },
         rules: {
-          mail: [
-            { required: true, message: '请输入邮箱账号', trigger: 'blur' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur'] }
-          ]
+          phone: [{ required: true, validator: validatePhone, trigger: 'blur' }],
+          vc: [{ required: true, message: '请输入验证码' }]
         },
         ruleForm2: {
           pass: '',
@@ -102,43 +124,44 @@
         }
       };
     },
-    created() {
-      this.platId = Cookies.get('platId');
-      this.resetStepNum = util.urlParse('step');
-      this.resetCode = util.urlParse('sc');
-      if (this.resetStepNum === '2') {
-        this.stepFisrt = false;
-        this.stepThird = true;
-        this.stepVal = 2;
-      }
-    },
     methods: {
+      setInt(num = 60) {
+        this.isDisabled = true;
+        let timer = setInterval(() => {
+          this.buttonMsg = `重新获取(${num--}秒)`
+          if (num === 0) {
+            this.isDisabled = false;
+            this.buttonMsg = '获取短信验证码'
+            clearInterval(timer);
+          }
+        }, 1000);
+      },
+      buttonCheck() {
+        this.$refs.ruleForm.validateField('phone')
+        if (this.phoneFlag) {
+          let phone = this.ruleForm.phone;
+          this.$axios.post('/ajax/sys/resetpw/phone/msg', {phone}, res => {
+          })
+          this.setInt();
+        }
+      },
       nextStep(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$axios.post(httpUrl.hQuery.sign.reqResetPw, {
-              id: this.platId,
-              mail: this.ruleForm.mail,
-              url: httpUrl.platUrl + '/#/findPwd?step=2&sc'
-            }).then(res => {
+            this.$axios.get('/ajax/sys/resetpw/phone/msgCheck', this.ruleForm, res => {
               console.log(res);
               if (res.success) {
-                this.stepFisrt = false;
-                this.stepVal = 1;
+                if (res.data) {
+                  this.stepFisrt = false;
+                  this.stepVal = 1;
+                } else {
+                  this.$message.error('验验证码错误，请重新输入');
+                }
               } else {
-                let errorCode = [{
-                  code: -600001,
-                  msg: '用户不存在'
-                }, {
-                  code: -600002,
-                  msg: '发送邮箱错误'
-                }];
-                for (let i = 0; i < errorCode.length; i++) {
-                  if (res.code === errorCode[i].code) {
-                    this.$message.error(errorCode[i].msg);
-                    return;
-                  };
-                };
+                let errorCode = {
+                  '-60001': '验证码已过期，请重新获取'
+                }
+                this.$message.error(errorCode[res.code]);
               }
             });
           } else {
@@ -149,39 +172,22 @@
       resetPwd(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$axios.post(httpUrl.hQuery.sign.resetpw, {
-              code: this.resetCode,
-              pw: this.ruleForm2.pass
-            }).then(res => {
-              console.log(res);
+            this.ruleForm.pw = this.ruleForm2.pass;
+            this.$axios.post('/ajax/sys/resetpw', this.ruleForm, res => {
               if (res.success) {
-                this.$alert('您可以使用新密码登录您的账户了', '恭喜您，您的密码重置成功！', {
+                this.$alert('您可以使用新密码登录您的账户了', '密码重置成功', {
                   confirmButtonText: '重新登录',
                   type: 'success',
                   center: true,
                   callback: action => {
                     if (action === 'confirm') {
-                      this.$router.push({path: '/loginPlat'});
+                      this.$store.dispatch('LogOut').then(() => {
+                        this.$router.push({ path: '/loginPlat' });
+                      });
                     };
                   }
                 });
-              } else {
-                if (res.code === -600001) {
-                  this.$alert('小提示：邮件内的链接有效时长为10分钟', '很抱歉，当前的链接已失效。', {
-                    confirmButtonText: '重新找回密码',
-                    type: 'warning',
-                    center: true,
-                    callback: action => {
-                      if (action === 'confirm') {
-                        this.stepFisrt = true;
-                        this.stepThird = false;
-                        this.stepVal = 0;
-                      };
-                    }
-                  });
-                  return;
-                };
-              };
+              }
             });
           } else {
             return false;

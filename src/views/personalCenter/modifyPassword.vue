@@ -4,21 +4,21 @@
       <el-tab-pane label="修改密码"></el-tab-pane>
     </el-tabs>
     <div class="formBoxCenter">
-         <a href="#/findPwd">忘记密码？</a>
-        <div class="boxCenter">
-          <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="原密码" prop="pass">
-                <el-input type="password" v-model="ruleForm2.pass" autocomplete="off" placeholder="请输入原密码"></el-input>
-            </el-form-item>
-            <el-form-item label="新密码" prop="checkPass">
-                <el-input type="password" v-model="ruleForm2.checkPass" autocomplete="off" placeholder="请输入新密码"></el-input>
-            </el-form-item>
-            <el-form-item label="再次输入" prop="age">
-                <el-input v-model.number="ruleForm2.age"></el-input>
-            </el-form-item>
-            <el-form-item style="text-align:center">
-                <el-button type="primary" @click="submitForm('ruleForm2')">保存修改</el-button>
-            </el-form-item>
+      <a href="#/findPwd">忘记密码？</a>
+      <div class="boxCenter">
+        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="原密码" prop="opw">
+            <el-input type="password" v-model="ruleForm2.opw" autocomplete="off" placeholder="请输入原密码"></el-input>
+          </el-form-item>
+          <el-form-item label="新密码" prop="npw">
+            <el-input type="password" v-model="ruleForm2.npw" autocomplete="off" placeholder="请输入新密码"></el-input>
+          </el-form-item>
+          <el-form-item label="再次输入" prop="npwCheck">
+            <el-input type="password" v-model="ruleForm2.npwCheck" placeholder="请确认新密码"></el-input>
+          </el-form-item>
+          <el-form-item style="text-align:center">
+            <el-button type="primary" @click="submitForm('ruleForm2')">保存修改</el-button>
+          </el-form-item>
         </el-form>
       </div>
     </div>
@@ -27,56 +27,60 @@
 <script>
   export default {
     data() {
-      var checkAge = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('年龄不能为空'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
+      const reg = /^[a-zA-Z0-9]{6,24}$/;
+      var checkOpw = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入原密码'));
+        } else {
+          if (!reg.test(value)) {
+            callback(new Error('密码由6-24个数字和字母组成，区分大小写'));
           } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'));
-            } else {
-              callback();
-            }
+            callback();
           }
-        }, 1000);
-      };
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          if (this.ruleForm2.checkPass !== '') {
-            this.$refs.ruleForm2.validateField('checkPass');
-          }
-          callback();
         }
       };
-      var validatePass2 = (rule, value, callback) => {
+      var validateNpw = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm2.pass) {
-          callback(new Error('两次输入密码不一致!'));
+          callback(new Error('请设置您的新密码'));
         } else {
-          callback();
+          if (!reg.test(value)) {
+            callback(new Error('密码由6-24个数字和字母组成，区分大小写'));
+          } else {
+            if (this.ruleForm2.npwCheck !== '') {
+              this.$refs.ruleForm2.validateField('npwCheck');
+            }
+            callback();
+          }
+        }
+      };
+      var validateNpwCheck = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码确认'));
+        } else if (!reg.test(value)) {
+          callback(new Error('密码由6-24个数字和字母组成，区分大小写'));
+        } else {
+          if (value !== this.ruleForm2.npw) {
+            callback(new Error('两次输入不一致，请重新输入!'));
+          } else {
+            callback();
+          }
         }
       };
       return {
         ruleForm2: {
-          pass: '',
-          checkPass: '',
-          age: ''
+          opw: '',
+          npw: '',
+          npwCheck: ''
         },
         rules2: {
-          pass: [
-            { validator: validatePass, trigger: 'blur' }
+          npw: [
+            { validator: validateNpw, trigger: 'blur', required: true }
           ],
-          checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
+          npwCheck: [
+            { validator: validateNpwCheck, trigger: 'blur', required: true }
           ],
-          age: [
-            { validator: checkAge, trigger: 'blur' }
+          opw: [
+            { validator: checkOpw, trigger: 'blur', required: true }
           ]
         }
       };
@@ -85,9 +89,21 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            this.$axios.post('/ajax/sys/user/changepasswd', this.ruleForm2, res => {
+              if (res.success) {
+                if (res.data) {
+                  this.$message({
+                    message: '密码修改成功',
+                    type: 'success'
+                  });
+                } else if (res.data === 0) {
+                  this.$message.error('旧密码输入错误，请重新输入');
+                } else {
+                  this.$message.error('登录账号与密码不匹配');
+                }
+              }
+            });
           } else {
-            console.log('error submit!!');
             return false;
           }
         });
@@ -99,17 +115,20 @@
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus" scoped>
-  .formBoxCenter
-    display:flex
-    align-items: center
-    justify-content: center
-    .boxCenter
-      width: 450px
-      position: relative
-    a
-      position: absolute
-      top: 60px
-      right: 140px
-      color: #409EFF
+<style lang="scss" rel="stylesheet/scss" scoped>
+  .formBoxCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .boxCenter {
+      width: 450px;
+      position: relative;
+    }
+    a {
+      position: absolute;
+      top: 60px;
+      right: 140px;
+      color: $mainColor;
+    }
+  }
 </style>

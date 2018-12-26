@@ -9,7 +9,7 @@
           <el-option
             v-for="item in provs"
             :label="item.text"
-            :value="item.text"
+            :value="item.value"
             :key="item.index">
           </el-option>
         </el-select>
@@ -24,7 +24,7 @@
         <el-option
           v-for="item in citys"
           :label="item.text"
-          :value="item.text"
+          :value="item.value"
           :key="item.index">
         </el-option>
       </el-select>
@@ -65,6 +65,13 @@
       },
       city() {
         if (this.city) {
+          if (this.citys.length === 0) {
+            for (var val of this.provs) {
+              if (this.prov === val.value) {
+                this.citys = val.children;
+              };
+            };
+          }
           this.selectCity = this.city;
         };
       }
@@ -75,19 +82,17 @@
         this.citys = [];
         this.selectCity = '';
         for (var val of this.provs) {
-          if (prov === val.text) {
+          if (prov === val.value) {
             tempCity = val.children;
           };
         };
         this.citys = tempCity;
         this.$emit('selectProv', this.selectProv);
-        this.$emit('selectCity', this.selectCity);
       },
       getCity(city) {
         console.log(city);
         console.log(this.selectCity);
-        this.$emit('selectProv', this.selectProv);
-        this.$emit('selectCity', this.selectCity);
+        this.$emit('selectProv', this.selectCity);
       },
       resetProvCity() {
         this.selectProv = '';

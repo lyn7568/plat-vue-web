@@ -11,7 +11,7 @@ axiosUtil.interceptors.request.use(function (config) {
     if (config.method === 'post') {
       config.data = qs.stringify(config.data, {arrayFormat: 'repeat'});
       // 处理后后台无需添加RequestBody
-      config.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+      config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
     };
     return config;
 });

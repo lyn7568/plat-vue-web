@@ -6,139 +6,143 @@
     <div class='formHeadFormBox'>
       <div class='formBox'>
         <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="80px" class="demo-ruleForm">
-            <el-form-item label="用户名" prop="pass">
-                <el-input v-model="ruleForm2.pass" autocomplete="off" placeholder="请输入用户名"></el-input>
+          <el-col :span="12">
+            <el-form-item label="用户名" prop="account">
+              <el-input v-model="ruleForm2.account" autocomplete="off" placeholder="请输入用户名" maxlength="20"></el-input>
             </el-form-item>
-            <el-form-item label="真实姓名" prop="checkPass">
-                <el-input v-model="ruleForm2.checkPass" autocomplete="off" placeholder="请输入真实姓名"></el-input>
+            <el-form-item label="真实姓名" prop="name">
+              <el-input v-model="ruleForm2.name" autocomplete="off" placeholder="请输入真实姓名" maxlength="10"></el-input>
             </el-form-item>
-            <el-form-item label="性别">
-                <el-select v-model="ruleForm2.region" placeholder="请选择性别" style="width:100%">
-                <el-option label="男" value="shanghai"></el-option>
-                <el-option label="女" value="beijing"></el-option>
-                </el-select>
+            <el-form-item label="性别" prop="sex">
+              <el-select v-model="ruleForm2.sex" placeholder="请选择性别" style="width: 100%">
+                <el-option label="男" value="0"></el-option>
+                <el-option label="女" value="1"></el-option>
+              </el-select>
             </el-form-item>
-            <el-form-item label="职位" prop="age">
-                <el-input v-model.number="ruleForm2.age" placeholder="请输入职位"></el-input>
+            <el-form-item label="职位" prop="job">
+              <el-input v-model.number="ruleForm2.job" placeholder="请输入职位" maxlength="20"></el-input>
             </el-form-item>
-            <el-form-item label="所在机构" prop="age">
-                <el-input v-model.number="ruleForm2.age" placeholder="请输入所在机构"></el-input>
+            <el-form-item label="所在机构" prop="comp">
+              <el-input v-model.number="ruleForm2.comp" placeholder="请输入所在机构" maxlength="50"></el-input>
             </el-form-item>
-            <el-form-item label="联系电话" prop="age">
-                <el-input v-model.number="ruleForm2.age" placeholder="请输入联系电话"></el-input>
+            <el-form-item label="联系电话" prop="linkPhone">
+              <el-input v-model.number="ruleForm2.linkPhone" placeholder="请输入联系电话" maxlength="50"></el-input>
             </el-form-item>
-            <el-form-item label="联系邮箱" prop="age">
-                <el-input v-model.number="ruleForm2.age" placeholder="请输入联系邮箱"></el-input>
+            <el-form-item label="联系邮箱" prop="email">
+              <el-input v-model="ruleForm2.email" placeholder="请输入联系邮箱" maxlength="100"></el-input>
             </el-form-item>
-            <CityPick ref="cityPick"  :widthselect="206" :prov="ruleForm2.province" :city="ruleForm2.city" v-on:selectProv="getSelectProv($event)" v-on:selectCity="getSelectCity($event)"></CityPick>
-            <el-form-item style="text-align:right">
-                <el-button type="primary" @click="submitForm('ruleForm2')">保存修改</el-button>
+            <CityPick ref="cityPick" :widthselect="180" :prov="province" :city="city"
+              v-on:selectProv="getSelectProv($event)">
+            </CityPick>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="head">
+              <uploadFile :uploadImg='uploadImg' v-on:uploadfun="uploadfun" :upImgsStr="upImgsStr"></uploadFile>
             </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item style="text-align: center;margin:15px 0">
+              <el-button type="primary" @click="submitForm('ruleForm2')">保存修改</el-button>
+            </el-form-item>
+          </el-col>
         </el-form>
-      </div>
-      <div class="headPhotoBox">
-        <el-upload
-        class="avatar-uploader"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :show-file-list="false"
-        :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-      </el-upload>
-      <p>上传头像</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import uploadFile from '@/components/uploadFile/index';
+  import Cookies from 'js-cookie'
   export default {
     data() {
-      var checkAge = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('年龄不能为空'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'));
-            } else {
-              callback();
-            }
-          }
-        }, 1000);
-      };
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          if (this.ruleForm2.checkPass !== '') {
-            this.$refs.ruleForm2.validateField('checkPass');
-          }
-          callback();
-        }
-      };
-      var validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm2.pass) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      };
       return {
-        imageUrl: '',
+        province: '',
+        city: '',
+        upImgsStr: '',
+        uploadImg: {
+          url: '/ajax/product/logo',
+          width: '200px',
+          height: '200px',
+          tip: '上传头像'
+        },
         ruleForm2: {
-          pass: '',
-          checkPass: '',
-          age: '',
-          region: '',
-          province: '',
-          city: ''
+          account: '',
+          name: '',
+          sex: '',
+          job: '',
+          comp: '',
+          linkPhone: '',
+          email: '',
+          addr: '',
+          head: ''
         },
         rules2: {
-          pass: [
-            { validator: validatePass, trigger: 'blur' }
+          account: [
+            { message: '请输入用户名', trigger: 'blur', required: true }
           ],
-          checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
-          ],
-          age: [
-            { validator: checkAge, trigger: 'blur' }
+          email: [
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
           ]
         }
       };
     },
+    components: {
+      uploadFile
+    },
+    created() {
+      let id = Cookies.get('userid');
+      this.$axios.get('/ajax/sys/user/get', {id}, res => { // 拉取user_info
+        if (res.success && res.data) {
+          const response = res.data;
+          this.ruleForm2 = {
+            account: response.account,
+            name: response.name,
+            sex: response.sex,
+            job: response.job,
+            comp: response.comp,
+            linkPhone: response.linkPhone,
+            email: response.email,
+            addr: response.addr,
+            head: response.head
+          };
+          this.upImgsStr = response.head;
+          this.province = `${response.addr.substr(0, 2)}0000`;
+          this.city = response.addr;
+        } else {
+          this.$store.dispatch('FedLogOut').then(res => {
+            this.$message.error('登录状态失效，请重新登录');
+            this.$router.push({ path: '/loginPlat' });
+          })
+        }
+      })
+    },
     methods: {
-     handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        // if (!isJPG) {
-        //   this.$message.error('上传头像图片只能是 JPG 格式!');
-        // }
-        // if (!isLt2M) {
-        //   this.$message.error('上传头像图片大小不能超过 2MB!');
-        // }
-        return isJPG && isLt2M;
+      uploadfun(value) {
+        this.ruleForm2.head = value
       },
       getSelectProv(prov) {
-        this.ruleForm2.province = prov;
-      },
-      getSelectCity(city) {
-        this.ruleForm2.city = city;
+        this.ruleForm2.addr = prov;
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            this.$axios.post('/ajax/sys/user', this.ruleForm2, res => {
+              console.log(res)
+              if (res.success) {
+                this.$store.commit('SET_ACCOUNT', this.ruleForm2.account);
+                this.$store.commit('SET_HEADPHOTO', this.ruleForm2.head);
+                this.$message({
+                  message: '资料修改成功',
+                  type: 'success'
+                });
+              } else {
+                this.$store.dispatch('FedLogOut').then(res => {
+                  this.$message.error('登录状态失效，请重新登录');
+                  this.$router.push({ path: '/loginPlat' });
+                })
+              }
+            })
           } else {
             console.log('error submit!!');
             return false;
@@ -151,47 +155,3 @@
     }
   };
 </script>
-
-<style>
-    .formHeadFormBox {
-      margin-left: 20px;
-      position: relative;
-    }
-    .formBox {
-      width: 500px;
-    }
-    .headPhotoBox {
-      position: absolute;
-      right: 90px;
-      top: 0px;
-    }
-    .headPhotoBox p {
-        text-align: center;
-        line-height: 30px;
-        color: #606266;
-        font-size: 14px
-    }
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-</style>

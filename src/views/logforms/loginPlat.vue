@@ -28,9 +28,40 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import httpUrl from '@/libs/http';
+  import Cookies from 'js-cookie';
   export default {
      data() {
+      let validatePhone = (rule, value, callback) => {
+        const pattern = /^1[34578]\d{9}$/;
+        if (value === '') {
+          callback(new Error('请输入您的手机号码'));
+        } else {
+          if (!pattern.test(value)) {
+            callback(new Error('请输入正确的手机号码'));
+          } else {
+            let phone = this.ruleForm.phone;
+            this.$axios.get('/ajax/sys/user/exists', { phone }, response => {
+              if (response.success && response.data) {
+                callback();
+              } else {
+                callback(new Error('该账号不存在，请先注册'))
+              }
+            });
+          }
+        }
+      };
+      let validatePw = (rule, value, callback) => {
+        const reg = /^[a-zA-Z0-9]{6,24}$/
+        if (value === '') {
+          callback(new Error('请设置您的登录密码'));
+        } else {
+          if (!reg.test(value)) {
+            callback(new Error('密码由6-24个数字和字母组成，区分大小写'));
+          } else {
+            callback();
+          }
+        }
+      }
       return {
         logining: false,
         isDisabl: false,
@@ -39,13 +70,11 @@
           pw: ''
         },
         rules: {
-          mail: [
-            { required: true, message: '请输入邮箱账号', trigger: 'blur' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur'] }
-          ],
-          pass: [
-            { required: true, message: '请输入登录密码', trigger: 'blur' },
-            { min: 6, max: 24, message: '密码由6-24个字符组成，区分大小写', trigger: 'blur' }
+          phone: [
+          { required: true, validator: validatePhone, trigger: 'blur' }
+        ],
+          pw: [
+            { required: true, validator: validatePw, trigger: 'blur' }
           ]
         }
       };
@@ -55,39 +84,29 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.logining = true;
-            let paramsData = {
-              'email': this.ruleForm.mail,
-              'pw': this.ruleForm.pass
-            };
-            this.$axios.post(httpUrl.hQuery.sign.login, paramsData).then(res => {
+            this.$axios.post('/ajax/sys/login', this.ruleForm, res => {
               this.logining = false;
-              console.log(res);
               if (res.success) {
-                this.$router.push({path: '/WorkHome'});
+                if (res.data == null) {
+                  this.$message.error('登录账号与密码不匹配');
+                } else {
+                  this.$store.commit('SET_ACCOUNT', res.data.account);
+                  this.$store.commit('SET_USERID', res.data.id);
+                  this.$store.commit('SET_HEADPHOTO', res.data.head);
+                  this.$store.commit('SET_BINDCOMPANY', res.data.bindCompany);
+                  Cookies.set('userid', res.data.id);
+                  this.$router.push({path: '/home'});
+                  this.logining = true;
+                }
               } else {
-                let errorCode = [{
-                  code: -600001,
-                  msg: '用户不存在'
-                }, {
-                  code: -600002,
-                  msg: '密码不正确'
-                }, {
-                  code: -600003,
-                  msg: '平台信息不存在'
-                }, {
-                  code: -600004,
-                  msg: '用户被禁用'
-                }];
-                for (let i = 0; i < errorCode.length; i++) {
-                  if (res.code === errorCode[i].code) {
-                    this.$message.error(errorCode[i].msg);
-                    return;
-                  };
-                };
+                let errorCode = {
+                  '-60001': '该账号不存在，请先注册',
+                  '-60002': '登录账号与密码不匹配',
+                  '-60003': '该账号状态异常，请联系客服'
+                }
+                this.$message.error(errorCode[res.code]);
               }
-            }).catch(error => {
-              console.log(error);
-            });
+            })
           } else {
             return false;
           }

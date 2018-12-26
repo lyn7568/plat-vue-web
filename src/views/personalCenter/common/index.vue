@@ -3,7 +3,7 @@
     <div class="boxLeft">
         <div class="headPhoto">
           <div class="userInfo">
-            <img src="../../logforms/img/e-sign-on_bg_img_nor.png" alt="">
+            <img :src="headPhoto" alt="">
             <p>专家姓名</p>
           </div>
         </div>
@@ -27,7 +27,7 @@
         <el-menu-item index="modifyDemand">修改需求</el-menu-item>
         <el-menu-item index="examineDemand">查看需求</el-menu-item>
       </el-submenu>
-      <el-submenu index="2">
+      <el-submenu index="2" v-if="bindCompany">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>我的企业</span>
@@ -55,10 +55,18 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
   export default {
     data() {
       return {
+        img: ''
       };
+    },
+    computed: {
+      ...mapGetters([
+        'bindCompany',
+        'headPhoto'
+      ])
     },
     created() {
     },
