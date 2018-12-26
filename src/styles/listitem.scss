@@ -83,7 +83,7 @@
   padding:20px;
   @include border-1px();
   &:last-child{
-    content:none;
+    @include border-none();
   }
   .list-head{
     @include center-items(162px,108px);
@@ -117,6 +117,16 @@
       @include text-ellipsis-n(2,20px);
       color:$commonFont;
     }
+  }
+}
+.wrapper-right .list-item{
+  padding: 10px 0;
+  .list-head{
+    @include center-items(50px,50px);
+  }
+  .list-info{
+    flex: 1 1 58px;
+    padding-left:6px;
   }
 }
 .list-item-info{

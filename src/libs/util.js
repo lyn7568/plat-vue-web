@@ -271,8 +271,13 @@ util.strToArr = function (str) {
   }
 };
 util.arrToStr = function (arr) {
-  var newStr = arr.join(',');
-  return newStr;
+  var strs = ''
+  if (arr) {
+    strs = arr.join(',')
+    return strs
+  } else {
+    return strs
+  }
 };
 
 /*
