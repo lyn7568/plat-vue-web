@@ -268,6 +268,8 @@ util.strToArr = function (str) {
         subs[0] = str;
     }
     return subs;
+  } else {
+    return [];
   }
 };
 util.arrToStr = function (arr) {

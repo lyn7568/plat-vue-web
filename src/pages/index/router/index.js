@@ -24,7 +24,7 @@ const constantRouterMap = [
     path: '/',
     component: Layout,
     children: [{
-      path: '/',
+      path: '/home',
       name: 'home',
       component: (resolve) => require(['../views/Dashboard/index.vue'], resolve),
       meta: { title: '首页' }

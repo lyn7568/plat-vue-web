@@ -4,8 +4,10 @@ import App from './center.vue';
 import router from './router';
 import store from '@/store/index';
 import './permission';
+import CityPick from '@/components/global-component/citypick/CityPick'
 
 import Cookies from 'js-cookie';
+Vue.component('CityPick', CityPick);
 
 /* eslint-disable no-new */
 new Vue({

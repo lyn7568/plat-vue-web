@@ -6,7 +6,7 @@
         <el-menu class="navbar" mode="horizontal">
           <div class="tag-breadcrumb">当前位置：</div><breadcrumb></breadcrumb>
         </el-menu>
-        <AppMain></AppMain>
+        <com></com>
       </div>
     </div>
     <TheFooter></TheFooter>
@@ -14,7 +14,8 @@
 </template>
 
 <script>
-  import { TheHeader, TheFooter, AppMain } from '@/layout';
+  import { TheHeader, TheFooter } from '@/layout';
+  import com from '../common/index';
   import Breadcrumb from '@/components/Breadcrumb';
 
   export default {
@@ -22,7 +23,7 @@
     components: {
       TheHeader,
       TheFooter,
-      AppMain,
+      com,
       Breadcrumb
     }
   };

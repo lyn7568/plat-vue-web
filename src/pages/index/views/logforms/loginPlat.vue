@@ -95,7 +95,7 @@
                   this.$store.commit('SET_HEADPHOTO', res.data.head);
                   this.$store.commit('SET_BINDCOMPANY', res.data.bindCompany);
                   Cookies.set('userid', res.data.id);
-                  this.$router.push({path: '/home'});
+                  this.$router.push({name: 'home'});
                   this.logining = true;
                 }
               } else {

@@ -126,7 +126,7 @@
     }
     a {
       position: absolute;
-      top: 60px;
+      top: 114px;
       right: 140px;
       color: $mainColor;
     }

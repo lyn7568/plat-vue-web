@@ -128,7 +128,7 @@
                 this.$store.commit('SET_USERID', res.data.id);
                 this.$store.commit('SET_HEADPHOTO', '');
                 Cookies.set('userid', res.data.id)
-                this.$router.push({path: '/home'});
+                this.$router.push({name: 'home'});
               } else {
                 const errorCode = {
                   '-60001': '验证码已过期，请重新获取',
