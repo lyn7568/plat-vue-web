@@ -7,11 +7,13 @@ import Vue from 'vue'
 
 var objCache = {
   professor: {},
-  organization: {}
+  organization: {},
+  company: {}
 }
 var objHcache = {
   professor: {},
-  organization: {}
+  organization: {},
+  company: {}
 }
 var objCacheHandler = {
   professor: function(id) {
@@ -55,6 +57,28 @@ var objCacheHandler = {
         hc[i](false)
       }
     })
+  },
+  company: function(id) {
+    var hc = objHcache.company[id]
+    Vue.axios.get('/ajax/company/qo', {
+      id: id
+    }, function(data) {
+      delete objHcache.company[id]
+      if (data.success) {
+        objCache.company[id] = data.data
+        for (let i = 0; i < hc.length; ++i) {
+          hc[i](true, data.data)
+        }
+      } else {
+        for (let i = 0; i < hc.length; ++i) {
+          hc[i](false)
+        }
+      }
+    }, function() {
+      for (let i = 0; i < hc.length; ++i) {
+        hc[i](false)
+      }
+    })
   }
 }
 var cacheModel = {
@@ -83,6 +107,20 @@ var cacheModel = {
         objHcache.organization[id] = []
         objHcache.organization[id].push(handler)
         objCacheHandler.organization(id)
+      }
+    }
+  },
+  getCompany: function(id, handler) {
+    var data = objCache.company[id]
+    if (data) {
+      handler(true, data)
+    } else {
+      if (objHcache.company[id]) {
+        objHcache.company[id].push(handler)
+      } else {
+        objHcache.company[id] = []
+        objHcache.company[id].push(handler)
+        objCacheHandler.company(id)
       }
     }
   }

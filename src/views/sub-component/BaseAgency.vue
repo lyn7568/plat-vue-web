@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="block-container">
-      <router-link class="block-item org-item" v-for="item in orgData" :key="item.index"  :to="{name:'org_show',query:{id:itemSingle.id}}" target="_blank">
+      <router-link class="block-item org-item" v-for="item in orgData" :key="item.index"  :to="{name:'org_show',query:{id:item.id}}" target="_blank">
         <div class="item-block-org">
           <div class="item-pic-org">
-            <img :src="orgLogoUrl(item)">
+            <img :src="item.logo">
           </div>
           <div class="item-text-org">
             <div class="item-tit-org"><span>{{item.name}}</span><em class="authicon" :class="{'icon-com': item.authStatus==='3'}"></em></div>
-            <p class="item-tag-org">{{item.industry.replace(/,/gi, ' | ')}}</p>
+            <p class="item-tag-org">{{item.industry}}</p>
           </div>
         </div>
       </router-link>
@@ -18,8 +18,8 @@
 </template>
 
 <script>
-  import Cookies from 'js-cookie';
   import util from '@/libs/util';
+  import queryBase from '@/libs/queryBase';
 
   export default {
     props: {
@@ -29,7 +29,6 @@
     },
     data() {
       return {
-        platId: '',
         rows: 30,
         orgData: [],
         loadingModalShow: true, // 是否显示按钮
@@ -39,27 +38,39 @@
       };
     },
     created() {
-       this.platId = Cookies.get('platId');
        this.ResidentOrgs();
     },
     methods: {
-      ResidentOrgs(id) {
+      ResidentOrgs() {
         this.$axios.get('/ajax/org/list', {}, (res) => {
           if (res.success) {
-            var $info = res.data;
-            if ($info.length > 0) {
+            var $data = res.data;
+            if ($data.length > 0) {
+              for (let i = 0; i < $data.length; i++) {
+                queryBase.getOrganization($data[i].id, function(sc, value) {
+                  if (sc) {
+                    var owner = $data[i]
+                    owner.name = value.name
+                    if (value.hasOrgLogo) {
+                      owner.logo = util.ImageUrl(('org/' + value.id + '.jpg'), true)
+                    } else {
+                      owner.logo = util.defaultSet.img.org
+                    }
+                    if (value.industry) {
+                      owner.industry = value.industry.replace(/,/g, ' | ')
+                    }
+                  }
+                })
+              }
               this.isFormSearch = true;
-              this.orgData = this.orgData.concat($info);
+              this.orgData = this.orgData.concat($data);
             };
-            if ($info.length < this.rows) {
+            if ($data.length < this.rows) {
               this.loadingModalShow = false;
               this.isFormSearch = false;
             };
           };
         });
-      },
-      orgLogoUrl(item) {
-        return item.hasOrgLogo ? util.ImageUrl(('org/' + item.id + '.jpg'), true) : util.defaultSet.img.org;
       },
       loadLower() {
         if (this.loadingModalShow && !this.isLoading) {

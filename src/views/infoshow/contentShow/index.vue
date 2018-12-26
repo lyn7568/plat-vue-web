@@ -44,8 +44,8 @@
 </template>
 
 <script>
-  import '@/common/stylus/listitem.styl';
-  import '@/common/stylus/browse.styl';
+  import '@/styles/listitem.scss';
+  import '@/styles/browse.scss';
   import util from '@/libs/util';
 
   import baseService from '@/views/sub-component/BaseService';

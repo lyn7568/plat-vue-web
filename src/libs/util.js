@@ -19,15 +19,8 @@ util.defaultSet = {
     resource: '/static/comimg/default-resource.jpg',
     service: '/static/comimg/default-service.jpg',
     patent: '/static/comimg/default-patent.jpg',
+    product: '/static/comimg/default-product.jpg',
     plat: '/static/comimg/default-plat.jpg'
-  },
-  link: {
-    expert: ekexiuUrl + '/userInforShow.html?professorId=',
-    org: ekexiuUrl + '/cmpInforShow.html?orgId=',
-    article: ekexiuUrl + '/articalShow.html?articleId=',
-    resource: ekexiuUrl + '/resourceShow.html?resourceId=',
-    service: ekexiuUrl + '/sevriceShow.html?sevriceId=',
-    demand: ekexiuUrl + '/demandShow.html?demandId='
   }
 };
 
@@ -119,31 +112,6 @@ util.Dictionary = {
       value: '6',
       label: '50万元以上'
     }]
-};
-
-// 企业规模
-util.orgSizeShow = {
-  '1': '50人以内',
-  '2': '50-100人',
-  '3': '100-200人',
-  '4': '200-500人',
-  '5': '500-1000人',
-  '6': '1000人以上'
-};
-
-// 企业类型
-util.orgTypeShow = {
-  '2': '上市企业',
-  '3': '外资企业',
-  '4': '合资企业',
-  '5': '独资企业',
-  '6': '个体经营',
-  '7': '政府机构',
-  '8': '公益组织',
-  '9': '协会学会',
-  '10': '新闻媒体',
-  '11': '教育机构',
-  'undefined': ''
 };
 
 /**

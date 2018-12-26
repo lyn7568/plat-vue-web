@@ -4,11 +4,11 @@
       <div class="content-wrapper">
         <div class="headcon-box org-head">
           <div class="show-head headimg-box">
-            <img :src="orgLogoUrl(orgInfo)">
+            <img :src="orgInfo.logo">
           </div>
           <div class="show-info reInfo-box">
             <div class="info-tit">{{orgInfo.forShort ? orgInfo.forShort : orgInfo.name}}<em class="authicon" :class="{'icon-com': orgInfo.authStatus==='3'}"></em></div>
-            <div class="info-tag"><span v-if="orgInfo.title" style="margin-right:10px">{{orgInfo.orgType}}</span> {{orgInfo.industry ? orgInfo.industry.replace(/,/gi, " | ") : ''}}</div>
+            <div class="info-tag"><span v-if="orgInfo.title" style="margin-right:10px">{{orgInfo.orgType}}</span></div>
             <div class="info-operate">
               <div class="addr">{{orgInfo.city}}</div>
               <shareOut :tUrl="elurl"></shareOut>
@@ -145,10 +145,10 @@
 </template>
 
 <script>
-  import '@/common/stylus/listitem.styl';
-  import '@/common/stylus/browse.styl';
+  import '@/styles/listitem.scss';
+  import '@/styles/browse.scss';
   import util from '@/libs/util';
-  import httpUrl from '@/libs/http';
+  import queryDict from '@/libs/queryDict';
 
   import shareOut from '../components/ShareOut';
   import baseService from '@/views/sub-component/BaseService';
@@ -156,10 +156,10 @@
   export default {
     data() {
       return {
-        activeIndex: '1',
         activeName: 'first',
+        numRanger: [],
+        compType: [],
         orgInfo: '',
-        orgRegInfo: '',
         elurl: '',
         platServices: [],
         platResources: []
@@ -168,6 +168,7 @@
     created() {
       this.orgId = util.urlParse('id');
       this.elurl = window.location.href;
+      this.getDictoryData();
       this.getorgInfo();
     },
     components: {
@@ -175,11 +176,29 @@
       baseService
     },
     methods: {
+      getDictoryData() {
+        const that = this
+        queryDict.applyDict('QYGM', function(dictData) {
+          dictData.map(item => {
+            that.numRanger[item.code] = item.caption
+          })
+        }) // 企业规模
+        queryDict.applyDict('QYLX', function(dictData) {
+          dictData.map(item => {
+            that.compType[item.code] = item.caption
+          })
+        }) // 企业类型
+      },
       getorgInfo() {
-        this.$axios.get(httpUrl.kxQurey.org.query + this.orgId, {
+        this.$axios.getk('/ajax/org/' + this.orgId, {
         }, (res) => {
           if (res.success) {
             var $info = res.data;
+            if ($info.hasOrgLogo) {
+              $info.logo = util.ImageUrl(('org/' + $info.id + '.jpg'), true)
+            } else {
+              $info.logo = util.defaultSet.img.org
+            }
             if ($info.subject) {
               $info.subject = util.strToArr($info.subject);
             }
@@ -190,27 +209,14 @@
               $info.foundTime = util.TimeTr($info.foundTime);
             }
             if ($info.orgSize) {
-              $info.orgSize = util.orgSizeShow[$info.orgSize];
+              $info.orgSize = this.numRanger[$info.orgSize];
             }
             if ($info.orgType) {
-              $info.orgType = util.orgTypeShow[$info.orgType];
+              $info.orgType = this.compType[$info.orgType];
             }
             this.orgInfo = $info;
           };
         });
-      },
-      getorgRegInfo(oName) {
-        this.$axios.get(httpUrl.kxQurey.org.reg, {
-          name: oName
-        }, (res) => {
-          if (res.success) {
-            var $info = res.data;
-            this.orgRegInfo = $info;
-          };
-        });
-      },
-      orgLogoUrl(item) {
-        return item.hasOrgLogo ? util.ImageUrl(('org/' + item.id + '.jpg'), true) : util.defaultSet.img.org;
       }
     }
   };

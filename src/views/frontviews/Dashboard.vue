@@ -100,16 +100,16 @@
         </div>
         <div class="swiper-container" ref="findService">
           <div class="swiper-wrapper">
-            <a class="swiper-slide" v-for="item in platWares" :key="item.index" :href="linkWare(item)" target="_blank">
+            <router-link class="swiper-slide" v-for="item in platWares" :key="item.index" :to="{name:'serve_show',query:{id:item.id}}" target="_blank">
               <div class="item-block">
-                <div class="item-pic" :style="{backgroundImage: 'url(' + waresUrl(item) + ')'}"></div>
+                <div class="item-pic" :style="{backgroundImage: 'url(' + item.img + ')'}"></div>
                 <div class="item-text">
                   <p class="title">{{item.name}}</p>
                   <p class="desc">{{item.cnt}}</p>
                   <p class="owner">{{item.ownerName}}</p>
                 </div>
               </div>
-            </a>
+            </router-link>
           </div>
           <div class="swiper-button-prev el-icon-arrow-left" ref="prevService"></div>
           <div class="swiper-button-next el-icon-arrow-right" ref="nextService"></div>
@@ -129,21 +129,21 @@
           </div>
           <div class="content-more">
             <!-- <router-link class="item-more" v-for="item in 4" :key="item" to="">咨询服务</router-link> -->
-            <router-link class="item-more" to="/findResource">更多</router-link>
+            <router-link class="item-more" to="reso">更多</router-link>
           </div>
         </div>
         <div class="swiper-container" ref="findResource">
           <div class="swiper-wrapper">
-            <a class="swiper-slide" v-for="item in platResources" :key="item.index" :href="linkResource(item)" target="_blank">
+            <router-link class="swiper-slide" v-for="item in platResources" :key="item.index" :to="{name:'reso_show',query:{id:item.id}}" target="_blank">
               <div class="item-block" >
-                <div class="item-pic" :style="{backgroundImage: 'url(' + resourcesUrl(item) + ')'}"></div>
+                <div class="item-pic" :style="{backgroundImage: 'url(' + item.img + ')'}"></div>
                 <div class="item-text">
                   <p class="title">{{item.name}}</p>
                   <p class="desc">{{item.cnt}}</p>
                   <p class="owner">{{item.ownerName}}</p>
                 </div>
               </div>
-            </a>
+            </router-link>
           </div>
           <div class="swiper-button-prev el-icon-arrow-left" ref="prevResource"></div>
           <div class="swiper-button-next el-icon-arrow-right" ref="nextResource"></div>
@@ -232,7 +232,6 @@
        this.platId = Cookies.get('platId');
        this.getAboutUs();
        this.queryPaltNews();
-       this.queryOrgTrends();
        this.queryResidentComps();
        this.queryPlatResources();
        this.queryPlatWares();
@@ -314,21 +313,6 @@
           };
         });
       },
-      queryOrgTrends() {
-        this.$axios.get('/ajax/org/list', {
-        }, (res) => {
-          if (res.success) {
-            var _this = this;
-            var $info = res.data;
-            for (let i = 0; i < $info.length; i++) {
-              (function(m) {
-                _this.ownerByond($info[m], true);
-              }(i));
-            };
-            this.orgTrends = $info;
-          };
-        });
-      },
       queryResidentComps() {
         this.$axios.get('/ajax/company/pq', {
           pageSize: 20,
@@ -354,6 +338,11 @@
           if (res.success) {
             var $info = res.data;
             for (let i = 0; i < $info.length; i++) {
+              if ($info[i].images) {
+                $info[i].img = util.ImageUrl('resource/' + $info[i].images.split(',')[0])
+              } else {
+                $info[i].img = util.defaultSet.img.resource
+              }
               (function(m) {
                 _this.ownerByond($info[m]);
               }(i));
@@ -371,6 +360,11 @@
           if (res.success) {
             var $info = res.data;
             for (let i = 0; i < $info.length; i++) {
+              if ($info[i].images) {
+                $info[i].img = util.ImageUrl('ware' + $info.images.split(',')[0])
+              } else {
+                $info[i].img = util.defaultSet.img.service
+              }
               (function(m) {
                 _this.ownerByond($info[m]);
               }(i));
@@ -389,36 +383,9 @@
           }
         });
       },
-      resourcesUrl(item) {
-        return item.images ? util.ImageUrl('resource/' + item.images.split(',')[0]) : util.defaultSet.img.resource;
-      },
-      articleUrl(item) {
-        return item.articleImg ? util.ImageUrl('article/' + item.articleImg) : util.defaultSet.img.article;
-      },
-      waresUrl(item) {
-        return item.images ? util.ImageUrl('ware' + item.images.split(',')[0]) : util.defaultSet.img.service;
-      },
-      orgsUrl(item) {
-        return item.logo || util.defaultSet.img.org;
-      },
-      linkResource(item) {
-        return util.defaultSet.link.resource + item.id;
-      },
-      linkWare(item) {
-        return util.defaultSet.link.service + item.id;
-      },
-      linkOrg(item) {
-        return util.defaultSet.link.org + item.id;
-      },
-      linkArticle(item) {
-        return util.pageUrl('a', item);
-      },
-      formTime(item) {
-        return util.commenTime(item.publishTime, true);
-      },
       searchRes() {
         if (this.inputRes) {
-          this.$router.push({path: '/findResource', query: {key: this.inputRes}});
+          this.$router.push({name: 'reso', query: {key: this.inputRes}});
         } else {
           this.$message({
             message: '请填写搜索资源的关键词',
@@ -428,7 +395,7 @@
       },
       searchSer() {
         if (this.inputSer) {
-          this.$router.push({path: '/findServe', query: {key: this.inputSer}});
+          this.$router.push({name: 'serve', query: {key: this.inputSer}});
         } else {
           this.$message({
             message: '请填写搜索服务的关键词',

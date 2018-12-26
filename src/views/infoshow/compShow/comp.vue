@@ -10,7 +10,7 @@
             <div class="info-tit">{{orgInfo.name}}</div>
             <div class="info-tag"><span v-if="orgInfo.type === '1'" style="margin-right:10px">{{compType[orgInfo.type]}}</span> {{keywordObj[1] ? keywordObj[1].join(" | ") : ''}}</div>
             <div class="info-operate">
-              <div class="addr">{{orgInfo.addr}}</div>
+              <div class="addr">{{citys[orgInfo.addr]}}</div>
               <shareOut :tUrl="elurl"></shareOut>
             </div>
           </div>
@@ -21,14 +21,14 @@
       <div class="wrapper-left left-main">
         <el-tabs v-model="activeName">
           <el-tab-pane label="主页" name="first">
-            <div class="content-wrapper split-other" v-if="platServices.length">
+            <div class="content-wrapper split-other" v-if="platProducts.length">
               <div class="inner-wrapper">
                 <div class="content-title">
                   <span>我们的产品</span>
                   <span class="content-more" @click="activeName='second'">更多</span>
                 </div>
                 <div class="content">
-                  <!-- <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService> -->
+                  <baseProduct v-if="platProducts.length" v-for="item in platProducts" :key="item.index" :itemSingle="item"></baseProduct>
                 </div>
               </div>
             </div>
@@ -51,8 +51,12 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="产品" name="second">
-            <!-- <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService> -->
+          <el-tab-pane :label="'产品 ' + (total>0 ? total : '')" name="second">
+            <div v-show="!ifDefault">
+              <baseProduct v-if="platProducts.length" v-for="item in platProducts" :key="item.index" :itemSingle="item"></baseProduct>
+              <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
+            </div>
+            <defaultPage v-show="ifDefault"></defaultPage>
           </el-tab-pane>
           <el-tab-pane label="资料" name="third">
             <div class="content-wrapper">
@@ -135,20 +139,29 @@
   import queryDict from '@/libs/queryDict';
 
   import shareOut from '../components/ShareOut';
-  import baseService from '@/views/sub-component/BaseService';
+  import baseProduct from '@/views/sub-component/BaseProduct';
 
   export default {
     data() {
       return {
-        activeIndex: '1',
         activeName: 'first',
         orgInfo: '',
         elurl: '',
+        pageSize: 30,
+        pageNo: 1,
+        total: 0,
         keywordObj: [],
         numRanger: [],
         compType: [],
-        platServices: [],
-        platResources: []
+        citys: [],
+        // platProductsThree: [],
+        platProducts: [],
+        platResources: [],
+        loadingModalShow: true,
+        loadingComplete: false,
+        isFormSearch: false,
+        isLoading: false,
+        ifDefault: false
       };
     },
     created() {
@@ -156,24 +169,31 @@
       this.elurl = window.location.href;
       this.getDictoryData();
       this.getorgInfo();
+      this.getCompanyKeyword();
+      this.getProductlist();
     },
     components: {
       shareOut,
-      baseService
+      baseProduct
     },
     methods: {
       getDictoryData() {
         const that = this
         queryDict.applyDict('QYGM', function(dictData) {
           dictData.map(item => {
-            that.numRanger.push({ value: item.code, label: item.caption })
+            that.numRanger[item.code] = item.caption
           })
         }) // 企业规模
         queryDict.applyDict('QYLX', function(dictData) {
           dictData.map(item => {
-            that.compType.push({ value: item.code, label: item.caption })
+            that.compType[item.code] = item.caption
           })
         }) // 企业类型
+        queryDict.applyDict('XZQH', function(dictData) {
+          dictData.map(item => {
+            that.citys[item.code] = item.caption
+          })
+        })
       },
       getorgInfo() {
         this.$axios.get('/ajax/company/qo', {
@@ -209,6 +229,36 @@
             that.keywordObj = objKey
           }
         })
+      },
+      getProductlist() {
+        var that = this
+        this.$axios.get('/ajax/product/pq', {
+          companyId: that.companyId,
+          pageSize: that.pageSize,
+          pageNo: that.pageNo
+        }, function(res) {
+          if (res.success && res.data) {
+            const obj = res.data.data
+            if (obj.length > 0) {
+              that.isFormSearch = true;
+              that.total = res.data.total;
+              // if (that.pageNo === 1) {
+              //   that.platProductsThree = obj;
+              // }
+              that.platProducts = that.platProducts.concat(obj);
+            };
+            if (obj.length < that.pageSize) {
+              that.loadingModalShow = false;
+              that.isFormSearch = false;
+            };
+          }
+        })
+      },
+      searchLower() {
+        if (this.loadingModalShow && !this.isLoading) {
+          this.pageNo++;
+          this.getProductlist();
+        }
       }
     }
   };

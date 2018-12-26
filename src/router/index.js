@@ -224,8 +224,8 @@ const constantRouterMap = [
                 component: () => import('@/views/infoshow/compShow/comp')
               },
               {
-                path: 'comp_product',
-                name: 'comp_product',
+                path: 'product_show',
+                name: 'product_show',
                 component: () => import('@/views/infoshow/compShow/product'),
                 meta: { title: '产品名称' }
               }

@@ -3,7 +3,7 @@
 		<div class="block-wrapper">
       <div class="content-wrapper">
         <div class="headcon-box">
-          <div class="show-head headimg-box" :style="{backgroundImage:'url('+ headUrl(expertInfo) +')'}"></div>
+          <div class="show-head headimg-box" :style="{backgroundImage:'url('+ expertInfo.img +')'}"></div>
           <div class="show-info reInfo-box">
             <div class="info-tit">{{expertInfo.name}}<em class="authicon" :class="headIcon(expertInfo)"></em></div>
             <div class="info-tag"><span v-if="expertInfo.title" style="margin-right:10px">{{expertInfo.title}}</span> {{expertInfo.offt}}</div>
@@ -217,7 +217,6 @@
         ifDefault2: false,
         dataO: {
           serModifyTime: '',
-
           patTime: '',
           patId: ''
         },
@@ -249,6 +248,11 @@
             }
             if ($info.industry) {
               $info.industry = util.strToArr($info.industry);
+            }
+            if ($info.hasHeadImage) {
+              $info.img = util.ImageUrl(('head/' + $info.id + '_l.jpg'), true)
+            } else {
+              $info.img = util.defaultSet.img.expert
             }
             $info.resAreas = [];
             if ($info.researchAreas && $info.researchAreas.length > 0) {
@@ -344,9 +348,6 @@
            that.patCount = '99+';
           }
         });
-      },
-      headUrl(item) {
-        return item.hasHeadImage ? util.ImageUrl(('head/' + item.id + '_l.jpg'), true) : util.defaultSet.img.expert;
       },
       headIcon(item) {
         return util.autho(item.authType, item.orgAuth, item.authStatus);

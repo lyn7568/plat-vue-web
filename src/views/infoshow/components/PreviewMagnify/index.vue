@@ -40,22 +40,16 @@ function offset(el) {
 export default {
   name: 'magnify',
   props: {
-    // previewImg: {
-    //   type: Array
-    // }
+    previewImg: {
+      type: Array
+    }
   },
   data() {
     return {
       zoomVisiable: false,
       hoverVisiable: false,
       selected: true,
-      selectIndex: 0,
-      previewImg: [
-        '/data/resource/201710/C1F33120B2404644A7DD99B3DE9BFC21.jpg',
-        '/data/resource/201710/179DCD28E4C146E99869FB1AB943DE1F.jpg',
-        '/data/resource/201803/2CF4E47B24454D4BBEEEF126B2108D97.jpg',
-        '/data/resource/201706/6989DDEA8E614EF6B550958F0C8A785E.jpg'
-      ]
+      selectIndex: 0
     };
   },
   methods: {
