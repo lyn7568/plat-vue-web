@@ -11,8 +11,7 @@
               <div class="info-tit info-tit-big">{{resourceInfo.resourceName}}</div>
               <div class="info-tag">应用用途：{{resourceInfo.supportedServices}}</div>
               <div class="info-operate zoom-operate">
-                <!-- <div class="addr">浏览量 10</div> -->
-                <collectCo></collectCo>
+                <collectCo :watchOptions="{oid: resourceId, type: 4}"></collectCo>
                 <shareOut :tUrl="elurl" :tPosition="tPosition"></shareOut>
               </div>
             </div>
@@ -49,11 +48,11 @@
             </el-row>
           </div>
         </div>
-        <div class="content-wrapper" v-if="likeResources">
+        <div class="content-wrapper" v-if="likeResources && likeResources.length">
           <div class="content-title">
             <span>您可能感兴趣的资源</span>
           </div>
-          <div class="content">
+          <div class="content content-nf">
             <baseResource v-for="item in likeResources" :key="item.index" :itemSingle="item"></baseResource>
           </div>
         </div>
@@ -63,7 +62,7 @@
           <div class="right-split">
             <beyondTo :ownerId="owner.id" :ownerType="owner.type"></beyondTo>
           </div>
-          <div class="right-split" v-if="hotResources">
+          <div class="right-split" v-if="hotResources && hotResources.length">
             <div class="content-title">
               <span>热门资源</span>
             </div>
@@ -84,7 +83,7 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { urlParse, ImageUrl, defaultSet, strToArr } from '@/libs/util';
 
   import previewMagnify from '@/components/previewMagnify';
   import shareOut from '@/components/ShareOut';
@@ -97,6 +96,7 @@
     data() {
       return {
         resourceInfo: '',
+        resourceId: '',
         elurl: '',
         tPosition: 'top-start',
         owner: {
@@ -108,7 +108,7 @@
       };
     },
     created() {
-      this.resourceId = util.urlParse('id');
+      this.resourceId = urlParse('id');
       this.elurl = window.location.href;
       this.getResourceInfo();
       this.getLikeResources();
@@ -128,15 +128,15 @@
           if (res.success) {
             var $info = res.data;
             if ($info.subject) {
-              $info.subject = util.strToArr($info.subject);
+              $info.subject = strToArr($info.subject);
             }
             var ImgUrl = []
             if ($info.images && $info.images.length) {
               for (let i = 0; i < $info.images.length; ++i) {
-                ImgUrl.push(util.ImageUrl('resource/' + $info.images[i].imageSrc))
+                ImgUrl.push(ImageUrl('resource/' + $info.images[i].imageSrc))
               }
             } else {
-              ImgUrl.push(util.defaultSet.img.resource)
+              ImgUrl.push(defaultSet.img.resource)
             }
             $info.img = ImgUrl
             if ($info.resourceType === '1') {
@@ -176,9 +176,9 @@
                   }
                 }
                 if ($data[i].images.length) {
-                  $data[i].img = util.ImageUrl('resource/' + $data[i].images[0].imageSrc)
+                  $data[i].img = ImageUrl('resource/' + $data[i].images[0].imageSrc)
                 } else {
-                  $data[i].img = util.defaultSet.img.resource
+                  $data[i].img = defaultSet.img.resource
                 }
               }
             }

@@ -1,0 +1,23 @@
+
+    .content-container{
+      background:#ffffff;
+      overflow:hidden;
+      .operate-row{
+        .el-button{
+          width:70px;
+          padding:6px;
+          margin:5px;
+        }
+      }
+      .contain-select{
+        margin-bottom:15px;
+        float:right;
+        span{
+          font-size:15px;
+          color:#999;
+        }
+        .el-select{
+          width: 120px;
+        }
+      }
+    }

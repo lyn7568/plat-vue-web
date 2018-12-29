@@ -8,10 +8,10 @@
         <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="80px" class="demo-ruleForm">
           <el-col :span="12">
             <el-form-item label="用户名" prop="account">
-              <el-input v-model="ruleForm2.account" autocomplete="off" placeholder="请输入用户名" maxlength="20"></el-input>
+              <el-input v-model="ruleForm2.account" auto-complete="off" placeholder="请输入用户名" maxlength="20"></el-input>
             </el-form-item>
             <el-form-item label="真实姓名" prop="name">
-              <el-input v-model="ruleForm2.name" autocomplete="off" placeholder="请输入真实姓名" maxlength="10"></el-input>
+              <el-input v-model="ruleForm2.name" auto-complete="off" placeholder="请输入真实姓名" maxlength="10"></el-input>
             </el-form-item>
             <el-form-item label="性别" prop="sex">
               <el-select v-model="ruleForm2.sex" placeholder="请选择性别" style="width: 100%">
@@ -31,9 +31,9 @@
             <el-form-item label="联系邮箱" prop="email">
               <el-input v-model="ruleForm2.email" placeholder="请输入联系邮箱" maxlength="100"></el-input>
             </el-form-item>
-            <CityPick ref="cityPick" :widthselect="180" :prov="province" :city="city"
-              v-on:selectProv="getSelectProv($event)">
-            </CityPick>
+            <el-form-item label="所在城市" prop="addr">
+              <cityPicker @paren="toshow" :addrCode="ruleForm2.addr"></cityPicker>
+            </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item prop="head">
@@ -53,6 +53,7 @@
 
 <script>
   import uploadFile from '@/components/uploadFile/index';
+  import cityPicker from '@/components/CityPicker'
   import Cookies from 'js-cookie'
   export default {
     data() {
@@ -88,7 +89,8 @@
       };
     },
     components: {
-      uploadFile
+      uploadFile,
+      cityPicker
     },
     created() {
       let id = Cookies.get('userid');
@@ -121,9 +123,12 @@
       uploadfun(value) {
         this.ruleForm2.head = value
       },
-      getSelectProv(prov) {
-        this.ruleForm2.addr = prov;
+      toshow(value) {
+        this.ruleForm2.addr = value
       },
+      // getSelectProv(prov) {
+      //   this.ruleForm2.addr = prov;
+      // },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

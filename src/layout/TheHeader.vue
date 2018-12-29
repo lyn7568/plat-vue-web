@@ -13,16 +13,16 @@
             <!-- <router-link class="marLeft" to='/loginPlat' tag="a">通知(99+)</router-link>
             <router-link class="marLeft" to='/loginPlat' tag="a">消息(99+)</router-link> -->
             <el-dropdown>
-              <span class="el-dropdown-link">
+              <span class="el-dropdown-link" style="cursor:pointer">
                 {{account}}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <a href="center.html#/modifyData" target="_blank"><el-dropdown-item>修改资料</el-dropdown-item></a>
-                <a href="center.html#/myDemand"><el-dropdown-item>我的需求</el-dropdown-item></a>
-                <a href="center.html#/companyInformation"><el-dropdown-item>我的企业</el-dropdown-item></a>
-                <a href="center.html#/modifyData"><el-dropdown-item>首都创新券</el-dropdown-item></a>
+                <a href="center.html#/modifyData"><el-dropdown-item>修改资料</el-dropdown-item></a>
+                <!-- <a href="center.html#/myDemand"><el-dropdown-item>我的需求</el-dropdown-item></a> -->
+                <a href="center.html#/companyInformation" v-if="bindCompany"><el-dropdown-item>我的企业</el-dropdown-item></a>
+                <a href="center.html#/attentionCollect"><el-dropdown-item>关注收藏</el-dropdown-item></a>
                 <a href="center.html#/modifyPassword"><el-dropdown-item>账户设置</el-dropdown-item></a>
-                <el-dropdown-item divided>退出登录</el-dropdown-item>
+                <div @click="logout"><el-dropdown-item divided>退出登录</el-dropdown-item></div>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -38,7 +38,7 @@
     <div class="nav-wrapper minw-block">
       <div class="contain-wrapper">
         <div class="nav-menu">
-          <a v-for="item in navArr" :key="item.url" :href="'/#/'+item.url" :class="{'active': currentPath === item.url}">{{item.tit}}</a>
+          <a v-for="item in navArr" :key="item.url" :href="'/#/'+item.url" :class="activeCl(item.url)">{{item.tit}}</a>
         </div>
       </div>
     </div>
@@ -48,7 +48,7 @@
 <script>
   import { ekexiuUrl } from '@/libs/util';
   import Cookies from 'js-cookie';
-  import { mapGetters } from 'vuex'
+  import { MessageBox } from 'element-ui'
 
   export default {
     data() {
@@ -91,23 +91,42 @@
             tit: '关于平台'
           }
         ],
-        currentPath: 'home',
+        account: '',
+        bindCompany: '',
         kexiuLink: ekexiuUrl,
-        plat: '',
-        plf_user: ''
+        plat: ''
       };
-    },
-    computed: {
-      ...mapGetters([
-        'account'
-      ])
     },
     mounted () {
       /* eslint-disable no-undef */
       this.plat = PLAT.info;
-      document.title = this.plat.title;
-      Cookies.set('platId', process.env.PLAT_ID);
-      Cookies.set('platSource', this.plat.source);
+      this.account = Cookies.get('uaccount');
+      this.bindCompany = Cookies.get('bcid');
+    },
+    methods: {
+      activeCl(url) {
+        if (this.$route && this.$route.name) {
+          return this.$route.name === url ? 'active' : ''
+        } else {
+          return sessionStorage.getItem('isSelect') === url ? 'active' : ''
+        }
+      },
+      logout() {
+        var that = this
+        MessageBox.confirm('您确认要退出登录吗?', '提示', {
+          type: 'warning',
+          center: true
+        }).then(() => {
+          that.$axios.get('/ajax/sys/logout', {}, function(res) {
+            if (res.success) {
+              Cookies.remove('userid')
+              Cookies.remove('uaccount');
+              Cookies.remove('bcid')
+              location.href = '/#/loginPlat'
+            }
+          })
+        }).catch(() => {})
+      }
     }
   };
 </script>

@@ -1,0 +1,145 @@
+<template>
+  <div class="linkage">
+    <el-row>
+      <el-col :span="12">
+        <el-select
+          v-model="sheng"
+          @change="choseProvince"
+          placeholder="省/直辖市">
+          <el-option
+            v-for="item in provinceArr"
+            :key="item.id"
+            :label="item.value"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </el-col>
+      <el-col :span="12">
+        <el-select
+          v-model="shi"
+          @change="choseCity"
+          placeholder="所在城市">
+          <el-option
+            v-for="item in cityArr"
+            :key="item.id"
+            :label="item.value"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </el-col>
+      <!-- <el-col :span="8">
+        <el-select
+          v-model="qu"
+          @change="choseBlock"
+          placeholder="区(县)">
+          <el-option
+            v-for="item in areaArr"
+            :key="item.id"
+            :label="item.value"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </el-col> -->
+    </el-row>
+  </div>
+</template>
+<script>
+import queryDict from '@/libs/queryDict'
+export default {
+  props: ['addrCode'],
+  data() {
+    return {
+      firstFlag: false,
+      provinceArr: [],
+      cityArr: [],
+      sheng: '',
+      shi: '',
+      // qu: '',
+      // areaArr: [],
+      city: '',
+      block: ''
+    }
+  },
+  watch: {
+    addrCode: function() {
+      var that = this
+      setTimeout(function() {
+        that.initpsq()
+      }, 100)
+    }
+  },
+  created() {
+    this.getCityData()
+  },
+  methods: {
+    getCityData: function() {
+      var that = this
+      queryDict.applyDict('XZQH', function(dictData) {
+        if (dictData && dictData.length > 0) {
+          var data = dictData.sort((obj1, obj2) => {
+            return obj1.code - obj2.code
+          })
+          that.provinceArr = {}
+          data.map(item => {
+            if (item.code.match(/0000$/)) {
+              that.provinceArr[item.code] = { id: item.code, value: item.caption, children: {} }
+            } else if (item.code.match(/00$/)) {
+              var p = that.provinceArr[item.code.slice(0, 2) + '0000']
+              p.children[item.code] = { id: item.code, value: item.caption, children: {} }
+              if (!p.defaultChild) {
+                p.defaultChild = p.children[item.code]
+              }
+            } else {
+              var pp = that.provinceArr[item.code.slice(0, 2) + '0000'].children[item.code.slice(0, 4) + '00']
+              pp.children[item.code] = { id: item.code, value: item.caption }
+              if (!pp.defaultChild) {
+                pp.defaultChild = pp.children[item.code]
+              }
+            }
+          })
+        } else {
+          console.log(dictData.status)
+        }
+      })
+    },
+    choseProvince: function(e) {
+      var p = this.provinceArr[e]
+      this.cityArr = p.children
+      this.shi = p.defaultChild.value
+      // this.areaArr = p.defaultChild.children
+      // this.qu = p.defaultChild.defaultChild.value
+      this.E = p.defaultChild.defaultChild.id
+      this.sheng = p.value
+      this.$emit('paren', this.E)
+    },
+    choseCity: function(e) {
+      var p = this.provinceArr[e.slice(0, 2) + '0000'].children[e]
+      this.shi = p.value
+      // this.areaArr = p.children
+      // this.qu = p.defaultChild.value
+      this.E = p.defaultChild.id
+      this.$emit('paren', this.E)
+    },
+    // choseBlock: function(e) {
+    //   this.qu = this.provinceArr[e.slice(0, 2) + '0000'].children[e.slice(0, 4) + '00'].children[e].value
+    //   this.E = e
+    //   this.$emit('paren', this.E)
+    // },
+    initpsq: function() {
+      if (!this.addrCode) {
+        this.sheng = ''
+        this.shi = ''
+        // this.qu = ''
+        return
+      }
+      const s = this.addrCode.substring(0, 2) + '0000'
+      const si = this.addrCode.substring(0, 4) + '00'
+      // const x = this.addrCode
+      var p = this.provinceArr[s]
+      this.sheng = p.value
+      this.shi = p.children[si].value
+      // this.qu = p.children[si].children[x].value
+    }
+  }
+}
+</script>

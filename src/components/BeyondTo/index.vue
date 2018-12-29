@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-  import util from '@/libs/util';
+  import { ImageUrl, defaultSet, autho } from '@/libs/util';
   import queryBase from '@/libs/queryBase';
 
   export default {
@@ -58,9 +58,9 @@
             that.ownerInfo.name = value.name
             that.ownerInfo.title = value.title
             if (that.ownerInfo.hasHeadImage) {
-              that.ownerInfo.img = util.ImageUrl(('head/' + value.id + '_l.jpg'), true)
+              that.ownerInfo.img = ImageUrl(('head/' + value.id + '_l.jpg'), true)
             } else {
-              that.ownerInfo.img = util.defaultSet.img.expert
+              that.ownerInfo.img = defaultSet.img.expert
             }
           }
         })
@@ -72,9 +72,9 @@
             that.ownerInfo.name = value.name
             that.ownerInfo.insdutry = value.insdutry.replace(/,/, ' | ')
             if (that.ownerInfo.hasOrgLogo) {
-              that.ownerInfo.img = util.ImageUrl(('org/' + value.id + '.jpg'), true)
+              that.ownerInfo.img = ImageUrl(('org/' + value.id + '.jpg'), true)
             } else {
-              that.ownerInfo.img = util.defaultSet.img.org
+              that.ownerInfo.img = defaultSet.img.org
             }
           }
         })
@@ -87,7 +87,7 @@
         //   if (res.success) {
         //     const obj = res.data
         //     if (obj.logo === '') {
-        //       obj.logo = util.defaultSet.img.org
+        //       obj.logo = defaultSet.img.org
         //     }
         //     this.ownerInfo = obj
         //   };
@@ -97,7 +97,7 @@
           if (sc) {
             that.ownerInfo.name = value.name
             if (!value.logo) {
-              that.ownerInfo.logo = util.defaultSet.img.org
+              that.ownerInfo.logo = defaultSet.img.org
             } else {
               that.ownerInfo.logo = value.logo
             }
@@ -105,7 +105,7 @@
         })
       },
       headIcon(item) {
-        return util.autho(item.authType, item.orgAuth, item.authStatus);
+        return autho(item.authType, item.orgAuth, item.authStatus);
       }
     }
   };

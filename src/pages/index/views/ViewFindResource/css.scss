@@ -1,0 +1,38 @@
+.tab-wrapper{
+  display:flex;
+  align-items:baseline;
+  padding:15px 20px;
+  color: $commonFont;
+  .tab-lable{
+    width:100px;
+  }
+  .tab-sort{
+    display:flex;
+    flex-wrap:wrap;
+    margin-right:-10px;
+    margin-bottom:-10px;
+    li{
+      display:inline-block;
+      margin-right:10px;
+      margin-bottom:10px;
+      padding:2px 10px;
+      border: 1px solid $borderColor;
+      @include border-radius(10px);
+      cursor: pointer;
+      &.active{
+        color: $mainColor;
+      }
+    }
+  }
+}
+
+.tab-contain{
+  margin-top:20px;
+  background:#fff;
+}
+.el-input-group__append{
+  background:$mainColor;
+  color:#fff;
+  padding:10px 40px;
+  border-color:$mainColor;
+}

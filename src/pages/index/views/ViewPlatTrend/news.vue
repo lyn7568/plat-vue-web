@@ -7,7 +7,7 @@
 
 <script>
   import Cookies from 'js-cookie';
-  import util from '@/libs/util';
+  import { commenTime } from '@/libs/util';
 	import baseContent from '@/components/subTemplate/BaseContent';
 
 	export default {
@@ -40,21 +40,21 @@
           pageSize: that.pageSize,
           pageNo: that.pageNo
         }, (res) => {
-          if (res.success) {
+          if (res.success && res.data) {
             var $info = res.data.data;
             if ($info.length > 0) {
               for (let i = 0; i < $info.length; ++i) {
                 if ($info[i].modifyTime) {
-                  $info[i].modifyTime = util.commenTime($info[i].modifyTime, true)
+                  $info[i].modifyTime = commenTime($info[i].modifyTime, true)
                 }
               }
               that.paltNews = that.isFormSearch ? that.paltNews.concat($info) : $info;
               that.isFormSearch = true;
+              if ($info.length < that.pageSize) {
+                that.loadingModalShow = false;
+                that.isFormSearch = false;
+              };
             }
-            if ($info.length < that.pageSize) {
-              that.loadingModalShow = false;
-              that.isFormSearch = false;
-            };
           };
         });
       },

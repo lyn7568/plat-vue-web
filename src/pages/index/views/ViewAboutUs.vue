@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { getFormatCode } from '@/libs/util';
 
   export default {
     data() {
@@ -22,7 +22,7 @@
       getAboutUs() {
         this.$axios.get('/ajax/platform/get', {
         }, (res) => {
-          this.aboutUs = util.getFormatCode(res.data.descp);
+          this.aboutUs = getFormatCode(res.data.descp);
         });
       }
     }

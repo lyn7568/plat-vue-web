@@ -1,16 +1,16 @@
 <template>
-  <a class="list-item" :href="'serve.html?id='+itemSingle.id" target="_blank">
-    <div class="list-head" :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
+  <a class="list-item" :href="'serve.html?id='+serveInfo.id" target="_blank">
+    <div class="list-head" :style="{backgroundImage: 'url(' + serveInfo.img + ')'}"></div>
     <div class="list-info">
-      <div class="list-tit list-topic">{{itemSingle.name}}</div>
+      <div class="list-tit list-topic">{{serveInfo.name}}</div>
       <div class="list-owner">{{ownerName}}<em class="authicon" :class="ownerAuth"></em></div>
-      <div class="list-desc" v-if="itemSingle.cnt">内容：{{itemSingle.cnt}}</div>
+      <div class="list-desc" v-if="serveInfo.cnt">内容：{{serveInfo.cnt}}</div>
     </div>
   </a>
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { ImageUrl, defaultSet, autho, strToArr } from '@/libs/util';
   import queryBase from '@/libs/queryBase';
 
   export default {
@@ -21,13 +21,27 @@
     },
     data() {
       return {
-        imgUrl: (this.itemSingle && this.itemSingle.images) ? util.ImageUrl('ware/' + this.itemSingle.images.split(',')[0]) : util.defaultSet.img.service,
         ownerName: '',
         ownerAuth: ''
       };
     },
+    computed: {
+      serveInfo() {
+        var obj = this.itemSingle
+        if (obj && obj.images) {
+          obj.img = ImageUrl('ware' + strToArr(obj.images)[0])
+        } else {
+          obj.img = defaultSet.img.service
+        }
+        if (obj.category) {
+          obj.otype = obj.category
+          obj.oid = obj.owner
+        }
+        return obj
+      }
+    },
     created() {
-      this.ownerByond(this.itemSingle);
+      this.ownerByond(this.serveInfo);
     },
     methods: {
       ownerByond(item) {
@@ -36,7 +50,7 @@
           queryBase.getProfessor(item.oid, function(sc, value) {
             if (sc) {
               _this.ownerName = value.name;
-              _this.ownerAuth = util.autho(value.authType, value.orgAuth, value.authStatus);
+              _this.ownerAuth = autho(value.authType, value.orgAuth, value.authStatus);
               _this.$forceUpdate();
             }
           });

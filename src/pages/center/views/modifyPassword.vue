@@ -8,10 +8,10 @@
       <div class="boxCenter">
         <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
           <el-form-item label="原密码" prop="opw">
-            <el-input type="password" v-model="ruleForm2.opw" autocomplete="off" placeholder="请输入原密码"></el-input>
+            <el-input type="password" v-model="ruleForm2.opw" auto-complete="off" placeholder="请输入原密码"></el-input>
           </el-form-item>
           <el-form-item label="新密码" prop="npw">
-            <el-input type="password" v-model="ruleForm2.npw" autocomplete="off" placeholder="请输入新密码"></el-input>
+            <el-input type="password" v-model="ruleForm2.npw" auto-complete="off" placeholder="请输入新密码"></el-input>
           </el-form-item>
           <el-form-item label="再次输入" prop="npwCheck">
             <el-input type="password" v-model="ruleForm2.npwCheck" placeholder="请确认新密码"></el-input>

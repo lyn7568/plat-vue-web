@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { ImageUrl, defaultSet, autho, strToArr } from '@/libs/util';
   import queryBase from '@/libs/queryBase';
 
   export default {
@@ -28,17 +28,28 @@
     computed: {
       resourceInfo() {
         var obj = this.itemSingle
-        if (obj && obj.images && obj.images.length) {
-          obj.img = util.ImageUrl('resource/' + obj.images[0].imageSrc)
-        } else {
-          obj.img = util.defaultSet.img.resource
+        if (obj.resourceId) {
+          obj.id = obj.resourceId
+        }
+        if (obj.resourceName) {
+          obj.name = obj.resourceName
+        }
+        if (obj && obj.images) {
+          obj.img = defaultSet.img.resource
+          if (obj.images instanceof Array) {
+            if (obj.images.length > 0) {
+              obj.img = ImageUrl('resource/' + obj.images[0].imageSrc)
+            }
+          } else {
+            obj.img = ImageUrl('resource/' + strToArr(obj.images))
+          }
+        }
+        if (obj.supportedServices) {
+          obj.cnt = obj.supportedServices
         }
         if (obj.resourceType) {
           obj.otype = obj.resourceType
           obj.oid = obj.professorId || obj.orgId
-        }
-        if (obj.supportedServices) {
-          obj.cnt = obj.supportedServices
         }
         return obj
       }
@@ -53,7 +64,7 @@
           queryBase.getProfessor(item.oid, function(sc, value) {
             if (sc) {
               _this.ownerName = value.name;
-              _this.ownerAuth = util.autho(value.authType, value.orgAuth, value.authStatus);
+              _this.ownerAuth = autho(value.authType, value.orgAuth, value.authStatus);
               _this.$forceUpdate();
             }
           });

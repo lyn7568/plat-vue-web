@@ -36,7 +36,7 @@
   border-radius: 0px !important;
   background:none;
   overflow:hidden;
-  margin-bottom:-20px;
+  margin:-20px 0;
   border-bottom: none;
   .hamburger-container{
     line-height: 58px;

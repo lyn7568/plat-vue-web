@@ -55,8 +55,7 @@
  *  tagsNum: 3 //最多可以传输数量
  * }
 */
-// import httpUrl from '@/libs/http'
-import { trimStr } from '@/utils'
+import { trimStr } from '@/libs/util'
 export default {
   props: ['dyStr', 'tagInfo'],
   data() {

@@ -1,8 +1,12 @@
 import axios from 'axios';
 import qs from 'qs';
+import { Message } from 'element-ui';
 
 let axiosUtil = axios.create({
-    baseURL: process.env.KX_API
+    baseURL: process.env.KX_API,
+    paramsSerializer: params => {
+      return qs.stringify(params, { indices: false })
+    }
 });
 
 axiosUtil.interceptors.request.use(function (config) {
@@ -17,29 +21,27 @@ axiosUtil.interceptors.request.use(function (config) {
 });
 
 axiosUtil.interceptors.response.use(function (response) {
-    let data = response.data;
-    let status = response.status;
-    if (status === 200) {
-        if (response.data === undefined) {
-            // 解决IE9数据问题
-            data = response.request.responseText;
-        } else {
-            data = response.data;
-        }
-        if (!(data instanceof Object)) {
-            // 判断data不是Object时，解析成Object
-            data = JSON.parse(data);
-        }
-        return data;
+    let taR = response.data
+    if (response && response.status === 200) {
+      if (response.data === undefined) { // 解决IE9数据问题
+        taR = response.request.responseText
+      } else {
+        taR = response.data
+      }
+      if (!(taR instanceof Object)) { // 判断taR不是Object时，解析成Object
+        taR = JSON.parse(taR)
+      }
+      if (!taR.success && taR.code === 0) {
+        Message.error(taR.msg || taR.detailMsg)
+      }
+      return taR
     } else {
-        // 业务异常
-        console.log(response);
-        return Promise.resolve(response);
+      Message.error('请求错误1，请重试')
+      return Promise.resolve(response)
     }
-}, function (error) {
-    // 系统异常(后期统一处理)
-    console.log(error);
-    return Promise.reject(error);
-});
+}, error => {
+    Message.error('请求错误2，请重试')
+    return Promise.reject(error)
+})
 
 export default axiosUtil;

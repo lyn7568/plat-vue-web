@@ -25,6 +25,17 @@ var ret = {
       if (eh) eh(err);
     });
   },
+  put: function(url, data, sh, eh) {
+    requestP({
+      method: 'put',
+      url: url,
+      data: data
+    }).then(res => {
+      sh(res);
+    }).catch(err => {
+      if (eh) eh(err);
+    });
+  },
   getk: function(url, data, sh, eh) {
     requestK({
       method: 'get',

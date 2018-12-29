@@ -33,25 +33,23 @@
    *  tip: '上传平台LOGO图片', // 上传图片的提示tip
    *  width: '280px',
    *  height: '200px',
-   *  fun: 'uploadfun',
    *  limit: 3 //最多可以传输数量
    * }
   */
-  import util from '@/libs/util'
+  import { strToArr, arrToStr } from '@/libs/util'
   export default {
     props: ['upImgsStr', 'uploadImg'],
     data() {
       return {
-        imageUrl: util.strToArr(this.upImgsStr) || []
+        imageUrl: strToArr(this.upImgsStr) || []
       }
     },
     watch: {
       upImgsStr(value) {
-        console.log(value)
-        this.imageUrl = util.strToArr(value)
+        this.imageUrl = strToArr(value)
       },
       imageUrl(value) {
-        const list = util.arrToStr(value)
+        const list = arrToStr(value)
         this.$emit('uploadfun', list)
       }
     },

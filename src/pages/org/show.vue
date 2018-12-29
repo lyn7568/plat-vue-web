@@ -14,9 +14,9 @@
               <shareOut :tUrl="elurl"></shareOut>
             </div>
           </div>
-          <el-row class="goSpan">
-            <el-button type="primary" icon="el-icon-plus">关注</el-button>
-            <el-button type="primary">联系</el-button>
+          <el-row class="goSpan" :gutter="10">
+            <el-col :span="12"><collectCo :watchOptions="{oid: orgId, type: 2}"></collectCo></el-col>
+            <!-- <el-col :span="12"><el-button type="primary">联系</el-button></el-col> -->
           </el-row>
         </div>
       </div>
@@ -25,23 +25,23 @@
       <div class="wrapper-left left-main">
         <el-tabs v-model="activeName">
           <el-tab-pane label="主页" name="first">
-            <div class="content-wrapper split-other" v-if="platServices.length || platResources.length">
-              <div class="inner-wrapper" v-if="platServices.length">
+            <div class="content-wrapper split-other" v-if="platThreeServices.length || platThreeResources.length">
+              <div class="inner-wrapper" v-if="platThreeServices.length">
                 <div class="content-title">
                   <span>可提供服务</span>
                   <span class="content-more" @click="activeName='second'">更多</span>
                 </div>
-                <div class="content">
-                  <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
+                <div class="content content-nf">
+                  <baseService v-if="platThreeServices.length" v-for="item in platThreeServices" :key="item.index" :itemSingle="item"></baseService>
                 </div>
               </div>
-              <div class="inner-wrapper" v-if="platResources.length">
+              <div class="inner-wrapper" v-if="platThreeResources.length">
                 <div class="content-title">
                   <span>可共享资源</span>
                   <span class="content-more" @click="activeName='third'">更多</span>
                 </div>
-                <div>
-                  <baseResource v-if="platResources.length" v-for="item in platResources" :key="item.index" :itemSingle="item"></baseResource>
+                <div class="content content-nf">
+                  <baseResource v-if="platThreeResources.length" v-for="item in platThreeResources" :key="item.index" :itemSingle="item"></baseResource>
                 </div>
               </div>
             </div>
@@ -65,18 +65,18 @@
             </div>
           </el-tab-pane>
           <el-tab-pane :label="'服务 ' + (serCount>0 ? serCount : '')" name="second">
-            <div v-show="!ifDefault">
+            <div v-if="!ifDefault && platServices.length">
               <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
               <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
             </div>
-            <defaultPage v-show="ifDefault"></defaultPage>
+            <defaultPage v-else></defaultPage>
           </el-tab-pane>
           <el-tab-pane :label="'资源 ' + (resCount>0 ? resCount : '')" name="third">
-            <div v-show="!ifDefault2">
+            <div v-if="!ifDefault2 && platResources.length">
               <baseResource v-if="platResources.length" v-for="item in platResources" :key="item.index" :itemSingle="item"></baseResource>
               <Loading v-show="loadingModalShow2" :loadingComplete="loadingComplete2" :isLoading="isLoading2" v-on:upup="searchLower2"></Loading>
             </div>
-            <defaultPage v-show="ifDefault2"></defaultPage>
+            <defaultPage v-else></defaultPage>
           </el-tab-pane>
           <el-tab-pane label="资料" name="fourth">
             <div class="content-wrapper">
@@ -130,7 +130,7 @@
         </el-tabs>
       </div>
       <div class="wrapper-right">
-        <div class="content-wrapper" v-if="orgContents">
+        <div class="content-wrapper" v-if="orgContents && orgContents.length">
           <div class="content-title">
             <span>相关文章</span>
           </div>
@@ -142,7 +142,7 @@
             </div>
           </div>
         </div>
-        <div class="content-wrapper" v-if="likeOrgs">
+        <div class="content-wrapper" v-if="likeOrgs && likeOrgs.length">
           <div class="content-title">
             <span>您可能感兴趣的机构</span>
           </div>
@@ -163,11 +163,12 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { urlParse, ImageUrl, defaultSet, strToArr, TimeTr } from '@/libs/util';
   import queryDict from '@/libs/queryDict';
   import queryBase from '@/libs/queryBase';
 
   import shareOut from '@/components/ShareOut';
+  import collectCo from '@/components/CollectCo';
   import baseService from '@/components/subTemplate/BaseService';
   import baseResource from '@/components/subTemplate/BaseResource';
 
@@ -178,6 +179,7 @@
         numRanger: [],
         compType: [],
         orgInfo: '',
+        orgId: '',
         elurl: '',
         platServices: [],
         serCount: 0,
@@ -204,7 +206,7 @@
       };
     },
     created() {
-      this.orgId = util.urlParse('id');
+      this.orgId = urlParse('id');
       this.elurl = window.location.href;
       this.getDictoryData();
       this.getorgInfo();
@@ -214,8 +216,35 @@
       this.getOrgContent();
       this.getLikeOrgs();
     },
+    computed: {
+      platThreeServices() {
+        var pt = this.platServices
+        var str = []
+        if (pt.length > 3) {
+          for (let i = 0; i < 3; ++i) {
+            str[i] = pt[i]
+          }
+        } else {
+          str = pt
+        }
+        return str
+      },
+      platThreeResources() {
+        var pt = this.platResources
+        var str = []
+        if (pt.length > 3) {
+          for (let i = 0; i < 3; ++i) {
+            str[i] = pt[i]
+          }
+        } else {
+          str = pt
+        }
+        return str
+      }
+    },
     components: {
       shareOut,
+      collectCo,
       baseService,
       baseResource
     },
@@ -239,18 +268,18 @@
           if (res.success) {
             var $info = res.data;
             if ($info.hasOrgLogo) {
-              $info.logo = util.ImageUrl(('org/' + $info.id + '.jpg'), true)
+              $info.logo = ImageUrl(('org/' + $info.id + '.jpg'), true)
             } else {
-              $info.logo = util.defaultSet.img.org
+              $info.logo = defaultSet.img.org
             }
             if ($info.subject) {
-              $info.subject = util.strToArr($info.subject);
+              $info.subject = strToArr($info.subject);
             }
             if ($info.qualification) {
-              $info.qualification = util.strToArr($info.qualification);
+              $info.qualification = strToArr($info.qualification);
             }
             if ($info.foundTime) {
-              $info.foundTime = util.TimeTr($info.foundTime);
+              $info.foundTime = TimeTr($info.foundTime);
             }
             if ($info.orgSize) {
               $info.orgSize = this.numRanger[$info.orgSize];
@@ -269,20 +298,23 @@
           modifyTime: this.dataO.serModifyTime,
           rows: this.rows
         }, (res) => {
-          if (res.success) {
+          if (res.success && res.data) {
             var $info = res.data;
             if ($info.length > 0) {
               this.dataO.serModifyTime = $info[$info.length - 1].modifyTime;
               this.platServices = this.isFormSearch ? this.platServices.concat($info) : $info;
               this.isFormSearch = true;
+              if ($info.length < this.rows) {
+                this.loadingModalShow = false;
+                this.isFormSearch = false;
+              };
+            } else {
+              this.loadingModalShow = false;
+              this.isFormSearch = false;
             };
             var liLen = this.platServices.length;
             if ($info.length === 0 && liLen === 0) {
               this.ifDefault = true;
-            };
-            if ($info.length < this.rows) {
-              this.loadingModalShow = false;
-              this.isFormSearch = false;
             };
           };
         });
@@ -300,21 +332,24 @@
           shareId: this.dataO.resShareId,
           rows: this.rows
         }, (res) => {
-          if (res.success) {
+          if (res.success && res.data) {
             var $info = res.data;
             if ($info.length > 0) {
               this.dataO.resPublishTime = $info[$info.length - 1].publishTime;
               this.dataO.resShareId = $info[$info.length - 1].shareId;
               this.platResources = this.isFormSearch2 ? this.platResources.concat($info) : $info;
               this.isFormSearch2 = true;
+              if ($info.length < this.rows) {
+                this.loadingModalShow2 = false;
+                this.isFormSearch2 = false;
+              };
+            } else {
+              this.loadingModalShow2 = false;
+              this.isFormSearch2 = false;
             };
             var liLen = this.platPatents.length;
             if ($info.length === 0 && liLen === 0) {
               this.ifDefault2 = true;
-            };
-            if ($info.length < this.rows) {
-              this.loadingModalShow2 = false;
-              this.isFormSearch2 = false;
             };
           };
         });
@@ -389,9 +424,9 @@
                       str.name = value.name
                       str.orgType = that.compType[value.orgType]
                       if (str.hasOrgLogo) {
-                        str.logo = util.ImageUrl(('org/' + value.id + '.jpg'), true)
+                        str.logo = ImageUrl(('org/' + value.id + '.jpg'), true)
                       } else {
-                        str.logo = util.defaultSet.img.org
+                        str.logo = defaultSet.img.org
                       }
                       that.$forceUpdate()
                     }

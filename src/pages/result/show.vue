@@ -6,9 +6,9 @@
           <div class="inner-wrapper">
             <div class="headcon-box detail-box">
               <div class="show-info">
-                <div class="info-tit info-tit-big">{{patentInfo.title}}</div>
+                <div class="info-tit info-tit-big">{{patentInfo.name}}</div>
                 <div class="info-operate zoom-operate">
-                  <collectCo></collectCo>
+                  <collectCo :watchOptions="{oid: patentId, type: 5}"></collectCo>
                   <shareOut :tUrl="elurl"></shareOut>
                 </div>
               </div>
@@ -53,22 +53,35 @@
               </el-row>
             </div>
           </div>
-          <div class="inner-wrapper">
+          <div class="inner-wrapper" v-if="patentAuthors && patentAuthors.length">
             <div class="content-title">
-              <span>发明人</span>
+              <span>发明人{{authorCount > 0 ? `(${authorCount})` : ''}}</span>
             </div>
             <div class="content">
-              <el-row :gutter="10">
-                <el-col>
+              <el-row :gutter="10" style="width:100%">
+                <el-col :span="12" class="item-col" v-for="item in patentAuthors" :key="item.index">
+                  <a v-if="item.professorId.substring(0, 1) !== '#'" class="list-item" :href="'expert.html?id='+item.professorId" target="_blank">
+                    <div class="list-head" :style="{backgroundImage: 'url(' + headUrl(item) + ')'}"></div>
+                    <div class="list-info">
+                      <div class="list-tit">{{item.name}}</div>
+                      <div class="list-desc">{{item.title}}</div>
+                    </div>
+                  </a>
+                  <div class="list-item" v-else>
+                    <div class="list-head" :style="{backgroundImage: 'url(' + headUrl(item) + ')'}"></div>
+                    <div class="list-info">
+                      <div class="list-tit">{{item.name}}</div>
+                    </div>
+                  </div>
                 </el-col>
               </el-row>
             </div>
           </div>
-          <div class="inner-wrapper" v-if="likePatents">
+          <div class="inner-wrapper" v-if="likePatents && likePatents.length">
             <div class="content-title">
               <span>您可能感兴趣的专利</span>
             </div>
-            <div class="content">
+            <div class="content content-nf">
               <baseResult v-for="item in likePatents" :key="item.index" :itemSingle="item"></baseResult>
             </div>
           </div>
@@ -76,7 +89,7 @@
       </div>
       <div class="wrapper-right">
         <div class="wrapper-right">
-          <div class="block-wrapper" v-if="plat.adinfo.length" v-for="item in plat.adinfo" :key="item.index">
+          <div class="block-wrapper" v-if="adinfo.length" v-for="item in adinfo" :key="item.index">
             <a class="ad-wrapper" :href="item.adUrl" target="_blank">
               <img :src="item.imgUrl" width="280" height="200">
             </a>
@@ -89,32 +102,33 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { urlParse, ImageUrl, defaultSet, strToArr, TimeTr } from '@/libs/util';
 
   import shareOut from '@/components/ShareOut';
   import collectCo from '@/components/CollectCo';
 
   import baseResult from '@/components/subTemplate/BaseResult';
+  import queryBase from '@/libs/queryBase';
 
   export default {
-    props: {
-      plat: {
-        type: Object
-      }
-    },
     data() {
       return {
+        /* eslint-disable no-undef */
+        adinfo: PLAT.info.adinfo,
         activeName: 'first',
         patentInfo: '',
+        patentId: '',
         elurl: '',
-        likePatents: ''
+        likePatents: '',
+        patentAuthors: ''
       };
     },
     created() {
-      this.patentId = util.urlParse('id');
+      this.patentId = urlParse('id');
       this.elurl = window.location.href;
       this.getPatentInfo();
       this.getLikePatents();
+      this.getPatentAuthors();
     },
     components: {
       shareOut,
@@ -129,23 +143,54 @@
           if (res.success) {
             var $info = res.data;
             if ($info.keywords) {
-              $info.keywords = util.strToArr($info.keywords);
+              $info.keywords = strToArr($info.keywords);
             }
             if ($info.reqDay) {
-              $info.reqDay = util.TimeTr($info.reqDay);
+              $info.reqDay = TimeTr($info.reqDay);
             }
             if ($info.pubDay) {
-              $info.pubDay = util.TimeTr($info.pubDay);
+              $info.pubDay = TimeTr($info.pubDay);
             }
             this.patentInfo = $info;
           };
         });
       },
-      headUrl(item) {
-        return item.hasHeadImage ? util.ImageUrl(('head/' + item.id + '_l.jpg'), true) : util.defaultSet.img.expert;
+      getPatentAuthors() {
+        var that = this
+        that.$axios.getk('/ajax/ppatent/authors', {
+          id: that.patentId
+        }, function(res) {
+          if (res.success && res.data) {
+            const $data = res.data
+            if ($data.length > 0) {
+              that.authorCount = $data.length
+              var hdata = { num: 1, data: $data }
+              for (let i = 0; i < $data.length; ++i) {
+                hdata.num++
+                if ($data[i].professorId.substring(0, 1) !== '#') {
+                  var item = $data[i]
+                  queryBase.getProfessor(item.professorId, function(sc, value) {
+                    alert(333)
+                    if (sc) {
+                      hdata.num--
+                      item.name = value.name;
+                      that.$forceUpdate();
+                    }
+                  });
+                } else {
+                  hdata.num--
+                }
+              }
+              hdata.num--
+              if (hdata.num === 0) {
+                that.patentAuthors = $data
+              }
+            }
+          }
+        })
       },
-      headIcon(item) {
-        return util.autho(item.authType, item.orgAuth, item.authStatus);
+      headUrl(item) {
+        return item.hasHeadImage ? ImageUrl(('head/' + item.id + '_l.jpg'), true) : defaultSet.img.expert;
       },
       getLikePatents() {
         var that = this
@@ -161,3 +206,21 @@
     }
   };
 </script>
+
+<style lang="scss" scoped>
+.browse-main .block-wrapper .left-main .inner-wrapper .content
+.item-col{
+  margin-bottom: 10px;
+  .list-item{
+    border:1px solid #eaeaea;
+    padding:10px 16px;
+    .list-head{
+      @include center-items(50px,50px);
+    }
+    .list-info{
+      flex: 1 1 60px;
+      padding-left: 10px;
+    }
+  }
+}
+</style>

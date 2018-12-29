@@ -21,14 +21,14 @@
       <div class="wrapper-left left-main">
         <el-tabs v-model="activeName">
           <el-tab-pane label="主页" name="first">
-            <div class="content-wrapper split-other" v-if="platProducts.length">
+            <div class="content-wrapper split-other" v-if="platThreeProducts && platThreeProducts.length">
               <div class="inner-wrapper">
                 <div class="content-title">
                   <span>我们的产品</span>
                   <span class="content-more" @click="activeName='second'">更多</span>
                 </div>
-                <div>
-                  <baseProduct v-if="platProducts.length" v-for="item in platProducts" :key="item.index" :itemSingle="item"></baseProduct>
+                <div class="content content-nf">
+                  <baseProduct v-if="platThreeProducts.length" v-for="item in platThreeProducts" :key="item.index" :itemSingle="item"></baseProduct>
                 </div>
               </div>
             </div>
@@ -110,7 +110,7 @@
         </el-tabs>
       </div>
       <div class="wrapper-right">
-        <div class="content-wrapper" v-if="compContents">
+        <div class="content-wrapper" v-if="compContents && compContents.length">
           <div class="content-title">
             <span>相关文章</span>
           </div>
@@ -129,7 +129,7 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { urlParse, defaultSet } from '@/libs/util';
   import queryDict from '@/libs/queryDict';
 
   import shareOut from '@/components/ShareOut';
@@ -141,16 +141,14 @@
         activeName: 'first',
         orgInfo: '',
         elurl: '',
-        pageSize: 30,
+        pageSize: 10,
         pageNo: 1,
         total: 0,
         keywordObj: [],
         numRanger: [],
         compType: [],
         citys: [],
-        // platProductsThree: [],
         platProducts: [],
-        platResources: [],
         loadingModalShow: true,
         loadingComplete: false,
         isFormSearch: false,
@@ -160,13 +158,27 @@
       };
     },
     created() {
-      this.companyId = util.urlParse('id');
+      this.companyId = urlParse('id');
       this.elurl = window.location.href;
       this.getDictoryData();
       this.getorgInfo();
       this.getCompanyKeyword();
       this.getProductlist();
       this.getCompContent();
+    },
+    computed: {
+      platThreeProducts() {
+        var pt = this.platProducts
+        var str = []
+        if (pt.length > 3) {
+          for (let i = 0; i < 3; ++i) {
+            str[i] = pt[i]
+          }
+        } else {
+          str = pt
+        }
+        return str
+      }
     },
     components: {
       shareOut,
@@ -198,7 +210,7 @@
           if (res.success) {
             const obj = res.data
             if (obj.logo === '') {
-              obj.logo = util.defaultSet.img.org
+              obj.logo = defaultSet.img.org
             }
             this.orgInfo = obj
           };
@@ -233,24 +245,27 @@
           pageSize: that.pageSize,
           pageNo: that.pageNo
         }, function(res) {
-          if (res.success && res.data !== []) {
+          if (res.success && res.data) {
             const obj = res.data.data
             if (obj.length > 0) {
               that.isFormSearch = true;
               that.total = res.data.total;
-              // if (that.pageNo === 1) {
-              //   that.platProductsThree = obj;
-              // }
               that.platProducts = that.platProducts.concat(obj);
+              if (obj.length < that.pageSize) {
+                that.loadingModalShow = false;
+                that.isFormSearch = false;
+              };
+            } else {
+              this.loadingModalShow = false;
+              this.isFormSearch = false;
             };
-            var liLen = this.platProducts.length;
+            var liLen = that.platProducts.length;
             if (obj.length === 0 && liLen === 0) {
-              this.ifDefault = true;
+              that.ifDefault = true;
             };
-            if (obj.length < that.pageSize) {
-              that.loadingModalShow = false;
-              that.isFormSearch = false;
-            };
+          } else {
+            that.loadingModalShow = false;
+            that.isFormSearch = false;
           }
         })
       },

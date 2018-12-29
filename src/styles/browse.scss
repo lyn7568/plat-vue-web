@@ -86,7 +86,7 @@
           }
         }
         .goSpan{
-          min-width: 180px;
+          min-width: 200px;
         }
         &.org-head{
           .headimg-box{
@@ -189,7 +189,7 @@
             font-weight:normal;
             word-break: break-all;
             .list-item{
-              padding: 4px 0;
+              padding: 8px 0;
             }
             .ulM{
               width:100%;
@@ -222,6 +222,9 @@
                 }
               }
             }
+          }
+          .content-nf{
+            display:block
           }
         }
       }

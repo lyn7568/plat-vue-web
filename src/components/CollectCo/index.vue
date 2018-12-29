@@ -1,21 +1,101 @@
 <template>
   <div class="collect-block">
-    <span>收藏</span>
-    <em style="cursor: pointer;" class="icon-font" :class="ifCollect ? 'icon-yishoucang' : 'icon-shoucang'" @click="collectFun"></em>
+    <div v-if="collectShow">
+      <span>收藏</span>
+      <em v-if="!ifCollect" class="icon-font icon-shoucang" @click="collectionAbout"></em>
+      <em v-if="ifCollect" class="icon-font icon-yishoucang" @click="cancelCollectionAbout"></em>
+    </div>
+    <div v-if="!collectShow">
+      <el-button v-if="!ifCollect" type="primary" icon="el-icon-plus" @click="collectionAbout">关注</el-button>
+      <el-button v-if="ifCollect" type="info" @click="cancelCollectionAbout">已关注</el-button>
+    </div>
   </div>
 </template>
 <script>
+  import { loginStatus } from '@/libs/loginStatus';
   export default {
-    props: {
-      ifCollect: {
-        type: Boolean
+    props: ['watchOptions'],
+    data() {
+      return {
+        ifCollect: false
       }
     },
-    mounted() {
+    watch: {
+      ifCollect(value) {
+        this.ifCollect = value
+      }
+    },
+    computed: {
+      collectShow() {
+        const type = this.watchOptions.type
+        return !(type === 1 || type === 2)
+      },
+      collectText(value) {
+        const type = this.watchOptions.type
+        return (type === 1 || type === 2) ? '关注' : '收藏'
+      }
+    },
+    created() {
+      this.ifcollectionAbout()
     },
     methods: {
-      collectFun() {
-        this.ifCollect = !this.ifCollect;
+      /* 判断是否收藏/关注 */
+      ifcollectionAbout() {
+        var that = this;
+        loginStatus(function() {
+          that.$axios.get('/ajax/collection/check', {
+            oid: that.watchOptions.oid,
+            type: that.watchOptions.type
+          }, function(res) {
+            if (res.success) {
+              if (res.data) {
+                that.ifCollect = true
+              } else {
+                that.ifCollect = false
+              }
+            }
+          })
+        })
+      },
+      /* 收藏/关注 */
+      collectionAbout() {
+        var that = this;
+        loginStatus(function() {
+          that.$axios.post('/ajax/collection/insert', {
+            oid: that.watchOptions.oid,
+            type: that.watchOptions.type
+          }, function(res) {
+            if (res.success) {
+              if (res.data) {
+                that.ifCollect = true
+                that.$message({
+                  message: `${that.collectText}成功`,
+                  type: 'success'
+                })
+              }
+            }
+          })
+        })
+      },
+      /* 取消收藏/关注 */
+      cancelCollectionAbout() {
+        var that = this;
+        loginStatus(function() {
+          that.$axios.post('/ajax/collection/delete', {
+            oid: that.watchOptions.oid,
+            type: that.watchOptions.type
+          }, function(res) {
+            if (res.success) {
+              if (res.data) {
+                that.ifCollect = false
+                that.$message({
+                  message: `已取消${that.collectText}`,
+                  type: 'success'
+                })
+              }
+            }
+          })
+        })
       }
     }
   };
@@ -31,11 +111,12 @@
     height:16px;
     margin-left:6px;
     background-size: cover;
+    cursor: pointer;
     &.icon-shoucang{
-      @include bg-image('/static/comimg/g_all_icon_shoucang_nor.png');
+      @include bg-image('./img/icon_shoucang_nor.png');
     }
     &.icon-yishoucang{
-      @include bg-image('/static/comimg/g_all_icon_shoucang_hig.png');
+      @include bg-image('./img/icon_shoucang_hig.png');
     }
   }
 }

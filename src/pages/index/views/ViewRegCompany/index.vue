@@ -21,7 +21,7 @@
 </template>
 
 <script>
-	import util from '@/libs/util';
+  import { defaultSet } from '@/libs/util';
 
   export default {
     props: {
@@ -54,8 +54,8 @@
             var $info = res.data.data;
             if ($info.length > 0) {
               for (let i = 0; i < $info.length; ++i) {
-                if ($info[i].logo === '') {
-                  $info[i].logo = util.defaultSet.img.org
+                if (!$info[i].logo) {
+                  $info[i].logo = defaultSet.img.org
                 }
                 $info[i].industry = that.getCompanyKeyword($info[i].id)
                 that.$forceUpdate()

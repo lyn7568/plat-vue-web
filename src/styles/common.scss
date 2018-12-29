@@ -80,9 +80,18 @@ a{
     top:0;
   }
 }
-.el-button--primary{
-  background-color: $mainColor;
-  border-color: $mainColor;
+
+.pagination-container{
+  padding: 20px;
+  text-align:center;
+}
+
+.space-form-item{
+  height:40px;
+}
+
+.el-date-editor.el-input, .el-date-editor.el-input__inner{
+  width:100%;
 }
 
 /*认证标识相关*/
@@ -93,17 +102,17 @@ a{
   height:16px;
   background-size: cover;
   &.icon-pro{
-    @include bg-image('/static/comimg/porfile_icon_zhuanjia_nor.png');
+    @include bg-image('../assets/head-icon/porfile_icon_zhuanjia_nor.png');
   }
   &.icon-com{
-    @include bg-image('/static/comimg/porfile_icon_qiye_hig.png');
+    @include bg-image('../assets/head-icon/porfile_icon_qiye_hig.png');
   }
   &.icon-staff{
-    @include bg-image('/static/comimg/porfile_icon_yuangong_hig.png');
+    @include bg-image('../assets/head-icon/porfile_icon_yuangong_hig.png');
   }
   &.icon-real{
     width:24px;
-    @include bg-image('/static/comimg/porfile_icon_shimin_nor.png');
+    @include bg-image('../assets/head-icon/porfile_icon_shimin_nor.png');
   }
 }
   

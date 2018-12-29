@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { formatOfft, ImageUrl, defaultSet, autho } from '@/libs/util';
   import queryBase from '@/libs/queryBase';
 
   export default {
@@ -49,11 +49,11 @@
                   if (sc) {
                     var owner = $data[i]
                     owner.name = value.name
-                    owner.offt = util.formatOfft(value, true)
+                    owner.offt = formatOfft(value, true)
                     if (value.hasHeadImage) {
-                      owner.img = util.ImageUrl(('head/' + value.id + '_l.jpg'), true)
+                      owner.img = ImageUrl(('head/' + value.id + '_l.jpg'), true)
                     } else {
-                      owner.img = util.defaultSet.img.expert
+                      owner.img = defaultSet.img.expert
                     }
                   }
                 })
@@ -84,10 +84,10 @@
         });
       },
       headUrl(item) {
-        return item.hasHeadImage ? util.ImageUrl(('head/' + item.id + '_l.jpg'), true) : util.defaultSet.img.expert;
+        return item.hasHeadImage ? ImageUrl(('head/' + item.id + '_l.jpg'), true) : defaultSet.img.expert;
       },
       headIcon(item) {
-        return util.autho(item.authType, item.orgAuth, item.authStatus);
+        return autho(item.authType, item.orgAuth, item.authStatus);
       },
       loadLower() {
         if (this.loadingModalShow && !this.isLoading) {

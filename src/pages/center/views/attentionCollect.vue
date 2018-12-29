@@ -1,23 +1,189 @@
 <template>
   <el-tabs v-model="activeName" @tab-click="handleClick">
-    <el-tab-pane label="专家" name="first">专家</el-tab-pane>
-    <el-tab-pane label="机构" name="second">机构</el-tab-pane>
-    <el-tab-pane label="服务" name="third">服务</el-tab-pane>
-    <el-tab-pane label="资源" name="fourth">资源</el-tab-pane>
-    <el-tab-pane label="专利" name="fiveth">专利</el-tab-pane>
+    <el-tab-pane v-for="item in navbarArray" :key="item.index" :label="item.text" :name="item.wtype">
+      <div  v-if="watchList && watchList.length && ifDefault">
+        <div class="con-item" v-if="watchList && watchList.length" v-for="watc in watchList" :key="watc.index">
+          <baseExpert v-if="item.wtype==='1'" :itemSingle="watc"></baseExpert>
+          <baseOrg v-if="item.wtype==='2'" :itemSingle="watc"></baseOrg>
+          <baseService v-if="item.wtype==='3'" :itemSingle="watc"></baseService>
+          <baseResource v-if="item.wtype==='4'" :itemSingle="watc"></baseResource>
+          <baseResult v-if="item.wtype==='5'" :itemSingle="watc"></baseResult>
+          <div class="dele">
+            <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+          </div>
+        </div>
+      </div>
+      <defaultPage v-else></defaultPage>
+    </el-tab-pane>
+    <div class="pagination-container" v-if="watchList && watchList.length">
+      <el-pagination
+        background
+        @current-change="handleCurrentChange"
+        :current-page.sync="pageNo"
+        :page-size="pageSize"
+        layout="prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
+    </div>
   </el-tabs>
 </template>
 <script>
+  import { loginStatus } from '@/libs/loginStatus';
+  import baseExpert from '@/components/subTemplate/BaseExpert';
+  import baseOrg from '@/components/subTemplate/BaseOrg';
+  import baseService from '@/components/subTemplate/BaseService';
+  import baseResource from '@/components/subTemplate/BaseResource';
+  import baseResult from '@/components/subTemplate/BaseResult';
   export default {
     data() {
       return {
-        activeName: 'second'
+        activeName: '1',
+        navbarArray: [{
+          text: '专家',
+          wtype: '1',
+          url: '/ajax/professor/qm'
+        }, {
+          text: '机构',
+          wtype: '2',
+          url: '/ajax/org/qm'
+        }, {
+          text: '服务',
+          wtype: '3',
+          url: '/ajax/ware/qm'
+        }, {
+          text: '资源',
+          wtype: '4',
+          url: '/ajax/resource/qm'
+        }, {
+          text: '专利',
+          wtype: '5',
+          url: '/ajax/ppatent/qm'
+        }],
+        pageSize: 10,
+        pageNo: 1,
+        total: 0,
+        watchList: [],
+        ifDefault: false
       };
     },
+    components: {
+      baseExpert,
+      baseOrg,
+      baseService,
+      baseResource,
+      baseResult
+    },
+    created() {
+      this.queryWatchList();
+    },
     methods: {
-      handleClick(tab, event) {
-        console.log(tab, event);
+      handleClick() {
+        this.pageNo = 1
+        this.total = 0
+        this.watchList = []
+        this.queryWatchList();
+      },
+      queryWatchList() {
+        var that = this
+        loginStatus(function () {
+          that.$axios.get('/ajax/collection/pq', {
+            type: that.activeName,
+            pageSize: that.pageSize,
+            pageNo: that.pageNo
+          }, function(res) {
+            if (res.success && res.data) {
+              var arr = []
+              const $info = res.data.data
+              if ($info.length > 0) {
+                var hdata = { num: 1, data: $info }
+                for (let i in $info) {
+                  hdata.num++
+                  arr[i] = $info[i].oid;
+                  hdata.num--
+                }
+                hdata.num--
+                that.total = res.data.total
+                if (hdata.num === 0) {
+                  that.$axios.getk(that.navbarArray[that.activeName - 1].url, {
+                    id: arr
+                  }, function(data) {
+                    if (data.success && data.data) {
+                      if (data.data.length > 0) {
+                        that.watchList = data.data
+                        that.$forceUpdate()
+                      }
+                    }
+                  })
+                }
+              }
+              var liLen = that.watchList.length;
+              if ($info.length === 0 && liLen === 0) {
+                that.ifDefault = true;
+              };
+            }
+          })
+        })
+      },
+      handleCurrentChange(val) {
+        this.pageNo = val
+        this.queryWatchList()
+      },
+      handerDel(watc) {
+        var that = this;
+        var Id = ''
+        switch (that.activeName) {
+          case '1':
+           Id = watc.professorId
+           break
+          case '2':
+           Id = watc.orgId
+           break
+          case '3':
+           Id = watc.id
+           break
+          case '4':
+           Id = watc.resourceId
+           break
+          case '5':
+           Id = watc.id
+           break
+        }
+        loginStatus(function () {
+          that.$axios.post('/ajax/collection/delete', {
+            oid: Id,
+            type: that.activeName
+          }, function(res) {
+            if (res.success) {
+              if (res.data) {
+                that.handleClick()
+                that.$message({
+                  message: `已移除`,
+                  type: 'success'
+                })
+              }
+            }
+          })
+        })
       }
     }
   };
 </script>
+<style lang="scss" scoped>
+  .con-item{
+    position:relative;
+    cursor: pointer;
+    &:hover{
+      background: #EEEEEE;
+      .dele{
+        display: block;
+      }
+    }
+    .dele{
+      display: none;
+      position: absolute;
+      right: 10px;
+      z-index: 20;
+      top: 40%;
+    }
+  }
+</style>

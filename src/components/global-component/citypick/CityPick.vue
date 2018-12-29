@@ -104,12 +104,14 @@
   };
 </script>
 
-<style lang="stylus" type="text/stylus">
-  .cityParent
-    position:relative
-    z-index:2
-    .cityChild
-      position:absolute
-      bottom:0
-      z-index:1
+<style lang="scss" scoped>
+  .cityParent{
+    position:relative;
+    z-index:2;
+    .cityChild{
+      position:absolute;
+      bottom:0;
+      z-index:1;
+    }
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <router-link class="list-item" :class="isShowImg(itemSingle.catalog)" :to="{name:'con_show',query:{id:itemSingle.id}}" target="_blank">
+  <a class="list-item" :class="isShowImg(itemSingle.catalog)" :href="'content.html?id='+itemSingle.id" target="_blank">
     <div class="list-head" :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
     <div class="list-info">
       <div class="list-tit">{{itemSingle.title}}</div>
@@ -7,11 +7,11 @@
         <li>{{itemSingle.modifyTime}}</li>
       </ul>
     </div>
-  </router-link>
+  </a>
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { defaultSet } from '@/libs/util';
   export default {
     props: {
       itemSingle: {
@@ -20,7 +20,7 @@
     },
     data() {
       return {
-        imgUrl: this.itemSingle.imgUrl || util.defaultSet.img.article
+        imgUrl: this.itemSingle.imgUrl || defaultSet.img.article
       };
     },
     methods: {

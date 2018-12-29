@@ -3,7 +3,7 @@
     <div class="notice_d" v-show="noResult">
         <img v-bind:src="infoImage" class="d_photo" />
         <div class="d_prompt">
-            <p class="d_1">{{message}}</p>
+            <!-- <p class="d_1">{{message}}</p> -->
             <p class="d_2">{{message2}}</p>
         </div>
     </div>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-
+import Img from './img/points_icon_ku_nor.png'
 export default {
   props: {
     show: {
@@ -23,11 +23,11 @@ export default {
       default: true
     },
     infoImage: {
-      default: require('../../../../static/comimg/points_icon_ku_nor.png')
+      default: Img
     },
     message: {
       type: String,
-      default: '没有搜索结果╭(╯^╰)╮'
+      default: '没有相关内容'
     },
     message2: {
       type: String,

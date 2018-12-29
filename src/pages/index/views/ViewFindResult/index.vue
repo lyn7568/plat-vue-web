@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="wrapper-right">
-      <div class="block-wrapper" v-if="plat.adinfo.length" v-for="item in plat.adinfo" :key="item.index">
+      <div class="block-wrapper" v-if="adinfo.length" v-for="item in adinfo" :key="item.index">
         <a class="ad-wrapper" :href="item.adUrl" target="_blank">
           <img :src="item.imgUrl" width="280" height="200">
         </a>
@@ -28,20 +28,15 @@
 </template>
 
 <script>
-  import Cookies from 'js-cookie';
-  import util from '@/libs/util';
+  import { urlParse } from '@/libs/util';
 
   import baseResult from '@/components/subTemplate/BaseResult';
 
   export default {
-    props: {
-      plat: {
-        type: Object
-      }
-    },
     data() {
       return {
-        platId: '',
+        /* eslint-disable no-undef */
+        adinfo: PLAT.info.adinfo,
         rows: 20,
         dataO: {
           patSortNum: '',
@@ -58,8 +53,7 @@
       };
     },
     created() {
-      this.platId = Cookies.get('platId');
-      this.keyVal = util.urlParse('key');
+      this.keyVal = urlParse('key');
       this.searchResource();
     },
     methods: {
@@ -79,14 +73,17 @@
               this.dataO.patId = $info[$info.length - 1].id;
               this.platResources = this.isFormSearch ? this.platResources.concat($info) : $info;
               this.isFormSearch = true;
+              if ($info.length < this.rows) {
+                this.loadingModalShow = false;
+                this.isFormSearch = false;
+              };
+            } else {
+              this.loadingModalShow = false;
+              this.isFormSearch = false;
             };
             var liLen = this.platResources.length;
             if ($info.length === 0 && liLen === 0) {
               this.ifDefault = true;
-            };
-            if ($info.length < this.rows) {
-              this.loadingModalShow = false;
-              this.isFormSearch = false;
             };
           };
         });
@@ -125,36 +122,6 @@
   };
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus" scoped>
-  .tab-wrapper
-    display:flex
-    align-items:baseline
-    padding:15px 20px
-    color: $commonFont
-    .tab-lable
-      width:100px
-    .tab-sort
-      display:flex
-      flex-wrap:wrap
-      margin-right:-10px
-      margin-bottom:-10px
-      li
-        display:inline-block
-        margin-right:10px
-        margin-bottom:10px
-        padding:2px 10px
-        border: 1px solid $borderColor
-        border-radius(10px)
-        cursor: pointer
-        &.active
-          color: $mainColor
-
-  .tab-contain
-    margin-top:20px
-    background:#fff
-  .el-input-group__append
-    background:$mainColor
-    color:#fff
-    padding:10px 40px
-    border-color:$mainColor
+<style scoped>
+ @import '../ViewFindResource/css.scss';
 </style>

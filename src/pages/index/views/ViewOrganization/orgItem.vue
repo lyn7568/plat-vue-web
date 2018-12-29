@@ -18,7 +18,7 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { ImageUrl, defaultSet } from '@/libs/util';
   import queryBase from '@/libs/queryBase';
 
   export default {
@@ -52,9 +52,9 @@
                     var owner = $data[i]
                     owner.name = value.name
                     if (value.hasOrgLogo) {
-                      owner.logo = util.ImageUrl(('org/' + value.id + '.jpg'), true)
+                      owner.logo = ImageUrl(('org/' + value.id + '.jpg'), true)
                     } else {
-                      owner.logo = util.defaultSet.img.org
+                      owner.logo = defaultSet.img.org
                     }
                     if (value.industry) {
                       owner.industry = value.industry.replace(/,/g, ' | ')

@@ -3,43 +3,12 @@
     <div class="boxLeft">
       <div class="headPhoto">
         <div class="userInfo">
-          <img :src="headPhoto" alt="">
-          <p>专家姓名</p>
+          <div class="img-div" :style="{backgroundImage: 'url(' + headPhoto + ')'}"></div>
+          <p>{{account}}</p>
         </div>
       </div>
-      <el-menu default-active="modifyData" router class="el-menu-vertical-demo" @select="handleSelect" @open="handleOpen"
-        @close="handleClose">
-        <el-menu-item index="modifyData">
-          <i class="el-icon-menu"></i>
-          <span slot="title">修改资料</span>
-        </el-menu-item>
-        <el-submenu index="demand">
-          <template slot="title">
-            <i class="el-icon-location"></i>
-            <span>我的需求</span>
-          </template>
-          <el-menu-item index="myDemand">我的需求</el-menu-item>
-          <el-menu-item index="modifyDemand">修改需求</el-menu-item>
-          <el-menu-item index="examineDemand">查看需求</el-menu-item>
-        </el-submenu>
-        <el-submenu index="2" v-if="bindCompany">
-          <template slot="title">
-            <i class="el-icon-location"></i>
-            <span>我的企业</span>
-          </template>
-          <el-menu-item index="companyInformation">企业信息</el-menu-item>
-          <el-menu-item index="companyProduct">企业产品</el-menu-item>
-          <el-menu-item index="publishProduct">发布产品</el-menu-item>
-        </el-submenu>
-        <el-menu-item index="attentionCollect">
-          <i class="el-icon-menu"></i>
-          <span slot="title">关注收藏</span>
-        </el-menu-item>
-        <el-menu-item index="modifyPassword">
-          <i class="el-icon-setting"></i>
-          <span slot="title">账户设置</span>
-        </el-menu-item>
-      </el-menu>
+      <sidebar></sidebar>
+      <div class="exit-menu-item" @click="logout">退出登录</div>
     </div>
     <div class="boxRight">
       <transition name="fade" mode="out-in">
@@ -50,30 +19,29 @@
 </template>
 
 <script>
+  import Sidebar from './Sidebar';
   import { mapGetters } from 'vuex';
   export default {
-    data() {
-      return {
-        img: ''
-      };
-    },
     computed: {
       ...mapGetters([
         'bindCompany',
-        'headPhoto'
+        'headPhoto',
+        'account'
       ])
     },
-    created() {
+    components: {
+      Sidebar
     },
     methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
+      logout() {
+        this.$confirm('您确认要退出登录吗?', '提示', {
+          type: 'warning',
+          center: true
+        }).then(() => {
+          this.$store.dispatch('LogOut').then(() => {
+            location.href = '/#/loginPlat'
+          })
+        }).catch(() => {})
       }
     }
   };
@@ -81,11 +49,14 @@
 
 <style lang="scss" rel="stylesheet/scss" scoped>
   .main-content {
-    margin-top: 20px;
+    margin: 20px 0;
+    min-height: 500px;
     .boxRight {
+      padding:10px 20px;
       float: left;
-      width: 900px;
-      margin-left: 15px;
+      width: 880px;
+      margin-left: 20px;
+      background: #ffffff;
       box-sizing: border-box;
     }
     .boxLeft {
@@ -94,8 +65,8 @@
       width: 200px;
       .headPhoto {
         height: 146px;
-        margin-bottom: 10px;
-        border: 1px solid #ebebeb;
+        background: #ffffff;
+        margin-bottom: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -105,12 +76,27 @@
           p {
             margin-top: 10px;
           }
-          img {
+          .img-div {
             width: 80px;
             height: 80px;
             border-radius: 50%;
+            margin: auto;
+            background-size: cover;
           }
         }
+      }
+      .el-menu {
+        border:none;
+      }
+      .exit-menu-item{
+        padding-left: 20px;
+        background: #ffffff;
+        border-top: 10px solid #f4f6f8;
+        box-sizing: content-box;
+        height: 56px;
+        line-height: 56px;
+        font-size: 14px;
+        cursor: pointer;
       }
     }
   }

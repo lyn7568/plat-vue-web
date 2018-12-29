@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { ImageUrl, defaultSet } from '@/libs/util';
 
   export default {
     props: {
@@ -23,9 +23,9 @@
     computed: {
       imgUrl() {
         if (this.itemSingle.hasHeadImage) {
-          return util.ImageUrl(('head/' + this.itemSingle.id + '_l.jpg'), true)
+          return ImageUrl(('head/' + this.itemSingle.id + '_l.jpg'), true)
         } else {
-          return util.defaultSet.img.expert
+          return defaultSet.img.expert
         }
       }
     },

@@ -30,12 +30,12 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { ekexiuUrl } from '@/libs/util';
 
   export default {
     data() {
       return {
-        kexiuLink: util.ekexiuUrl,
+        kexiuLink: ekexiuUrl,
         plat: ''
       };
     },

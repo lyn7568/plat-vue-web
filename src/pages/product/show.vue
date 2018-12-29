@@ -52,9 +52,9 @@
       <div class="wrapper-right">
         <div class="content-wrapper">
           <div class="right-split">
-            <beyondTo :ownerId="productInfo.companyId"></beyondTo>
+            <beyondTo v-if="companyId" :ownerId="companyId"></beyondTo>
           </div>
-          <div class="right-split" v-if="otherProducts">
+          <div class="right-split" v-if="otherProducts && otherProducts.length">
             <div class="content-title">
               <span>其他产品</span>
             </div>
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { urlParse, strToArr } from '@/libs/util';
 
   import previewMagnify from '@/components/previewMagnify';
   import shareOut from '@/components/ShareOut';
@@ -93,11 +93,10 @@
       };
     },
     created() {
-      this.productId = util.urlParse('id');
+      this.productId = urlParse('id');
       this.elurl = window.location.href;
       this.getproductInfo();
       this.getProductKeyword();
-      this.getOtherProducts();
     },
     components: {
       previewMagnify,
@@ -112,10 +111,11 @@
           if (res.success) {
             var $info = res.data;
             if ($info.img) {
-              $info.img = util.strToArr($info.img);
+              $info.img = strToArr($info.img);
             }
+            this.companyId = $info.companyId;
             this.productInfo = $info;
-            this.companyId = $info.companyId
+            this.getOtherProducts($info.companyId);
           };
         });
       },
@@ -136,10 +136,10 @@
           }
         })
       },
-      getOtherProducts() {
+      getOtherProducts(id) {
         var that = this
         that.$axios.get('/ajax/product/pq', {
-          id: that.companyId,
+          companyId: id,
           pageSize: 6,
           pageNo: 1
         }, function(res) {

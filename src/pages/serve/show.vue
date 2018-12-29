@@ -5,13 +5,13 @@
         <div class="content-wrapper split-other">
           <div class="headcon-box hdetail-box">
             <div class="zoom-box">
-              <previewMagnify v-if="resourceInfo.img && resourceInfo.img.length" :previewImg="resourceInfo.img"></previewMagnify>
+              <previewMagnify v-if="serveInfo.img && serveInfo.img.length" :previewImg="serveInfo.img"></previewMagnify>
             </div>
             <div class="show-info reInfo-box">
-              <div class="info-tit info-tit-big">{{resourceInfo.name}}</div>
-              <div class="info-tag">服务内容：{{resourceInfo.cnt}}</div>
+              <div class="info-tit info-tit-big">{{serveInfo.name}}</div>
+              <div class="info-tag">服务内容：{{serveInfo.cnt}}</div>
               <div class="info-operate zoom-operate">
-                <collectCo></collectCo>
+                <collectCo :watchOptions="{oid: serveId, type: 3}"></collectCo>
                 <shareOut :tUrl="elurl" :tPosition="tPosition"></shareOut>
               </div>
             </div>
@@ -20,28 +20,28 @@
         <div class="content-wrapper">
           <div class="content">
             <el-row :gutter="10" class="rel-detail">
-              <el-col class="rel-item" :span="24" v-if="resourceInfo.cooperation">
+              <el-col class="rel-item" :span="24" v-if="serveInfo.cooperation">
                 <div class="rel-tit">合作备注：</div>
-                <div v-html="resourceInfo.cooperation"></div>
+                <div v-html="serveInfo.cooperation"></div>
               </el-col>
-              <el-col class="rel-item" :span="24" v-if="resourceInfo.descp">
+              <el-col class="rel-item" :span="24" v-if="serveInfo.descp">
                 <div class="rel-tit">详细介绍：</div>
-                <div v-html="resourceInfo.descp"></div>
+                <div v-html="serveInfo.descp"></div>
               </el-col>
-              <el-col class="rel-item" :span="24" v-if="resourceInfo.keywords && resourceInfo.keywords.length">
+              <el-col class="rel-item" :span="24" v-if="serveInfo.keywords && serveInfo.keywords.length">
                 <el-row class="tag-item">
-                  <el-tag v-for="sub in resourceInfo.keywords" :key="sub.index">{{sub}}</el-tag>
+                  <el-tag v-for="sub in serveInfo.keywords" :key="sub.index">{{sub}}</el-tag>
                 </el-row>
               </el-col>
             </el-row>
           </div>
         </div>
-        <div class="content-wrapper" v-if="likeResources">
+        <div class="content-wrapper" v-if="likeserves && likeserves.length">
           <div class="content-title">
             <span>您可能感兴趣的服务</span>
           </div>
-          <div class="content">
-            <baseService v-for="item in likeResources" :key="item.index" :itemSingle="item"></baseService>
+          <div class="content content-nf">
+            <baseService v-for="item in likeserves" :key="item.index" :itemSingle="item"></baseService>
           </div>
         </div>
       </div>
@@ -50,12 +50,12 @@
           <div class="right-split">
             <beyondTo :ownerId="owner.id" :ownerType="owner.type"></beyondTo>
           </div>
-          <div class="right-split" v-if="hotResources">
+          <div class="right-split" v-if="hotserves && hotserves.length">
             <div class="content-title">
               <span>热门服务</span>
             </div>
             <div class="content">
-              <a v-for="item in hotResources" :key="item.index" class="list-item" :href="'serve.html?id='+item.id" target="_blank">
+              <a v-for="item in hotserves" :key="item.index" class="list-item" :href="'serve.html?id='+item.id" target="_blank">
                 <div class="list-head" :style="{backgroundImage: 'url(' + item.img + ')'}"></div>
                 <div class="list-info">
                   <div class="list-descp">{{item.name}}</div>
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { urlParse, ImageUrl, defaultSet, strToArr } from '@/libs/util';
 
   import previewMagnify from '@/components/previewMagnify';
   import shareOut from '@/components/ShareOut';
@@ -83,22 +83,23 @@
   export default {
     data() {
       return {
-        resourceInfo: '',
+        serveInfo: '',
+        serveId: '',
         elurl: '',
         tPosition: 'top-start',
         owner: {
           id: '',
           type: ''
         },
-        hotResources: '',
-        likeResources: ''
+        hotserves: '',
+        likeserves: ''
       };
     },
     created() {
-      this.resourceId = util.urlParse('id');
+      this.serveId = urlParse('id');
       this.elurl = window.location.href;
-      this.getResourceInfo();
-      this.getLikeResources();
+      this.getserveInfo();
+      this.getLikeserves();
     },
     components: {
       previewMagnify,
@@ -108,30 +109,30 @@
       baseService
     },
     methods: {
-      getResourceInfo() {
+      getserveInfo() {
         this.$axios.getk('/ajax/ware/qo', {
-          id: this.resourceId
+          id: this.serveId
         }, (res) => {
           if (res.success) {
             var $info = res.data;
             if ($info.keywords) {
-              $info.keywords = util.strToArr($info.keywords);
+              $info.keywords = strToArr($info.keywords);
             }
             if ($info.category === '1') {
               this.owner = {
                 id: $info.owner,
                 type: $info.category
               };
-              this.getHotResources($info.category, $info.owner)
+              this.getHotserves($info.category, $info.owner)
             }
-            this.resourceInfo = $info;
+            this.serveInfo = $info;
           };
         });
       },
-      getHotResources(catagory, owner) {
+      getHotserves(catagory, owner) {
         var that = this
         that.$axios.getk('/ajax/ware/byOwnerWithPageViews', {
-          id: that.resourceId,
+          id: that.serveId,
           category: catagory,
           owner: owner,
           rows: 5
@@ -142,20 +143,20 @@
               var oLeng = $data.length < 5 ? $data.length : 5
               for (var i = 0; i < oLeng; i++) {
                 if ($data[i].images) {
-                  $data[i].img = util.ImageUrl('ware/' + util.strToArr($data[i].images))
+                  $data[i].img = ImageUrl('ware/' + strToArr($data[i].images))
                 } else {
-                  $data[i].img = util.defaultSet.img.serve
+                  $data[i].img = defaultSet.img.serve
                 }
               }
             }
-            that.hotResources = $data
+            that.hotserves = $data
           }
         })
       },
-      getLikeResources() {
+      getLikeserves() {
         var that = this
         that.$axios.getk('/ajax/ware/ralateWare', {
-          id: that.resourceId,
+          id: that.serveId,
           rows: 5
         }, function(res) {
           if (res.success && res.data) {
@@ -167,7 +168,7 @@
             that.$axios.getk('/ajax/ware/qm', {
               id: arr
             }, function(data) {
-              that.likeResources = data.data
+              that.likeserves = data.data
             })
           }
         })

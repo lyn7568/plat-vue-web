@@ -29,13 +29,13 @@
 	import platNews from './news';
 
 	export default {
-    props: {
-      plat: {
-        type: Object
-      }
+    mounted() {
+      sessionStorage.setItem('isSelect', '1')
     },
     data() {
       return {
+        /* eslint-disable no-undef */
+        plat: PLAT.info,
         activeName: '1',
         conCatalog: [
           {

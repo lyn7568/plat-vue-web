@@ -1,6 +1,6 @@
 import http from '@/libs/axios'
 import Cookies from 'js-cookie'
-import util from '@/libs/util'
+import { defaultSet } from '@/libs/util';
 
 const user = {
   state: {
@@ -20,7 +20,7 @@ const user = {
       state.bindCompany = bindCompany
     },
     SET_HEADPHOTO: (state, headPhoto) => {
-      state.headPhoto = headPhoto || util.defaultSet.img.expert;
+      state.headPhoto = headPhoto || defaultSet.img.expert;
     }
   },
 
@@ -36,11 +36,15 @@ const user = {
             commit('SET_HEADPHOTO', dataS.head);
             commit('SET_BINDCOMPANY', dataS.bindCompany);
             Cookies.set('userid', dataS.id);
+            Cookies.set('uaccount', dataS.account);
+            Cookies.set('bcid', dataS.bindCompany);
           } else {
             commit('SET_USERID', '')
             commit('SET_ACCOUNT', '')
             commit('SET_HEADPHOTO', '');
             Cookies.remove('userid')
+            Cookies.remove('uaccount');
+            Cookies.remove('bcid')
           }
           resolve(response)
         }).catch(error => {
@@ -58,6 +62,8 @@ const user = {
           commit('SET_BINDCOMPANY', '')
           commit('SET_HEADPHOTO', '');
           Cookies.remove('userid')
+          Cookies.remove('uaccount');
+          Cookies.remove('bcid')
           resolve()
         }).catch(error => {
           reject(error)
@@ -73,6 +79,8 @@ const user = {
         commit('SET_BINDCOMPANY', '')
         commit('SET_HEADPHOTO', '');
         Cookies.remove('userid')
+        Cookies.remove('uaccount');
+        Cookies.remove('bcid')
         resolve()
       })
     }

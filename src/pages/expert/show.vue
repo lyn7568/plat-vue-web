@@ -12,9 +12,9 @@
               <shareOut :tUrl="elurl"></shareOut>
             </div>
           </div>
-          <el-row class="goSpan">
-            <el-button type="primary" icon="el-icon-plus">关注</el-button>
-            <el-button type="primary">联系</el-button>
+          <el-row class="goSpan" :gutter="10">
+            <el-col :span="12"><collectCo :watchOptions="{oid: expertId, type: 1}"></collectCo></el-col>
+            <!-- <el-col :span="12"><el-button type="primary">联系</el-button></el-col> -->
           </el-row>
         </div>
       </div>
@@ -23,14 +23,14 @@
       <div class="wrapper-left left-main">
         <el-tabs v-model="activeName">
           <el-tab-pane label="主页" name="first">
-            <div class="content-wrapper split-other" v-if="platServices.length">
+            <div class="content-wrapper split-other" v-if="platThreeServices && platThreeServices.length">
               <div class="inner-wrapper">
                 <div class="content-title">
                   <span>可提供服务</span>
                   <span class="content-more" @click="activeName='second'">更多</span>
                 </div>
-                <div class="content">
-                  <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
+                <div class="content content-nf">
+                  <baseService v-if="platThreeServices.length" v-for="item in platThreeServices" :key="item.index" :itemSingle="item"></baseService>
                 </div>
               </div>
             </div>
@@ -73,13 +73,13 @@
                   </el-row>
                 </div>
               </div>
-              <div class="inner-wrapper" v-if="platPatents.lnegth">
+              <div class="inner-wrapper" v-if="platOnePatents && platOnePatents.lnegth">
                 <div class="content-title">
                   <span>专利</span>
                   <span class="content-more" @click="activeName='third'">更多</span>
                 </div>
                 <div class="content">
-                  <baseResult v-if="platPatents.length" v-for="item in platPatents" :key="item.index" :itemSingle="item"></baseResult>
+                  <baseResult v-if="platOnePatents.length" v-for="item in platOnePatents" :key="item.index" :itemSingle="item"></baseResult>
                 </div>
               </div>
             </div>
@@ -155,7 +155,7 @@
         </el-tabs>
       </div>
       <div class="wrapper-right">
-        <div class="content-wrapper" v-if="coopExperts">
+        <div class="content-wrapper" v-if="coopExperts && coopExperts.length">
           <div class="content-title">
             <span>合作专家</span>
           </div>
@@ -170,7 +170,7 @@
             </a>
           </div>
         </div>
-        <div class="content-wrapper" v-if="expContents">
+        <div class="content-wrapper" v-if="expContents && expContents.length">
           <div class="content-title">
             <span>相关文章</span>
           </div>
@@ -182,7 +182,7 @@
             </div>
           </div>
         </div>
-        <div class="content-wrapper" v-if="likeExperts">
+        <div class="content-wrapper" v-if="likeExperts && likeExperts.length">
           <div class="content-title">
             <span>您可能感兴趣的专家</span>
           </div>
@@ -203,10 +203,11 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { urlParse, ImageUrl, defaultSet, strToArr, formatOfft, autho } from '@/libs/util';
   import queryBase from '@/libs/queryBase';
 
   import shareOut from '@/components/ShareOut';
+  import collectCo from '@/components/CollectCo';
   import baseService from '@/components/subTemplate/BaseService';
   import baseResult from '@/components/subTemplate/BaseResult';
 
@@ -216,6 +217,7 @@
         activeIndex: '1',
         activeName: 'first',
         expertInfo: '',
+        expertId: '',
         elurl: '',
         platServices: [],
         serCount: 0,
@@ -243,7 +245,7 @@
       };
     },
     created() {
-      this.expertId = util.urlParse('id');
+      this.expertId = urlParse('id');
       this.elurl = window.location.href;
       this.getExpertInfo();
       this.getExpertWave();
@@ -253,8 +255,35 @@
       this.getLikeExperts();
       this.getCoopExperts();
     },
+    computed: {
+      platThreeServices() {
+        var pt = this.platServices
+        var str = []
+        if (pt.length > 3) {
+          for (let i = 0; i < 3; ++i) {
+            str[i] = pt[i]
+          }
+        } else {
+          str = pt
+        }
+        return str
+      },
+      platOnePatents() {
+        var pt = this.platPatents
+        var str = []
+        if (pt.length > 1) {
+          for (let i = 0; i < 1; ++i) {
+            str[i] = pt[i]
+          }
+        } else {
+          str = pt
+        }
+        return str
+      }
+    },
     components: {
       shareOut,
+      collectCo,
       baseService,
       baseResult
     },
@@ -264,17 +293,17 @@
         }, (res) => {
           if (res.success) {
             var $info = res.data;
-            $info.offt = util.formatOfft($info);
+            $info.offt = formatOfft($info);
             if ($info.subject) {
-              $info.subject = util.strToArr($info.subject);
+              $info.subject = strToArr($info.subject);
             }
             if ($info.industry) {
-              $info.industry = util.strToArr($info.industry);
+              $info.industry = strToArr($info.industry);
             }
             if ($info.hasHeadImage) {
-              $info.img = util.ImageUrl(('head/' + $info.id + '_l.jpg'), true)
+              $info.img = ImageUrl(('head/' + $info.id + '_l.jpg'), true)
             } else {
-              $info.img = util.defaultSet.img.expert
+              $info.img = defaultSet.img.expert
             }
             $info.resAreas = [];
             if ($info.researchAreas && $info.researchAreas.length > 0) {
@@ -299,14 +328,17 @@
               this.dataO.serModifyTime = $info[$info.length - 1].modifyTime;
               this.platServices = this.isFormSearch ? this.platServices.concat($info) : $info;
               this.isFormSearch = true;
+              if ($info.length < this.rows) {
+                this.loadingModalShow = false;
+                this.isFormSearch = false;
+              };
+            } else {
+              this.loadingModalShow = false;
+              this.isFormSearch = false;
             };
             var liLen = this.platServices.length;
             if ($info.length === 0 && liLen === 0) {
               this.ifDefault = true;
-            };
-            if ($info.length < this.rows) {
-              this.loadingModalShow = false;
-              this.isFormSearch = false;
             };
           };
         });
@@ -330,15 +362,19 @@
               this.dataO.patId = $info[$info.length - 1].id;
               this.platPatents = this.isFormSearch2 ? this.platPatents.concat($info) : $info;
               this.isFormSearch2 = true;
+              if ($info.length < this.rows) {
+                this.loadingModalShow2 = false;
+                this.isFormSearch2 = false;
+              };
+            } else {
+              this.loadingModalShow2 = false;
+              this.isFormSearch2 = false;
             };
             var liLen = this.platPatents.length;
             if ($info.length === 0 && liLen === 0) {
               this.ifDefault2 = true;
             };
-            if ($info.length < this.rows) {
-              this.loadingModalShow2 = false;
-              this.isFormSearch2 = false;
-            };
+            
           };
         });
       },
@@ -372,7 +408,7 @@
         });
       },
       headIcon(item) {
-        return util.autho(item.authType, item.orgAuth, item.authStatus);
+        return autho(item.authType, item.orgAuth, item.authStatus);
       },
       getExpContent() {
         var that = this
@@ -414,9 +450,9 @@
                       str.name = value.name
                       str.title = value.title
                       if (str.hasHeadImage) {
-                        str.img = util.ImageUrl(('head/' + value.id + '_l.jpg'), true)
+                        str.img = ImageUrl(('head/' + value.id + '_l.jpg'), true)
                       } else {
-                        str.img = util.defaultSet.img.expert
+                        str.img = defaultSet.img.expert
                       }
                       that.$forceUpdate()
                     }
@@ -443,9 +479,9 @@
                       str.name = value.name
                       str.title = value.title
                       if (str.hasHeadImage) {
-                        str.img = util.ImageUrl(('head/' + value.id + '_l.jpg'), true)
+                        str.img = ImageUrl(('head/' + value.id + '_l.jpg'), true)
                       } else {
-                        str.img = util.defaultSet.img.expert
+                        str.img = defaultSet.img.expert
                       }
                       that.$forceUpdate()
                     }

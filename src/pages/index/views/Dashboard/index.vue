@@ -20,7 +20,7 @@
         <!-- <div class="video-mask" @click="showVideo">
           <img src="./img/video.png" width="80">
         </div> -->
-        <img :src="plat.platimgurl" width="800" height="280">
+        <img :src="platimgurl" width="800" height="280">
       </div>
       <div class="wrapper-right content-wrapper">
         <h3 class="info-main">
@@ -77,7 +77,7 @@
       <div class="wrapper-right content-wrapper about-us">
         <div class="content-title">
           <span>关于我们</span>
-          <router-link class="content-more" to="/about">更多</router-link>
+          <router-link class="content-more" to="about">更多</router-link>
         </div>
         <div class="content">{{aboutUs}}</div>
       </div>
@@ -95,7 +95,7 @@
           </div>
           <div class="content-more">
             <!-- <router-link class="item-more" v-for="item in 4" :key="item" to="">咨询服务</router-link> -->
-            <router-link class="item-more" to="/findServe">更多</router-link>
+            <router-link class="item-more" to="serve">更多</router-link>
           </div>
         </div>
         <div class="swiper-container" ref="findService">
@@ -134,12 +134,12 @@
         </div>
         <div class="swiper-container" ref="findResource">
           <div class="swiper-wrapper">
-            <a class="swiper-slide" v-for="item in platResources" :key="item.index" :href="'resource.html?id='+item.id" target="_blank">
+            <a class="swiper-slide" v-for="item in platResources" :key="item.index" :href="'resource.html?id='+item.resourceId" target="_blank">
               <div class="item-block" >
                 <div class="item-pic" :style="{backgroundImage: 'url(' + item.img + ')'}"></div>
                 <div class="item-text">
-                  <p class="title">{{item.name}}</p>
-                  <p class="desc">{{item.cnt}}</p>
+                  <p class="title">{{item.resourceName}}</p>
+                  <p class="desc">{{item.supportedServices}}</p>
                   <p class="owner">{{item.ownerName}}</p>
                 </div>
               </div>
@@ -175,8 +175,7 @@
 </template>
 
 <script>
-  import Cookies from 'js-cookie';
-  import util from '@/libs/util';
+  import { commenTime, defaultSet, ImageUrl, strToArr } from '@/libs/util';
   import queryBase from '@/libs/queryBase';
 
   import Swiper from 'swiper';
@@ -188,13 +187,10 @@
   // import demandIssueLogin from '../form-views/DemandIssueLogin';
 
   export default {
-    props: {
-      plat: {
-        type: Object
-      }
-    },
     data() {
       return {
+        /* eslint-disable no-undef */
+        platimgurl: PLAT.info.platimgurl,
         activeName: '1',
         conCatalog: [
           {
@@ -214,7 +210,6 @@
             tit: '通知公告'
           }
         ],
-        platId: '',
         rows: 20,
         orgTrends: '',
         paltNews: '',
@@ -229,7 +224,6 @@
       };
     },
     created() {
-       this.platId = Cookies.get('platId');
        this.getAboutUs();
        this.queryPaltNews();
        this.queryResidentComps();
@@ -237,6 +231,7 @@
        this.queryPlatWares();
     },
     mounted() {
+      sessionStorage.setItem('isSelect', '0')
       this.latestCmpSwiper = new Swiper(this.$refs.latestCmp, {
         slidesPerView: 3.6,
         spaceBetween: 20,
@@ -306,7 +301,7 @@
             var $info = res.data.data;
             for (let i = 0; i < $info.length; ++i) {
               if ($info[i].modifyTime) {
-                $info[i].modifyTime = util.commenTime($info[i].modifyTime, true)
+                $info[i].modifyTime = commenTime($info[i].modifyTime, true)
               }
             }
             that.paltNews = $info;
@@ -321,8 +316,8 @@
           if (res.success) {
             var $info = res.data.data;
             for (let i = 0; i < $info.length; ++i) {
-              if ($info[i].logo === '') {
-                $info[i].logo = util.defaultSet.img.org
+              if (!$info[i].logo) {
+                $info[i].logo = defaultSet.img.org
               }
             }
             this.residentComps = $info;
@@ -330,18 +325,17 @@
         });
       },
       queryPlatResources() {
-        this.$axios.getk('/ajax/platform/info/resources', {
-          pid: this.platId,
+        this.$axios.getk('/ajax/resource/index/search', {
           rows: this.rows
         }, (res) => {
           var _this = this;
           if (res.success) {
             var $info = res.data;
             for (let i = 0; i < $info.length; i++) {
-              if ($info[i].images) {
-                $info[i].img = util.ImageUrl('resource/' + $info[i].images.split(',')[0])
+              if ($info[i].images.length > 0) {
+                $info[i].img = ImageUrl('resource/' + $info[i].images[0].imageSrc)
               } else {
-                $info[i].img = util.defaultSet.img.resource
+                $info[i].img = defaultSet.img.resource
               }
               (function(m) {
                 _this.ownerByond($info[m]);
@@ -352,8 +346,7 @@
         });
       },
       queryPlatWares() {
-        this.$axios.getk('/ajax/platform/info/wares', {
-          pid: this.platId,
+        this.$axios.getk('/ajax/ware/index/search', {
           rows: this.rows
         }, (res) => {
           var _this = this;
@@ -361,9 +354,9 @@
             var $info = res.data;
             for (let i = 0; i < $info.length; i++) {
               if ($info[i].images) {
-                $info[i].img = util.ImageUrl('ware' + $info.images.split(',')[0])
+                $info[i].img = ImageUrl('ware' + strToArr($info[i].images)[0])
               } else {
-                $info[i].img = util.defaultSet.img.service
+                $info[i].img = defaultSet.img.service
               }
               (function(m) {
                 _this.ownerByond($info[m]);
@@ -403,15 +396,16 @@
           });
         }
       },
-      ownerByond(item, flag) {
+      ownerByond(item) {
         var _this = this;
         var type, id;
-        if (flag) {
-          type = item.articleType;
-          id = item.ownerId;
-        } else {
-          type = item.otype;
-          id = item.oid;
+        if (item.resourceType) {
+          type = item.resourceType;
+          id = item.professorId || item.orgId;
+        }
+        if (item.category) {
+          type = item.category;
+          id = item.owner;
         };
         if (type === '1') {
           queryBase.getProfessor(id, function(sc, value) {

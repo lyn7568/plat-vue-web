@@ -20,6 +20,9 @@
       TheHeader,
       TheFooter,
       showTemplate
+    },
+    mounted() {
+      sessionStorage.setItem('isSelect', 'serve')
     }
   };
 </script>

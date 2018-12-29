@@ -7,11 +7,9 @@
             <div class="headcon-box detail-box">
               <div class="show-info">
                 <div class="info-tit info-tit-big">{{contentInfo.title}}</div>
-                <div class="info-operate zoom-operate">
-                  <ul class="list-tag">
-                    <li>{{contentInfo.modifyTime}}</li>
-                    <li>作者/来源：{{contentInfo.source}}</li>
-                  </ul>
+                <div class="info-tag">
+                  <span>{{contentInfo.modifyTime}}</span>
+                  <span>作者/来源：{{contentInfo.source}}</span>
                 </div>
               </div>
             </div>
@@ -19,7 +17,7 @@
           <div class="inner-wrapper">
             <div class="content" v-html="contentInfo.cnt"></div>
           </div>
-          <div class="inner-wrapper" v-if="platExperts">
+          <div class="inner-wrapper" v-if="platExperts && platExperts.length">
             <div class="content-title">
               <span>相关专家</span>
             </div>
@@ -27,7 +25,7 @@
               <baseExpert v-for="item in platExperts" :key="item.index" :itemSingle="item"></baseExpert>
             </div>
           </div>
-          <div class="inner-wrapper" v-if="platOrgs">
+          <div class="inner-wrapper" v-if="platOrgs && platOrgs.length">
             <div class="content-title">
               <span>相关机构</span>
             </div>
@@ -35,7 +33,7 @@
               <baseOrg v-for="item in platOrgs" :key="item.index" :itemSingle="item"></baseOrg>
             </div>
           </div>
-          <div class="inner-wrapper" v-if="platCompanys">
+          <div class="inner-wrapper" v-if="platCompanys && platCompanys.length">
             <div class="content-title">
               <span>相关企业</span>
             </div>
@@ -47,7 +45,7 @@
       </div>
       <div class="wrapper-right">
         <div class="wrapper-right">
-          <div class="block-wrapper" v-if="plat.adinfo.length" v-for="item in plat.adinfo" :key="item.index">
+          <div class="block-wrapper" v-if="adinfo.length" v-for="item in adinfo" :key="item.index">
             <a class="ad-wrapper" :href="item.adUrl" target="_blank">
               <img :src="item.imgUrl" width="280" height="200">
             </a>
@@ -60,20 +58,17 @@
 </template>
 
 <script>
-  import util from '@/libs/util';
+  import { urlParse, commenTime } from '@/libs/util';
 
   import baseExpert from '@/components/subTemplate/BaseExpert';
   import baseCompany from '@/components/subTemplate/BaseCompany';
   import baseOrg from '@/components/subTemplate/BaseOrg';
 
   export default {
-    props: {
-      plat: {
-        type: Object
-      }
-    },
     data() {
       return {
+        /* eslint-disable no-undef */
+        adinfo: PLAT.info.adinfo,
         contentInfo: '',
         platExperts: '',
         platOrgs: '',
@@ -81,7 +76,7 @@
       };
     },
     created() {
-      this.contentId = util.urlParse('id');
+      this.contentId = urlParse('id');
       this.getContentInfo();
       this.getPlatExperts();
       this.getPlatOrgs();
@@ -100,7 +95,7 @@
           if (res.success) {
             var $info = res.data;
             if ($info.modifyTime) {
-              $info.modifyTime = util.commenTime($info.modifyTime, true)
+              $info.modifyTime = commenTime($info.modifyTime, true)
             }
             this.contentInfo = $info;
           };
@@ -139,3 +134,14 @@
     }
   };
 </script>
+
+<style lang="scss" scoped>
+  .info-tag{
+    span{
+      display: inline-block;
+      margin-right:15px;
+      color: #999;
+      font-size: 14px;
+    }
+  }
+</style>

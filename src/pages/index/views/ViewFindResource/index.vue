@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="wrapper-right">
-      <div class="block-wrapper" v-if="plat.adinfo.length" v-for="item in plat.adinfo" :key="item.index">
+      <div class="block-wrapper" v-if="adinfo.length" v-for="item in adinfo" :key="item.index">
         <a class="ad-wrapper" :href="item.adUrl" target="_blank">
           <img :src="item.imgUrl" width="280" height="200">
         </a>
@@ -35,24 +35,20 @@
 </template>
 
 <script>
-  import Cookies from 'js-cookie';
-  import util from '@/libs/util';
+  import { urlParse } from '@/libs/util';
 
   import baseResource from '@/components/subTemplate/BaseResource';
 
   export default {
-    props: {
-      plat: {
-        type: Object
-      }
-    },
     data() {
       return {
-        platId: '',
+        /* eslint-disable no-undef */
+        adinfo: PLAT.info.adinfo,
         rows: 20,
         dataO: {
-          bShareId: '',
-          bTime: ''
+          resSortNum: '',
+          resTime: '',
+          resId: ''
         },
         keyVal: '',
         platResources: [],
@@ -67,34 +63,37 @@
       baseResource
     },
     created() {
-      this.platId = Cookies.get('platId');
-      this.keyVal = util.urlParse('key');
+      this.keyVal = urlParse('key');
       this.searchResource();
     },
     methods: {
       searchResource() {
-        this.$axios.getk('/ajax/platform/info/resources', {
+        this.$axios.getk('/ajax/resource/index/search', {
           key: this.keyVal,
-          pid: this.platId,
-          shareId: this.dataO.bShareId,
-          time: this.dataO.bTime,
+          sortNum: this.dataO.resSortNum,
+          publishTime: this.dataO.resTime,
+          id: this.dataO.resId,
           rows: this.rows
         }, (res) => {
           if (res.success) {
             var $info = res.data;
             if ($info.length > 0) {
-              this.dataO.bShareId = $info[$info.length - 1].shareId;
-              this.dataO.bTime = $info[$info.length - 1].time;
+              this.dataO.resSortNum = $info[$info.length - 1].sortNum;
+              this.dataO.resTime = $info[$info.length - 1].publishTime;
+              this.dataO.resId = $info[$info.length - 1].resourceId;
               this.platResources = this.isFormSearch ? this.platResources.concat($info) : $info;
               this.isFormSearch = true;
+              if ($info.length < this.rows) {
+                this.loadingModalShow = false;
+                this.isFormSearch = false;
+              };
+            } else {
+              this.loadingModalShow = false;
+              this.isFormSearch = false;
             };
             var liLen = this.platResources.length;
             if ($info.length === 0 && liLen === 0) {
               this.ifDefault = true;
-            };
-            if ($info.length < this.rows) {
-              this.loadingModalShow = false;
-              this.isFormSearch = false;
             };
           };
         });
@@ -109,8 +108,9 @@
       },
       keywordSearch() {
         if (this.keyVal) {
-          this.dataO.bShareId = '';
-          this.dataO.bTime = '';
+          this.dataO.resSortNum = '';
+          this.dataO.resTime = '';
+          this.dataO.resId = '';
           this.isFormSearch = true;
           this.loadingModalShow = false;
           this.loadingComplete = true;
@@ -130,43 +130,6 @@
   };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-  .tab-wrapper{
-    display:flex;
-    align-items:baseline;
-    padding:15px 20px;
-    color: $commonFont;
-    .tab-lable{
-      width:100px;
-    }
-    .tab-sort{
-      display:flex;
-      flex-wrap:wrap;
-      margin-right:-10px;
-      margin-bottom:-10px;
-      li{
-        display:inline-block;
-        margin-right:10px;
-        margin-bottom:10px;
-        padding:2px 10px;
-        border: 1px solid $borderColor;
-        @include border-radius(10px);
-        cursor: pointer;
-        &.active{
-          color: $mainColor;
-        }
-      }
-    }
-  }
-
-  .tab-contain{
-    margin-top:20px;
-    background:#fff;
-  }
-  .el-input-group__append{
-    background:$mainColor;
-    color:#fff;
-    padding:10px 40px;
-    border-color:$mainColor;
-  }
+<style scoped>
+ @import './css.scss';
 </style>
