@@ -429,6 +429,11 @@
       expItem
       // demandIssue,
       // demandIssueLogin
+    },
+    beforeDestroy() {
+      this.latestCmpSwiper.destroy()
+      this.findServiceSwiper.destroy()
+      this.findResourceSwiper.destroy()
     }
   };
 </script>

@@ -374,7 +374,6 @@
             if ($info.length === 0 && liLen === 0) {
               this.ifDefault2 = true;
             };
-            
           };
         });
       },

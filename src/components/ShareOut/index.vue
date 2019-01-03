@@ -28,6 +28,11 @@
         default: 'bottom-start'
       }
     },
+    data() {
+      return {
+        qrcode: ''
+      }
+    },
     mounted() {
       this.$nextTick(function() {
         this._makeCode();
@@ -35,13 +40,17 @@
     },
     methods: {
       _makeCode() {
-        let qrcode = new QRCode('qrcode', {
+        let qrcode = this.qrcode
+        qrcode = new QRCode('qrcode', {
           width: 120,
           height: 120
         });
         qrcode.clear();
         qrcode.makeCode(this.tUrl);
       }
+    },
+    beforeDestroy() {
+      this.qrcode.clear()
     }
   };
 </script>
