@@ -47,7 +47,6 @@
 
 <script>
   import { ekexiuUrl } from '@/libs/util';
-  import Cookies from 'js-cookie';
   import { MessageBox } from 'element-ui'
 
   export default {
@@ -100,8 +99,8 @@
     mounted () {
       /* eslint-disable no-undef */
       this.plat = PLAT.info;
-      this.account = Cookies.get('uaccount');
-      this.bindCompany = Cookies.get('bcid');
+      this.account = localStorage.getItem('uaccount');
+      this.bindCompany = localStorage.getItem('bcid');
     },
     methods: {
       activeCl(url) {
@@ -119,9 +118,9 @@
         }).then(() => {
           that.$axios.get('/ajax/sys/logout', {}, function(res) {
             if (res.success) {
-              Cookies.remove('userid')
-              Cookies.remove('uaccount');
-              Cookies.remove('bcid')
+              localStorage.removeItem('userid')
+              localStorage.removeItem('uaccount');
+              localStorage.removeItem('bcid')
               location.href = '/#/loginPlat'
             }
           })
@@ -132,68 +131,66 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .el-menu-item,.el-menu--horizontal,.el-menu--horizontal .el-menu-item{
-    border:none;
-  }
-  .header{
-    .top-wrapper{
-      width: 100%;
-      height: 30px;
-      line-height: 30px;
-      @include bg-grey-color();
-      .contain-wrapper{
-        font-size:14px;
-        overflow:hidden;
-        .marLeft{
-          display:inline-block;
-          margin-left:20px;
-          min-width:62px;
-          &.marLeft_1{
-            min-width:0;
-          }
-        }
-        .wrapper-left{
-          float:left;
-        }
-        .wrapper-right{
-          float:right;
-          .el-dropdown{
-            color:#c4c3c3;
-            margin-left:20px;
-          }
-          .el-menu-item,.el-submenu__title{
-            padding:0 10px;
-            margin-left:20px;
-            line-height:30px;
-            height:30px;
-          }
-        }
-      }
-    }
-    .banner-wrapper{
-      width:100%;
-      height:200px;
-      background-size:cover;
-      background-position:center;
-    }
-    .nav-wrapper{
-      @include bg-blue-color();
-      .nav-menu{
-        display: flex;
-        a{
-          display: inline-block;
-          padding:0 25px;
-          height:40px;
-          line-height:40px;
-          text-align: center;
-          cursor: pointer;
-          color: #fff;
-        }
-        .active{
-          @include bg-blue-active-color();
-        }
-      }
-    }
-  }
-
+.el-menu-item,.el-menu--horizontal,.el-menu--horizontal .el-menu-item{
+  border:none;
+}
+.header .top-wrapper{
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  @include bg-grey-color();
+}
+.header .top-wrapper .contain-wrapper{
+  font-size:14px;
+  overflow:hidden;
+}
+.header .top-wrapper .contain-wrapper .marLeft{
+  display:inline-block;
+  margin-left:20px;
+  min-width:62px;
+}
+.header .top-wrapper .contain-wrapper .marLeft.marLeft_1{
+  min-width:0;
+}
+.header .top-wrapper .contain-wrapper .wrapper-left{
+  float:left;
+}
+.header .top-wrapper .contain-wrapper .wrapper-right{
+  float:right;
+}
+.header .top-wrapper .contain-wrapper .wrapper-right .el-dropdown{
+  color:#c4c3c3;
+  margin-left:20px;
+}
+.header .top-wrapper .contain-wrapper .wrapper-right .el-menu-item,
+.header .top-wrapper .contain-wrapper .wrapper-right .el-submenu__title{
+  padding:0 10px;
+  margin-left:20px;
+  line-height:30px;
+  height:30px;
+}
+.header .banner-wrapper{
+  width:100%;
+  height:200px;
+  background-size:cover;
+  background-position:center;
+}
+.header .nav-wrapper{
+  @include bg-blue-color();
+}
+.header .nav-wrapper .nav-menu{
+  display: flex;
+}
+.header .nav-wrapper .nav-menu a{
+  display: inline-block;
+  padding:0 25px;
+  height:40px;
+  line-height:40px;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+}
+.header .nav-wrapper .nav-menu .active{
+  @include bg-blue-active-color();
+}
 </style>

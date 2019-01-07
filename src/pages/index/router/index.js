@@ -1,8 +1,4 @@
-import Vue from 'vue';
-import Router from 'vue-router';
 import Layout from '../views/layout';
-
-Vue.use(Router);
 
 const constantRouterMap = [
   { path: '/loginPlat', component: (resolve) => require(['../views/logforms/loginPlat.vue'], resolve) },
@@ -126,7 +122,7 @@ const constantRouterMap = [
 ];
 
 // 实例化vue的时候只挂载constantRouter
-export default new Router({
+export default new VueRouter({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap

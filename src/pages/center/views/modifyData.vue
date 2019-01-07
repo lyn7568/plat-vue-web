@@ -54,7 +54,6 @@
 <script>
   import uploadFile from '@/components/uploadFile/index';
   import cityPicker from '@/components/CityPicker'
-  import Cookies from 'js-cookie'
   export default {
     data() {
       return {
@@ -93,7 +92,7 @@
       cityPicker
     },
     created() {
-      let id = Cookies.get('userid');
+      let id = localStorage.getItem('userid');
       this.$axios.get('/ajax/sys/user/get', {id}, res => { // 拉取user_info
         if (res.success && res.data) {
           const response = res.data;

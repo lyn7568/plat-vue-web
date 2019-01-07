@@ -3,8 +3,6 @@
  * professer, organization
  */
 /* eslint-disable one-var */
-import Vue from 'vue'
-
 var objCache = {
   professor: {},
   organization: {},

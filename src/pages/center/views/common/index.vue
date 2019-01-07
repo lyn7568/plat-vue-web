@@ -20,7 +20,6 @@
 
 <script>
   import Sidebar from './Sidebar';
-  import { mapGetters } from 'vuex';
   export default {
     computed: {
       ...mapGetters([
@@ -47,57 +46,57 @@
   };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
-  .main-content {
-    margin: 20px 0;
-    min-height: 500px;
-    .boxRight {
-      padding:10px 20px;
-      float: left;
-      width: 880px;
-      margin-left: 20px;
-      background: #ffffff;
-      box-sizing: border-box;
-    }
-    .boxLeft {
-      float: left;
-      overflow: hidden;
-      width: 200px;
-      .headPhoto {
-        height: 146px;
-        background: #ffffff;
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        .userInfo {
-          text-align: center;
-          color: #606266;
-          p {
-            margin-top: 10px;
-          }
-          .img-div {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin: auto;
-            background-size: cover;
-          }
-        }
-      }
-      .el-menu {
-        border:none;
-      }
-      .exit-menu-item{
-        padding-left: 20px;
-        background: #ffffff;
-        border-top: 10px solid #f4f6f8;
-        box-sizing: content-box;
-        height: 56px;
-        line-height: 56px;
-        font-size: 14px;
-        cursor: pointer;
-      }
-    }
-  }
+<style scoped>
+.main-content{
+  margin: 20px 0;
+  min-height: 500px;
+}
+.main-content .boxRight {
+  padding:10px 20px;
+  float: left;
+  width: 880px;
+  margin-left: 20px;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+.main-content .boxLeft {
+    float: left;
+    overflow: hidden;
+    width: 200px;
+}
+.main-content .boxLeft .headPhoto {
+  height: 146px;
+  background: #ffffff;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main-content .boxLeft .headPhoto .userInfo {
+  text-align: center;
+  color: #606266;
+}
+.main-content .boxLeft .headPhoto .userInfo p {
+  margin-top: 10px;
+}
+.main-content .boxLeft .headPhoto .userInfo .img-div {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: auto;
+  background-size: cover;
+}
+.main-content .boxLeft .el-menu {
+  border:none;
+}
+.main-content .boxLeft .exit-menu-item{
+  padding-left: 20px;
+  background: #ffffff;
+  border-top: 10px solid #f4f6f8;
+  box-sizing: content-box;
+  height: 56px;
+  line-height: 56px;
+  font-size: 14px;
+  cursor: pointer;
+}
 </style>

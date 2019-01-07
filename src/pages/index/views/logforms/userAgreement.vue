@@ -195,37 +195,36 @@
   </div>
 </template>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style scoped>
   .protocolBox {
     font-size: 14px;
     margin-bottom: 15px;
-    color: $mainFont;
-    .introduction {
-      line-height: 25px;
-      margin: 10px;
-      text-indent: 2em;
-    }
-    .listDiscussion div {
-      margin-bottom: 10px;
-      .proEight {
-        margin: 10px 0 0 10px;
-        line-height: 25px;
-      }
-      h2 {
-        font-size: 14px;
-        font-weight: 700;
-        span {
-          margin-left: 10px;
-        }
-      }
-      ul {
-        margin: 10px 0 0 10px;
-        line-height: 25px;
-        li
-          dl {
-            margin: 0 0 0 15px;
-          }
-      }
-    }
+    color: #303133;
+  }
+  .protocolBox .introduction {
+    line-height: 25px;
+    margin: 10px;
+    text-indent: 2em;
+  }
+  .protocolBox .listDiscussion div {
+    margin-bottom: 10px;
+  }
+  .protocolBox .listDiscussion div .proEight {
+    margin: 10px 0 0 10px;
+    line-height: 25px;
+  }
+  .protocolBox .listDiscussion div h2 {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .protocolBox .listDiscussion div h2 span {
+    margin-left: 10px;
+  }
+  .protocolBox .listDiscussion div ul {
+    margin: 10px 0 0 10px;
+    line-height: 25px;
+  }
+  .protocolBox .listDiscussion div ul li dl {
+    margin: 0 0 0 15px;
   }
 </style>

@@ -39,7 +39,7 @@
   };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
   .loadSty{
     display:flex;
     justify-content: center;

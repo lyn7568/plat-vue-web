@@ -37,7 +37,7 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
   .ev_content{
     width: 100%;
     height: 42%;

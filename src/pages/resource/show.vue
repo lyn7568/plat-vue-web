@@ -5,7 +5,7 @@
         <div class="content-wrapper split-other">
           <div class="headcon-box hdetail-box">
             <div class="zoom-box">
-              <previewMagnify v-if="resourceInfo.img && resourceInfo.img.length" :previewImg="resourceInfo.img"></previewMagnify>
+              <!-- <previewMagnify v-if="resourceInfo.img && resourceInfo.img.length" :previewImg="resourceInfo.img"></previewMagnify> -->
             </div>
             <div class="show-info reInfo-box">
               <div class="info-tit info-tit-big">{{resourceInfo.resourceName}}</div>
@@ -85,7 +85,7 @@
 <script>
   import { urlParse, ImageUrl, defaultSet, strToArr } from '@/libs/util';
 
-  import previewMagnify from '@/components/previewMagnify';
+  // import previewMagnify from '@/components/previewMagnify';
   import shareOut from '@/components/ShareOut';
   import collectCo from '@/components/CollectCo';
   import beyondTo from '@/components/BeyondTo';
@@ -114,7 +114,7 @@
       this.getLikeResources();
     },
     components: {
-      previewMagnify,
+      // previewMagnify,
       shareOut,
       collectCo,
       beyondTo,

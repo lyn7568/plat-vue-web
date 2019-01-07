@@ -28,7 +28,7 @@
     }
   };
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
 .navbar{
   height: 50px;
   line-height: 50px;
@@ -38,17 +38,17 @@
   overflow:hidden;
   margin:-20px 0;
   border-bottom: none;
-  .hamburger-container{
-    line-height: 58px;
-    height: 50px;
-    float: left;
-    padding: 0 10px;
-  }
-  .tag-breadcrumb{
-    float:left;
-    font-size: 14px;
-    line-height: 50px;
-    margin-left: -10px;
-  }
+}
+.navbar .hamburger-container{
+  line-height: 58px;
+  height: 50px;
+  float: left;
+  padding: 0 10px;
+}
+.navbar .tag-breadcrumb{
+  float:left;
+  font-size: 14px;
+  line-height: 50px;
+  margin-left: -10px;
 }
 </style>

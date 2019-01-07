@@ -30,7 +30,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Cookies from 'js-cookie';
   import Captcha from './Captcha.vue';
   export default {
      data() {
@@ -127,7 +126,7 @@
                 this.$store.commit('SET_ACCOUNT', res.data.account);
                 this.$store.commit('SET_USERID', res.data.id);
                 this.$store.commit('SET_HEADPHOTO', '');
-                Cookies.set('userid', res.data.id)
+                localStorage.setItem('userid', res.data.id)
                 this.$router.push({name: 'home'});
               } else {
                 const errorCode = {

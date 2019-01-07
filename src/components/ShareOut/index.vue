@@ -54,43 +54,46 @@
     }
   };
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
 .share-block{
   margin-right:15px;
-  .share-icon{
-    display:inline-block;
-    margin-left:6px;
-    &.icon-wechat{
-      width:18px;
-      height:14px;
-      @include bg-image("./img/icon_weixin_nor.png");
-      &:hover{
-        @include bg-image("./img/icon_weixin_hig.png");
-      }
-    }
-  }
 }
+.share-block .share-icon{
+  display:inline-block;
+  margin-left:6px;
+}
+.share-block .share-icon.icon-wechat{
+  width:18px;
+  height:14px;
+  background-image:url('./img/icon_weixin_nor.png');
+  background-size:cover;
+}
+.share-block .share-icon.icon-wechat:hover{
+  background-image:url('./img/icon_weixin_hig.png');
+}
+
 .popper-class{
   background: rgba(0,0,0,.6);
   color:#ffffff;
-  .shareCode{
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    .qrcode{
-      float: left;
-      img,canvas{
-        border: 4px solid #ffffff;
-      }
-    }
-    .qrword{
-      width:180px;
-      font-size:14px;
-      line-height:28px;
-    }
-  }
 }
+.popper-class .shareCode{
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.popper-class .shareCode .qrcode{
+  float: left;
+}
+.popper-class .shareCode .qrcode img,canvas{
+  border: 4px solid #ffffff;
+}
+.popper-class .shareCode .qrword{
+  width:180px;
+  font-size:14px;
+  line-height:28px;
+}
+
 .el-popover{
   border: none
 }

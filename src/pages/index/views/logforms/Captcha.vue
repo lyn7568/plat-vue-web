@@ -70,7 +70,7 @@
   };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style scoped>
   .frmtypeW {
     float: right;
     cursor: pointer;

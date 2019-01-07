@@ -1,8 +1,4 @@
-import Vue from 'vue';
-import Router from 'vue-router';
 import Layout from '../views/layout';
-
-Vue.use(Router);
 
 const constantRouterMap = [
   {
@@ -14,46 +10,46 @@ const constantRouterMap = [
       {
         path: '/modifyData',
         alwaysShow: true,
-        component: () => import('../views/modifyData'),
+        component: (resolve) => require(['../views/modifyData'], resolve),
         name: 'modifyData',
         meta: { title: '修改资料', requireAuth: true }
       },
       // {
       //   path: '/myNeeds',
-      //   component: () => import('../views/myNeeds/index'),
+      //   component: (resolve) => require(['../views/myNeeds/index'], resolve),
       //   name: 'myNeeds',
       //   meta: { title: '我的需求' },
       //   children: [{
       //     path: '/modifyDemand',
-      //     component: () => import('../views/myNeeds/modifyDemand'),
+      //     component: (resolve) => require(['../views/myNeeds/modifyDemand'], resolve),
       //     name: 'modifyDemand',
       //     meta: { title: '修改需求' }
       //   }, {
       //     path: '/examineDemand',
-      //     component: () => import('../views/myNeeds/examineDemand'),
+      //     component: (resolve) => require(['../views/myNeeds/examineDemand'], resolve),
       //     name: 'examineDemand',
       //     meta: { title: '查看需求' }
       //   }, {
       //     path: '/myDemand',
-      //     component: () => import('../views/myNeeds/myNeed'),
+      //     component: (resolve) => require(['../views/myNeeds/myNeed'], resolve),
       //     name: 'myDemand',
       //     meta: { title: '我的需求' }
       //   }]
       // },
       {
         path: '/myBusiness',
-        component: () => import('../views/myNeeds/index'),
+        component: (resolve) => require(['../views/myNeeds/index'], resolve),
         name: 'myBusiness',
         meta: { title: '我的企业', requireAuth: true },
         children: [
           {
             path: '/companyInformation',
-            component: () => import('../views/myBusiness/companyInformation'),
+            component: (resolve) => require(['../views/myBusiness/companyInformation'], resolve),
             name: 'companyInformation',
             meta: { title: '企业信息' }
           }, {
             path: '/companyProduct',
-            component: () => import('../views/myBusiness/companyProduct'),
+            component: (resolve) => require(['../views/myBusiness/companyProduct'], resolve),
             name: 'companyProduct',
             meta: { title: '企业产品' }
           }
@@ -62,14 +58,14 @@ const constantRouterMap = [
       {
         path: '/attentionCollect',
         alwaysShow: true,
-        component: () => import('../views/attentionCollect'),
+        component: (resolve) => require(['../views/attentionCollect'], resolve),
         name: 'attentionCollect',
         meta: { title: '关注收藏', requireAuth: true }
       },
       {
         path: '/modifyPassword',
         alwaysShow: true,
-        component: () => import('../views/modifyPassword'),
+        component: (resolve) => require(['../views/modifyPassword'], resolve),
         name: 'modifyPassword',
         meta: { title: '修改密码', requireAuth: true }
       }
@@ -78,7 +74,7 @@ const constantRouterMap = [
 ];
 
 // 实例化vue的时候只挂载constantRouter
-export default new Router({
+export default new VueRouter({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap

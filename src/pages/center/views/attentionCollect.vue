@@ -168,22 +168,22 @@
     }
   };
 </script>
-<style lang="scss" scoped>
+<style scoped>
   .con-item{
     position:relative;
     cursor: pointer;
-    &:hover{
-      background: #EEEEEE;
-      .dele{
-        display: block;
-      }
-    }
-    .dele{
-      display: none;
-      position: absolute;
-      right: 10px;
-      z-index: 20;
-      top: 40%;
-    }
+  }
+  .con-item:hover{
+    background: #EEEEEE;
+  }
+  .con-item:hover .dele{
+    display: block;
+  }
+  .con-item .dele{
+    display: none;
+    position: absolute;
+    right: 10px;
+    z-index: 20;
+    top: 40%;
   }
 </style>

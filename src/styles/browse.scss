@@ -68,7 +68,7 @@
             color:$commonFont;
             margin-bottom:10px;
             &.info-tit-big{
-              font-size: 22px;
+              font-size: 20px;
               line-height: 32px;
             }
           }
@@ -155,6 +155,13 @@
             font-size: 14px;
             line-height: 22px;
             color:$secondaryFont;
+          }
+          .ulM{
+            width:100%;
+            .liM{
+              display: block;
+              padding: 4px 0;
+            }
           }
         }
       }

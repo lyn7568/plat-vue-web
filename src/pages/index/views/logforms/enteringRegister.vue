@@ -33,7 +33,6 @@
 
 <script type="text/ecmascript-6">
   import Captcha from './Captcha.vue';
-  import Cookies from 'js-cookie';
   export default {
      data() {
       let validatePhone = (rule, value, callback) => {
@@ -131,7 +130,7 @@
                 this.$store.commit('SET_USERID', res.data.id);
                 this.$store.commit('SET_HEADPHOTO', res.data.head);
                 this.$store.commit('SET_BINDCOMPANY', res.data.bindCompany);
-                Cookies.set('userid', res.data.id);
+                localStorage.setItem('userid', res.data.id);
                 this.$router.push({name: 'home'});
               } else {
                 const errorCode = {

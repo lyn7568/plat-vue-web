@@ -46,47 +46,42 @@
   };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-
+<style scoped>
   .footer{
-    @include bg-grey-color();
+    color: #fff;
     padding:30px 0;
-    .footer-wrapper{
-      display: flex;
-      justify-content: space-between;
-      font-size:14px;
-      color:#888;
-      line-height: 32px;
-      .wrapper-left{
-        .logo-block{
-          margin:10px 0 20px;
-        }
-        .listlink{
-          margin-right:25px;
-        }
-        a{
-          color:#888;
-          cursor:pointer;
-        }
-      }
-    }
-    .copy-wrapper{
-      margin-top:20px;
-      font-size:12px;
-      color:#666;
-      a{
-        color:#666;
-      }
-      .beian{
-        em{
-          display: inline-block;
-          width:14px;
-          height:14px;
-          @include bg-image('./img/home_icon_beian.png');
-          background-size: cover;
-        }
-      }
-    }
+    background:#373d41;
   }
-
+  .footer .footer-wrapper{
+    display: flex;
+    justify-content: space-between;
+    font-size:14px;
+    color:#888;
+    line-height: 32px;
+  }
+  .footer .footer-wrapper .wrapper-left .logo-block{
+    margin:10px 0 20px;
+  }
+  .footer .footer-wrapper .wrapper-left .listlink{
+    margin-right:25px;
+  }
+  .footer .footer-wrapper .wrapper-left a{
+    color:#888;
+    cursor:pointer;
+  }
+  .footer .copy-wrapper{
+    margin-top:20px;
+    font-size:12px;
+    color:#666;
+  }
+  .footer .copy-wrapper a{
+    color:#666;
+  }
+  .footer .copy-wrapper .beian em{
+    display: inline-block;
+    width:14px;
+    height:14px;
+    background-image:url('./img/home_icon_beian.png');
+    background-size:cover;
+  }
 </style>

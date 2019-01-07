@@ -178,9 +178,6 @@
   import { commenTime, defaultSet, ImageUrl, strToArr } from '@/libs/util';
   import queryBase from '@/libs/queryBase';
 
-  import Swiper from 'swiper';
-  import 'swiper/dist/css/swiper.min.css';
-
   import orgItem from '../ViewOrganization/orgItem';
   import expItem from '../ViewExpertPool/expItem';
   // import demandIssue from '../form-views/DemandIssue';

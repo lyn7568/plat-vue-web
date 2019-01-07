@@ -36,25 +36,25 @@
       }
     },
     created() {
-      this.ifcollectionAbout()
+      if (localStorage.getItem('userid')) {
+        this.ifcollectionAbout()
+      }
     },
     methods: {
       /* 判断是否收藏/关注 */
       ifcollectionAbout() {
         var that = this;
-        loginStatus(function() {
-          that.$axios.get('/ajax/collection/check', {
-            oid: that.watchOptions.oid,
-            type: that.watchOptions.type
-          }, function(res) {
-            if (res.success) {
-              if (res.data) {
-                that.ifCollect = true
-              } else {
-                that.ifCollect = false
-              }
+        that.$axios.get('/ajax/collection/check', {
+          oid: that.watchOptions.oid,
+          type: that.watchOptions.type
+        }, function(res) {
+          if (res.success) {
+            if (res.data) {
+              that.ifCollect = true
+            } else {
+              that.ifCollect = false
             }
-          })
+          }
         })
       },
       /* 收藏/关注 */
@@ -100,24 +100,24 @@
     }
   };
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
 .collect-block{
   margin-right:15px;
   font-size: 15px;
   line-height: 15px;
-  .icon-font{
-    display: inline-block;
-    width:16px;
-    height:16px;
-    margin-left:6px;
-    background-size: cover;
-    cursor: pointer;
-    &.icon-shoucang{
-      @include bg-image('./img/icon_shoucang_nor.png');
-    }
-    &.icon-yishoucang{
-      @include bg-image('./img/icon_shoucang_hig.png');
-    }
-  }
+}
+.collect-block .icon-font{
+  display: inline-block;
+  width:16px;
+  height:16px;
+  margin-left:6px;
+  cursor: pointer;
+  background-size:cover;
+}
+.collect-block .icon-font.icon-shoucang{
+  background-image:url('./img/icon_shoucang_nor.png');
+}
+.collect-block .icon-font.icon-yishoucang{
+  background-image:url('./img/icon_shoucang_hig.png');
 }
 </style>

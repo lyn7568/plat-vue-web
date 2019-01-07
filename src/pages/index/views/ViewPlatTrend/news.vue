@@ -6,7 +6,6 @@
 </template>
 
 <script>
-  import Cookies from 'js-cookie';
   import { commenTime } from '@/libs/util';
 	import baseContent from '@/components/subTemplate/BaseContent';
 
@@ -28,7 +27,7 @@
       baseContent
     },
     created() {
-      this.platId = Cookies.get('platId');
+      this.platId = localStorage.getItem('platId');
       this.queryPaltNews();
     },
     methods: {

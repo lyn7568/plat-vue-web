@@ -1,9 +1,7 @@
 import 'babel-polyfill';
 
-import Vue from 'vue';
-
 import ElementUI from 'element-ui';
-import '@/styles/element-variables.scss';
+import '../../theme/index.css';
 
 import request from '@/libs/request';
 

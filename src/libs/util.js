@@ -55,6 +55,22 @@ export const ImageUrl = function (str, bol) {
 };
 
 /**
+ * offset
+ */
+export const offset = function (el) {
+  let top = el.offsetTop;
+  let left = el.offsetLeft;
+  while (el.offsetParent) {
+    el = el.offsetParent;
+    top += el.offsetTop;
+    left += el.offsetLeft;
+  }
+  return {
+    left: left,
+    top: top
+  };
+}
+/**
  * 拼接用户-所在机构，所属部门，职位
  * 拼接用户-职称/职位，所在机构 bol
  */

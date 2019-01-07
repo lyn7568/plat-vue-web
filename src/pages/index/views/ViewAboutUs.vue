@@ -29,31 +29,31 @@
   };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
   .aboutUs{
     margin-bottom:20px;
     padding:20px;
     background: #fff;
-    color:$mainFont;
-    .faq-title{
-      font-size:16px;
-    }
+    color:#303133;
+  }
+  .aboutUs .faq-title{
+    font-size:16px;
+  }
 
-    .faq-content{
-      line-height: 26px;
-      margin:20px 10px 20px;
-      text-align: justify;
-      overflow: hidden;
-      .faq-sub-title{
-        margin-top:10px;
-        font-weight:600;
-      }
+  .aboutUs .faq-content{
+    line-height: 26px;
+    margin:20px 10px 20px;
+    text-align: justify;
+    overflow: hidden;
+  }
+  .aboutUs .faq-content .faq-sub-title{
+    margin-top:10px;
+    font-weight:600;
+  }
 
-      p{
-        margin-bottom: 10px;
-        text-indent: 2em;
-      }
-    }
+  .aboutUs .faq-content p{
+    margin-bottom: 10px;
+    text-indent: 2em;
   }
 
 </style>

@@ -24,21 +24,9 @@
 </template>
 
 <script>
-function offset(el) {
-  let top = el.offsetTop;
-  let left = el.offsetLeft;
-  while (el.offsetParent) {
-    el = el.offsetParent;
-    top += el.offsetTop;
-    left += el.offsetLeft;
-  }
-  return {
-    left: left,
-    top: top
-  };
-}
+import { offset } from '@/libs/util';
+
 export default {
-  name: 'magnify',
   props: {
     previewImg: {
       type: Array
@@ -115,7 +103,7 @@ export default {
       this.bimgHeight = this.oBigImg.offsetHeight;
       this.bWidth = this.zoomBox.offsetWidth;
       this.bHeight = this.zoomBox.offsetHeight;
-      this.scroll = document.documentElement.scrollTop || document.body.scrollTop;
+      this.scroll = Window.document.documentElement.scrollTop || Window.document.body.scrollTop;
     },
     selectFun(index) {
       this.selectIndex = index;
@@ -124,97 +112,98 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
   .magnify{
     position: relative;
-    .product-box{
-      position: relative;
-      .preview-box{
-        width: 360px;
-        height: 270px;
-        border: 1px solid #dededd;
-        position: relative;
-        display:flex;
-        justify-content: center;
-        align-items:center;
-        overflow:hidden;
-        .hover-box{
-          position: absolute;
-          display: none;
-          left: 0;
-          top: 0;
-          bottom:0;
-          width: 60px;
-          height: 60px;
-          background: url('./img/mask.png') repeat 0 0;
-          cursor: move;
-          user-select: none;
-        }
-        &:hover{
-          .hover-box{
-            display: block;
-          }
-        }
-        img{
-          max-width: 360px;
-          max-height: 270px;
-        }
-      }
-      .tb-thumb{
-        margin:10px 0 0;
-        overflow:hidden;
-        li{
-          background:none repeat scroll 0 0 transparent;
-          float:left;
-          margin:0 6px 0 0;
-          overflow:hidden;
-          .tb-pic{
-            border: 1px solid #E5E5E5;
-            a{
-              display:block;
-              height: 48px;
-              width: 66px;
-              display:flex;
-              justify-content: center;
-              align-items:center;
-            }
-            img{
-              max-height: 48px;
-              max-width: 66px;
-            }
-          }
-          &.tb-selected{
-            border: 3px solid $mainColor;
-            .tb-pic{
-              background-color: #FFFFFF;
-              border: medium none;
-              a{
-                height: 44px;
-                width: 58px;
-              }
-              img{
-                max-height: 44px;
-                max-width: 58px;
-              }
-            }
-          }
-        }
-      }
-    }
-    .zoom-box{
-      width: 300px;
-      height: 300px;
-      overflow: hidden;
-      position: absolute;
-      left: 370px;
-      border: 1px solid #dededd;
-      top: 0;
-      z-index: 700;
-      img{
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
-    }
+  }
+  .magnify .product-box{
+    position: relative;
+  }
+  .product-box .preview-box{
+    width: 360px;
+    height: 270px;
+    border: 1px solid #dededd;
+    position: relative;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    overflow:hidden;
+  }
+  .preview-box .hover-box{
+    position: absolute;
+    display: none;
+    left: 0;
+    top: 0;
+    bottom:0;
+    width: 60px;
+    height: 60px;
+    background: url('./img/mask.png') repeat 0 0;
+    cursor: move;
+    user-select: none;
+  }
+  .preview-box .hover-box:hover .hover-box{
+      display: block;
+  }
+  .preview-box .hover-box img{
+    max-width: 360px;
+    max-height: 270px;
+  }
+
+  .product-box .tb-thumb{
+    margin:10px 0 0;
+    overflow:hidden;
+  }
+  .tb-thumb li{
+    background:none repeat scroll 0 0 transparent;
+    float:left;
+    margin:0 6px 0 0;
+    overflow:hidden;
+  }
+  .tb-thumb li .tb-pic{
+    border: 1px solid #E5E5E5;
+  }
+  .tb-thumb li .tb-pic a{
+    display:block;
+    height: 48px;
+    width: 66px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+  }
+  .tb-thumb li .tb-pic img{
+    max-height: 48px;
+    max-width: 66px;
+  }
+
+  .tb-thumb li.tb-selected{
+    border: 3px solid #2693ec;
+  }
+  .tb-thumb li.tb-selected .tb-pic{
+    background-color: #FFFFFF;
+    border: medium none;
+  }
+  .tb-thumb li.tb-selected .tb-pic a{
+    height: 44px;
+    width: 58px;
+  }
+  .tb-thumb li.tb-selected .tb-pic img{
+    max-height: 44px;
+    max-width: 58px;
+  }
+
+  .magnify .zoom-box{
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    position: absolute;
+    left: 370px;
+    border: 1px solid #dededd;
+    top: 0;
+    z-index: 700;
+  }
+  .zoom-box img{
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 </style>

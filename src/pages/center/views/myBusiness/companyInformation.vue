@@ -155,7 +155,6 @@
   import cityPicker from '@/components/CityPicker'
   import uploadFile from '@/components/uploadFile'
   import dynamicTags from '@/components/DynamicTags'
-  import { mapGetters } from 'vuex'
 
   export default {
     data() {
@@ -386,7 +385,7 @@
     }
   }
 </script>
-<style lang="scss">
+<style>
   .el-date-editor.el-input, .el-date-editor.el-input__inner{
     width:100%;
   }

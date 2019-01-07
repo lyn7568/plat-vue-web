@@ -5,7 +5,7 @@
         <div class="content-wrapper split-other">
           <div class="headcon-box hdetail-box">
             <div class="zoom-box">
-              <previewMagnify v-if="productInfo.img && productInfo.img.length" :previewImg="productInfo.img"></previewMagnify>
+              <!-- <previewMagnify v-if="productInfo.img && productInfo.img.length" :previewImg="productInfo.img"></previewMagnify> -->
             </div>
             <div class="show-info reInfo-box">
               <div class="info-tit">{{productInfo.name}}</div>
@@ -77,7 +77,7 @@
 <script>
   import { urlParse, strToArr } from '@/libs/util';
 
-  import previewMagnify from '@/components/previewMagnify';
+  // import previewMagnify from '@/components/previewMagnify';
   import shareOut from '@/components/ShareOut';
   import beyondTo from '@/components/BeyondTo';
 
@@ -99,7 +99,7 @@
       this.getProductKeyword();
     },
     components: {
-      previewMagnify,
+      // previewMagnify,
       shareOut,
       beyondTo
     },

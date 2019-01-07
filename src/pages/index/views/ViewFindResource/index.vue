@@ -130,6 +130,6 @@
   };
 </script>
 
-<style scoped>
- @import './css.scss';
+<style>
+ @import './css.css';
 </style>

@@ -87,6 +87,9 @@
   }
   .list-head{
     @include center-items(162px,108px);
+    .item-pic-org{
+      @include center-items(162px,108px);
+    }
   }
   .list-info{
     flex: 1 1 170px;

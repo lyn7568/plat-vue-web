@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import requestP from './axios';
 import requestK from './axiosk';
 

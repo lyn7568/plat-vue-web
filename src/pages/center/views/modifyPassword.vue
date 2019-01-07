@@ -115,20 +115,20 @@
   };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style scoped>
   .formBoxCenter {
     display: flex;
     align-items: center;
     justify-content: center;
-    .boxCenter {
-      width: 450px;
-      position: relative;
-    }
-    a {
-      position: absolute;
-      top: 114px;
-      right: 140px;
-      color: $mainColor;
-    }
+  }
+  .formBoxCenter .boxCenter {
+    width: 450px;
+    position: relative;
+  }
+  .formBoxCenter a {
+    position: absolute;
+    top: 114px;
+    right: 140px;
+    color: #2693ec;
   }
 </style>

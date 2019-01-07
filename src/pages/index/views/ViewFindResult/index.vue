@@ -122,6 +122,6 @@
   };
 </script>
 
-<style scoped>
- @import '../ViewFindResource/css.scss';
+<style>
+ @import '../ViewFindResource/css.css';
 </style>

@@ -5,8 +5,6 @@
  * 'XZQH'----'城市级联'
  */
 /* eslint-disable one-var */
-import Vue from 'vue'
-
 var cacheDict = {
     bool: [
       { code: '0', caption: '否', enabled: true },

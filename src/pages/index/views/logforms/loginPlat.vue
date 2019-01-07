@@ -27,10 +27,9 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-  import Cookies from 'js-cookie';
+<script>
   export default {
-     data() {
+    data() {
       let validatePhone = (rule, value, callback) => {
         const pattern = /^1[34578]\d{9}$/;
         if (value === '') {
@@ -84,19 +83,13 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.logining = true;
-            this.$axios.post('/ajax/sys/login', this.ruleForm, res => {
+            // this.$axios.post('/ajax/sys/login', this.ruleForm, res => {
+            this.$store.dispatch('LoginByAccount', this.ruleForm).then(res => {
               this.logining = false;
               if (res.success) {
                 if (res.data == null) {
                   this.$message.error('登录账号与密码不匹配');
                 } else {
-                  this.$store.commit('SET_ACCOUNT', res.data.account);
-                  this.$store.commit('SET_USERID', res.data.id);
-                  this.$store.commit('SET_HEADPHOTO', res.data.head);
-                  this.$store.commit('SET_BINDCOMPANY', res.data.bindCompany);
-                  Cookies.set('userid', res.data.id);
-                  Cookies.set('uaccount', res.data.account);
-                  Cookies.set('bcid', res.data.bindCompany);
                   this.$router.push({name: 'home'});
                   this.logining = true;
                 }

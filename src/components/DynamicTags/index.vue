@@ -159,32 +159,30 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
   .tag-show {
     overflow: hidden;
     padding:5px 0 0;
     margin-bottom:-5px;
-    .tag-item{
-      float:left;
-      .el-tag {
-        margin-right:10px;
-        margin-bottom:5px;
-        min-height: 32px;
-        padding: 6px 10px;
-        line-height: 20px;
-        height:auto;
-      }
-    }
   }
-  .tag-block{
-    .tag-item{
-      float:none;
-      display: block;
-      .el-tag {
-        margin-left: 0;
-        white-space: normal;
-      }
-    }
+  .tag-show .tag-item{
+    float:left;
+  }
+  .tag-show .tag-item .el-tag {
+    margin-right:10px;
+    margin-bottom:5px;
+    min-height: 32px;
+    padding: 6px 10px;
+    line-height: 20px;
+    height:auto;
+  }
+  .tag-block .tag-item{
+    float:none;
+    display: block;
+  }
+  .tag-block .tag-item .el-tag {
+    margin-left: 0;
+    white-space: normal;
   }
   .button-new-tag{
     width:100%;

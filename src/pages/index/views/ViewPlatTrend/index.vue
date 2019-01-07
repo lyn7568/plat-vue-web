@@ -63,33 +63,33 @@
   };
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
-  .tab-wrapper{
-    padding:10px 20px;
-    color: $commonFont;
-    li{
-      display:inline-block;
-      margin-right:20px;
-      cursor: pointer;
-      &.active{
-        color: $mainColor;
-      }
-    }
-    .el-tabs{
-      width:100%;
-    }
-    .el-tabs__header{
-      margin: 0 0 4px;
-    }
-    .el-tabs__nav-wrap::after{
-      content:none;
-    }
-    .el-tabs__content{
-      margin:0 -20px;
-      .tab-contain{
-        width:100%;
-        border-top:20px solid #f4f6f8;
-      }
-    }
-  }
+<style>
+.tab-wrapper{
+  padding:10px 20px;
+  color: #606266;
+}
+.tab-wrapper li{
+  display:inline-block;
+  margin-right:20px;
+  cursor: pointer;
+}
+.tab-wrapper li.active{
+  color: #2693ec;
+}
+.tab-wrapper .el-tabs{
+  width:100%;
+}
+.tab-wrapper .el-tabs__header{
+  margin: 0 0 4px;
+}
+.tab-wrapper .el-tabs__nav-wrap::after{
+  content:none;
+}
+.tab-wrapper .el-tabs__content{
+  margin:0 -20px;
+}
+.tab-wrapper .el-tabs__content .tab-contain{
+  width:100%;
+  border-top:20px solid #f4f6f8;
+}
 </style>

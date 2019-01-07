@@ -60,10 +60,10 @@
 <script>
   import { urlParse, commenTime } from '@/libs/util';
 
+  import queryBase from '@/libs/queryBase';
   import baseExpert from '@/components/subTemplate/BaseExpert';
-  import baseCompany from '@/components/subTemplate/BaseCompany';
   import baseOrg from '@/components/subTemplate/BaseOrg';
-
+  import baseCompany from '@/components/subTemplate/BaseCompany';
   export default {
     data() {
       return {
@@ -84,8 +84,8 @@
     },
     components: {
       baseExpert,
-      baseCompany,
-      baseOrg
+      baseOrg,
+      baseCompany
     },
     methods: {
       getContentInfo() {
@@ -102,32 +102,72 @@
         });
       },
       getPlatExperts() {
+        var that = this
         this.$axios.get('/ajax/article/professor', {
-          articleId: this.contentId
+          articleId: that.contentId
         }, (res) => {
           if (res.success) {
             var $info = res.data;
-            this.platExperts = $info;
+            var arr = []
+            for (let i in $info) {
+              arr[i] = $info[i].professorId;
+            }
+            that.$axios.getk('/ajax/professor/qm', {
+              id: arr
+            }, function(data) {
+              if (data.success && data.data) {
+                if (data.data.length > 0) {
+                  that.platExperts = data.data
+                  that.$forceUpdate()
+                }
+              }
+            })
           };
         });
       },
       getPlatOrgs() {
+        var that = this
         this.$axios.get('/ajax/article/org', {
-          articleId: this.contentId
+          articleId: that.contentId
         }, (res) => {
           if (res.success) {
             var $info = res.data;
-            this.platOrgs = $info;
+            var arr = []
+            for (let i in $info) {
+              arr[i] = $info[i].orgId;
+            }
+            that.$axios.getk('/ajax/org/qm', {
+              id: arr
+            }, function(data) {
+              if (data.success && data.data) {
+                if (data.data.length > 0) {
+                  that.platOrgs = data.data
+                  that.$forceUpdate()
+                }
+              }
+            })
           };
         });
       },
       getPlatCompanys() {
+        var that = this
         this.$axios.get('/ajax/article/company', {
-          articleId: this.contentId
+          articleId: that.contentId
         }, (res) => {
           if (res.success) {
             var $info = res.data;
-            this.platCompanys = $info;
+            for (let i = 0; i < $info.length; ++i) {
+              (function(item) {
+                queryBase.getCompany(item.compId, function(sc, value) {
+                  if (sc) {
+                    item.name = value.name
+                    item.logo = value.logo
+                    that.$forceUpdate()
+                  }
+                })
+              })($info[i])
+            }
+            that.platCompanys = $info;
           };
         });
       }
@@ -135,13 +175,11 @@
   };
 </script>
 
-<style lang="scss" scoped>
-  .info-tag{
-    span{
-      display: inline-block;
-      margin-right:15px;
-      color: #999;
-      font-size: 14px;
-    }
+<style scoped>
+  .info-tag span{
+    display: inline-block;
+    margin-right:15px;
+    color: #999;
+    font-size: 14px;
   }
 </style>

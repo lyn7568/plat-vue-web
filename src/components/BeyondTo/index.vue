@@ -57,7 +57,7 @@
           if (sc) {
             that.ownerInfo.name = value.name
             that.ownerInfo.title = value.title
-            if (that.ownerInfo.hasHeadImage) {
+            if (value.hasHeadImage) {
               that.ownerInfo.img = ImageUrl(('head/' + value.id + '_l.jpg'), true)
             } else {
               that.ownerInfo.img = defaultSet.img.expert
@@ -71,7 +71,7 @@
           if (sc) {
             that.ownerInfo.name = value.name
             that.ownerInfo.insdutry = value.insdutry.replace(/,/, ' | ')
-            if (that.ownerInfo.hasOrgLogo) {
+            if (value.hasOrgLogo) {
               that.ownerInfo.img = ImageUrl(('org/' + value.id + '.jpg'), true)
             } else {
               that.ownerInfo.img = defaultSet.img.org
@@ -110,45 +110,57 @@
     }
   };
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
 .beyond-block{
   text-align:center;
-  .show-head{
-    display: block;
-    width: 120px;
-    height: 120px;
-    border: 1px solid #E5E5E5;
-    margin: 0 auto 10px;
-    background-position: center;
-    background-size: cover;
-    border-radius: 50%;
-    &.orgimg-box{
-      @include center-items(200px, 120px);
-    }
-  }
-  .show-info{
-    width:100%;
-    .info-tit{
-      color:$commonFont;
-      @include text-ellipsis();
-      font-size: 18px;
-      line-height: 24px;
-    }
-    .info-tag{
-      color:$commonFont;
-      @include text-ellipsis();
-      font-size: 16px;
-      line-height: 24px;
-    }
-    .info-desc{
-      color:$secondaryFont;
-      @include text-ellipsis();
-      font-size: 15px;
-      line-height: 24px;
-    }
-  }
-  .goSpan{
-    margin-top:15px;
-  }
+}
+.beyond-block .show-head{
+  display: block;
+  width: 120px;
+  height: 120px;
+  border: 1px solid #E5E5E5;
+  margin: 0 auto 10px;
+  background-position: center;
+  background-size: cover;
+  border-radius: 50%;
+}
+.beyond-block .show-head.orgimg-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e4e7ed;
+  box-sizing:border-box;
+  width: 202px;
+  height: 122px;
+  border-radius: 4px;
+  background-size:cover;
+  background-position: center center;
+}
+.beyond-block .show-head.orgimg-box img{
+  max-width: 200px;
+  max-height: 100%;
+}
+
+.beyond-block .show-info{
+  width:100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 24px;
+  color:#606266;
+}
+.beyond-block .show-info .info-tit{
+  font-size: 18px;
+}
+.beyond-block .show-info .info-tag{
+  font-size: 16px;
+}
+.beyond-block .show-info .info-desc{
+  color:#909399;
+  font-size: 15px;
+}
+
+.beyond-block .goSpan{
+  margin-top:15px;
 }
 </style>

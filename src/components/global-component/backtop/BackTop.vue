@@ -51,7 +51,7 @@
     }
   };
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style scoped>
   .scroll{
     position: fixed;
     right: 10px;
@@ -61,20 +61,20 @@
     cursor: pointer;
     display: none;
     z-index: 10;
-    div{
-      width: 45px;
-      height: 45px;
-      line-height: 45px;
-      text-align: center;
-      font-size: 35px;
-      background-color: rgba(0,0,0,.2);
-      color: #fff;
-      &:hover{
-        background-color: rgba(0,0,0,.5);
-      }
-    }
-    &.showScroll{
-      display: block;
-    }
+  }
+  .scroll div{
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    font-size: 35px;
+    background-color: rgba(0,0,0,.2);
+    color: #fff;
+  }
+  .scroll div:hover{
+    background-color: rgba(0,0,0,.5);
+  }
+  .scroll div.showScroll{
+    display: block;
   }
 </style>

@@ -5,7 +5,7 @@
         <div class="content-wrapper split-other">
           <div class="headcon-box hdetail-box">
             <div class="zoom-box">
-              <previewMagnify v-if="serveInfo.img && serveInfo.img.length" :previewImg="serveInfo.img"></previewMagnify>
+              <!-- <previewMagnify v-if="serveInfo.img && serveInfo.img.length" :previewImg="serveInfo.img"></previewMagnify> -->
             </div>
             <div class="show-info reInfo-box">
               <div class="info-tit info-tit-big">{{serveInfo.name}}</div>
@@ -73,7 +73,7 @@
 <script>
   import { urlParse, ImageUrl, defaultSet, strToArr } from '@/libs/util';
 
-  import previewMagnify from '@/components/previewMagnify';
+  // import previewMagnify from '@/components/previewMagnify';
   import shareOut from '@/components/ShareOut';
   import collectCo from '@/components/CollectCo';
   import beyondTo from '@/components/BeyondTo';
@@ -102,7 +102,7 @@
       this.getLikeserves();
     },
     components: {
-      previewMagnify,
+      // previewMagnify,
       shareOut,
       collectCo,
       beyondTo,

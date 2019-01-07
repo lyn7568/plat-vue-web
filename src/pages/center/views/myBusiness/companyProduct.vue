@@ -34,7 +34,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { TimeTr } from '@/libs/util'
   import publishProduct from './publishProduct.vue';
   import baseProduct from '@/components/subTemplate/BaseProduct.vue';
@@ -131,25 +130,25 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .con-box{
     margin: 0 -15px;
-    .con-item{
-      position:relative;
-      cursor: pointer;
-      &:hover{
-        background: #EEEEEE;
-        .dele{
-          display: block;
-        }
-      }
-      .dele{
-        display: none;
-        position: absolute;
-        right: 20px;
-        z-index: 20;
-        top: 40%;
-      }
-    }
+  }
+  .con-box .con-item{
+    position:relative;
+    cursor: pointer;
+  }
+  .con-box .con-item .dele{
+    display: none;
+    position: absolute;
+    right: 20px;
+    z-index: 20;
+    top: 40%;
+  }
+  .con-box .con-item:hover{
+    background: #EEEEEE;
+  }
+  .con-box .con-item:hover .dele{
+    display: block;
   }
 </style>
