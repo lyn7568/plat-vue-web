@@ -281,7 +281,6 @@
       },
       clickAlertDemand() {
         this.dialogFormVisible = true;
-        this.activeName = 'first';
       },
       // pubDemand() {
       //   this.$refs.issueDemand.submitForm('ruleForm');

@@ -17,7 +17,6 @@
   </div>
 </template>
 <script>
-  import QRCode from 'qrcodejs2';
   export default {
     props: {
       tUrl: {
@@ -48,9 +47,6 @@
         qrcode.clear();
         qrcode.makeCode(this.tUrl);
       }
-    },
-    beforeDestroy() {
-      this.qrcode.clear()
     }
   };
 </script>

@@ -4,6 +4,7 @@ const constantRouterMap = [
   {
     path: '/',
     name: 'personalCenter',
+    redirect: { name: 'modifyData' },
     meta: { title: '个人中心' },
     component: Layout,
     children: [

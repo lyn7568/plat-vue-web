@@ -5,7 +5,7 @@
         <div class="content-wrapper split-other">
           <div class="headcon-box hdetail-box">
             <div class="zoom-box">
-              <!-- <previewMagnify v-if="resourceInfo.img && resourceInfo.img.length" :previewImg="resourceInfo.img"></previewMagnify> -->
+              <previewMagnify v-if="resourceInfo.img && resourceInfo.img.length" :previewImg="resourceInfo.img"></previewMagnify>
             </div>
             <div class="show-info reInfo-box">
               <div class="info-tit info-tit-big">{{resourceInfo.resourceName}}</div>
@@ -60,7 +60,7 @@
       <div class="wrapper-right">
         <div class="content-wrapper">
           <div class="right-split">
-            <beyondTo :ownerId="owner.id" :ownerType="owner.type"></beyondTo>
+            <beyondTo v-if="owner.id" :ownerId="owner.id" :ownerType="owner.type"></beyondTo>
           </div>
           <div class="right-split" v-if="hotResources && hotResources.length">
             <div class="content-title">
@@ -85,7 +85,7 @@
 <script>
   import { urlParse, ImageUrl, defaultSet, strToArr } from '@/libs/util';
 
-  // import previewMagnify from '@/components/previewMagnify';
+  import previewMagnify from '@/components/previewMagnify';
   import shareOut from '@/components/ShareOut';
   import collectCo from '@/components/CollectCo';
   import beyondTo from '@/components/BeyondTo';
@@ -114,7 +114,7 @@
       this.getLikeResources();
     },
     components: {
-      // previewMagnify,
+      previewMagnify,
       shareOut,
       collectCo,
       beyondTo,
@@ -122,8 +122,9 @@
     },
     methods: {
       getResourceInfo() {
+        var that = this
         this.$axios.getk('/ajax/resource/queryOne', {
-          resourceId: this.resourceId
+          resourceId: that.resourceId
         }, (res) => {
           if (res.success) {
             var $info = res.data;
@@ -140,19 +141,19 @@
             }
             $info.img = ImgUrl
             if ($info.resourceType === '1') {
-              this.owner = {
+              that.owner = {
                 id: $info.professorId,
                 type: $info.resourceType
               };
-              this.getHotResources({ 'professorId': $info.professorId })
+              that.getHotResources({ 'professorId': $info.professorId })
             } else if ($info.resourceType === '2') {
-              this.owner = {
+              that.owner = {
                 id: $info.orgId,
                 type: $info.resourceType
               };
-              this.getHotResources({ 'orgId': $info.orgId }, true)
+              that.getHotResources({ 'orgId': $info.orgId }, true)
             }
-            this.resourceInfo = $info;
+            that.resourceInfo = $info;
           };
         });
       },
@@ -162,27 +163,21 @@
         that.$axios.getk(ourl, obj, function(res) {
           if (res.success && res.data) {
             const $data = res.data
-            var only = false
+            var hotRes = []
             if ($data.length > 1) {
-              var oLeng = $data.length < 5 ? $data.length : 5
-              for (var i = 0; i < oLeng; i++) {
-                if (that.resourceId === $data[i].resourceId) {
-                  only = true;
-                  continue;
-                }
-                if (only) {
-                  if (oLeng >= 5) {
-                    oLeng = 6;
-                  }
-                }
-                if ($data[i].images.length) {
+              for (var i = 0; i < $data.length; i++) {
+                if ($data[i].images && $data[i].images.length) {
                   $data[i].img = ImageUrl('resource/' + $data[i].images[0].imageSrc)
                 } else {
                   $data[i].img = defaultSet.img.resource
                 }
+                if (that.resourceId !== $data[i].resourceId) {
+                  hotRes.push($data[i])
+                }
               }
             }
-            that.hotResources = $data
+            hotRes.splice(5)
+            that.hotResources = hotRes
           }
         })
       },

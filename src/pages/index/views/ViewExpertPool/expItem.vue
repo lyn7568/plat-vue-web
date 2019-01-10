@@ -1,22 +1,12 @@
 <template>
-  <div>
-    <div class="block-container">
-      <a class="block-item" v-for="item in userData" :key="item.index" :href="'expert.html?id='+item.id" target="_blank">
-        <div class="show-head" :style="{backgroundImage:'url('+ item.img +')'}"></div>
-        <div class="show-info">
-          <div class="info-tit">{{item.name}}<em class="authicon" :class="headIcon(item)"></em></div>
-          <div class="info-tag" v-if="item.offt">{{item.offt}}</div>
-          <div class="info-desc" v-if="item.reserachs">研究方向：{{item.reserachs}}</div>
-        </div>
-      </a>
-    </div>
-    <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower" v-if="!num"></Loading>
+  <div class="block-container">
+    <eItem v-if="userDataS && userDataS.length" v-for="item in userDataS" :key="item.index" :itemSinger="item"></eItem>
   </div>
 </template>
 
 <script>
   import { formatOfft, ImageUrl, defaultSet, autho } from '@/libs/util';
-  import queryBase from '@/libs/queryBase';
+  import eItem from './item'
 
   export default {
     props: {
@@ -26,73 +16,61 @@
     },
     data() {
       return {
-        rows: 30,
-        userData: [],
-        loadingModalShow: true, // 是否显示按钮
-        loadingComplete: false, // 是否全部加载
-        isFormSearch: false, // 数据加载
-        isLoading: false // button style...
+        userData: []
       };
+    },
+    computed: {
+      userDataS() {
+        // return this.num ? this.userData.splice(this.num) : this.userData
+        return this.userData
+      }
+    },
+    components: {
+      eItem
     },
     created() {
        this.buttedProfessors();
     },
     methods: {
-      buttedProfessors(id) {
-        this.$axios.get('/ajax/professor/list', {}, (res) => {
+      buttedProfessors() {
+        var that = this
+        that.$axios.get('/ajax/professor/list', {}, (res) => {
           if (res.success) {
             var $data = res.data;
+            var arr = []
+            var hdata = { num: 1, data: $data }
             if ($data.length > 0) {
-              this.isFormSearch = true;
-              for (let i = 0; i < $data.length; i++) {
-                queryBase.getProfessor($data[i].id, function(sc, value) {
-                  if (sc) {
-                    var owner = $data[i]
-                    owner.name = value.name
-                    owner.offt = formatOfft(value, true)
-                    if (value.hasHeadImage) {
-                      owner.img = ImageUrl(('head/' + value.id + '_l.jpg'), true)
-                    } else {
-                      owner.img = defaultSet.img.expert
+              for (let i in $data) {
+                hdata.num++
+                arr[i] = $data[i].id;
+                hdata.num--
+              }
+              hdata.num--
+              if (hdata.num === 0 && arr.length) {
+                that.$axios.getk('/ajax/professor/qm', {
+                  id: arr
+                }, function(data) {
+                  if (data.success && data.data) {
+                    var obj = data.data
+                    if (obj.length > 0) {
+                      for (let m = 0; m < obj.length; ++m) {
+                        obj[m].img = defaultSet.img.expert
+                        if (obj[m].hasHeadImage) {
+                          obj[m].img = ImageUrl(('head/' + obj[m].id + '_l.jpg'), true)
+                        }
+                        obj[m].auth = autho(obj[m].authType, obj[m].orgAuth, obj[m].authStatus)
+                        obj[m].offt = formatOfft(obj[m], true)
+                      }
+                      setTimeout(() => {
+                        that.userData = obj
+                      }, 1000);
                     }
                   }
                 })
-                this.$axios.getk('/ajax/researchArea/' + $data[i].id, {}, (res) => {
-                  const $info = res.data;
-                  let arr = [];
-                  for (let j = 0; j < $info.length; j++) {
-                    if ($info[j].caption) {
-                      arr.push($info[j].caption);
-                    };
-                    if (j === $info.length - 1) {
-                      $data[i].reserachs = arr.join('，');
-                      this.$forceUpdate();
-                    }
-                  }
-                  if ($info.lenth === 0) {
-                    $data[i].reserachs = '';
-                  }
-                });
-              }
-              this.userData = this.userData.concat($data);
-              if ($data.length < this.rows) {
-                this.loadingModalShow = false;
-                this.isFormSearch = false;
               }
             };
           };
         });
-      },
-      headUrl(item) {
-        return item.hasHeadImage ? ImageUrl(('head/' + item.id + '_l.jpg'), true) : defaultSet.img.expert;
-      },
-      headIcon(item) {
-        return autho(item.authType, item.orgAuth, item.authStatus);
-      },
-      loadLower() {
-        if (this.loadingModalShow && !this.isLoading) {
-          this.buttedProfessors(this.platId);
-        }
       }
     }
   };

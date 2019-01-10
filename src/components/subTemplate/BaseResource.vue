@@ -1,6 +1,6 @@
 <template>
-  <a class="list-item" :href="'resource.html?id='+itemSingle.id" target="_blank">
-    <div class="list-head" :style="{backgroundImage: 'url(' + resourceInfo.img + ')'}"></div>
+  <a class="list-item" :href="'resource.html?id='+resourceInfo.id" target="_blank">
+    <div class="list-head" :style="{backgroundImage: 'url(' + resourceInfo.firstImg + ')'}"></div>
     <div class="list-info">
       <div class="list-tit list-topic">{{resourceInfo.name}}</div>
       <div class="list-owner">{{ownerName}}<em class="authicon" :class="ownerAuth"></em></div>
@@ -34,15 +34,9 @@
         if (obj.resourceName) {
           obj.name = obj.resourceName
         }
-        if (obj && obj.images) {
-          obj.img = defaultSet.img.resource
-          if (obj.images instanceof Array) {
-            if (obj.images.length > 0) {
-              obj.img = ImageUrl('resource/' + obj.images[0].imageSrc)
-            }
-          } else {
-            obj.img = ImageUrl('resource/' + strToArr(obj.images))
-          }
+        obj.firstImg = defaultSet.img.resource
+        if (obj.images && obj.images.length > 0) {
+          obj.firstImg = ImageUrl('resource/' + obj.images[0].imageSrc)
         }
         if (obj.supportedServices) {
           obj.cnt = obj.supportedServices
@@ -55,10 +49,11 @@
       }
     },
     created() {
-      this.ownerByond(this.resourceInfo);
+      this.ownerByond();
     },
     methods: {
-      ownerByond(item) {
+      ownerByond() {
+        var item = this.resourceInfo
         var _this = this
         if (item.otype === '1') {
           queryBase.getProfessor(item.oid, function(sc, value) {

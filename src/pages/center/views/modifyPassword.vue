@@ -4,8 +4,8 @@
       <el-tab-pane label="修改密码"></el-tab-pane>
     </el-tabs>
     <div class="formBoxCenter">
-      <a href="#/findPwd">忘记密码？</a>
       <div class="boxCenter">
+        <a href="/#/findPwd">忘记密码？</a>
         <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
           <el-form-item label="原密码" prop="opw">
             <el-input type="password" v-model="ruleForm2.opw" auto-complete="off" placeholder="请输入原密码"></el-input>
@@ -120,6 +120,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 80px;
   }
   .formBoxCenter .boxCenter {
     width: 450px;
@@ -127,8 +128,9 @@
   }
   .formBoxCenter a {
     position: absolute;
-    top: 114px;
-    right: 140px;
+    line-height: 40px;
+    top: 0;
+    right: -90px;
     color: #2693ec;
   }
 </style>

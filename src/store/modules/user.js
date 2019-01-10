@@ -1,3 +1,4 @@
+import http from '@/libs/axios'
 import { defaultSet } from '@/libs/util';
 
 const user = {
@@ -28,7 +29,9 @@ const user = {
       const phone = userInfo.phone
       const pw = userInfo.pw
       return new Promise((resolve, reject) => {
-        Vue.$axios.post('/ajax/sys/login', { phone, pw }, function(response) {
+        http.post('/ajax/sys/login', {
+          phone, pw
+        }).then(response => {
           if (response.success) {
             if (response.data !== null) {
               const dataS = response.data
@@ -51,19 +54,23 @@ const user = {
     // 获取用户信息
     GetUserInfo({ commit }) {
       return new Promise((resolve, reject) => {
-        Vue.$axios.get('/ajax/sys/user', {}, function(response) {
+        http.get('/ajax/sys/user').then(response => {
           if (response.data) {
             const dataS = response.data
             commit('SET_USERID', dataS.id);
             commit('SET_ACCOUNT', dataS.account);
             commit('SET_HEADPHOTO', dataS.head);
             commit('SET_BINDCOMPANY', dataS.bindCompany);
-            localStorage.clear()
+            localStorage.setItem('userid', dataS.id);
+            localStorage.setItem('uaccount', dataS.account);
+            localStorage.setItem('bcid', dataS.bindCompany);
           } else {
             commit('SET_USERID', '')
             commit('SET_ACCOUNT', '')
             commit('SET_HEADPHOTO', '');
-            localStorage.clear()
+            localStorage.removeItem('userid');
+            localStorage.removeItem('uaccount');
+            localStorage.removeItem('bcid');
           }
           resolve(response)
         }).catch(error => {
@@ -75,12 +82,14 @@ const user = {
     // 登出
     LogOut({ commit }) {
       return new Promise((resolve, reject) => {
-        hVue.$axios.get('/ajax/sys/logout', {}, function(response) {
+        http.get('/ajax/sys/logout').then(response => {
           commit('SET_USERID', '')
           commit('SET_ACCOUNT', '')
           commit('SET_BINDCOMPANY', '')
           commit('SET_HEADPHOTO', '');
-          localStorage.clear()
+          localStorage.removeItem('userid');
+          localStorage.removeItem('uaccount');
+          localStorage.removeItem('bcid');
           resolve()
         }).catch(error => {
           reject(error)

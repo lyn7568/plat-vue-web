@@ -90,17 +90,22 @@
             tit: '关于平台'
           }
         ],
-        account: '',
-        bindCompany: '',
         kexiuLink: ekexiuUrl,
         plat: ''
       };
     },
+    computed: {
+      ...Vuex.mapGetters([
+        'account',
+        'bindCompany'
+      ])
+    },
     mounted () {
       /* eslint-disable no-undef */
       this.plat = PLAT.info;
-      this.account = localStorage.getItem('uaccount');
-      this.bindCompany = localStorage.getItem('bcid');
+      if (!this.account) {
+        this.$store.dispatch('GetUserInfo').then(res => {})
+      }
     },
     methods: {
       activeCl(url) {

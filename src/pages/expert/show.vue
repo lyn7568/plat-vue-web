@@ -161,7 +161,7 @@
           </div>
           <div class="content">
             <a v-for="item in coopExperts" :key="item.index" class="list-item" :href="'expert.html?id='+item.professorId" target="_blank">
-              <div class="list-head" :style="{backgroundImage: 'url(' + item.img + ')'}"></div>
+              <div class="list-head" style="border-radius: 50%" :style="{backgroundImage: 'url(' + item.img + ')'}"></div>
               <div class="list-info">
                 <div class="list-owner">{{item.name}}</div>
                 <div class="list-owner">{{item.title}}</div>
@@ -188,10 +188,10 @@
           </div>
           <div class="content">
             <a v-for="item in likeExperts" :key="item.index" class="list-item" :href="'expert.html?id='+item.id" target="_blank">
-              <div class="list-head" :style="{backgroundImage: 'url(' + item.img + ')'}"></div>
+              <div class="list-head" style="border-radius: 50%" :style="{backgroundImage: 'url(' + item.img + ')'}"></div>
               <div class="list-info">
-                <div class="list-owner">{{item.name}}</div>
-                <div class="list-desc">{{item.title}}</div>
+                <div class="list-owner">{{item.name}}<em class="authicon" :class="item.auth"></em></div>
+                <div class="list-desc">{{item.offt}}</div>
               </div>
             </a>
           </div>
@@ -440,26 +440,39 @@
           professorId: this.expertId
         }, (res) => {
           if (res.success) {
-            var $info = res.data;
-            if ($info.length > 0) {
-              for (let i = 0; i < $info.length; ++i) {
-                (function(str) {
-                  queryBase.getProfessor(str.id, function(sc, value) {
-                    if (sc) {
-                      str.name = value.name
-                      str.title = value.title
-                      if (str.hasHeadImage) {
-                        str.img = ImageUrl(('head/' + value.id + '_l.jpg'), true)
-                      } else {
-                        str.img = defaultSet.img.expert
-                      }
-                      that.$forceUpdate()
-                    }
-                  })
-                })($info[i])
+            var $data = res.data;
+            var arr = []
+            var hdata = { num: 1, data: $data }
+            if ($data.length > 0) {
+              for (let i in $data) {
+                hdata.num++
+                arr[i] = $data[i].id;
+                hdata.num--
               }
-              that.likeExperts = $info;
-            }
+              hdata.num--
+              if (hdata.num === 0 && arr.length) {
+                that.$axios.getk('/ajax/professor/qm', {
+                  id: arr
+                }, function(data) {
+                  if (data.success && data.data) {
+                    var obj = data.data
+                    if (obj.length > 0) {
+                      for (let m = 0; m < obj.length; ++m) {
+                        obj[m].img = defaultSet.img.expert
+                        if (obj[m].hasHeadImage) {
+                          obj[m].img = ImageUrl(('head/' + obj[m].id + '_l.jpg'), true)
+                        }
+                        obj[m].auth = autho(obj[m].authType, obj[m].orgAuth, obj[m].authStatus)
+                        obj[m].offt = formatOfft(obj[m], true)
+                      }
+                      setTimeout(() => {
+                        that.likeExperts = obj
+                      }, 1000);
+                    }
+                  }
+                })
+              }
+            };
           };
         });
       },
@@ -477,7 +490,7 @@
                     if (sc) {
                       str.name = value.name
                       str.title = value.title
-                      if (str.hasHeadImage) {
+                      if (value.hasHeadImage) {
                         str.img = ImageUrl(('head/' + value.id + '_l.jpg'), true)
                       } else {
                         str.img = defaultSet.img.expert

@@ -3,12 +3,12 @@
     <div class="expert-block" v-if="ownerType==='1'">
       <div class="show-head" :style="{backgroundImage:'url('+ ownerInfo.img +')'}"></div>
       <div class="show-info">
-        <div class="info-tit">{{ownerInfo.name}}<em class="authicon icon-pro"></em></div>
+        <div class="info-tit">{{ownerInfo.name}}<em class="authicon" :class="ownerInfo.auth"></em></div>
         <div class="info-tag">{{ownerInfo.title}}</div>
         <div class="info-desc">{{ownerInfo.offt}}</div>
       </div>
     </div>
-    <div class="expert-block" v-else>
+    <div class="expert-block" v-if="ownerType==='00' || ownerType==='2'">
       <div class="show-head orgimg-box">
         <img :src="ownerInfo.logo">
       </div>
@@ -17,15 +17,16 @@
         <div class="info-desc">{{ownerInfo.title}}</div>
       </div>
     </div>
-    <el-row class="goSpan" v-if="ownerType">
-      <el-button type="primary" icon="el-icon-plus">关注</el-button>
-      <el-button type="primary">联系</el-button>
-    </el-row>
+    <div class="goSpan">
+      <collectCo v-if="ownerType==='1'" :watchOptions="{oid: ownerId, type: 1}"></collectCo>
+      <collectCo v-if="ownerType==='2'" :watchOptions="{oid: ownerId, type: 2}"></collectCo>
+    </div>
   </div>
 </template>
 <script>
   import { ImageUrl, defaultSet, autho } from '@/libs/util';
   import queryBase from '@/libs/queryBase';
+  import collectCo from '@/components/CollectCo';
 
   export default {
     props: {
@@ -41,71 +42,56 @@
         ownerInfo: ''
       };
     },
+    components: {
+      collectCo
+    },
     created() {
-      if (!this.ownerType) {
-        this.ownerCompInfo()
-      } else if (this.ownerType === '1') {
-        this.ownerProInfo()
-      } else if (this.ownerType === '2') {
-        this.ownerOrgInfo()
+      if (this.ownerId) {
+        this.ownerBaseInfo()
       }
     },
     methods: {
-      ownerProInfo() {
+      ownerBaseInfo() {
         var that = this
-        queryBase.getProfessor(that.ownerId, function(sc, value) {
-          if (sc) {
-            that.ownerInfo.name = value.name
-            that.ownerInfo.title = value.title
-            if (value.hasHeadImage) {
-              that.ownerInfo.img = ImageUrl(('head/' + value.id + '_l.jpg'), true)
-            } else {
-              that.ownerInfo.img = defaultSet.img.expert
+        if (that.ownerType === '1') {
+          queryBase.getProfessor(that.ownerId, function(sc, value) {
+            if (sc) {
+              value.auth = (value.authType, value.orgAuth, value.authStatus)
+              if (value.hasHeadImage) {
+                value.img = ImageUrl(('head/' + value.id + '_l.jpg'), true)
+              } else {
+                value.img = defaultSet.img.expert
+              }
+              that.ownerInfo = value
             }
-          }
-        })
-      },
-      ownerOrgInfo() {
-        var that = this
-        queryBase.getOrganization(that.ownerId, function(sc, value) {
-          if (sc) {
-            that.ownerInfo.name = value.name
-            that.ownerInfo.insdutry = value.insdutry.replace(/,/, ' | ')
-            if (value.hasOrgLogo) {
-              that.ownerInfo.img = ImageUrl(('org/' + value.id + '.jpg'), true)
-            } else {
-              that.ownerInfo.img = defaultSet.img.org
+          })
+        } else if (that.ownerType === '2') {
+          queryBase.getOrganization(that.ownerId, function(sc, value) {
+            if (sc) {
+              if (value.insdutry) {
+                value.insdutry = value.insdutry.replace(/,/g, ' | ')
+              }
+              if (value.hasOrgLogo) {
+                value.logo = ImageUrl(('org/' + value.id + '.jpg'), true)
+              } else {
+                value.logo = defaultSet.img.org
+              }
+              that.ownerInfo = value
             }
-          }
-        })
-      },
-      ownerCompInfo() {
-        var that = this
-        // this.$axios.get('/ajax/company/qo', {
-        //   id: this.ownerId
-        // }, (res) => {
-        //   if (res.success) {
-        //     const obj = res.data
-        //     if (obj.logo === '') {
-        //       obj.logo = defaultSet.img.org
-        //     }
-        //     this.ownerInfo = obj
-        //   };
-        // });
-        console.log(that.ownerId)
-        queryBase.getCompany(that.ownerId, function(sc, value) {
-          if (sc) {
-            that.ownerInfo.name = value.name
-            if (!value.logo) {
-              that.ownerInfo.logo = defaultSet.img.org
-            } else {
-              that.ownerInfo.logo = value.logo
+          })
+        } else if (that.ownerType === '00') {
+          queryBase.getCompany(that.ownerId, function(sc, value) {
+            if (sc) {
+              if (!value.logo) {
+                value.logo = defaultSet.img.org
+              } else {
+                value.logo = value.logo
+              }
+              that.ownerInfo = value
             }
-          }
-        })
-      },
-      headIcon(item) {
-        return autho(item.authType, item.orgAuth, item.authStatus);
+          })
+        }
+        console.log(that.ownerInfo)
       }
     }
   };

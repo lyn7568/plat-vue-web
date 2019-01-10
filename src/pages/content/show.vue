@@ -112,16 +112,18 @@
             for (let i in $info) {
               arr[i] = $info[i].professorId;
             }
-            that.$axios.getk('/ajax/professor/qm', {
-              id: arr
-            }, function(data) {
-              if (data.success && data.data) {
-                if (data.data.length > 0) {
-                  that.platExperts = data.data
-                  that.$forceUpdate()
+            if (arr.length) {
+              that.$axios.getk('/ajax/professor/qm', {
+                id: arr
+              }, function(data) {
+                if (data.success && data.data) {
+                  if (data.data.length > 0) {
+                    that.platExperts = data.data
+                    that.$forceUpdate()
+                  }
                 }
-              }
-            })
+              })
+            }
           };
         });
       },
@@ -136,16 +138,18 @@
             for (let i in $info) {
               arr[i] = $info[i].orgId;
             }
-            that.$axios.getk('/ajax/org/qm', {
-              id: arr
-            }, function(data) {
-              if (data.success && data.data) {
-                if (data.data.length > 0) {
-                  that.platOrgs = data.data
-                  that.$forceUpdate()
+            if (arr.length) {
+              that.$axios.getk('/ajax/org/qm', {
+                id: arr
+              }, function(data) {
+                if (data.success && data.data) {
+                  if (data.data.length > 0) {
+                    that.platOrgs = data.data
+                    that.$forceUpdate()
+                  }
                 }
-              }
-            })
+              })
+            }
           };
         });
       },

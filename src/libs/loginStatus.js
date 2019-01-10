@@ -3,14 +3,17 @@
  * loginStatus
  */
 import store from '@/store'
-import { Message } from 'element-ui'
+import { MessageBox } from 'element-ui'
 export function loginStatus(fn) {
   if (localStorage.getItem('userid')) {
     fn()
   } else {
-    store.dispatch('FedLogOut').then(res => {
-      Message.error('登录状态失效，请重新登录');
-      location.href = '/#/loginPlat';
-    })
+    MessageBox.confirm('您尚未登录，现在去登录？', '提示', {
+      type: 'warning'
+    }).then(() => {
+      store.dispatch('FedLogOut').then(res => {
+        location.href = '/#/loginPlat';
+      })
+    }).catch(() => {});
   }
 }

@@ -55,7 +55,7 @@
       publishProduct
     },
     computed: {
-      ...mapGetters([
+      ...Vuex.mapGetters([
         'bindCompany'
       ])
     },

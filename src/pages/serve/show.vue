@@ -5,7 +5,7 @@
         <div class="content-wrapper split-other">
           <div class="headcon-box hdetail-box">
             <div class="zoom-box">
-              <!-- <previewMagnify v-if="serveInfo.img && serveInfo.img.length" :previewImg="serveInfo.img"></previewMagnify> -->
+              <previewMagnify v-if="serveInfo.img && serveInfo.img.length" :previewImg="serveInfo.img"></previewMagnify>
             </div>
             <div class="show-info reInfo-box">
               <div class="info-tit info-tit-big">{{serveInfo.name}}</div>
@@ -48,7 +48,7 @@
       <div class="wrapper-right">
         <div class="content-wrapper">
           <div class="right-split">
-            <beyondTo :ownerId="owner.id" :ownerType="owner.type"></beyondTo>
+            <beyondTo v-if="ownerB.id" :ownerId="ownerB.id" :ownerType="ownerB.type"></beyondTo>
           </div>
           <div class="right-split" v-if="hotserves && hotserves.length">
             <div class="content-title">
@@ -73,7 +73,7 @@
 <script>
   import { urlParse, ImageUrl, defaultSet, strToArr } from '@/libs/util';
 
-  // import previewMagnify from '@/components/previewMagnify';
+  import previewMagnify from '@/components/previewMagnify';
   import shareOut from '@/components/ShareOut';
   import collectCo from '@/components/CollectCo';
   import beyondTo from '@/components/BeyondTo';
@@ -87,7 +87,7 @@
         serveId: '',
         elurl: '',
         tPosition: 'top-start',
-        owner: {
+        ownerB: {
           id: '',
           type: ''
         },
@@ -102,7 +102,7 @@
       this.getLikeserves();
     },
     components: {
-      // previewMagnify,
+      previewMagnify,
       shareOut,
       collectCo,
       beyondTo,
@@ -118,8 +118,15 @@
             if ($info.keywords) {
               $info.keywords = strToArr($info.keywords);
             }
-            if ($info.category === '1') {
-              this.owner = {
+            if ($info.images) {
+              var arr = strToArr($info.images)
+              for (let i = 0; i < arr.length; ++i) {
+                arr[i] = ImageUrl('ware' + arr[i])
+              }
+              $info.img = arr
+            }
+            if ($info.category) {
+              this.ownerB = {
                 id: $info.owner,
                 type: $info.category
               };
@@ -139,17 +146,21 @@
         }, function(res) {
           if (res.success && res.data) {
             const $data = res.data
+            var hotRes = []
             if ($data.length > 1) {
-              var oLeng = $data.length < 5 ? $data.length : 5
-              for (var i = 0; i < oLeng; i++) {
+              for (var i = 0; i < $data.length; i++) {
                 if ($data[i].images) {
-                  $data[i].img = ImageUrl('ware/' + strToArr($data[i].images))
+                  $data[i].img = ImageUrl('ware/' + strToArr($data[i].images)[0])
                 } else {
-                  $data[i].img = defaultSet.img.serve
+                  $data[i].img = defaultSet.img.service
+                }
+                if (that.resourceId !== $data[i].resourceId) {
+                  hotRes.push($data[i])
                 }
               }
             }
-            that.hotserves = $data
+            hotRes.splice(5)
+            that.hotserves = hotRes
           }
         })
       },
@@ -165,11 +176,13 @@
             for (var i = 0; i < $data.length; i++) {
               arr.push($data[i].id)
             }
-            that.$axios.getk('/ajax/ware/qm', {
-              id: arr
-            }, function(data) {
-              that.likeserves = data.data
-            })
+            if (arr.length) {
+              that.$axios.getk('/ajax/ware/qm', {
+                id: arr
+              }, function(data) {
+                that.likeserves = data.data
+              })
+            }
           }
         })
       }

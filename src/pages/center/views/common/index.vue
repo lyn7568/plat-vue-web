@@ -22,7 +22,7 @@
   import Sidebar from './Sidebar';
   export default {
     computed: {
-      ...mapGetters([
+      ...Vuex.mapGetters([
         'bindCompany',
         'headPhoto',
         'account'

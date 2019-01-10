@@ -245,7 +245,7 @@
           pageSize: that.pageSize,
           pageNo: that.pageNo
         }, function(res) {
-          if (res.success && res.data) {
+          if (res.success) {
             const obj = res.data.data
             if (obj.length > 0) {
               that.isFormSearch = true;
@@ -255,17 +255,11 @@
                 that.loadingModalShow = false;
                 that.isFormSearch = false;
               };
-            } else {
-              this.loadingModalShow = false;
-              this.isFormSearch = false;
-            };
+            }
             var liLen = that.platProducts.length;
-            if (obj.length === 0 && liLen === 0) {
+            if (res.data.total === 0 && liLen === 0) {
               that.ifDefault = true;
             };
-          } else {
-            that.loadingModalShow = false;
-            that.isFormSearch = false;
           }
         })
       },

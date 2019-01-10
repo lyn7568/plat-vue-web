@@ -14,7 +14,7 @@ import SidebarItem from './SidebarItem'
 export default {
   components: { SidebarItem },
   computed: {
-    ...mapGetters([
+    ...Vuex.mapGetters([
       'bindCompany'
     ]),
     routes() {

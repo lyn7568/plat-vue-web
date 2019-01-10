@@ -1,6 +1,6 @@
 <template>
   <a class="list-item" :href="'serve.html?id='+serveInfo.id" target="_blank">
-    <div class="list-head" :style="{backgroundImage: 'url(' + serveInfo.img + ')'}"></div>
+    <div class="list-head" :style="{backgroundImage: 'url(' + serveInfo.images + ')'}"></div>
     <div class="list-info">
       <div class="list-tit list-topic">{{serveInfo.name}}</div>
       <div class="list-owner">{{ownerName}}<em class="authicon" :class="ownerAuth"></em></div>
@@ -27,24 +27,25 @@
     },
     computed: {
       serveInfo() {
-        var obj = this.itemSingle
-        if (obj && obj.images) {
-          obj.img = ImageUrl('ware' + strToArr(obj.images)[0])
+        var objStr = this.itemSingle
+        if (objStr.images) {
+          objStr.images = ImageUrl('ware' + strToArr(objStr.images)[0])
         } else {
-          obj.img = defaultSet.img.service
+          objStr.images = defaultSet.img.service
         }
-        if (obj.category) {
-          obj.otype = obj.category
-          obj.oid = obj.owner
+        if (objStr.category) {
+          objStr.otype = objStr.category
+          objStr.oid = objStr.owner
         }
-        return obj
+        return objStr
       }
     },
     created() {
-      this.ownerByond(this.serveInfo);
+      this.ownerByond();
     },
     methods: {
-      ownerByond(item) {
+      ownerByond() {
+        var item = this.serveInfo
         var _this = this
         if (item.otype === '1') {
           queryBase.getProfessor(item.oid, function(sc, value) {

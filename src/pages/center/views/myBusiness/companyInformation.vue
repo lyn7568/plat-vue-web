@@ -252,7 +252,7 @@
       uploadFile
     },
     computed: {
-      ...mapGetters([
+      ...Vuex.mapGetters([
         'bindCompany'
       ])
     },

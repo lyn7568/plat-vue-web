@@ -5,7 +5,7 @@
         <div class="content-wrapper split-other">
           <div class="headcon-box hdetail-box">
             <div class="zoom-box">
-              <!-- <previewMagnify v-if="productInfo.img && productInfo.img.length" :previewImg="productInfo.img"></previewMagnify> -->
+              <previewMagnify v-if="productInfo.img && productInfo.img.length" :previewImg="productInfo.img"></previewMagnify>
             </div>
             <div class="show-info reInfo-box">
               <div class="info-tit">{{productInfo.name}}</div>
@@ -52,7 +52,7 @@
       <div class="wrapper-right">
         <div class="content-wrapper">
           <div class="right-split">
-            <beyondTo v-if="companyId" :ownerId="companyId"></beyondTo>
+            <beyondTo v-if="companyId" :ownerId="companyId" :ownerType="'00'"></beyondTo>
           </div>
           <div class="right-split" v-if="otherProducts && otherProducts.length">
             <div class="content-title">
@@ -75,9 +75,9 @@
 </template>
 
 <script>
-  import { urlParse, strToArr } from '@/libs/util';
+  import { urlParse, strToArr, defaultSet } from '@/libs/util';
 
-  // import previewMagnify from '@/components/previewMagnify';
+  import previewMagnify from '@/components/previewMagnify';
   import shareOut from '@/components/ShareOut';
   import beyondTo from '@/components/BeyondTo';
 
@@ -99,7 +99,7 @@
       this.getProductKeyword();
     },
     components: {
-      // previewMagnify,
+      previewMagnify,
       shareOut,
       beyondTo
     },
@@ -149,6 +149,11 @@
               var arr = []
               for (let i = 0; i < obj.length; ++i) {
                 if (obj[i].id !== that.productId) {
+                  if (obj[i].img) {
+                    obj[i].img = strToArr(obj[i].img)[0]
+                  } else {
+                    obj[i].img = defaultSet.img.product
+                  }
                   arr.push(obj[i])
                 }
               }

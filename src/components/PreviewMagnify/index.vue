@@ -103,7 +103,7 @@ export default {
       this.bimgHeight = this.oBigImg.offsetHeight;
       this.bWidth = this.zoomBox.offsetWidth;
       this.bHeight = this.zoomBox.offsetHeight;
-      this.scroll = Window.document.documentElement.scrollTop || Window.document.body.scrollTop;
+      this.scroll = document.documentElement.scrollTop || document.body.scrollTop;
     },
     selectFun(index) {
       this.selectIndex = index;
@@ -119,7 +119,7 @@ export default {
   .magnify .product-box{
     position: relative;
   }
-  .product-box .preview-box{
+  .magnify .product-box .preview-box{
     width: 360px;
     height: 270px;
     border: 1px solid #dededd;
@@ -129,7 +129,7 @@ export default {
     align-items:center;
     overflow:hidden;
   }
-  .preview-box .hover-box{
+  .magnify .product-box .preview-box .hover-box{
     position: absolute;
     display: none;
     left: 0;
@@ -141,28 +141,28 @@ export default {
     cursor: move;
     user-select: none;
   }
-  .preview-box .hover-box:hover .hover-box{
+  .magnify .product-box .preview-box .hover-box:hover .hover-box{
       display: block;
   }
-  .preview-box .hover-box img{
+  .magnify .product-box .preview-box img{
     max-width: 360px;
     max-height: 270px;
   }
 
-  .product-box .tb-thumb{
+  .magnify .product-box .tb-thumb{
     margin:10px 0 0;
     overflow:hidden;
   }
-  .tb-thumb li{
+  .magnify .product-box .tb-thumb li{
     background:none repeat scroll 0 0 transparent;
     float:left;
     margin:0 6px 0 0;
     overflow:hidden;
   }
-  .tb-thumb li .tb-pic{
+  .magnify .product-box .tb-thumb li .tb-pic{
     border: 1px solid #E5E5E5;
   }
-  .tb-thumb li .tb-pic a{
+  .magnify .product-box .tb-thumb li .tb-pic a{
     display:block;
     height: 48px;
     width: 66px;
@@ -170,28 +170,29 @@ export default {
     justify-content: center;
     align-items:center;
   }
-  .tb-thumb li .tb-pic img{
+  .magnify .product-box .tb-thumb li .tb-pic img{
     max-height: 48px;
     max-width: 66px;
   }
 
-  .tb-thumb li.tb-selected{
+  .magnify .product-box .tb-thumb li.tb-selected{
     border: 3px solid #2693ec;
   }
-  .tb-thumb li.tb-selected .tb-pic{
+  .magnify .product-box .tb-thumb li.tb-selected .tb-pic{
     background-color: #FFFFFF;
     border: medium none;
   }
-  .tb-thumb li.tb-selected .tb-pic a{
+  .magnify .product-box .tb-thumb li.tb-selected .tb-pic a{
     height: 44px;
     width: 58px;
   }
-  .tb-thumb li.tb-selected .tb-pic img{
+  .magnify .product-box .tb-thumb li.tb-selected .tb-pic img{
     max-height: 44px;
     max-width: 58px;
   }
 
   .magnify .zoom-box{
+    background:rgba(0,0,0,.2);
     width: 300px;
     height: 300px;
     overflow: hidden;
@@ -201,7 +202,7 @@ export default {
     top: 0;
     z-index: 700;
   }
-  .zoom-box img{
+  .magnify .zoom-box img{
     position: absolute;
     top: 0;
     left: 0;

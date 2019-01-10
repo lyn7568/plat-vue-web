@@ -40,8 +40,8 @@
               <uploadFile :uploadImg='uploadImg' v-on:uploadfun="uploadfun" :upImgsStr="upImgsStr"></uploadFile>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item style="text-align: center;margin:15px 0">
+          <el-col :span="24" class="el-btn-col">
+            <el-form-item class="el-btn-col-box">
               <el-button type="primary" @click="submitForm('ruleForm2')">保存修改</el-button>
             </el-form-item>
           </el-col>
@@ -110,11 +110,6 @@
           this.upImgsStr = response.head;
           this.province = `${response.addr.substr(0, 2)}0000`;
           this.city = response.addr;
-        } else {
-          this.$store.dispatch('FedLogOut').then(res => {
-            this.$message.error('登录状态失效，请重新登录');
-            this.$router.push({ path: '/loginPlat' });
-          })
         }
       })
     },
