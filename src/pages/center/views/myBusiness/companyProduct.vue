@@ -6,8 +6,8 @@
           <div class="search-wrapper" align="right">
             <el-button type="primary" icon="el-icon-edit" @click="handerAdd">发布产品</el-button>
           </div>
-          <div class="con-box" v-loading="tableLoading">
-            <div class="con-item" v-if="platProducts.length" v-for="item in platProducts" :key="item.index">
+          <div class="con-box" v-if="platProducts.length" v-loading="tableLoading">
+            <div class="con-item" v-for="item in platProducts" :key="item.index">
               <baseProduct :itemSingle="item" :showTime="true"></baseProduct>
               <div class="dele">
                 <el-button type="primary" size="mini" @click.stop="handerUpdate(item.id)">修改</el-button>
@@ -25,6 +25,7 @@
               </el-pagination>
             </div>
           </div>
+          <defaultPage v-else></defaultPage>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -113,9 +114,8 @@
       },
       handerDel(id) {
         var that = this
-        this.$cofirm('删除后，该产品将不能恢复，您确定要删除吗？', '提示', {
-          type: 'warning',
-          center: true
+        this.$cofirm('删除后，该产品将不能恢复，您确定要删除吗？', '删除产品', {
+          type: 'warning'
         }).then(() => {
           that.$axios.post('/ajax/product/delete', {
             id: id

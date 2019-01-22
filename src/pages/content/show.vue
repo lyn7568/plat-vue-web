@@ -45,8 +45,8 @@
       </div>
       <div class="wrapper-right">
         <div class="wrapper-right">
-          <div class="block-wrapper" v-if="adinfo.length" v-for="item in adinfo" :key="item.index">
-            <a class="ad-wrapper" :href="item.adUrl" target="_blank">
+          <div class="block-wrapper" v-if="adinfo.length">
+            <a class="ad-wrapper" v-for="item in adinfo" :key="item.index" :href="item.adUrl" target="_blank">
               <img :src="item.imgUrl" width="280" height="200">
             </a>
           </div>

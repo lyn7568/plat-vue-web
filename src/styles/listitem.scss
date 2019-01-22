@@ -79,9 +79,11 @@
 .list-item{
   width: 100%;
   display:flex;
+  position: relative;
   align-items:center;
   background:#fff;
   padding:20px;
+  box-sizing: border-box;
   @include border-1px();
   &:last-child{
     @include border-none();
@@ -120,6 +122,16 @@
     .list-desc{
       @include text-ellipsis-n(2,20px);
       color:$commonFont;
+    }
+  }
+  .list-link{
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    margin-top:-12px;
+    .el-button{
+      padding: 6px 8px;
+      font-size: 12px;
     }
   }
 }

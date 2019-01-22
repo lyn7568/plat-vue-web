@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <div class="logo-wrapper"></div>
+    <router-link to="home" class="logo-wrapper"></router-link>
     <div class="form-wrapper">
       <div class="form-contain">
         <p class="form-title">注册</p>

@@ -5,7 +5,7 @@ const constantRouterMap = [
     path: '/',
     name: 'personalCenter',
     redirect: { name: 'modifyData' },
-    meta: { title: '个人中心' },
+    meta: { title: '个人中心', requireAuth: true },
     component: Layout,
     children: [
       {
@@ -13,35 +13,19 @@ const constantRouterMap = [
         alwaysShow: true,
         component: (resolve) => require(['../views/modifyData'], resolve),
         name: 'modifyData',
-        meta: { title: '修改资料', requireAuth: true }
+        meta: { title: '修改资料' }
       },
-      // {
-      //   path: '/myNeeds',
-      //   component: (resolve) => require(['../views/myNeeds/index'], resolve),
-      //   name: 'myNeeds',
-      //   meta: { title: '我的需求' },
-      //   children: [{
-      //     path: '/modifyDemand',
-      //     component: (resolve) => require(['../views/myNeeds/modifyDemand'], resolve),
-      //     name: 'modifyDemand',
-      //     meta: { title: '修改需求' }
-      //   }, {
-      //     path: '/examineDemand',
-      //     component: (resolve) => require(['../views/myNeeds/examineDemand'], resolve),
-      //     name: 'examineDemand',
-      //     meta: { title: '查看需求' }
-      //   }, {
-      //     path: '/myDemand',
-      //     component: (resolve) => require(['../views/myNeeds/myNeed'], resolve),
-      //     name: 'myDemand',
-      //     meta: { title: '我的需求' }
-      //   }]
-      // },
+      {
+        path: '/myDemands',
+        component: (resolve) => require(['../views/myDemands/index'], resolve),
+        name: 'myDemands',
+        meta: { title: '我的需求' }
+      },
       {
         path: '/myBusiness',
-        component: (resolve) => require(['../views/myNeeds/index'], resolve),
+        component: (resolve) => require(['../views/myBusiness/index'], resolve),
         name: 'myBusiness',
-        meta: { title: '我的企业', requireAuth: true },
+        meta: { title: '我的企业' },
         children: [
           {
             path: '/companyInformation',
@@ -61,14 +45,14 @@ const constantRouterMap = [
         alwaysShow: true,
         component: (resolve) => require(['../views/attentionCollect'], resolve),
         name: 'attentionCollect',
-        meta: { title: '关注收藏', requireAuth: true }
+        meta: { title: '关注收藏' }
       },
       {
         path: '/modifyPassword',
         alwaysShow: true,
         component: (resolve) => require(['../views/modifyPassword'], resolve),
         name: 'modifyPassword',
-        meta: { title: '修改密码', requireAuth: true }
+        meta: { title: '修改密码' }
       }
     ]
   }

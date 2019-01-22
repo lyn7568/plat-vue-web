@@ -1,6 +1,6 @@
 <template>
-  <div class="block-container">
-    <eItem v-if="userDataS && userDataS.length" v-for="item in userDataS" :key="item.index" :itemSinger="item"></eItem>
+  <div class="block-container" v-if="userData && userData.length">
+    <eItem v-for="item in userData" :key="item.index" :itemSinger="item"></eItem>
   </div>
 </template>
 
@@ -18,12 +18,6 @@
       return {
         userData: []
       };
-    },
-    computed: {
-      userDataS() {
-        // return this.num ? this.userData.splice(this.num) : this.userData
-        return this.userData
-      }
     },
     components: {
       eItem

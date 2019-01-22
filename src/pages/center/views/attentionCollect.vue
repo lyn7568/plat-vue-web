@@ -2,34 +2,44 @@
   <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane v-for="item in navbarArray" :key="item.index" :label="item.text" :name="item.wtype" v-loading="loadingPane">
       <div v-if="watchList && watchList.length">
-        <div class="con-item" v-if="item.wtype===activeName && activeName==='1'">
-          <baseExpert v-for="watc in watchList" :key="watc.index" :itemSingle="watc"></baseExpert>
-          <div class="dele">
-            <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+        <div v-if="item.wtype===activeName && activeName==='1'">
+          <div class="con-item" v-for="watc in watchList" :key="watc.index">
+            <baseExpert :itemSingle="watc"></baseExpert>
+            <div class="dele">
+              <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+            </div>
           </div>
         </div>
-        <div class="con-item" v-if="item.wtype===activeName && activeName==='2'">
-          <baseOrg v-for="watc in watchList" :key="watc.index" :itemSingle="watc"></baseOrg>
-          <div class="dele">
-            <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+        <div v-if="item.wtype===activeName && activeName==='2'">
+          <div class="con-item" v-for="watc in watchList" :key="watc.index">
+            <baseOrg :itemSingle="watc"></baseOrg>
+            <div class="dele">
+              <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+            </div>
           </div>
         </div>
-        <div class="con-item" v-if="item.wtype===activeName && activeName==='3'">
-          <baseService v-for="watc in watchList" :key="watc.index" :itemSingle="watc"></baseService>
-          <div class="dele">
-            <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+        <div v-if="item.wtype===activeName && activeName==='3'">
+          <div class="con-item" v-for="watc in watchList" :key="watc.index">
+            <baseService :itemSingle="watc"></baseService>
+            <div class="dele">
+              <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+            </div>
           </div>
         </div>
-        <div class="con-item" v-if="item.wtype===activeName && activeName==='4'">
-          <baseResource v-for="watc in watchList" :key="watc.index" :itemSingle="watc"></baseResource>
-          <div class="dele">
-            <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+        <div v-if="item.wtype===activeName && activeName==='4'">
+          <div class="con-item" v-for="watc in watchList" :key="watc.index">
+            <baseResource :itemSingle="watc"></baseResource>
+            <div class="dele">
+              <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+            </div>
           </div>
         </div>
-        <div class="con-item" v-if="item.wtype===activeName && activeName==='5'">
-          <baseResult v-for="watc in watchList" :key="watc.index" :itemSingle="watc"></baseResult>
-          <div class="dele">
-            <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+        <div v-if="item.wtype===activeName && activeName==='5'">
+          <div class="con-item" v-for="watc in watchList" :key="watc.index">
+            <baseResult :itemSingle="watc"></baseResult>
+            <div class="dele">
+              <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+            </div>
           </div>
         </div>
       </div>

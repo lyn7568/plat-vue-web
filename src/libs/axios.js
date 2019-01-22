@@ -1,6 +1,7 @@
-import axios from 'axios';
-import qs from 'qs';
-import { Message } from 'element-ui';
+import axios from 'axios'
+import qs from 'qs'
+import store from '@/store'
+import { Message } from 'element-ui'
 
 let axiosUtil = axios.create({
     baseURL: process.env.BASE_API
@@ -30,6 +31,11 @@ axiosUtil.interceptors.response.use(function (response) {
     }
     if (!taR.success && taR.code === 0) {
       Message.error(taR.msg || taR.detailMsg)
+    }
+    if (!taR.success && taR.code === 1) {
+      store.dispatch('FedLogOut').then(() => {
+        Message.error('登录状态失效，请重新登录')
+      })
     }
     return taR
   } else {

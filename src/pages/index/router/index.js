@@ -118,6 +118,26 @@ const constantRouterMap = [
       name: 'about',
       meta: { title: '关于平台' }
     }]
+  },
+  {
+    path: '',
+    component: Layout,
+    meta: { requireAuth: true },
+    children: [{
+      path: '/miniChat',
+      component: (resolve) => require(['../views/MiniChat/index.vue'], resolve),
+      name: 'miniChat'
+    }]
+  },
+  {
+    path: '',
+    component: Layout,
+    meta: { requireAuth: true },
+    children: [{
+      path: '/inform',
+      component: (resolve) => require(['../views/InformList/index.vue'], resolve),
+      name: 'inform'
+    }]
   }
 ];
 

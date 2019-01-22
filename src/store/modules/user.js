@@ -42,6 +42,8 @@ const user = {
               localStorage.setItem('userid', dataS.id);
               localStorage.setItem('uaccount', dataS.account);
               localStorage.setItem('bcid', dataS.bindCompany);
+              localStorage.setItem('curcomp', dataS.comp);
+              localStorage.setItem('curphone', dataS.linkPhone);
             }
           }
           resolve(response)
@@ -64,6 +66,8 @@ const user = {
             localStorage.setItem('userid', dataS.id);
             localStorage.setItem('uaccount', dataS.account);
             localStorage.setItem('bcid', dataS.bindCompany);
+            localStorage.setItem('curcomp', dataS.comp);
+            localStorage.setItem('curphone', dataS.linkPhone);
           } else {
             commit('SET_USERID', '')
             commit('SET_ACCOUNT', '')
@@ -71,6 +75,8 @@ const user = {
             localStorage.removeItem('userid');
             localStorage.removeItem('uaccount');
             localStorage.removeItem('bcid');
+            localStorage.removeItem('curcomp');
+            localStorage.removeItem('curphone');
           }
           resolve(response)
         }).catch(error => {
@@ -90,6 +96,8 @@ const user = {
           localStorage.removeItem('userid');
           localStorage.removeItem('uaccount');
           localStorage.removeItem('bcid');
+          localStorage.removeItem('curcomp');
+          localStorage.removeItem('curphone');
           resolve()
         }).catch(error => {
           reject(error)

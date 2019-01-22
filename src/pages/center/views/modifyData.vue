@@ -32,7 +32,7 @@
               <el-input v-model="ruleForm2.email" placeholder="请输入联系邮箱" maxlength="100"></el-input>
             </el-form-item>
             <el-form-item label="所在城市" prop="addr">
-              <cityPicker @paren="toshow" :addrCode="ruleForm2.addr"></cityPicker>
+              <cityPicker v-if="ruleForm2.addr" @paren="toshow" :addrCode="ruleForm2.addr"></cityPicker>
             </el-form-item>
           </el-col>
           <el-col :span="12">

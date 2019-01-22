@@ -62,6 +62,23 @@
           <div class="right-split">
             <beyondTo v-if="owner.id" :ownerId="owner.id" :ownerType="owner.type"></beyondTo>
           </div>
+          <div class="right-split" v-if="reslinkmans.length">
+            <div class="content-title">
+              <span>联系人</span>
+            </div>
+            <div class="content">
+              <a v-for="item in reslinkmans" :key="item.index" class="list-item">
+                <div class="list-head" style="border-radius: 50%" :style="{backgroundImage: 'url(' + item.uimg + ')'}"></div>
+                <div class="list-info">
+                  <div class="list-owner">{{item.professor.name}}</div>
+                  <div class="list-desc">{{item.professor.title || item.professor.office}}</div>
+                </div>
+                <div class="list-link">
+                  <contactChat :contactOptions="{oid: item.professorId }"></contactChat>
+                </div>
+              </a>
+            </div>
+          </div>
           <div class="right-split" v-if="hotResources && hotResources.length">
             <div class="content-title">
               <span>热门资源</span>
@@ -89,6 +106,7 @@
   import shareOut from '@/components/ShareOut';
   import collectCo from '@/components/CollectCo';
   import beyondTo from '@/components/BeyondTo';
+  import contactChat from '@/components/ContactChat';
 
   import baseResource from '@/components/subTemplate/BaseResource';
 
@@ -104,7 +122,8 @@
           type: ''
         },
         hotResources: '',
-        likeResources: ''
+        likeResources: '',
+        reslinkmans: []
       };
     },
     created() {
@@ -112,12 +131,14 @@
       this.elurl = window.location.href;
       this.getResourceInfo();
       this.getLikeResources();
+      this.getLinkmans();
     },
     components: {
       previewMagnify,
       shareOut,
       collectCo,
       beyondTo,
+      contactChat,
       baseResource
     },
     methods: {
@@ -189,6 +210,26 @@
           if (res.success && res.data) {
             const $data = res.data
             that.likeResources = $data
+          }
+        })
+      },
+      getLinkmans() {
+        var that = this
+        this.$axios.getk('/ajax/resource/qaLinkman',{
+          resourceId: that.resourceId
+        }, function(data) {
+          if (data.success) {
+            var $data = data.data;
+            if ($data.length > 0) {
+              for (var i = 0; i < $data.length; i++) {
+                if ($data[i].professor.hasHeadImage) {
+                  $data[i].uimg = ImageUrl(('head/' + $data[i].professorId + '_l.jpg'), true)
+                } else {
+                  $data[i].uimg = defaultSet.img.expert
+                }
+              }
+              that.reslinkmans = $data
+            }
           }
         })
       }

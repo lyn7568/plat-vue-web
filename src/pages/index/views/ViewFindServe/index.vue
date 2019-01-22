@@ -15,16 +15,16 @@
           </ul>
         </div> -->
         <div class="tab-contain">
-          <div v-show="!ifDefault">
-            <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
+          <div v-show="!ifDefault" v-if="platServices.length">
+            <baseService v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
             <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
           </div>
           <defaultPage v-show="ifDefault"></defaultPage>
         </div>
       </div>
     </div>
-    <div class="wrapper-right">
-      <div class="block-wrapper" v-if="adinfo.length" v-for="item in adinfo" :key="item.index">
+    <div class="wrapper-right" v-if="adinfo.length">
+      <div class="block-wrapper" v-for="item in adinfo" :key="item.index">
         <a class="ad-wrapper" :href="item.adUrl" target="_blank">
           <img :src="item.imgUrl" width="280" height="200">
         </a>

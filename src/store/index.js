@@ -1,9 +1,11 @@
 import user from './modules/user';
+import chat from './modules/chat';
 import getters from './getters';
 
 const store = new Vuex.Store({
   modules: {
-    user
+    user,
+    chat
   },
   getters
 })

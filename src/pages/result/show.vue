@@ -18,31 +18,31 @@
             <div class="content">
               <el-row :gutter="10" class="rel-detail">
                 <el-col :span="12" v-if="patentInfo.code">
-                  <el-col :span="5">专利号：</el-col>
-                  <el-col :span="19">{{patentInfo.code}}</el-col>
+                  <el-col :span="4">专利号:</el-col>
+                  <el-col :span="20">{{patentInfo.code}}</el-col>
                 </el-col>
                 <el-col :span="12" v-if="patentInfo.pubDay">
-                  <el-col :span="5">公开日：</el-col>
-                  <el-col :span="19">{{patentInfo.pubDay}}</el-col>
+                  <el-col :span="4">公开日:</el-col>
+                  <el-col :span="20">{{patentInfo.pubDay}}</el-col>
                 </el-col>
                 <el-col :span="12" v-if="patentInfo.reqCode">
-                  <el-col :span="5">申请号：</el-col>
-                  <el-col :span="19">{{patentInfo.reqCode}}</el-col>
+                  <el-col :span="4">申请号:</el-col>
+                  <el-col :span="20">{{patentInfo.reqCode}}</el-col>
                 </el-col>
                 <el-col :span="12" v-if="patentInfo.pubDay">
-                  <el-col :span="5">申请日：</el-col>
-                  <el-col :span="19">{{patentInfo.pubDay}}</el-col>
+                  <el-col :span="4">申请日:</el-col>
+                  <el-col :span="20">{{patentInfo.pubDay}}</el-col>
                 </el-col>
                 <el-col :span="12" v-if="patentInfo.reqPerson">
-                  <el-col :span="5">申请人：</el-col>
-                  <el-col :span="19">{{patentInfo.reqPerson}}</el-col>
+                  <el-col :span="4">申请人:</el-col>
+                  <el-col :span="20">{{patentInfo.reqPerson}}</el-col>
                 </el-col>
                 <el-col :span="24" v-if="patentInfo.summary">
-                  <el-col :span="24">摘要：</el-col>
+                  <el-col :span="24">摘要:</el-col>
                   <el-col :span="24" v-html="patentInfo.summary"></el-col>
                 </el-col>
                 <el-col :span="24" v-if="patentInfo.cooperation">
-                  <el-col :span="24">合作备注：</el-col>
+                  <el-col :span="24">合作备注:</el-col>
                   <el-col :span="24" v-html="patentInfo.cooperation"></el-col>
                 </el-col>
                 <el-col :span="24" v-if="patentInfo.keywords && patentInfo.keywords.length">
@@ -60,15 +60,18 @@
             <div class="content">
               <el-row :gutter="10" style="width:100%">
                 <el-col :span="12" class="item-col" v-for="item in patentAuthors" :key="item.index">
-                  <a v-if="item.professorId.substring(0, 1) !== '#'" class="list-item" :href="'expert.html?id='+item.professorId" target="_blank">
-                    <div class="list-head" :style="{backgroundImage: 'url(' + headUrl(item) + ')'}"></div>
+                  <div v-if="item.professorId.substring(0, 1) !== '#' && item.owner" class="list-item">
+                    <a :href="'expert.html?id='+item.professorId" target="_blank"><div class="list-head" style="border-radius:50%" :style="{backgroundImage: 'url(' + item.owner.img + ')'}"></div></a>
                     <div class="list-info">
-                      <div class="list-tit">{{item.name}}</div>
-                      <div class="list-desc">{{item.title}}</div>
+                      <div class="list-tit">{{item.owner.name}}</div>
+                      <div class="list-desc">{{item.owner.title}}</div>
                     </div>
-                  </a>
+                    <div class="list-link" style="right: 0">
+                      <contactChat :contactOptions="{oid: item.professorId }"></contactChat>
+                    </div>
+                  </div>
                   <div class="list-item" v-else>
-                    <div class="list-head" :style="{backgroundImage: 'url(' + headUrl(item) + ')'}"></div>
+                    <div class="list-head" style="border-radius:50%" :style="{backgroundImage: 'url(' + defaultExpertImg + ')'}"></div>
                     <div class="list-info">
                       <div class="list-tit">{{item.name}}</div>
                     </div>
@@ -89,8 +92,8 @@
       </div>
       <div class="wrapper-right">
         <div class="wrapper-right">
-          <div class="block-wrapper" v-if="adinfo.length" v-for="item in adinfo" :key="item.index">
-            <a class="ad-wrapper" :href="item.adUrl" target="_blank">
+          <div class="block-wrapper" v-if="adinfo.length">
+            <a class="ad-wrapper" v-for="item in adinfo" :key="item.index" :href="item.adUrl" target="_blank">
               <img :src="item.imgUrl" width="280" height="200">
             </a>
           </div>
@@ -106,6 +109,7 @@
 
   import shareOut from '@/components/ShareOut';
   import collectCo from '@/components/CollectCo';
+  import contactChat from '@/components/ContactChat';
 
   import baseResult from '@/components/subTemplate/BaseResult';
   import queryBase from '@/libs/queryBase';
@@ -120,7 +124,8 @@
         patentId: '',
         elurl: '',
         likePatents: '',
-        patentAuthors: ''
+        patentAuthors: '',
+        defaultExpertImg: defaultSet.img.expert
       };
     },
     created() {
@@ -133,6 +138,7 @@
     components: {
       shareOut,
       collectCo,
+      contactChat,
       baseResult
     },
     methods: {
@@ -164,33 +170,25 @@
             const $data = res.data
             if ($data.length > 0) {
               that.authorCount = $data.length
-              var hdata = { num: 1, data: $data }
               for (let i = 0; i < $data.length; ++i) {
-                hdata.num++
                 if ($data[i].professorId.substring(0, 1) !== '#') {
-                  var item = $data[i]
-                  queryBase.getProfessor(item.professorId, function(sc, value) {
-                    alert(333)
+                  queryBase.getProfessor($data[i].professorId, function(sc, value) {
                     if (sc) {
-                      hdata.num--
-                      item.name = value.name;
+                      if (value.hasHeadImage) {
+                        value.img = ImageUrl(('head/' + value.id + '_l.jpg'), true)
+                      } else {
+                        value.img = defaultSet.img.expert
+                      }
+                      $data[i].owner = value
                       that.$forceUpdate();
                     }
                   });
-                } else {
-                  hdata.num--
                 }
               }
-              hdata.num--
-              if (hdata.num === 0) {
-                that.patentAuthors = $data
-              }
+              that.patentAuthors = $data
             }
           }
         })
-      },
-      headUrl(item) {
-        return item.hasHeadImage ? ImageUrl(('head/' + item.id + '_l.jpg'), true) : defaultSet.img.expert;
       },
       getLikePatents() {
         var that = this

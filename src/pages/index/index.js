@@ -2,6 +2,7 @@ import '@/libs/common.js';
 import App from './index.vue';
 import router from './router';
 import store from '@/store';
+import './permission';
 
 new Vue({
   el: '#app',

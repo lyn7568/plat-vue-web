@@ -1,20 +1,5 @@
 <template>
   <div class="home-main">
-    <!-- <el-dialog title="发布需求" :visible.sync="dialogFormVisible" width="700px">
-      <div class="tip-show">
-        <div class="tip-h1">免费发布需求到科袖网，让企业没有难搞的研发</div>
-        <div class="tip-h2">1. 发布需求  →  2. 为您对接专家或机构  →  3. 登录科袖网进行沟通  →  4. 开展合作，解决您的需求</div>
-      </div>
-      <el-tabs class="tab-show" v-model="activeName" type="card" >
-        <el-tab-pane label="注册科袖网，发布需求" name="first">
-          <demandIssue ref="issueDemand" :dialogFormVisible="dialogFormVisible" v-on:dialogChanged="getChildrenChange($event)"></demandIssue>
-        </el-tab-pane>
-        <el-tab-pane label="已有账户，快速发布" name="second">
-          <demandIssueLogin ref="issueDemand" :dialogFormVisible="dialogFormVisible" v-on:dialogChangedLogin="getChildrenChangeLogin($event)"></demandIssueLogin>
-        </el-tab-pane>
-      </el-tabs>
-    </el-dialog>-->
-
     <div class="block-wrapper">
       <div class="wrapper-left video-wrapper">
         <!-- <div class="video-mask" @click="showVideo">
@@ -32,9 +17,10 @@
           将您的需求发布到科袖网，<br>
           我们为您对接专家和各类专业机构。
         </p>
-        <el-button type="primary" @click="clickAlertDemand" style="margin-top:30px">发布需求</el-button>
+        <el-button type="primary" @click="publishDemand" style="margin-top:30px">发布需求</el-button>
       </div>
     </div>
+    <demandIssue ref="demandIssue" :operateM="operateM"></demandIssue>
 
     <div class="block-wrapper">
       <div class="wrapper-left">
@@ -177,16 +163,17 @@
 <script>
   import { commenTime, defaultSet, ImageUrl, strToArr } from '@/libs/util';
   import queryBase from '@/libs/queryBase';
+  import { loginStatus } from '@/libs/loginStatus';
 
   import orgItem from '../ViewOrganization/orgItem';
   import expItem from '../ViewExpertPool/expItem';
-  // import demandIssue from '../form-views/DemandIssue';
-  // import demandIssueLogin from '../form-views/DemandIssueLogin';
+  import demandIssue from '@/pages/center/views/myDemands/DemandIssue';
 
   export default {
     data() {
       return {
         /* eslint-disable no-undef */
+        operateM: {},
         platimgurl: PLAT.info.platimgurl,
         activeName: '1',
         conCatalog: [
@@ -216,8 +203,7 @@
         ownerInfo: '',
         aboutUs: '',
         inputSer: '',
-        inputRes: '',
-        dialogFormVisible: false
+        inputRes: ''
       };
     },
     created() {
@@ -272,19 +258,19 @@
         observeParents: true // 修改swiper的父元素时，自动初始化swiper
       });
     },
+    components: {
+      orgItem,
+      expItem,
+      demandIssue
+    },
     methods: {
-      getChildrenChange(msg) {
-        this.dialogFormVisible = msg;
+      publishDemand() {
+        var that = this
+        loginStatus(function() {
+          that.operateM = { tit: '发布需求', flag: true }
+          that.$refs.demandIssue.parentFun()
+        })
       },
-      getChildrenChangeLogin(msg) {
-        this.dialogFormVisible = msg;
-      },
-      clickAlertDemand() {
-        this.dialogFormVisible = true;
-      },
-      // pubDemand() {
-      //   this.$refs.issueDemand.submitForm('ruleForm');
-      // },
       queryPaltNews() {
         var that = this
         this.$axios.get('/ajax/article/pq', {
@@ -419,12 +405,6 @@
           });
         }
       }
-    },
-    components: {
-      orgItem,
-      expItem
-      // demandIssue,
-      // demandIssueLogin
     },
     beforeDestroy() {
       this.latestCmpSwiper.destroy()
@@ -621,23 +601,6 @@
             }
           }
         }
-      }
-    }
-
-    .tip-show{
-      background:$mainColor;
-      text-align:center;
-      justify-content: space-between;
-      margin:-30px -20px 10px;
-      padding:20px;
-      color:#fff;
-      .tip-h1{
-        font-size:16px;
-        line-height:40px;
-      }
-      .tip-h2{
-        font-size:12px;
-        line-height:30px;
       }
     }
     .tab-show{

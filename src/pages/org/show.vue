@@ -16,7 +16,7 @@
           </div>
           <el-row class="goSpan" :gutter="10">
             <el-col :span="12"><collectCo :watchOptions="{oid: orgId, type: 2}"></collectCo></el-col>
-            <!-- <el-col :span="12"><el-button type="primary">联系</el-button></el-col> -->
+            <el-col :span="12"><contactChat :contactOptions="{oid: orgId, type: 1}"></contactChat></el-col>
           </el-row>
         </div>
       </div>
@@ -31,8 +31,8 @@
                   <span>可提供服务</span>
                   <span class="content-more" @click="activeName='second'">更多</span>
                 </div>
-                <div class="content content-nf">
-                  <baseService v-if="platThreeServices.length" v-for="item in platThreeServices" :key="item.index" :itemSingle="item"></baseService>
+                <div class="content content-nf" v-if="platThreeServices.length">
+                  <baseService v-for="item in platThreeServices" :key="item.index" :itemSingle="item"></baseService>
                 </div>
               </div>
               <div class="inner-wrapper" v-if="platThreeResources.length">
@@ -40,8 +40,8 @@
                   <span>可共享资源</span>
                   <span class="content-more" @click="activeName='third'">更多</span>
                 </div>
-                <div class="content content-nf">
-                  <baseResource v-if="platThreeResources.length" v-for="item in platThreeResources" :key="item.index" :itemSingle="item"></baseResource>
+                <div class="content content-nf" v-if="platThreeResources.length">
+                  <baseResource v-for="item in platThreeResources" :key="item.index" :itemSingle="item"></baseResource>
                 </div>
               </div>
             </div>
@@ -66,14 +66,14 @@
           </el-tab-pane>
           <el-tab-pane :label="'服务 ' + (serCount>0 ? serCount : '')" name="second">
             <div v-if="!ifDefault && platServices.length">
-              <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
+              <baseService v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
               <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
             </div>
             <defaultPage v-else></defaultPage>
           </el-tab-pane>
           <el-tab-pane :label="'资源 ' + (resCount>0 ? resCount : '')" name="third">
             <div v-if="!ifDefault2 && platResources.length">
-              <baseResource v-if="platResources.length" v-for="item in platResources" :key="item.index" :itemSingle="item"></baseResource>
+              <baseResource v-for="item in platResources" :key="item.index" :itemSingle="item"></baseResource>
               <Loading v-show="loadingModalShow2" :loadingComplete="loadingComplete2" :isLoading="isLoading2" v-on:upup="searchLower2"></Loading>
             </div>
             <defaultPage v-else></defaultPage>
@@ -169,6 +169,7 @@
 
   import shareOut from '@/components/ShareOut';
   import collectCo from '@/components/CollectCo';
+  import contactChat from '@/components/ContactChat';
   import baseService from '@/components/subTemplate/BaseService';
   import baseResource from '@/components/subTemplate/BaseResource';
 
@@ -245,6 +246,7 @@
     components: {
       shareOut,
       collectCo,
+      contactChat,
       baseService,
       baseResource
     },

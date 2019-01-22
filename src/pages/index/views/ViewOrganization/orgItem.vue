@@ -1,6 +1,6 @@
 <template>
-  <div class="block-container">
-    <oItem v-if="orgData && orgData.length" v-for="item in orgData" :key="item.index" :itemSinger="item"></oItem>
+  <div class="block-container" v-if="orgData && orgData.length">
+    <oItem v-for="item in orgData" :key="item.index" :itemSinger="item"></oItem>
   </div>
 </template>
 

@@ -6,12 +6,14 @@
 var objCache = {
   professor: {},
   organization: {},
-  company: {}
+  company: {},
+  pUser: {},
 }
 var objHcache = {
   professor: {},
   organization: {},
-  company: {}
+  company: {},
+  pUser: {}
 }
 var objCacheHandler = {
   professor: function(id) {
@@ -77,6 +79,28 @@ var objCacheHandler = {
         hc[i](false)
       }
     })
+  },
+  pUser: function(id) {
+    var hc = objHcache.pUser[id]
+    Vue.axios.get('/ajax/sys/user/get', {
+      id: id
+    }, function(data) {
+      delete objHcache.pUser[id]
+      if (data.success) {
+        objCache.pUser[id] = data.data
+        for (let i = 0; i < hc.length; ++i) {
+          hc[i](true, data.data)
+        }
+      } else {
+        for (let i = 0; i < hc.length; ++i) {
+          hc[i](false)
+        }
+      }
+    }, function() {
+      for (let i = 0; i < hc.length; ++i) {
+        hc[i](false)
+      }
+    })
   }
 }
 var cacheModel = {
@@ -119,6 +143,20 @@ var cacheModel = {
         objHcache.company[id] = []
         objHcache.company[id].push(handler)
         objCacheHandler.company(id)
+      }
+    }
+  },
+  getPUser: function(id, handler) {
+    var data = objCache.pUser[id]
+    if (data) {
+      handler(true, data)
+    } else {
+      if (objHcache.pUser[id]) {
+        objHcache.pUser[id].push(handler)
+      } else {
+        objHcache.pUser[id] = []
+        objHcache.pUser[id].push(handler)
+        objCacheHandler.pUser(id)
       }
     }
   }

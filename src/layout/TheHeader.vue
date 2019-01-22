@@ -10,15 +10,15 @@
         </div>
         <div class="wrapper-right">
           <div v-if="account">
-            <!-- <router-link class="marLeft" to='/loginPlat' tag="a">通知(99+)</router-link>
-            <router-link class="marLeft" to='/loginPlat' tag="a">消息(99+)</router-link> -->
+            <!-- <a class="marLeft marLeft_1" href='/#/inform'>通知({{informCount}})</a> -->
+            <a class="marLeft marLeft_1" href='/#/miniChat'>消息({{unreadCount}})</a>
             <el-dropdown>
               <span class="el-dropdown-link" style="cursor:pointer">
                 {{account}}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <a href="center.html#/modifyData"><el-dropdown-item>修改资料</el-dropdown-item></a>
-                <!-- <a href="center.html#/myDemand"><el-dropdown-item>我的需求</el-dropdown-item></a> -->
+                <a href="center.html#/myDemands"><el-dropdown-item>我的需求</el-dropdown-item></a>
                 <a href="center.html#/companyInformation" v-if="bindCompany"><el-dropdown-item>我的企业</el-dropdown-item></a>
                 <a href="center.html#/attentionCollect"><el-dropdown-item>关注收藏</el-dropdown-item></a>
                 <a href="center.html#/modifyPassword"><el-dropdown-item>账户设置</el-dropdown-item></a>
@@ -91,7 +91,9 @@
           }
         ],
         kexiuLink: ekexiuUrl,
-        plat: ''
+        plat: '',
+        unreadCount: 0,
+        informCount: 0
       };
     },
     computed: {
@@ -105,6 +107,12 @@
       this.plat = PLAT.info;
       if (!this.account) {
         this.$store.dispatch('GetUserInfo').then(res => {})
+      }
+    },
+    created() {
+      if (localStorage.getItem('userid')) {
+        this.queryMsgUnread()
+        this.queryInformCount()
       }
     },
     methods: {
@@ -130,6 +138,32 @@
             }
           })
         }).catch(() => {})
+      },
+      queryMsgUnread() {
+        this.$axios.get('/ajax/msg/unread', {}, function(res) {
+          if (res.success) {
+            var count = 0
+            if (res.data > 99) {
+              count = '99+'
+            } else {
+              count = res.data
+            }
+            this.unreadCount = count
+          }
+        })
+      },
+      queryInformCount() {
+        // this.$axios.get('/ajax/inform/unread', {}, function(res) {
+        //   if (res.success) {
+        //     var count = 0
+        //     if (res.data > 99) {
+        //       count = '99+'
+        //     } else {
+        //       count = res.data
+        //     }
+        //     this.informCount = count
+        //   }
+        // })
       }
     }
   };

@@ -192,7 +192,7 @@ export default {
   }
 
   .magnify .zoom-box{
-    background:rgba(0,0,0,.2);
+    background:#FFFFFF;
     width: 300px;
     height: 300px;
     overflow: hidden;

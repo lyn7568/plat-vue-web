@@ -121,7 +121,7 @@
         var that = this
         if (id) {
           this.productId = id
-          this.getProductInfo(id)
+          this.getProductInfo()
           this.getProductKeyword()
         } else {
           this.formObj = {

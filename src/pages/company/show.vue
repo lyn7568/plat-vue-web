@@ -27,8 +27,8 @@
                   <span>我们的产品</span>
                   <span class="content-more" @click="activeName='second'">更多</span>
                 </div>
-                <div class="content content-nf">
-                  <baseProduct v-if="platThreeProducts.length" v-for="item in platThreeProducts" :key="item.index" :itemSingle="item"></baseProduct>
+                <div class="content content-nf" v-if="platThreeProducts.length">
+                  <baseProduct v-for="item in platThreeProducts" :key="item.index" :itemSingle="item"></baseProduct>
                 </div>
               </div>
             </div>
@@ -52,8 +52,8 @@
             </div>
           </el-tab-pane>
           <el-tab-pane :label="'产品 ' + (total>0 ? total : '')" name="second">
-            <div v-show="!ifDefault">
-              <baseProduct v-if="platProducts.length" v-for="item in platProducts" :key="item.index" :itemSingle="item"></baseProduct>
+            <div v-show="!ifDefault" v-if="platProducts.length">
+              <baseProduct v-for="item in platProducts" :key="item.index" :itemSingle="item"></baseProduct>
               <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
             </div>
             <defaultPage v-show="ifDefault"></defaultPage>

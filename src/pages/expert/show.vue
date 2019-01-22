@@ -14,7 +14,7 @@
           </div>
           <el-row class="goSpan" :gutter="10">
             <el-col :span="12"><collectCo :watchOptions="{oid: expertId, type: 1}"></collectCo></el-col>
-            <!-- <el-col :span="12"><el-button type="primary">联系</el-button></el-col> -->
+            <el-col :span="12"><contactChat :contactOptions="{oid: expertId}"></contactChat></el-col>
           </el-row>
         </div>
       </div>
@@ -29,8 +29,8 @@
                   <span>可提供服务</span>
                   <span class="content-more" @click="activeName='second'">更多</span>
                 </div>
-                <div class="content content-nf">
-                  <baseService v-if="platThreeServices.length" v-for="item in platThreeServices" :key="item.index" :itemSingle="item"></baseService>
+                <div class="content content-nf" v-if="platThreeServices.length">
+                  <baseService v-for="item in platThreeServices" :key="item.index" :itemSingle="item"></baseService>
                 </div>
               </div>
             </div>
@@ -78,22 +78,22 @@
                   <span>专利</span>
                   <span class="content-more" @click="activeName='third'">更多</span>
                 </div>
-                <div class="content">
-                  <baseResult v-if="platOnePatents.length" v-for="item in platOnePatents" :key="item.index" :itemSingle="item"></baseResult>
+                <div class="content" v-if="platOnePatents.length">
+                  <baseResult v-for="item in platOnePatents" :key="item.index" :itemSingle="item"></baseResult>
                 </div>
               </div>
             </div>
           </el-tab-pane>
           <el-tab-pane :label="'服务 ' + (serCount>0 ? serCount : '')" name="second">
-            <div v-show="!ifDefault">
-              <baseService v-if="platServices.length" v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
+            <div v-show="!ifDefault" v-if="platServices.length">
+              <baseService v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
               <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
             </div>
             <defaultPage v-show="ifDefault"></defaultPage>
           </el-tab-pane>
           <el-tab-pane :label="'专利 ' + (patCount>0 ? patCount : '')" name="third">
-            <div v-show="!ifDefault2">
-              <baseResult v-if="platPatents.length" v-for="item in platPatents" :key="item.index" :itemSingle="item"></baseResult>
+            <div v-show="!ifDefault2" v-if="platPatents.length">
+              <baseResult v-for="item in platPatents" :key="item.index" :itemSingle="item"></baseResult>
               <Loading v-show="loadingModalShow2" :loadingComplete="loadingComplete2" :isLoading="isLoading2" v-on:upup="searchLower2"></Loading>
             </div>
             <defaultPage v-show="ifDefault2"></defaultPage>
@@ -208,6 +208,7 @@
 
   import shareOut from '@/components/ShareOut';
   import collectCo from '@/components/CollectCo';
+  import contactChat from '@/components/ContactChat';
   import baseService from '@/components/subTemplate/BaseService';
   import baseResult from '@/components/subTemplate/BaseResult';
 
@@ -284,6 +285,7 @@
     components: {
       shareOut,
       collectCo,
+      contactChat,
       baseService,
       baseResult
     },

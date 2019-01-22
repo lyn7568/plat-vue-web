@@ -19,6 +19,7 @@
     </div>
     <div class="goSpan">
       <collectCo v-if="ownerType==='1'" :watchOptions="{oid: ownerId, type: 1}"></collectCo>
+      <contactChat v-if="ownerType==='1'" :contactOptions="{oid: ownerId}"></contactChat>
       <collectCo v-if="ownerType==='2'" :watchOptions="{oid: ownerId, type: 2}"></collectCo>
     </div>
   </div>
@@ -27,6 +28,7 @@
   import { ImageUrl, defaultSet, autho } from '@/libs/util';
   import queryBase from '@/libs/queryBase';
   import collectCo from '@/components/CollectCo';
+  import contactChat from '@/components/ContactChat';
 
   export default {
     props: {
@@ -43,7 +45,8 @@
       };
     },
     components: {
-      collectCo
+      collectCo,
+      contactChat
     },
     created() {
       if (this.ownerId) {
@@ -148,5 +151,8 @@
 
 .beyond-block .goSpan{
   margin-top:15px;
+  margin-right: -15px;
+  display: flex;
+  justify-content: center;
 }
 </style>

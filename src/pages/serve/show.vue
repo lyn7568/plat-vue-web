@@ -50,6 +50,23 @@
           <div class="right-split">
             <beyondTo v-if="ownerB.id" :ownerId="ownerB.id" :ownerType="ownerB.type"></beyondTo>
           </div>
+          <div class="right-split" v-if="reslinkmans.length">
+            <div class="content-title">
+              <span>联系人</span>
+            </div>
+            <div class="content">
+              <a v-for="item in reslinkmans" :key="item.index" class="list-item">
+                <div class="list-head" style="border-radius: 50%" :style="{backgroundImage: 'url(' + item.img + ')'}"></div>
+                <div class="list-info">
+                  <div class="list-owner">{{item.name}}</div>
+                  <div class="list-desc">{{item.title || item.office}}</div>
+                </div>
+                <div class="list-link">
+                  <contactChat :contactOptions="{oid: item.id }"></contactChat>
+                </div>
+              </a>
+            </div>
+          </div>
           <div class="right-split" v-if="hotserves && hotserves.length">
             <div class="content-title">
               <span>热门服务</span>
@@ -77,6 +94,7 @@
   import shareOut from '@/components/ShareOut';
   import collectCo from '@/components/CollectCo';
   import beyondTo from '@/components/BeyondTo';
+  import contactChat from '@/components/ContactChat';
 
   import baseService from '@/components/subTemplate/BaseService';
 
@@ -92,7 +110,8 @@
           type: ''
         },
         hotserves: '',
-        likeserves: ''
+        likeserves: '',
+        reslinkmans: []
       };
     },
     created() {
@@ -100,12 +119,14 @@
       this.elurl = window.location.href;
       this.getserveInfo();
       this.getLikeserves();
+      this.getLinkmans();
     },
     components: {
       previewMagnify,
       shareOut,
       collectCo,
       beyondTo,
+      contactChat,
       baseService
     },
     methods: {
@@ -182,6 +203,41 @@
               }, function(data) {
                 that.likeserves = data.data
               })
+            }
+          }
+        })
+      },
+      getLinkmans() {
+        var that = this
+        this.$axios.getk('/ajax/ware/pro',{
+          id: that.serveId
+        }, function(res) {
+          if (res.success) {
+            var $data = res.data;
+            var arr = []
+            if ($data.length > 0) {
+              for (var i = 0; i < $data.length; i++) {
+                arr.push($data[i].professor)
+              }
+              if (arr.length) {
+                that.$axios.getk('/ajax/professor/qm', {
+                  id: arr
+                }, function(data) {
+                  if (data.success && data.data) {
+                    if (data.data.length > 0) {
+                      var str = data.data
+                      for (var j = 0; j < str.length; j++) {
+                        if (str[j].hasHeadImage) {
+                          str[j].img = ImageUrl(('head/' + str[j].id + '_l.jpg'), true)
+                        } else {
+                          str[j].img = defaultSet.img.expert
+                        }
+                      }
+                      that.reslinkmans = data.data
+                    }
+                  }
+                })
+              }
             }
           }
         })
