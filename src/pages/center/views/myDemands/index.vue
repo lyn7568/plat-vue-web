@@ -127,7 +127,7 @@
           })
         } else {
           that.$axios.get('/ajax/demand/pq', {
-            invalidDay: nav.wtype === 1 ? that.curTime : '',
+            invalidDay: nav.wtype === '1' ? that.curTime : '',
             order: nav.order,
             state: nav.wtype,
             actived: 1,

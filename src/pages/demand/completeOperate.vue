@@ -105,6 +105,7 @@
               if (res.success) {
                 that.showStep = false
                 that.$parent.cooperateExpert()
+                that.$parent.getdemandInfo()
               }
             })
           } else {
@@ -120,20 +121,17 @@
         this.$refs['formTwo'].validate((valid) => {
           if (valid) {
             that.stepTwoLoading = true
-            setTimeout(function() {
+            that.$axios.post('/ajax/feedback', {
+              target: that.demandId,
+              type: 1,
+              cnt: that.formTwo.textval
+            }, function(res) {
               that.stepTwoLoading = false
-              that.showStep = false
-            }, 1000)
-            // this.$http.post(addTask, {
-            //   dataNum: that.dataBh,
-            //   taskType: '1'
-            // }, function(res) {
-            //   that.stepOneLoading = false
-            //   if (res.success) {
-            //     console.log(res)
-            //     that.$parent.getdemandInfo()
-            //   }
-            // })
+              if (res.success) {
+                that.showStep = false
+                that.operDialogVisible = false
+              }
+            })
           } else {
             return false;
           }

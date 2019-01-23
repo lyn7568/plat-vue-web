@@ -44,7 +44,7 @@
               <div class="con-item" v-for="item in cooperateExperts" :key="item.index">
                 <baseExpert v-if="item.owner" :itemSingle="item.owner"></baseExpert>
                 <div class="dele">
-                  <contactChat :cantactOptions="{pid: item.uid}"></contactChat>
+                  <contactChat :contactOptions="{oid: item.uid}"></contactChat>
                   <collectCo :watchOptions="{oid: item.uid, type: 1}"></collectCo>
                 </div>
               </div>
@@ -56,7 +56,7 @@
                 <div class="con-item" v-for="item in demandButtExperts" :key="item.index">
                   <baseExpert v-if="item.owner" :itemSingle="item.owner"></baseExpert>
                   <div class="dele">
-                    <contactChat :cantactOptions="{pid: item.uid}"></contactChat>
+                    <contactChat :contactOptions="{oid: item.uid}"></contactChat>
                     <collectCo :watchOptions="{oid: item.uid, type: 1}"></collectCo>
                   </div>
                   <div class="leavemsg">

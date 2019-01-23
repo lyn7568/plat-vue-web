@@ -34,7 +34,7 @@ axiosUtil.interceptors.response.use(function (response) {
     }
     if (!taR.success && taR.code === 1) {
       store.dispatch('FedLogOut').then(() => {
-        Message.error('登录状态失效，请重新登录')
+        location.reload()
       })
     }
     return taR
