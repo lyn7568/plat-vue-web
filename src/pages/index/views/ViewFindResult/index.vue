@@ -7,7 +7,7 @@
         </el-input>
       </div>
       <div class="block-wrapper">
-        <div class="tab-contain">
+        <div class="tab-contain" v-loading="loading">
           <div v-show="!ifDefault" v-if="platResources.length">
             <baseResult v-for="item in platResources" :key="item.index" :itemSingle="item"></baseResult>
             <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
@@ -45,6 +45,7 @@
         },
         keyVal: '',
         platResources: [],
+        loading: true,
         loadingModalShow: true, // 是否显示按钮
         loadingComplete: false, // 是否全部加载
         isFormSearch: false, // 数据加载
@@ -65,6 +66,7 @@
           id: this.dataO.patId,
           rows: this.rows
         }, (res) => {
+          this.loading = false
           if (res.success) {
             var $info = res.data;
             if ($info.length > 0) {

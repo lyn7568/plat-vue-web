@@ -10,8 +10,8 @@
         </div>
         <div class="wrapper-right">
           <div v-if="account">
-            <!-- <a class="marLeft marLeft_1" href='/#/inform'>通知({{informCount}})</a> -->
-            <a class="marLeft marLeft_1" href='/#/miniChat'>消息({{unreadCount}})</a>
+            <!-- <a class="marLeft marLeft_1" href='/#/inform'><el-badge :value="informCount" :max="99">通知</el-badge></a> -->
+            <a class="marLeft marLeft_1" href='/#/miniChat'><el-badge :value="unreadCount" :max="99">消息</el-badge></a>
             <el-dropdown>
               <span class="el-dropdown-link" style="cursor:pointer">
                 {{account}}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -93,7 +93,8 @@
         kexiuLink: ekexiuUrl,
         plat: '',
         unreadCount: 0,
-        informCount: 0
+        informCount: 0,
+        refreshUnread: ''
       };
     },
     computed: {
@@ -140,36 +141,47 @@
         }).catch(() => {})
       },
       queryMsgUnread() {
+        var that = this
         this.$axios.get('/ajax/msg/unread', {}, function(res) {
           if (res.success) {
-            var count = 0
-            if (res.data > 99) {
-              count = '99+'
+            that.unreadCount = res.data
+            if (that && !that._isDestroyed) {
+              that.refreshUnread = setTimeout(() => {
+                that.queryMsgUnread()
+              }, 1000)
             } else {
-              count = res.data
+              that.refreshUnread = ''
             }
-            this.unreadCount = count
           }
         })
       },
       queryInformCount() {
+        // var that = this
         // this.$axios.get('/ajax/inform/unread', {}, function(res) {
         //   if (res.success) {
-        //     var count = 0
-        //     if (res.data > 99) {
-        //       count = '99+'
+        //     that.informCount = res.data
+        //     if (that && !that._isDestroyed) {
+        //       that.refreshInformCount = setTimeout(() => {
+        //         that.queryInformCount()
+        //       }, 1000)
         //     } else {
-        //       count = res.data
+        //       that.refreshInformCount = ''
         //     }
-        //     this.informCount = count
         //   }
         // })
       }
+    },
+    beforeDestroy() {
+      var that = this
+      this.$once('hook:beforeDestroy', () => {
+        clearTimeout(that.refreshUnread)
+        // clearTimeout(that.refreshInformCount)
+      })
     }
   };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
 .el-menu-item,.el-menu--horizontal,.el-menu--horizontal .el-menu-item{
   border:none;
 }
@@ -187,6 +199,15 @@
   display:inline-block;
   margin-left:20px;
   min-width:62px;
+}
+.header .top-wrapper .contain-wrapper .marLeft .el-badge{
+  padding-right: 10px;
+}
+.header .top-wrapper .contain-wrapper .marLeft .el-badge .el-badge__content.is-fixed{
+  top: 12px;
+  right: 15px;
+  border: none;
+  line-height: 16px;
 }
 .header .top-wrapper .contain-wrapper .marLeft.marLeft_1{
   min-width:0;

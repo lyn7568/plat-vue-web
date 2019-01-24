@@ -3,7 +3,6 @@ const getters = {
   bindCompany: state => state.user.bindCompany,
   headPhoto: state => state.user.headPhoto,
 
-  chatListLocal: state => state.chat.chatListLocal,
   chatDetailLocal: state => state.chat.chatDetailLocal,
   selectChatId: state => state.chat.selectChatId,
   selectKxUser: state => state.chat.selectKxUser,

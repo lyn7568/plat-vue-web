@@ -107,9 +107,7 @@ export default {
           }
           if (that && !that._isDestroyed) {
             that.refreshChatTime = setTimeout(() => {
-              if (that && !that._isDestroyed) {
-                that.queryRefreshChatDetal()
-              }
+              that.queryRefreshChatDetal()
             }, 1000)
           } else {
             that.refreshChatTime = ''
@@ -129,13 +127,14 @@ export default {
       return d.getTime()
     },
     compareTwo(index, b) {
-      var f = ''
+      var f = 0
       var l = this.timeCTen(b)
       let s = 10 * 60 * 1000
       if (index !== 0) {
         f = this.timeCTen(this.chatDetailLocal[index - 1].opTime)
       }
-      return index !== 0 && (l - f) > s
+      let k = (l - f) - s
+      return k < 0
     }
   },
   beforeDestroy() {

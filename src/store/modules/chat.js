@@ -1,6 +1,5 @@
 const chat = {
   state: {
-    chatListLocal: [],
     chatDetailLocal: [],
     selectChatId: '',
     selectKxUser: '',
@@ -8,9 +7,6 @@ const chat = {
     kxLastTime: '0'
   },
   mutations: {
-    chatListLocal(state, value) {
-      state.chatListLocal = value
-    },
     chatDetailLocal(state, value) {
       state.chatDetailLocal = value
     },
@@ -29,7 +25,6 @@ const chat = {
   },
 
   actions: {
-    chatListAction: ({ commit }, value) => commit('chatListLocal', value),
     chatDetailAction: ({ commit }, value) => commit('chatDetailLocal', value),
     selectSession: ({ commit }, value) => commit('selectChatId', value),
     selectKxUserAction: ({ commit }, value) => commit('selectKxUser', value),

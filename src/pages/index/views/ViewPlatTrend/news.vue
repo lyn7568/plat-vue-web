@@ -33,12 +33,14 @@
     methods: {
       queryPaltNews() {
         var that = this
+        that.$parent.loadState = true
         this.$axios.get('/ajax/article/pq', {
           catalog: that.activeTab,
           published: 1,
           pageSize: that.pageSize,
           pageNo: that.pageNo
         }, (res) => {
+          that.$parent.loadState = false
           if (res.success && res.data) {
             var $info = res.data.data;
             if ($info.length > 0) {

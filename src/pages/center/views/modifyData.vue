@@ -32,12 +32,12 @@
               <el-input v-model="ruleForm2.email" placeholder="请输入联系邮箱" maxlength="100"></el-input>
             </el-form-item>
             <el-form-item label="所在城市" prop="addr">
-              <cityPicker v-if="ruleForm2.addr" @paren="toshow" :addrCode="ruleForm2.addr"></cityPicker>
+              <cityPicker @paren="toshow" :addrCode="ruleForm2.addr"></cityPicker>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item prop="head">
-              <uploadFile :uploadImg='uploadImg' v-on:uploadfun="uploadfun" :upImgsStr="upImgsStr"></uploadFile>
+              <uploadFile :uploadImg="uploadImg" v-on:uploadfun="uploadfun" :upImgsStr="upImgsStr"></uploadFile>
             </el-form-item>
           </el-col>
           <el-col :span="24" class="el-btn-col">
@@ -52,16 +52,14 @@
 </template>
 
 <script>
-  import uploadFile from '@/components/uploadFile/index';
+  import uploadFile from '@/components/uploadFile'
   import cityPicker from '@/components/CityPicker'
   export default {
     data() {
       return {
-        province: '',
-        city: '',
         upImgsStr: '',
         uploadImg: {
-          url: '/ajax/product/logo',
+          url: '/ajax/user/head',
           width: '200px',
           height: '200px',
           tip: '上传头像'
@@ -93,7 +91,7 @@
     },
     created() {
       let id = localStorage.getItem('userid');
-      this.$axios.get('/ajax/sys/user/get', {id}, res => { // 拉取user_info
+      this.$axios.get('/ajax/sys/user/get', {id}, res => {
         if (res.success && res.data) {
           const response = res.data;
           this.ruleForm2 = {
@@ -106,28 +104,16 @@
             email: response.email,
             addr: response.addr,
             head: response.head
-          };
-          this.upImgsStr = response.head;
-          this.province = `${response.addr.substr(0, 2)}0000`;
-          this.city = response.addr;
+          }
+          this.upImgsStr = response.head
         }
       })
     },
     methods: {
-      uploadfun(value) {
-        this.ruleForm2.head = value
-      },
-      toshow(value) {
-        this.ruleForm2.addr = value
-      },
-      // getSelectProv(prov) {
-      //   this.ruleForm2.addr = prov;
-      // },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.$axios.post('/ajax/sys/user', this.ruleForm2, res => {
-              console.log(res)
               if (res.success) {
                 this.$store.commit('SET_ACCOUNT', this.ruleForm2.account);
                 this.$store.commit('SET_HEADPHOTO', this.ruleForm2.head);
@@ -137,20 +123,25 @@
                 });
               } else {
                 this.$store.dispatch('FedLogOut').then(res => {
-                  this.$message.error('登录状态失效，请重新登录');
-                  this.$router.push({ path: '/loginPlat' });
+                  this.$message.error('登录状态失效，请重新登录')
+                  this.$router.push({ path: '/#/loginPlat' })
                 })
               }
             })
           } else {
-            console.log('error submit!!');
             return false;
           }
-        });
+        })
       },
       resetForm(formName) {
-        this.$refs[formName].resetFields();
+        this.$refs[formName].resetFields()
+      },
+      uploadfun(value) {
+        this.ruleForm2.head = value
+      },
+      toshow(value) {
+        this.ruleForm2.addr = value
       }
     }
-  };
+  }
 </script>

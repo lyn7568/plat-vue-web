@@ -56,15 +56,18 @@
                         obj[m].offt = formatOfft(obj[m], true)
                       }
                       setTimeout(() => {
+                        that.$parent.loadingState = false
                         that.userData = obj
                       }, 1000);
                     }
                   }
                 })
               }
-            };
-          };
-        });
+            } else {
+              that.$parent.loadingState = false
+            }
+          }
+        })
       }
     }
   };

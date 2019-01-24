@@ -55,8 +55,7 @@ export default {
   computed: {
     ...Vuex.mapGetters([
       'selectChatId',
-      'selectKxUser',
-      'chatListLocal'
+      'selectKxUser'
     ]),
     showChatLi() {
       return this.kxUserIdArr.indexOf(this.urlPid) > -1
@@ -72,7 +71,6 @@ export default {
       this.$axios.get('/ajax/msg/idxList', {}, function(res) {
         if (res.success && res.data) {
           const dataS = res.data
-          that.$store.dispatch('chatListLocalAction', dataS)
           if (that.urlPid) {
             var hasId = false
             for (let j = 0; j < dataS.length; ++j) {
@@ -119,9 +117,7 @@ export default {
           }
           if (that && !that._isDestroyed) {
             that.refreshListTime = setTimeout(() => {
-              if (that && !that._isDestroyed) {
-                that.queryChatList()
-              }
+              that.queryChatList()
             }, 1000)
           } else {
             that.refreshListTime = ''
@@ -132,12 +128,11 @@ export default {
     handelView(id, num, us) {
       this.$store.dispatch('selectSession', id)
       this.$store.dispatch('selectKxUserAction', us)
-      for (let m = 0; m < this.chatListLocal.length; ++m) {
-        if (this.chatListLocal[m].pid === id) {
+      this.chatList.map(item => {
+        if (item.pid === id) {
           this.$store.dispatch('ifFirstChatActiion', true)
-          break
         }
-      }
+      })
       if (num > 0) {
         this.readedOperate(id)
       }

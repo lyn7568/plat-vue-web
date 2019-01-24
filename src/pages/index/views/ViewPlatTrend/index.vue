@@ -5,7 +5,7 @@
 				<img :src="plat.platimgurl" width="800" height="280">
 			</div>
 			<div class="block-wrapper">
-				<div class="content-wrapper tab-wrapper">
+				<div class="content-wrapper tab-wrapper" style="min-height:300px;" v-loading="loadState">
 					<el-tabs v-model="activeName">
             <el-tab-pane v-for="cata in conCatalog" :key="cata.index" :label="cata.tit" :name="cata.val">
               <platNews :activeTab="cata.val"></platNews>
@@ -37,6 +37,7 @@
         /* eslint-disable no-undef */
         plat: PLAT.info,
         activeName: '1',
+        loadState: false,
         conCatalog: [
           {
             val: '1',

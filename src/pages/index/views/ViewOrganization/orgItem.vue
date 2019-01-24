@@ -28,7 +28,6 @@
     methods: {
       ResidentOrgs() {
         var that = this
-        var that = this
         that.$axios.get('/ajax/org/list', {}, (res) => {
           if (res.success) {
             var $data = res.data;
@@ -58,16 +57,19 @@
                         }
                       }
                       setTimeout(() => {
+                        that.$parent.loadingState = false
                         that.orgData = obj
                       }, 1000);
                     }
                   }
                 })
               }
-            };
-          };
-        });
+            } else {
+              that.$parent.loadingState = false
+            }
+          }
+        })
       }
     }
-  };
+  }
 </script>

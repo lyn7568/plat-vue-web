@@ -13,25 +13,21 @@ import SidebarItem from './SidebarItem'
 
 export default {
   components: { SidebarItem },
+  watch: {
+    bindCompany(val) {
+      this.bindCompany = val
+    }
+  },
   computed: {
     ...Vuex.mapGetters([
       'bindCompany'
     ]),
     routes() {
       var aRouter = this.$router.options.routes
-      var dRouter = []
       if (!this.bindCompany) {
-        for (let i = 0; i < aRouter[0].children.length; ++i) {
-          var Ltm = []
-          if (aRouter[0].children[i].name !== 'myBuseiness') {
-            Ltm.push(aRouter[0].children[i])
-          }
-        }
-        dRouter.push(Ltm)
-      } else {
-        dRouter = aRouter
+        aRouter[0].children.splice(2, 1)
       }
-      return dRouter
+      return aRouter
     }
   }
 }

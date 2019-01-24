@@ -17,6 +17,7 @@ const constantRouterMap = [
       },
       {
         path: '/myDemands',
+        alwaysShow: true,
         component: (resolve) => require(['../views/myDemands/index'], resolve),
         name: 'myDemands',
         meta: { title: '我的需求' }

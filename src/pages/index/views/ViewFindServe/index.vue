@@ -14,7 +14,7 @@
             <li>检测服务</li>
           </ul>
         </div> -->
-        <div class="tab-contain">
+        <div class="tab-contain" v-loading="loading">
           <div v-show="!ifDefault" v-if="platServices.length">
             <baseService v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
             <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
@@ -52,6 +52,7 @@
         },
         keyVal: '',
         platServices: [],
+        loading: true,
         loadingModalShow: true, // 是否显示按钮
         loadingComplete: false, // 是否全部加载
         isFormSearch: false, // 数据加载
@@ -72,6 +73,7 @@
             id: this.dataO.serId,
             rows: this.rows
         }, (res) => {
+          this.loading = false
           if (res.success) {
             var $info = res.data;
             if ($info.length > 0) {

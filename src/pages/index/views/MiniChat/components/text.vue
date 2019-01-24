@@ -30,6 +30,12 @@ export default {
       'chatDetailLocal'
     ])
   },
+  watch: {
+    ifFirstChat(val) {
+      console.log(val)
+      this.ifFirstChat = val
+    }
+  },
   methods: {
     onKeyup (e) {
       if (e.keyCode === 13) {
@@ -46,6 +52,7 @@ export default {
         }, 1000)
       } else {
         var url = '/ajax/msg/fsend'
+        console.log(that.ifFirstChat)
         if (that.ifFirstChat) {
           url = '/ajax/msg/send'
         }

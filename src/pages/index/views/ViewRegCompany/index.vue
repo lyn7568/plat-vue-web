@@ -1,6 +1,6 @@
 <template>
 	<div class="cooperation">
-		<div class="content-wrapper block-wrapper">
+		<div class="content-wrapper block-wrapper" style="min-height:410px" v-loading="loading">
 			<div class="block-container">
 				<a class="block-item org-item" v-for="item in orgData" :key="item.index" :href="'company.html?id='+item.id" target="_blank">
 					<div class="item-block-org">
@@ -34,6 +34,7 @@
         pageSize: 30,
         pageNo: 1,
         orgData: [],
+        loading: true,
         loadingModalShow: true, // 是否显示按钮
         loadingComplete: false, // 是否全部加载
         isFormSearch: false, // 数据加载
@@ -46,10 +47,12 @@
     methods: {
       ResidentOrgs() {
         var that = this
+        that.loading = true
         this.$axios.get('/ajax/company/pq', {
           pageSize: that.pageSize,
           pageNo: that.pageNo
         }, (res) => {
+          that.loading = false
           if (res.success) {
             var $info = res.data.data;
             if ($info.length > 0) {

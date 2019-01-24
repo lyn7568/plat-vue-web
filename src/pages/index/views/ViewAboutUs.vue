@@ -1,7 +1,7 @@
 <template>
   <div class="aboutUs">
     <div class="content-title content-title-center">平台介绍</div>
-    <div class="plat-info" v-html="aboutUs"></div>
+    <div class="plat-info" v-html="aboutUs" v-loading="loading"></div>
     <BackTop></BackTop>
   </div>
 </template>
@@ -12,7 +12,8 @@
   export default {
     data() {
       return {
-        aboutUs: ''
+        aboutUs: '',
+        loading: true,
       };
     },
     created() {
@@ -20,8 +21,10 @@
     },
     methods: {
       getAboutUs() {
+        this.loading = true
         this.$axios.get('/ajax/platform/get', {
         }, (res) => {
+          this.loading = false
           this.aboutUs = getFormatCode(res.data.descp);
         });
       }
@@ -31,6 +34,7 @@
 
 <style scoped>
   .aboutUs{
+    min-height:370px;
     margin-bottom:20px;
     padding:20px;
     background: #fff;
