@@ -1,7 +1,7 @@
 <!-- 文本输入框 -->
 <template>
   <div class="text">
-    <textarea ref="text" v-model="content" @keyup="onKeyup"></textarea>
+    <textarea ref="text" v-model="content" @keyup="keyEnter"></textarea>
     <div class="send" @click="send">
     	<span>发送(Enter)</span>
     </div>
@@ -32,50 +32,47 @@ export default {
   },
   watch: {
     ifFirstChat(val) {
-      console.log(val)
       this.ifFirstChat = val
     }
   },
   methods: {
-    onKeyup (e) {
+    keyEnter(e) {
       if (e.keyCode === 13) {
         this.send()
       }
     },
-    send () {
+    send() {
       var that = this
-      if (that.content.length === 0) {
+      if (that.content.length <= 1) {
         that.warn = true
         that.content = ''
         setTimeout(() => {
           that.warn = false
         }, 1000)
-      } else {
-        var url = '/ajax/msg/fsend'
-        console.log(that.ifFirstChat)
-        if (that.ifFirstChat) {
-          url = '/ajax/msg/send'
-        }
-        that.$axios.post(url, {
-          pid: that.selectChatId,
-          cnt: that.content
-        }, function(res) {
-          if (res.success && res.data) {
-            var msg = {
-              cnt: that.content,
-              opTime: DateFormat('yyyyMMddhhmmss'),
-              msgType: '1',
-            }
-            that.chatDetailLocal.push(msg)
-            that.chatDetailLocal.sort(function(a, b) {
-              return a.opTime > b.opTime ? 1 : (a.opTime === b.opTime ? 0 : -1)
-            })
-            that.$store.dispatch('chatDetailAction', that.chatDetailLocal)
-            that.content = ''
-          }
-        })
-        
+        return
       }
+      var url = '/ajax/msg/fsend'
+      if (that.ifFirstChat) {
+        url = '/ajax/msg/send'
+      }
+      that.$axios.post(url, {
+        pid: that.selectChatId,
+        cnt: that.content
+      }, function(res) {
+        if (res.success && res.data) {
+          var msg = {
+            cnt: that.content,
+            opTime: DateFormat('yyyyMMddhhmmss'),
+            msgType: '1',
+          }
+          that.chatDetailLocal.push(msg)
+          that.chatDetailLocal.sort(function(a, b) {
+            return a.opTime > b.opTime ? 1 : (a.opTime === b.opTime ? 0 : -1)
+          })
+          that.$store.dispatch('chatDetailAction', that.chatDetailLocal)
+          that.content = ''
+        }
+      })
     }
   },
   mounted() {
