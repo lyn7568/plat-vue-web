@@ -52,7 +52,7 @@
       let validatePw = (rule, value, callback) => {
         const reg = /^[a-zA-Z0-9]{6,24}$/
         if (value === '') {
-          callback(new Error('请设置您的登录密码'));
+          callback(new Error('请输入您的登录密码'));
         } else {
           if (!reg.test(value)) {
             callback(new Error('密码由6-24个数字和字母组成，区分大小写'));

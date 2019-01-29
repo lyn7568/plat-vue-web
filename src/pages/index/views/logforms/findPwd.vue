@@ -23,6 +23,7 @@
             <el-form-item></el-form-item>
             <el-form-item class="textButton-box">
               <el-button type="primary" :disabled="isDisabl" @click="nextStep('ruleForm')">下一步</el-button>
+              <div class='existing-account'>又想起来了<a href="#/loginPlat">返回</a></div>
             </el-form-item>
           </el-form>
           <el-form v-show="!stepFisrt" :model="ruleForm2" :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
