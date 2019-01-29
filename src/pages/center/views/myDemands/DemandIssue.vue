@@ -64,7 +64,7 @@
           <el-col :span="24"><div class="form-line"></div></el-col>
           <el-col :span="12">
             <el-form-item label="需求方名称" prop="linkOrg">
-              <el-input v-model="ruleFormDem.linkOrg" placeholder="建议填写您的企业名称" maxlength="50"></el-input>
+              <el-input v-model="ruleFormDem.linkOrg" placeholder="请填写需求方企业名称" maxlength="50"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -75,7 +75,7 @@
           <el-col :span="24" ><el-form-item style="height:20px"></el-form-item></el-col>
           <el-col :span="24" >
             <el-form-item align="center">
-              <el-button type="primary" @click="submitForm('ruleFormDem')" style="padding: 12px 50px">保存</el-button><br/>
+              <el-button type="primary" @click="submitForm('ruleFormDem')" style="padding: 12px 50px">立即发布</el-button><br/>
             </el-form-item>
           </el-col>
         </el-row>

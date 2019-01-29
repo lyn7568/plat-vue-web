@@ -24,7 +24,7 @@
       </el-form-item>
       <div class="el-btn-col">
         <div class="el-btn-col-box" align="center">
-          <el-button type="primary" @click="submitReq">确定</el-button>
+          <el-button type="primary" @click="submitReq">提交</el-button>
           <el-button type="info" @click="closedDiloag">关闭</el-button>
         </div>
       </div>
