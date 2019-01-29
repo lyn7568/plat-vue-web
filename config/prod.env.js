@@ -2,6 +2,7 @@
 module.exports = {
   NODE_ENV: '"production"',
   ENV_CONFIG:'"prod"',
-  BASE_API: '"http://xttjpt.cn"',
-  KX_API: '"https://www.ekexiu.com"'
+  BASE_API: '""',
+  // KX_API: '"https://www.ekexiu.com"'
+  KX_API: '"http://192.168.3.233:81"'
 }

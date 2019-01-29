@@ -41,7 +41,7 @@
             <router-link class="content-more" to="trends">更多</router-link>
           </div>
         </div>
-        <div class="content-wrapper full-wrapper" style="margin-top:20px">
+        <div class="content-wrapper full-wrapper" style="width:800px;margin-top:20px">
           <div class="content-title">
             <span>最新入驻企业</span>
             <router-link class="content-more" to="comp">更多</router-link>
@@ -57,6 +57,8 @@
                 </div>
               </a>
             </div>
+            <div class="swiper-button-prev el-icon-arrow-left" ref="prevCmp" style="line-height:170px"></div>
+            <div class="swiper-button-next el-icon-arrow-right" ref="nextCmp" style="line-height:170px"></div>
           </div>
         </div>
       </div>
@@ -218,9 +220,9 @@
       this.latestCmpSwiper = new Swiper(this.$refs.latestCmp, {
         slidesPerView: 3.6,
         spaceBetween: 20,
-        loop: true,
-        autoplay: {
-          disableOnInteraction: false
+        navigation: {
+          nextEl: this.$refs.nextCmp,
+          prevEl: this.$refs.prevCmp
         },
         observer: true,
         observeParents: true
@@ -228,9 +230,9 @@
 
       this.findServiceSwiper = new Swiper(this.$refs.findService, {
         slidesPerView: 4.8,
-        loopedSlides: 20,
-        loop: true,
-        spaceBetween: 20,
+        spaceBetween: 10,
+        // loopedSlides: 20,
+        // loop: true,
         autoplay: {
           disableOnInteraction: false
         },
@@ -245,8 +247,8 @@
       this.findResourceSwiper = new Swiper(this.$refs.findResource, {
         slidesPerView: 4.8,
         spaceBetween: 20,
-        loopedSlides: 20,
-        loop: true,
+        // loopedSlides: 20,
+        // loop: true,
         autoplay: {
           disableOnInteraction: false
         },

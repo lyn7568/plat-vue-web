@@ -6,7 +6,7 @@
           <div class="con-item" v-for="watc in watchList" :key="watc.index">
             <baseExpert :itemSingle="watc"></baseExpert>
             <div class="dele">
-              <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+              <el-button type="danger" size="mini" @click.stop="handerDel(watc.id)">移除</el-button>
             </div>
           </div>
         </div>
@@ -14,7 +14,7 @@
           <div class="con-item" v-for="watc in watchList" :key="watc.index">
             <baseOrg :itemSingle="watc"></baseOrg>
             <div class="dele">
-              <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+              <el-button type="danger" size="mini" @click.stop="handerDel(watc.id)">移除</el-button>
             </div>
           </div>
         </div>
@@ -22,7 +22,7 @@
           <div class="con-item" v-for="watc in watchList" :key="watc.index">
             <baseService :itemSingle="watc"></baseService>
             <div class="dele">
-              <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+              <el-button type="danger" size="mini" @click.stop="handerDel(watc.id)">移除</el-button>
             </div>
           </div>
         </div>
@@ -30,7 +30,7 @@
           <div class="con-item" v-for="watc in watchList" :key="watc.index">
             <baseResource :itemSingle="watc"></baseResource>
             <div class="dele">
-              <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+              <el-button type="danger" size="mini" @click.stop="handerDel(watc.id)">移除</el-button>
             </div>
           </div>
         </div>
@@ -38,7 +38,7 @@
           <div class="con-item" v-for="watc in watchList" :key="watc.index">
             <baseResult :itemSingle="watc"></baseResult>
             <div class="dele">
-              <el-button type="danger" size="mini" @click.stop="handerDel(watc)">移除</el-button>
+              <el-button type="danger" size="mini" @click.stop="handerDel(watc.id)">移除</el-button>
             </div>
           </div>
         </div>
@@ -162,29 +162,11 @@
         this.pageNo = val
         this.queryWatchList()
       },
-      handerDel(watc) {
-        var that = this;
-        var Id = ''
-        switch (that.activeName) {
-          case '1':
-           Id = watc.professorId
-           break
-          case '2':
-           Id = watc.orgId
-           break
-          case '3':
-           Id = watc.id
-           break
-          case '4':
-           Id = watc.resourceId
-           break
-          case '5':
-           Id = watc.id
-           break
-        }
+      handerDel(id) {
+        var that = this
         loginStatus(function () {
           that.$axios.post('/ajax/collection/delete', {
-            oid: Id,
+            oid: id,
             type: that.activeName
           }, function(res) {
             if (res.success) {
