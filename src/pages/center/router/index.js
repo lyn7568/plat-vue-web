@@ -51,9 +51,18 @@ const constantRouterMap = [
       {
         path: '/modifyPassword',
         alwaysShow: true,
-        component: (resolve) => require(['../views/modifyPassword'], resolve),
+        component: (resolve) => require(['../views/modifyPassword/index'], resolve),
         name: 'modifyPassword',
-        meta: { title: '修改密码' }
+        meta: { title: '账户设置' },
+        redirect: { name: 'index' },
+        children: [
+          {
+            path: '/index',
+            component: (resolve) => require(['../views/modifyPassword/modifyPassword'], resolve),
+            name: 'index',
+            meta: { title: '修改密码' }
+          }
+        ]
       }
     ]
   }

@@ -21,7 +21,7 @@
                 <a href="center.html#/myDemands"><el-dropdown-item>我的需求</el-dropdown-item></a>
                 <a href="center.html#/companyInformation" v-if="bindCompany"><el-dropdown-item>我的企业</el-dropdown-item></a>
                 <a href="center.html#/attentionCollect"><el-dropdown-item>关注收藏</el-dropdown-item></a>
-                <a href="center.html#/modifyPassword"><el-dropdown-item>账户设置</el-dropdown-item></a>
+                <a href="center.html#/index"><el-dropdown-item>账户设置</el-dropdown-item></a>
                 <div @click="logout"><el-dropdown-item divided>退出登录</el-dropdown-item></div>
               </el-dropdown-menu>
             </el-dropdown>
