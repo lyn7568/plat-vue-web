@@ -139,21 +139,25 @@
             if ($info.keywords) {
               $info.keywords = strToArr($info.keywords);
             }
+            var arr = []
             if ($info.images) {
-              var arr = strToArr($info.images)
+              arr = strToArr($info.images)
               for (let i = 0; i < arr.length; ++i) {
                 arr[i] = ImageUrl('ware' + arr[i])
               }
+              $info.img = arr
+            } else {
+              arr[0] = defaultSet.img.service
               $info.img = arr
             }
             if ($info.category) {
               this.ownerB = {
                 id: $info.owner,
                 type: $info.category
-              };
+              }
               this.getHotserves($info.category, $info.owner)
             }
-            this.serveInfo = $info;
+            this.serveInfo = $info
           };
         });
       },
@@ -175,7 +179,7 @@
                 } else {
                   $data[i].img = defaultSet.img.service
                 }
-                if (that.resourceId !== $data[i].resourceId) {
+                if (that.serveId !== $data[i].id) {
                   hotRes.push($data[i])
                 }
               }
@@ -243,5 +247,5 @@
         })
       }
     }
-  };
+  }
 </script>

@@ -1,6 +1,15 @@
 <template>
-  <div class="block-container" v-if="userData && userData.length">
-    <eItem v-for="item in userData" :key="item.index" :itemSinger="item"></eItem>
+  <div class="block-container" v-if="platSixExps && platSixExps.length">
+    <template v-if="num">
+      <eItem v-for="item in platSixExps" :key="item.index" :itemSinger="item"></eItem>
+    </template>
+    <template v-else>
+      <template v-show="!ifDefault" v-if="pageUserData.length">
+        <eItem v-for="item in pageUserData" :key="item.index" :itemSinger="item"></eItem>
+        <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
+      </template>
+      <defaultPage v-show="ifDefault"></defaultPage>
+    </template>
   </div>
 </template>
 
@@ -16,14 +25,38 @@
     },
     data() {
       return {
-        userData: []
+        userData: [],
+        loadingModalShow: true,
+        loadingComplete: false,
+        isFormSearch: false,
+        isLoading: false,
+        ifDefault: false,
+        pageSize: 30,
+        pageNo: 1
       };
+    },
+    computed: {
+      platSixExps() {
+        var pt = this.userData
+        var str = []
+        if (this.num && pt.length > this.num) {
+          for (let i = 0; i < this.num; ++i) {
+            str[i] = pt[i]
+          }
+        } else {
+          str = pt
+        }
+        return str
+      },
+      pageUserData() {
+        return this.userData.slice(0, this.pageNo * this.pageSize)
+      }
     },
     components: {
       eItem
     },
     created() {
-       this.buttedProfessors();
+      this.buttedProfessors();
     },
     methods: {
       buttedProfessors() {
@@ -34,7 +67,7 @@
             var arr = []
             var hdata = { num: 1, data: $data }
             if ($data.length > 0) {
-              for (let i in $data) {
+              for (let i = 0; i < $data.length; ++i) {
                 hdata.num++
                 arr[i] = $data[i].id;
                 hdata.num--
@@ -57,18 +90,57 @@
                       }
                       setTimeout(() => {
                         that.$parent.loadingState = false
+                        for (let j = 0; j < obj.length; ++j) {
+                          for (let n = 0; n < $data.length; ++n) {
+                            if (obj[j].id === $data[n].id) {
+                              if ($data[n].level) {
+                                obj[j].level = $data[n].level
+                              } else {
+                                obj[j].level = 99999
+                              }
+                            }
+                          }
+                        }
+                        obj.sort(function(a, b) {
+                          return a.level > b.level ? 1 : (a.level === b.level ? 0 : -1)
+                        })
+                        if (obj.length <= that.pageSize) {
+                          that.loadingModalShow = false
+                          that.loadingComplete = true
+                          that.isFormSearch = true
+                          that.isLoading = false
+                          that.ifDefault = false
+                        }
                         that.userData = obj
-                      }, 1000);
+                      }, 1000)
                     }
                   }
                 })
               }
             } else {
+              that.ifDefault = true
               that.$parent.loadingState = false
             }
           }
         })
+      },
+      searchLower() {
+        if (this.loadingModalShow && !this.isLoading) {
+          this.pageNo++
+        }
+        if (this.pageUserData.length <= this.pageNo * this.pageSize) {
+          this.loadingModalShow = false
+          this.loadingComplete = true
+          this.isFormSearch = true
+          this.isLoading = false
+          this.ifDefault = false
+        }
       }
     }
   };
 </script>
+<style scoped>
+  .loadSty{
+    width: 100%;
+  }
+</style>

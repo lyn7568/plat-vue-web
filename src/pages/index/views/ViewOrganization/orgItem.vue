@@ -1,6 +1,15 @@
 <template>
-  <div class="block-container" v-if="orgData && orgData.length">
-    <oItem v-for="item in orgData" :key="item.index" :itemSinger="item"></oItem>
+  <div class="block-container" v-if="platThreeOrgs && platThreeOrgs.length">
+    <template v-if="num">
+      <oItem v-for="item in platThreeOrgs" :key="item.index" :itemSinger="item"></oItem>
+    </template>
+    <template v-else>
+      <template v-show="!ifDefault" v-if="pageOrgData.length">
+        <oItem v-for="item in pageOrgData" :key="item.index" :itemSinger="item"></oItem>
+        <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
+      </template>
+      <defaultPage v-show="ifDefault"></defaultPage>
+    </template>
   </div>
 </template>
 
@@ -16,8 +25,32 @@
     },
     data() {
       return {
-        orgData: []
+        orgData: [],
+        loadingModalShow: true,
+        loadingComplete: false,
+        isFormSearch: false,
+        isLoading: false,
+        ifDefault: false,
+        pageSize: 30,
+        pageNo: 1
       };
+    },
+    computed: {
+      platThreeOrgs() {
+        var pt = this.orgData
+        var str = []
+        if (this.num && pt.length > this.num) {
+          for (let i = 0; i < this.num; ++i) {
+            str[i] = pt[i]
+          }
+        } else {
+          str = pt
+        }
+        return str
+      },
+      pageOrgData() {
+        return this.orgData.slice(0, this.pageNo * this.pageSize)
+      }
     },
     components: {
       oItem
@@ -58,6 +91,27 @@
                       }
                       setTimeout(() => {
                         that.$parent.loadingState = false
+                        for (let j = 0; j < obj.length; ++j) {
+                          for (let n = 0; n < $data.length; ++n) {
+                            if (obj[j].id === $data[n].id) {
+                              if ($data[n].level) {
+                                obj[j].level = $data[n].level
+                              } else {
+                                obj[j].level = 99999
+                              }
+                            }
+                          }
+                        }
+                        obj.sort(function(a, b) {
+                          return a.level > b.level ? 1 : (a.level === b.level ? 0 : -1)
+                        })
+                        if (obj.length <= that.pageSize) {
+                          that.loadingModalShow = false
+                          that.loadingComplete = true
+                          that.isFormSearch = true
+                          that.isLoading = false
+                          that.ifDefault = false
+                        }
                         that.orgData = obj
                       }, 1000);
                     }
@@ -65,11 +119,29 @@
                 })
               }
             } else {
+              that.ifDefault = true
               that.$parent.loadingState = false
             }
           }
         })
+      },
+      searchLower() {
+        if (this.loadingModalShow && !this.isLoading) {
+          this.pageNo++
+        }
+        if (this.pageOrgData.length <= this.pageNo * this.pageSize) {
+          this.loadingModalShow = false
+          this.loadingComplete = true
+          this.isFormSearch = true
+          this.isLoading = false
+          this.ifDefault = false
+        }
       }
     }
   }
 </script>
+<style scoped>
+  .loadSty{
+    width: 100%;
+  }
+</style>

@@ -14,7 +14,7 @@
         </el-col>
         <el-col :span="24">
             <el-form-item label="关键词">
-            <dynamicTags :dyStr="formObj.keyword" :tagInfo="tagKeyword" v-on:turnTags="turnKeywordTags"></dynamicTags>
+            <dynamicTags :dyStr="keywordObj" :tagInfo="tagKeyword" @turnTags="turnKeywordTags"></dynamicTags>
             </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -75,6 +75,7 @@
           limitCount: 10,
           tagsNum: 5
         },
+        keywordObj: [],
         formLoading: true,
         formObj: {
           name: '',
@@ -178,6 +179,7 @@
                 objKey.push(item.keyword)
               })
             }
+            that.keywordObj = objKey
             that.formObj.keyword = objKey
           }
         })

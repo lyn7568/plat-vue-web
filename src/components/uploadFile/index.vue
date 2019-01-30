@@ -82,7 +82,7 @@
         if (!isLt2M) {
           this.$message.error('图片大小不能超过2MB，请重新上传')
         }
-        return isJPG && isLt2M
+        return (isJPG || isPNG) && isLt2M
       }
     }
   }

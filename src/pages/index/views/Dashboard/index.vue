@@ -14,7 +14,7 @@
           想要招聘人才？
         </h3>
         <p class="info-tip">
-          将您的需求发布到科袖网，<br>
+          直接发布您的需求，<br>
           我们为您对接专家和各类专业机构。
         </p>
         <el-button type="primary" @click="publishDemand" style="margin-top:30px">发布需求</el-button>
@@ -64,7 +64,7 @@
       </div>
       <div class="wrapper-right content-wrapper about-us">
         <div class="content-title">
-          <span>关于我们</span>
+          <span>关于平台</span>
           <router-link class="content-more" to="about">更多</router-link>
         </div>
         <div class="content">{{aboutUs}}</div>
