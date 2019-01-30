@@ -6,7 +6,7 @@
         <p class="form-title">登录</p>
         <ul class='table-panel'>
           <li class="table-panel-single tablePanelActive">密码登录</li>
-          <li class="table-panel-single"><a href="#/inviteCodeLogin">邀请码登录</a></li>
+          <li class="table-panel-single"><el-button type="text" @click="inviteCodeLogin">邀请码登录</el-button></li>
         </ul>
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
           <el-form-item prop="phone">
@@ -19,7 +19,7 @@
           <el-form-item>
             <el-button type="primary" :disabled="isDisabl" :loading="logining" @click="submitForm('ruleForm')">登录</el-button>
             <el-button type="text" @click="goBackPwd">忘记密码？</el-button>
-            <span class='existing-account registerButton'>还没有账号<a href="#/register">立即注册</a></span>
+            <span class='existing-account registerButton'>还没有账号<el-button type="text" @click="register">立即注册</el-button></span>
           </el-form-item>
         </el-form>
       </div>
@@ -109,6 +109,12 @@
       },
       goBackPwd() {
         this.$router.push({path: '/findPwd'});
+      },
+      register() {
+        this.$router.push({path: '/register'});
+      },
+      inviteCodeLogin() {
+        this.$router.push({path: '/inviteCodeLogin'});
       }
     }
   };

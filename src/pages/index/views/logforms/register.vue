@@ -16,11 +16,11 @@
             <el-button type="primary" class='codeWidth codeButton' :disabled='isDisabled' @click="buttonCheck">{{buttonMsg}}</el-button>
           </el-form-item>
           <el-form-item>
-            <i class="el-icon-check successSelect"></i><span class="protocol">我已阅读并同意<a href='#/userAgreement'>《邢台科技条件平台用户协议》</a></span>
+            <i class="el-icon-check successSelect"></i><span class="protocol">我已阅读并同意<el-button type="text" @click="userAgreement">《邢台科技条件平台用户协议》</el-button></span>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" :disabled="isDisabl" :loading="logining" @click="submitForm('ruleForm')">注册</el-button>
-            <div class='existing-account'>已有账号<a href="#/loginPlat">立即登录</a></div>
+            <div class='existing-account'>已有账号<el-button type="text" @click="loginPlat">立即登录</el-button></div>
           </el-form-item>
         </el-form>
       </div>
@@ -142,8 +142,11 @@
           }
         });
       },
-      goBackPwd() {
-        this.$router.push({path: '/findPwd'});
+      loginPlat() {
+        this.$router.push({path: '/loginPlat'});
+      },
+      userAgreement() {
+        this.$router.push({path: '/userAgreement'});
       }
     }
   };

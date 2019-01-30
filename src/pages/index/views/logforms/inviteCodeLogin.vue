@@ -5,7 +5,7 @@
       <div class="form-contain">
         <p class="form-title">登录</p>
         <ul class='table-panel'>
-          <li class="table-panel-single"><a href="#/loginPlat">密码登录</a></li>
+          <li class="table-panel-single"><el-button type="text" @click="loginPlat">密码登录</el-button></li>
           <li class="table-panel-single tablePanelActive">邀请码登录</li>
         </ul>
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
@@ -71,6 +71,9 @@
               return false;
             }
           });
+        },
+        loginPlat() {
+          this.$router.push({path: '/loginPlat'});
         }
       }
     };
