@@ -8,7 +8,7 @@
           </div>
           <div class="show-info reInfo-box">
             <div class="info-tit">{{orgInfo.name}}</div>
-            <div class="info-tag"><span v-if="orgInfo.type === '1'" style="margin-right:10px">{{compType[orgInfo.type]}}</span> {{keywordObj[1] ? keywordObj[1].join(" | ") : ''}}</div>
+            <div class="info-tag"><span v-if="orgInfo.type === '2'" style="margin-right:10px">{{compType[orgInfo.type]}} </span>{{keywordObj[1] ? keywordObj[1].join(" | ") : ''}}</div>
             <div class="info-operate">
               <div class="addr">{{citys[orgInfo.addr]}}</div>
               <shareOut :tUrl="elurl"></shareOut>

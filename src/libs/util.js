@@ -255,7 +255,7 @@ export const delayDay = function (t) {
   dateInvalid.setMonth(parseInt(t.substring(4, 6)) - 1)
   dateInvalid.setDate(parseInt(t.substring(6, 8)))
 
-  var dateGap = Math.abs(dateToday.getTime() - dateInvalid.getTime())
+  var dateGap = dateInvalid.getTime() - dateToday.getTime() // Math.abs  delay - today
   var ifDelay = false
   if (dateGap < 7 * 24 * 60 * 60 * 1000) {
     ifDelay = true

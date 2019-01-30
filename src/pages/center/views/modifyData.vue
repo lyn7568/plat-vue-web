@@ -111,20 +111,24 @@
     },
     methods: {
       submitForm(formName) {
+        var that = this
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$axios.post('/ajax/sys/user', this.ruleForm2, res => {
+            that.$axios.post('/ajax/sys/user', this.ruleForm2, res => {
               if (res.success) {
-                this.$store.commit('SET_ACCOUNT', this.ruleForm2.account);
-                this.$store.commit('SET_HEADPHOTO', this.ruleForm2.head);
-                this.$message({
+                that.$message({
                   message: '资料修改成功',
                   type: 'success'
-                });
+                })
+                that.$axios.get('/ajax/sys/refresh', {}, function(data) {
+                  if (data.success) {
+                    that.$store.dispatch('GetUserInfo')
+                  }
+                })
               } else {
-                this.$store.dispatch('FedLogOut').then(res => {
-                  this.$message.error('登录状态失效，请重新登录')
-                  this.$router.push({ path: '/#/loginPlat' })
+                that.$store.dispatch('FedLogOut').then(res => {
+                  that.$message.error('登录状态失效，请重新登录')
+                  that.$router.push({ path: '/#/loginPlat' })
                 })
               }
             })

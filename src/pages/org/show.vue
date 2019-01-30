@@ -8,7 +8,7 @@
           </div>
           <div class="show-info reInfo-box">
             <div class="info-tit">{{orgInfo.forShort ? orgInfo.forShort : orgInfo.name}}<em class="authicon" :class="{'icon-com': orgInfo.authStatus==='3'}"></em></div>
-            <div class="info-tag"><span v-if="orgInfo.title" style="margin-right:10px">{{orgInfo.orgType}}</span></div>
+            <div class="info-tag"><span v-if="orgInfo.orgType === '2'" style="margin-right:10px">{{compType[orgInfo.orgType]}}</span></div>
             <div class="info-operate">
               <div class="addr">{{orgInfo.city}}</div>
               <shareOut :tUrl="elurl"></shareOut>
@@ -92,11 +92,11 @@
                     </el-col>
                     <el-col :span="12" v-if="orgInfo.orgSize">
                       <el-col :span="6">机构规模：</el-col>
-                      <el-col :span="18">{{orgInfo.orgSize}}</el-col>
+                      <el-col :span="18">{{numRanger[orgInfo.orgSize]}}</el-col>
                     </el-col>
                     <el-col :span="12" v-if="orgInfo.orgType">
                       <el-col :span="6">机构类型：</el-col>
-                      <el-col :span="18">{{orgInfo.orgType}}</el-col>
+                      <el-col :span="18">{{compType[orgInfo.orgType]}}</el-col>
                     </el-col>
                     <el-col :span="12" v-if="orgInfo.addr">
                       <el-col :span="6">机构地址：</el-col>
@@ -283,12 +283,7 @@
             if ($info.foundTime) {
               $info.foundTime = TimeTr($info.foundTime);
             }
-            if ($info.orgSize) {
-              $info.orgSize = this.numRanger[$info.orgSize];
-            }
-            if ($info.orgType) {
-              $info.orgType = this.compType[$info.orgType];
-            }
+
             this.orgInfo = $info;
           };
         });
