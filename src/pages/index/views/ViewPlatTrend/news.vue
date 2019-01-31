@@ -2,7 +2,8 @@
 	<div class="tab-contain">
 		<baseContent v-for="item in paltNews" :key="item.index" :itemSingle="item" :showOwner="false"></baseContent>
 		<Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower"></Loading>
-	</div>
+    <div class="nodataList" v-show="nodata">暂无数据</div>
+  </div>
 </template>
 
 <script>
@@ -20,7 +21,8 @@
         loadingModalShow: true, // 是否显示按钮
         loadingComplete: false, // 是否全部加载
         isFormSearch: false, // 数据加载
-        isLoading: false // button style...
+        isLoading: false, // button style...
+        nodata: false
       };
     },
     components: {
@@ -55,6 +57,9 @@
                 that.loadingModalShow = false;
                 that.isFormSearch = false;
               };
+            } else {
+              that.loadingModalShow = false;
+              that.nodata = true;
             }
           };
         });
@@ -68,3 +73,9 @@
     }
   };
 </script>
+
+<style>
+  .nodataList{
+    text-align: center;
+  }
+  </style>
