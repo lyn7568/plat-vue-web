@@ -73,7 +73,7 @@
                   </el-row>
                 </div>
               </div>
-              <div class="inner-wrapper" v-if="platOnePatents && platOnePatents.lnegth">
+              <div class="inner-wrapper" v-if="platOnePatents && platOnePatents.length">
                 <div class="content-title">
                   <span>专利</span>
                   <span class="content-more" @click="activeName='third'">更多</span>
@@ -210,7 +210,7 @@
   import collectCo from '@/components/CollectCo';
   import contactChat from '@/components/ContactChat';
   import baseService from '@/components/subTemplate/BaseServices';
-  import baseResult from '@/components/subTemplate/BaseResult';
+  import baseResult from '@/components/subTemplate/BaseResults';
 
   export default {
     data() {
@@ -374,6 +374,9 @@
             if ($info.length > 0) {
               this.dataO.patTime = $info[$info.length - 1].assTime;
               this.dataO.patId = $info[$info.length - 1].id;
+              for(let i = 0; i < $info.length; i++) {
+                $info[i].authors = $info[i].authors.substr(0, $info[i].authors.length - 1);
+              }
               this.platPatents = this.isFormSearch2 ? this.platPatents.concat($info) : $info;
               this.isFormSearch2 = true;
               if ($info.length < this.rows) {
