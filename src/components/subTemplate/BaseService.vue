@@ -22,14 +22,21 @@
     data() {
       return {
         ownerName: '',
-        ownerAuth: ''
+        ownerAuth: '',
+        serveInfo: ''
       };
     },
     computed: {
-      serveInfo() {
+    },
+    created() {
+      this.ownerByond();
+      this.itmeList();
+    },
+    methods: {
+      itmeList() {
         var objStr = this.itemSingle
         if (objStr.images) {
-          objStr.images = ImageUrl('ware' + strToArr(objStr.images)[0])
+          objStr.images = ImageUrl('ware' + objStr.images.split(',')[0])
         } else {
           objStr.images = defaultSet.img.service
         }
@@ -37,13 +44,8 @@
           objStr.otype = objStr.category
           objStr.oid = objStr.owner
         }
-        return objStr
-      }
-    },
-    created() {
-      this.ownerByond();
-    },
-    methods: {
+        this.serveInfo = objStr
+      },
       ownerByond() {
         var item = this.serveInfo
         var _this = this

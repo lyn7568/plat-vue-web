@@ -5,7 +5,7 @@ PLAT.info = {
   'title': '邢台科技条件平台',
   'name': '邢台经济开发区',
   'website': 'http://www.xtkfq.gov.cn',
-  'adminsite': 'http://localhost:7072',
+  'adminsite': 'http://xttjpt.cn:88',
   'address': '中国河北省邢台市中兴东大街1888号',
   'tel': '010-62343359',
   'fax': '86-319-3636111',

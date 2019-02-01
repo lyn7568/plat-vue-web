@@ -144,7 +144,7 @@
         var that = this
         this.$axios.get('/ajax/msg/unread', {}, function(res) {
           if (res.success) {
-            that.unreadCount = res.data
+            that.unreadCount = res.data || ''
             if (that && !that._isDestroyed) {
               that.refreshUnread = setTimeout(() => {
                 that.queryMsgUnread()
