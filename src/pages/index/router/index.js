@@ -1,11 +1,11 @@
 import Layout from '../views/layout';
 
 const constantRouterMap = [
-  { path: '/loginPlat', component: (resolve) => require(['../views/logforms/loginPlat.vue'], resolve) },
-  { path: '/findPwd', component: (resolve) => require(['../views/logforms/findPwd.vue'], resolve) },
-  { path: '/register', component: (resolve) => require(['../views/logforms/register.vue'], resolve) },
-  { path: '/enterRegister', component: (resolve) => require(['../views/logforms/enteringRegister.vue'], resolve) },
-  { path: '/inviteCodeLogin', component: (resolve) => require(['../views/logforms/inviteCodeLogin.vue'], resolve) },
+  { path: '/loginPlat', meta: { title: '登录' }, component: (resolve) => require(['../views/logforms/loginPlat.vue'], resolve) },
+  { path: '/findPwd', meta: { title: '找回密码' }, component: (resolve) => require(['../views/logforms/findPwd.vue'], resolve) },
+  { path: '/register', meta: { title: '注册' }, component: (resolve) => require(['../views/logforms/register.vue'], resolve) },
+  { path: '/enterRegister', meta: { title: '入驻平台' }, component: (resolve) => require(['../views/logforms/enteringRegister.vue'], resolve) },
+  { path: '/inviteCodeLogin', meta: { title: '邀请码登录' }, component: (resolve) => require(['../views/logforms/inviteCodeLogin.vue'], resolve) },
   {
     path: '/userAgreement',
     component: Layout,
@@ -126,7 +126,8 @@ const constantRouterMap = [
     children: [{
       path: '/miniChat',
       component: (resolve) => require(['../views/MiniChat/index.vue'], resolve),
-      name: 'miniChat'
+      name: 'miniChat',
+      meta: { title: '消息' }
     }]
   },
   {
@@ -136,7 +137,8 @@ const constantRouterMap = [
     children: [{
       path: '/inform',
       component: (resolve) => require(['../views/InformList/index.vue'], resolve),
-      name: 'inform'
+      name: 'inform',
+      meta: { title: '通知' }
     }]
   }
 ];
