@@ -97,6 +97,7 @@
             if ($info.modifyTime) {
               $info.modifyTime = commenTime($info.modifyTime, true)
             }
+            document.title = $info.title + '-' + PLAT.info.title
             this.contentInfo = $info;
           };
         });

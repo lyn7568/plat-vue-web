@@ -212,6 +212,7 @@
             if (obj.logo === '') {
               obj.logo = defaultSet.img.org
             }
+            document.title = obj.name + '-' + PLAT.info.title
             this.orgInfo = obj
           };
         });

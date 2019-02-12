@@ -157,6 +157,7 @@
             if ($info.pubDay) {
               $info.pubDay = TimeTr($info.pubDay);
             }
+            document.title = $info.name + '-' + PLAT.info.title
             this.patentInfo = $info;
           };
         });

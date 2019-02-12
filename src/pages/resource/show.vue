@@ -174,6 +174,7 @@
               };
               that.getHotResources({ 'orgId': $info.orgId }, true)
             }
+            document.title = $info.resourceName + '-' + PLAT.info.title
             that.resourceInfo = $info;
           };
         });

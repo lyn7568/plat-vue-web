@@ -157,6 +157,7 @@
               }
               this.getHotserves($info.category, $info.owner)
             }
+            document.title = $info.name + '-' + PLAT.info.title
             this.serveInfo = $info
           };
         });

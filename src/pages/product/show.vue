@@ -113,6 +113,7 @@
             if ($info.img) {
               $info.img = strToArr($info.img);
             }
+            document.title = $info.name + '-' + PLAT.info.title
             this.companyId = $info.companyId;
             this.productInfo = $info;
             this.getOtherProducts($info.companyId);

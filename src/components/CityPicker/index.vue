@@ -114,6 +114,7 @@ export default {
       const si = this.addrCode.substring(0, 4) + '00'
       if (this.provinceArr) {
         var p = this.provinceArr[s]
+        this.cityArr = p.children
         this.sheng = p.value
         this.shi = p.children[si].value
       }

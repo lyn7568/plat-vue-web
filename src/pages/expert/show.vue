@@ -313,6 +313,7 @@
                 $info.resAreas.push($info.researchAreas[i].caption);
               }
             }
+            document.title = $info.name + '-' + PLAT.info.title
             this.expertInfo = $info;
           };
         });

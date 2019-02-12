@@ -174,6 +174,7 @@
         }, (res) => {
           if (res.success) {
             var $info = res.data;
+            document.title = $info.title + '-' + PLAT.info.title
             this.demandInfo = $info;
           };
         });

@@ -3,6 +3,9 @@ import store from '@/store'
 import { Message } from 'element-ui'
 
 router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title + '-' + PLAT.info.title
+  }
   /* 判断该路由是否需要登录权限 */
   if (to.matched.some(record => record.meta.requireAuth)) {
     // 是否登录
