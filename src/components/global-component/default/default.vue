@@ -3,7 +3,6 @@
     <div class="notice_d" v-show="noResult">
         <img v-bind:src="infoImage" class="d_photo" />
         <div class="d_prompt">
-            <!-- <p class="d_1">{{message}}</p> -->
             <p class="d_2">{{message2}}</p>
         </div>
     </div>
@@ -25,13 +24,9 @@ export default {
     infoImage: {
       default: Img
     },
-    message: {
-      type: String,
-      default: '没有相关内容'
-    },
     message2: {
       type: String,
-      default: '没有找到相关的内容'
+      default: '没有相关内容'
     }
   }
 };

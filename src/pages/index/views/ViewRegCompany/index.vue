@@ -2,19 +2,22 @@
 	<div class="cooperation">
 		<div class="content-wrapper block-wrapper" style="min-height:410px" v-loading="loading">
 			<div class="block-container">
-				<a class="block-item org-item" v-for="item in orgData" :key="item.index" :href="'company.html?id='+item.id" target="_blank">
-					<div class="item-block-org">
-						<div class="item-pic-org">
-							<img :src="item.logo">
-						</div>
-						<div class="item-text-org">
-							<div class="item-tit-org"><span>{{item.name}}</span></div>
-							<p class="item-tag-org" v-if="item.industry">{{item.industry.join(' | ')}}</p>
-						</div>
-					</div>
-				</a>
-			</div>
-			<Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower" v-if="!num"></Loading>
+        <template v-show="!ifDefault" v-if="orgData.length">
+          <a class="block-item org-item" v-for="item in orgData" :key="item.index" :href="'company.html?id='+item.id" target="_blank">
+            <div class="item-block-org">
+              <div class="item-pic-org">
+                <img :src="item.logo">
+              </div>
+              <div class="item-text-org">
+                <div class="item-tit-org"><span>{{item.name}}</span></div>
+                <p class="item-tag-org" v-if="item.industry">{{item.industry.join(' | ')}}</p>
+              </div>
+            </div>
+          </a>
+          <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower"></Loading>
+        </template>
+        <defaultPage v-show="ifDefault"></defaultPage>
+      </div>
 		</div>
 		<BackTop></BackTop>
 	</div>
@@ -24,11 +27,6 @@
   import { defaultSet } from '@/libs/util';
 
   export default {
-    props: {
-      num: {
-        type: Number
-      }
-    },
     data() {
       return {
         pageSize: 30,
@@ -38,7 +36,8 @@
         loadingModalShow: true, // 是否显示按钮
         loadingComplete: false, // 是否全部加载
         isFormSearch: false, // 数据加载
-        isLoading: false // button style...
+        isLoading: false, // button style...
+        ifDefault: false
       };
     },
     created() {
@@ -69,6 +68,10 @@
             if ($info.length < that.pageSize) {
               that.loadingModalShow = false;
               that.isFormSearch = false;
+            };
+            var liLen = that.orgData.length;
+            if ($info.length === 0 && liLen === 0) {
+              that.ifDefault = true;
             };
           };
         });

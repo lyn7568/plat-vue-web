@@ -28,7 +28,7 @@
           <div class="content-title" style="display: block;">
             <el-tabs v-model="activeName" @tab-click="queryPaltNews">
               <el-tab-pane v-for="cata in conCatalog" :key="cata.index" :label="cata.tit" :name="cata.val" class="content">
-                <ul class="maincon">
+                <ul class="maincon" v-if="paltNews && paltNews.length">
                   <li v-for="item in paltNews" :key="item.index">
                     <a :href="'content.html?id='+item.id"  target="_blank">
                       <span class="topic">{{item.title}}</span>
@@ -36,17 +36,18 @@
                     </a>
                   </li>
                 </ul>
+                <div v-else class="nodata">没有相关内容</div>
               </el-tab-pane>
             </el-tabs>
             <router-link class="content-more" to="trends">更多</router-link>
           </div>
         </div>
-        <div class="content-wrapper full-wrapper" style="width:800px;margin-top:20px">
+        <div class="content-wrapper full-wrapper" style="width:800px;margin-top:20px;height:240px">
           <div class="content-title">
             <span>最新入驻企业</span>
             <router-link class="content-more" to="comp">更多</router-link>
           </div>
-          <div class="swiper-container" ref="latestCmp">
+          <div class="swiper-container" ref="latestCmp" v-show="residentComps && residentComps.length">
             <div class="swiper-wrapper">
               <a class="swiper-slide" v-for="item in residentComps" :key="item.index" :href="'company.html?id='+item.id" target="_blank">
                 <div class="item-block">
@@ -60,6 +61,7 @@
             <div class="swiper-button-prev el-icon-arrow-left" ref="prevCmp" style="line-height:170px"></div>
             <div class="swiper-button-next el-icon-arrow-right" ref="nextCmp" style="line-height:170px"></div>
           </div>
+          <div v-show="!residentComps || residentComps.length===0" class="nodata">没有相关内容</div>
         </div>
       </div>
       <div class="wrapper-right content-wrapper about-us">
@@ -418,6 +420,13 @@
 
 <style rel="stylesheet/scss" lang="scss">
   .home-main{
+    .nodata{
+      font-size:13px;
+      line-height: 30px;
+      color:#999;
+      margin:40px auto;
+      text-align: center;
+    }
     .block-wrapper{
       display: flex;
       justify-content: space-between;

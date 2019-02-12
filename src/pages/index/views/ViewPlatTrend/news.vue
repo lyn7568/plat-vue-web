@@ -1,10 +1,12 @@
 <template>
 	<div class="tab-contain">
-		<baseContent v-for="item in paltNews" :key="item.index" :itemSingle="item" :showOwner="false"></baseContent>
-		<Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower"></Loading>
-    <div class="nodataList" v-show="nodata">暂无数据</div>
+    <div v-show="!ifDefault" v-if="paltNews.length">
+      <baseContent v-for="item in paltNews" :key="item.index" :itemSingle="item" :showOwner="false"></baseContent>
+		  <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="loadLower"></Loading>
+    </div>
+    <defaultPage v-show="ifDefault"></defaultPage>
   </div>
-</template>
+</template> 
 
 <script>
   import { commenTime } from '@/libs/util';
@@ -22,7 +24,7 @@
         loadingComplete: false, // 是否全部加载
         isFormSearch: false, // 数据加载
         isLoading: false, // button style...
-        nodata: false
+        ifDefault: false
       };
     },
     components: {
@@ -59,8 +61,12 @@
               };
             } else {
               that.loadingModalShow = false;
-              that.nodata = true;
+              that.isFormSearch = true;
             }
+            var liLen = that.paltNews.length;
+            if ($info.length === 0 && liLen === 0) {
+              that.ifDefault = true;
+            };
           };
         });
       },
@@ -73,9 +79,3 @@
     }
   };
 </script>
-
-<style>
-  .nodataList{
-    text-align: center;
-  }
-  </style>
