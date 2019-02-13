@@ -13,7 +13,7 @@
             <el-input v-model="ruleForm.phone" placeholder="请输入手机号码"></el-input>
           </el-form-item>
           <el-form-item prop="pw">
-            <el-input type="password" v-model="ruleForm.pw" placeholder="请输入登录密码" auto-complete="off" @keydown.native="submitForm('ruleForm')"></el-input>
+            <el-input type="password" v-model="ruleForm.pw" placeholder="请输入登录密码" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item></el-form-item>
           <el-form-item>

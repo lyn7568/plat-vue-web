@@ -13,7 +13,7 @@
             <el-input v-model="ruleForm.email" placeholder="请输入邮箱地址"></el-input>
           </el-form-item>
           <el-form-item prop="inviteCode">
-            <el-input type="password" v-model="ruleForm.inviteCode" placeholder="请输入邀请码" auto-complete="off" @keydown.native="submitForm('ruleForm')"></el-input>
+            <el-input type="password" v-model="ruleForm.inviteCode" placeholder="请输入邀请码" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" :disabled="isDisabl" :loading="logining" @click="submitForm('ruleForm')">登录</el-button>

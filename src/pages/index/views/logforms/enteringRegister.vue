@@ -21,7 +21,7 @@
             <i class="el-icon-check successSelect"></i><span class="protocol">我已阅读并同意<el-button type="text" @click="userAgreement">《邢台科技条件平台用户协议》</el-button></span>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" :disabled="isDisabl" :loading="logining" @click="submitForm('ruleForm')">注册</el-button>
+            <el-button type="primary" :disabled="isDisabl" :loading="logining" @click="submitForm('ruleForm')">绑定</el-button>
             <div class='existing-account'>已有账号<el-button type="text" @click="loginPlat">立即登录</el-button></div>
           </el-form-item>
         </el-form>
