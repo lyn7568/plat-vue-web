@@ -160,7 +160,7 @@
     data() {
       var checkInterNum = (rule, value, callback) => {
         const reg = /^[0-9]*$/
-        if (!value && !reg.test(value)) {
+        if (value && !reg.test(value)) {
             return callback(new Error('请输入正确邮编'))
         } else {
             callback()
