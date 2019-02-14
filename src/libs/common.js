@@ -15,4 +15,5 @@ Vue.use(request);
 Vue.use(ElementUI);
 Vue.use(Loading);
 Vue.use(BackTop);
+// Vue.component('BackTop', BackTop);
 Vue.use(defaultPage);

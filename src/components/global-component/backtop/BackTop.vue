@@ -71,10 +71,10 @@
     background-color: rgba(0,0,0,.2);
     color: #fff;
   }
-  .scroll div:hover{
+  .scroll:hover{
     background-color: rgba(0,0,0,.5);
   }
-  .scroll div.showScroll{
+  .scroll.showScroll{
     display: block;
   }
 </style>

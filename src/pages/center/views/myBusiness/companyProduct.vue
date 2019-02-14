@@ -95,6 +95,7 @@
         })
       },
       handleCurrentChange(val) {
+        window.scrollTo(0,0)
         this.pageNo = val
         this.getProductlist()
       },

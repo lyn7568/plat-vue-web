@@ -3,6 +3,7 @@
   align-items:baseline;
   padding:15px 20px;
   color: #606266;
+  min-height:356px;
 }
 .tab-wrapper .tab-lable{
   width:100px;
