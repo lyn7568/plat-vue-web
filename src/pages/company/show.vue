@@ -51,7 +51,7 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane :label="'产品 ' + (total>0 ? total : '')" name="second">
+          <el-tab-pane :label="'产品 ' + (productCount || '')" name="second">
             <div v-show="!ifDefault" v-if="platProducts.length">
               <baseProduct v-for="item in platProducts" :key="item.index" :itemSingle="item"></baseProduct>
               <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
@@ -143,6 +143,7 @@
         elurl: '',
         pageSize: 10,
         pageNo: 1,
+        productCount: 0,
         total: 0,
         keywordObj: [],
         numRanger: [],
@@ -250,6 +251,12 @@
             const obj = res.data.data
             if (obj.length > 0) {
               that.isFormSearch = true;
+              if (res.data.total > 0 && res.data.total < 99) {
+                that.productCount = res.data.total;
+              }
+              if (res.data.total > 99) {
+              that.productCount = '99+';
+              }
               that.total = res.data.total;
               that.platProducts = that.platProducts.concat(obj);
               if (obj.length < that.pageSize) {

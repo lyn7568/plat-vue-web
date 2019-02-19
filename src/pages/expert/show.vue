@@ -84,14 +84,14 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane :label="'服务 ' + (serCount>0 ? serCount : '')" name="second">
+          <el-tab-pane :label="'服务 ' + (serCount || '')" name="second">
             <div v-show="!ifDefault" v-if="platServices.length">
               <baseService v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
               <Loading v-show="loadingModalShow" :loadingComplete="loadingComplete" :isLoading="isLoading" v-on:upup="searchLower"></Loading>
             </div>
             <defaultPage v-show="ifDefault"></defaultPage>
           </el-tab-pane>
-          <el-tab-pane :label="'专利 ' + (patCount>0 ? patCount : '')" name="third">
+          <el-tab-pane :label="'专利 ' + (patCount || '')" name="third">
             <div v-show="!ifDefault2" v-if="platPatents.length">
               <baseResult v-for="item in platPatents" :key="item.index" :itemSingle="item"></baseResult>
               <Loading v-show="loadingModalShow2" :loadingComplete="loadingComplete2" :isLoading="isLoading2" v-on:upup="searchLower2"></Loading>
