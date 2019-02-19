@@ -3,6 +3,7 @@ import store from '@/store'
 import { Message } from 'element-ui'
 
 router.beforeEach((to, from, next) => {
+  document.title = PLAT.info.title
   if (to.meta.title) {
     document.title = to.meta.title + '-' + PLAT.info.title
   }

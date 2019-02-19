@@ -209,8 +209,8 @@
   import shareOut from '@/components/ShareOut';
   import collectCo from '@/components/CollectCo';
   import contactChat from '@/components/ContactChat';
-  import baseService from '@/components/subTemplate/BaseServices';
-  import baseResult from '@/components/subTemplate/BaseResults';
+  import baseService from '@/components/subTemplate/BaseService';
+  import baseResult from '@/components/subTemplate/BaseResult';
 
   export default {
     data() {
@@ -329,18 +329,6 @@
             var $info = res.data;
             if ($info.length > 0) {
               this.dataO.serModifyTime = $info[$info.length - 1].modifyTime;
-              for (let i = 0; i < $info.length; i++) {
-                var objStr = $info[i]
-                if (objStr.images) {
-                  objStr.images = ImageUrl('ware' + objStr.images.split(',')[0])
-                } else {
-                  objStr.images = defaultSet.img.service
-                }
-                if (objStr.category) {
-                  objStr.otype = objStr.category
-                  objStr.oid = objStr.owner
-                }
-              }
               this.platServices = this.isFormSearch ? this.platServices.concat($info) : $info;
               this.isFormSearch = true;
               if ($info.length < this.rows) {

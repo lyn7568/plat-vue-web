@@ -1,6 +1,6 @@
 <template>
   <a class="list-item" :href="'serve.html?id='+serveInfo.id" target="_blank">
-    <div class="list-head" :style="{backgroundImage: 'url(' + serveInfo.images + ')'}"></div>
+    <div class="list-head" :style="{backgroundImage: 'url(' + serveInfo.firstImg + ')'}"></div>
     <div class="list-info">
       <div class="list-tit list-topic">{{serveInfo.name}}</div>
       <div class="list-owner">{{ownerName}}<em class="authicon" :class="ownerAuth"></em></div>
@@ -26,25 +26,22 @@
         serveInfo: ''
       };
     },
-    computed: {
-    },
     created() {
-      this.ownerByond();
       this.itmeList();
     },
     methods: {
       itmeList() {
         var objStr = this.itemSingle
+        objStr.firstImg = defaultSet.img.service
         if (objStr.images) {
-          objStr.images = ImageUrl('ware' + objStr.images.split(',')[0])
-        } else {
-          objStr.images = defaultSet.img.service
+          objStr.firstImg = ImageUrl('ware' + strToArr(objStr.images)[0])
         }
         if (objStr.category) {
           objStr.otype = objStr.category
           objStr.oid = objStr.owner
         }
         this.serveInfo = objStr
+        this.ownerByond()
       },
       ownerByond() {
         var item = this.serveInfo

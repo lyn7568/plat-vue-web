@@ -170,7 +170,7 @@
   import shareOut from '@/components/ShareOut';
   import collectCo from '@/components/CollectCo';
   import contactChat from '@/components/ContactChat';
-  import baseService from '@/components/subTemplate/BaseServices';
+  import baseService from '@/components/subTemplate/BaseService';
   import baseResource from '@/components/subTemplate/BaseResource';
 
   export default {
@@ -295,19 +295,7 @@
             var $info = res.data;
             if ($info.length > 0) {
               this.dataO.serModifyTime = $info[$info.length - 1].modifyTime;
-              for (let i = 0; i < $info.length; i++) {
-                var objStr = $info[i]
-                if (objStr.images) {
-                  objStr.images = ImageUrl('ware' + objStr.images.split(',')[0])
-                } else {
-                  objStr.images = defaultSet.img.service
-                }
-                if (objStr.category) {
-                  objStr.otype = objStr.category
-                  objStr.oid = objStr.owner
-                }
-              }
-              this.platServices =  this.platServices.concat($info);
+              this.platServices = this.isFormSearch ? this.platServices.concat($info) : $info;
               this.isFormSearch = true;
               if ($info.length < this.rows) {
                 this.loadingModalShow = false;
@@ -342,7 +330,7 @@
             if ($info.length > 0) {
               this.dataO.resPublishTime = $info[$info.length - 1].publishTime;
               this.dataO.resShareId = $info[$info.length - 1].shareId;
-              this.platResources = this.platResources.concat($info);
+              this.platResources = this.isFormSearch2 ? this.platResources.concat($info) : $info;
               this.isFormSearch2 = true;
               if ($info.length < this.rows) {
                 this.loadingModalShow2 = false;
