@@ -210,7 +210,7 @@
         }, (res) => {
           if (res.success) {
             const obj = res.data
-            if (obj.logo === '') {
+            if (!obj.logo) {
               obj.logo = defaultSet.img.org
             }
             document.title = obj.name + '-' + PLAT.info.title
