@@ -39,12 +39,12 @@
         </el-col>
         <el-col :span="24">
             <el-form-item label="性能参数" prop="parameter">
-            <el-input type="textarea" :rows="6" v-model="formObj.parameter" placeholder="请填写产品简介" maxlength="1000"></el-input>
+            <el-input type="textarea" :rows="6" v-model="formObj.parameter" placeholder="请填写产品性能参数" maxlength="1000"></el-input>
             </el-form-item>
         </el-col>
         <el-col :span="24">
             <el-form-item label="详情描述" prop="descp">
-            <el-input type="textarea" :rows="8" v-model="formObj.descp" placeholder="请填写产品详情" maxlength="5000"></el-input>
+            <el-input type="textarea" :rows="8" v-model="formObj.descp" placeholder="请填写产品详情描述" maxlength="5000"></el-input>
             </el-form-item>
         </el-col>
         <el-col :span="24" class="el-btn-col">
