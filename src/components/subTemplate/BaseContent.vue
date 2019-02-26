@@ -25,7 +25,7 @@
     },
     methods: {
       isShowImg(catalog) {
-        if (catalog === '1' || catalog === '2') {
+        if (catalog === '1' || catalog === '2' || catalog === '5') {
           return ''
         } else {
           return 'list-item-info'

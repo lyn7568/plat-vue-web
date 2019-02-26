@@ -48,6 +48,10 @@
             tit: '采访专栏'
           },
           {
+            val: '5',
+            tit: '科技动态'
+          },
+          {
             val: '3',
             tit: '政策法规'
           },
@@ -81,16 +85,20 @@
   width:100%;
 }
 .tab-wrapper .el-tabs__header{
-  margin: 0 0 4px;
+  margin: -4px 0 4px;
 }
 .tab-wrapper .el-tabs__nav-wrap::after{
   content:none;
 }
+.tab-wrapper .el-tabs__item{
+  font-size: 16px;
+  font-weight: bold;
+}
 .tab-wrapper .el-tabs__content{
   margin:0 -20px;
+  border-top:20px solid #f4f6f8;
 }
 .tab-wrapper .el-tabs__content .tab-contain{
   width:100%;
-  border-top:20px solid #f4f6f8;
 }
 </style>

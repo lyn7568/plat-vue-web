@@ -85,7 +85,7 @@
                   <span>机构详情</span>
                 </div>
                 <div class="content">
-                  <el-row :gutter="6">
+                  <el-row style="width:100%" :gutter="10">
                     <el-col :span="12" v-if="orgInfo.name">
                       <el-col :span="6">机构名称：</el-col>
                       <el-col :span="18">{{orgInfo.name}}</el-col>

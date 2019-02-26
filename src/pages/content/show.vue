@@ -15,7 +15,9 @@
             </div>
           </div>
           <div class="inner-wrapper">
-            <div class="content" v-html="contentInfo.cnt"></div>
+            <div class="content">
+              <div class="content-uditor" v-html="contentInfo.cnt"></div>
+            </div>
           </div>
           <div class="inner-wrapper" v-if="platExperts && platExperts.length">
             <div class="content-title">
@@ -161,16 +163,14 @@
         }, (res) => {
           if (res.success) {
             var $info = res.data;
+            var hData = { m: 0, data: $info }
             for (let i = 0; i < $info.length; ++i) {
-              (function(item) {
-                queryBase.getCompany(item.compId, function(sc, value) {
-                  if (sc) {
-                    item.name = value.name
-                    item.logo = value.logo
-                    that.$forceUpdate()
-                  }
-                })
-              })($info[i])
+              queryBase.getCompany($info[i].compId, function(sc, value) {
+                if (sc) {
+                  $info[i] = value
+                  that.$forceUpdate()
+                }
+              })
             }
             that.platCompanys = $info;
           };

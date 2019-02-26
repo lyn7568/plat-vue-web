@@ -85,14 +85,14 @@
   background:#fff;
   padding:20px;
   box-sizing: border-box;
-  @include border-1px();
-  &:last-child{
-    @include border-none();
+  & + .list-item {
+    @include border-1px();
   }
   .list-head{
     @include center-items(162px,108px);
     .item-pic-org{
       @include center-items(162px,108px);
+      border:none;
     }
   }
   .list-info{
