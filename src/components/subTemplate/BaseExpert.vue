@@ -1,6 +1,6 @@
 <template>
   <a class="list-item" :href="'expert.html?id='+itemSingle.id" target="_blank">
-    <div class="list-head" :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
+    <div class="list-head list-circular-head" :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
     <div class="list-info">
       <div class="list-tit list-topic">{{itemSingle.name}}</div>
       <div class="list-desc">{{itemSingle.title}}</div>
@@ -36,6 +36,3 @@
   };
 </script>
 
-<style scoped>
-  .list-item .list-head{border-radius: 50%; width: 100px; height:100px}
-</style>

@@ -36,7 +36,7 @@
     data() {
       return {
         /* eslint-disable no-undef */
-        adinfo: PLAT.info.adinfo,
+        adinfo: PLAT.info.adinfo.searchAd,
         rows: 20,
         dataO: {
           patSortNum: '',

@@ -118,7 +118,7 @@
     data() {
       return {
         /* eslint-disable no-undef */
-        adinfo: PLAT.info.adinfo,
+        adinfo: PLAT.info.adinfo.mainAd,
         activeName: 'first',
         patentInfo: '',
         patentId: '',

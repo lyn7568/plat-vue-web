@@ -1,7 +1,7 @@
 <template>
   <div class="browse-main">
     <div class="block-wrapper">
-      <div class="wrapper-left left-main">
+      <div class="left-main">
         <div class="content-wrapper">
           <div class="inner-wrapper">
             <div class="headcon-box detail-box">
@@ -14,6 +14,11 @@
               </div>
             </div>
           </div>
+          <div class="block-wrapper" v-if="adinfo.shareAdTop.length">
+            <a class="ad-wrapper" v-for="item in adinfo.shareAdTop" :key="item.index" :href="item.adUrl" target="_blank">
+              <img :src="item.imgUrl" width="100%">
+            </a>
+          </div>
           <div class="inner-wrapper">
             <div class="content">
               <div class="content-uditor" v-html="contentInfo.cnt"></div>
@@ -23,7 +28,7 @@
             <div class="content-title">
               <span>相关专家</span>
             </div>
-            <div class="content">
+            <div class="content contentPro">
               <baseExpert v-for="item in platExperts" :key="item.index" :itemSingle="item"></baseExpert>
             </div>
           </div>
@@ -43,25 +48,19 @@
               <baseCompany v-for="item in platCompanys" :key="item.index" :itemSingle="item"></baseCompany>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="wrapper-right">
-        <div class="wrapper-right">
-          <div class="block-wrapper" v-if="adinfo.length">
-            <a class="ad-wrapper" v-for="item in adinfo" :key="item.index" :href="item.adUrl" target="_blank">
-              <img :src="item.imgUrl" width="280" height="200">
+          <div class="block-wrapper" v-if="adinfo.shareAdBottom.length">
+            <a class="ad-wrapper" v-for="item in adinfo.shareAdBottom" :key="item.index" :href="item.adUrl" target="_blank">
+              <img :src="item.imgUrl" width="100%">
             </a>
           </div>
         </div>
       </div>
     </div>
-    <BackTop></BackTop>
   </div>
 </template>
 
 <script>
   import { urlParse, commenTime } from '@/libs/util';
-
   import queryBase from '@/libs/queryBase';
   import baseExpert from '@/components/subTemplate/BaseExpert';
   import baseOrg from '@/components/subTemplate/BaseOrg';
@@ -70,7 +69,7 @@
     data() {
       return {
         /* eslint-disable no-undef */
-        adinfo: PLAT.info.adinfo.mainAd,
+        adinfo: PLAT.info.adinfo,
         contentInfo: '',
         platExperts: '',
         platOrgs: '',
@@ -79,9 +78,6 @@
     },
     created() {
       this.contentId = urlParse('id');
-      if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
-        location.href="http://" + window.location.host + "/h5.html#/content?id="+this.contentId;
-      }
       this.getContentInfo();
       this.getPlatExperts();
       this.getPlatOrgs();
@@ -121,7 +117,7 @@
             if (arr.length) {
               that.$axios.getk('/ajax/professor/qm', {
                 id: arr
-              }, function(data) {
+              }, function (data) {
                 if (data.success && data.data) {
                   if (data.data.length > 0) {
                     that.platExperts = data.data
@@ -147,7 +143,7 @@
             if (arr.length) {
               that.$axios.getk('/ajax/org/qm', {
                 id: arr
-              }, function(data) {
+              }, function (data) {
                 if (data.success && data.data) {
                   if (data.data.length > 0) {
                     that.platOrgs = data.data
@@ -168,7 +164,7 @@
             var $info = res.data;
             var hData = { m: 0, data: $info }
             for (let i = 0; i < $info.length; ++i) {
-              queryBase.getCompany($info[i].compId, function(sc, value) {
+              queryBase.getCompany($info[i].compId, function (sc, value) {
                 if (sc) {
                   $info[i] = value
                   that.$forceUpdate()
@@ -183,10 +179,12 @@
   };
 </script>
 
-<style scoped>
-  .info-tag span{
+<style lang="scss" rel="stylesheet/scss">
+  @import '../../style/index';
+
+  .info-tag span {
     display: inline-block;
-    margin-right:15px;
+    margin-right: 15px;
     color: #999;
     font-size: 14px;
   }

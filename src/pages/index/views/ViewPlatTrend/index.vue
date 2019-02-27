@@ -15,8 +15,8 @@
 			</div>
 		</div>
 		<div class="wrapper-right">
-      <div class="block-wrapper" v-if="plat.adinfo.length">
-        <a class="ad-wrapper" v-for="item in plat.adinfo" :key="item.index" :href="item.adUrl" target="_blank">
+      <div class="block-wrapper" v-if="plat.adinfo.searchAd.length">
+        <a class="ad-wrapper" v-for="item in plat.adinfo.searchAd" :key="item.index" :href="item.adUrl" target="_blank">
           <img :src="item.imgUrl" width="280" height="200">
         </a>
       </div>

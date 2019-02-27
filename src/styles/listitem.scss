@@ -94,6 +94,11 @@
       @include center-items(162px,108px);
       border:none;
     }
+    &.list-circular-head {
+      border-radius: 50%;
+      width: 100px;
+      height:100px;
+    }
   }
   .list-info{
     flex: 1 1 170px;
