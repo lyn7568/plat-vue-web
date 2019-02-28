@@ -26,7 +26,8 @@
 </template>
 
 <script>
-	import platNews from './news';
+  import platNews from './news';
+  import { platTrend } from '@/libs/util';
 
 	export default {
     mounted() {
@@ -38,28 +39,7 @@
         plat: PLAT.info,
         activeName: '1',
         loadState: false,
-        conCatalog: [
-          {
-            val: '1',
-            tit: '平台新闻'
-          },
-          {
-            val: '2',
-            tit: '采访专栏'
-          },
-          {
-            val: '5',
-            tit: '科技动态'
-          },
-          {
-            val: '3',
-            tit: '政策法规'
-          },
-          {
-            val: '4',
-            tit: '通知公告'
-          }
-        ]
+        conCatalog: platTrend
       };
     },
     components: {

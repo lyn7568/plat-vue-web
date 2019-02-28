@@ -18,6 +18,32 @@ export const defaultSet = {
 };
 
 /**
+ * 平台动态 栏目
+ */
+export const platTrend = [
+  {
+    val: '1',
+    tit: '平台新闻'
+  },
+  {
+    val: '2',
+    tit: '采访专栏'
+  },
+  {
+    val: '5',
+    tit: '科技动态'
+  },
+  {
+    val: '3',
+    tit: '政策法规'
+  },
+  {
+    val: '4',
+    tit: '通知公告'
+  }
+]
+
+/**
  * expert head symbol icon
  */
 export const autho = function (a, b, c) {

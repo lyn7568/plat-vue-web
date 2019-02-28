@@ -165,7 +165,7 @@
 </template>
 
 <script>
-  import { commenTime, defaultSet, ImageUrl, strToArr } from '@/libs/util';
+  import { platTrend, commenTime, defaultSet, ImageUrl, strToArr } from '@/libs/util';
   import queryBase from '@/libs/queryBase';
   import { loginStatus } from '@/libs/loginStatus';
 
@@ -180,28 +180,7 @@
         operateM: {},
         platimgurl: PLAT.info.platimgurl,
         activeName: '1',
-        conCatalog: [
-          {
-            val: '1',
-            tit: '平台新闻'
-          },
-          {
-            val: '2',
-            tit: '采访专栏'
-          },
-          {
-            val: '5',
-            tit: '科技动态'
-          },
-          {
-            val: '3',
-            tit: '政策法规'
-          },
-          {
-            val: '4',
-            tit: '通知公告'
-          }
-        ],
+        conCatalog: platTrend,
         rows: 20,
         orgTrends: '',
         paltNews: '',
