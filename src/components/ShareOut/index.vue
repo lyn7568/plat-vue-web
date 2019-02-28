@@ -52,6 +52,7 @@
 </script>
 <style scoped>
 .share-block{
+  display: inline-block;
   margin-right:15px;
 }
 .share-block .share-icon{

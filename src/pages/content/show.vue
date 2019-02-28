@@ -10,6 +10,7 @@
                 <div class="info-tag">
                   <span>{{contentInfo.modifyTime}}</span>
                   <span>作者/来源：{{contentInfo.source}}</span>
+                  <shareOut :tUrl="elurl"></shareOut>
                 </div>
               </div>
             </div>
@@ -66,11 +67,13 @@
   import baseExpert from '@/components/subTemplate/BaseExpert';
   import baseOrg from '@/components/subTemplate/BaseOrg';
   import baseCompany from '@/components/subTemplate/BaseCompany';
+  import shareOut from '@/components/ShareOut';
   export default {
     data() {
       return {
         /* eslint-disable no-undef */
         adinfo: PLAT.info.adinfo.mainAd,
+        elurl: '',
         contentInfo: '',
         platExperts: '',
         platOrgs: '',
@@ -79,15 +82,17 @@
     },
     created() {
       this.contentId = urlParse('id');
-      if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
-        location.href="http://" + window.location.host + "/h5.html#/content?id="+this.contentId;
-      }
+      // if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
+      //   location.href="http://" + window.location.host + "/h5.html#/content?id="+this.contentId;
+      // }
+      this.elurl = window.location.href;
       this.getContentInfo();
       this.getPlatExperts();
       this.getPlatOrgs();
       this.getPlatCompanys();
     },
     components: {
+      shareOut,
       baseExpert,
       baseOrg,
       baseCompany
@@ -184,7 +189,7 @@
 </script>
 
 <style scoped>
-  .info-tag span{
+  .info-tag *{
     display: inline-block;
     margin-right:15px;
     color: #999;
