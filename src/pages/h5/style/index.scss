@@ -2,7 +2,6 @@
   width: 90px;
   height: 60px;
 }
-
 .list-item {
   .list-head {
     @include center-block;
@@ -48,5 +47,83 @@
     background: #E5E5E5;
     right: -15px;
     left: -15px;
+  }
+}
+.content .moretype {
+  text-align: center;
+  margin-top: 10px;
+}
+.header-box {
+  background: url('../../image/company-bg.png') center 0 no-repeat;
+  background-size: 100% 130px;
+  overflow: hidden;
+
+  .header_content {
+    position: relative;
+    text-align: center;
+    min-height: 140px;
+    margin: 15px 15px 6px;
+    padding: 40px 40px 20px;
+    background: rgba(256, 256, 256, .6);
+    background: linear-gradient(rgba(256, 256, 256, .6), rgba(256, 256, 256, .9));
+    border-radius: 6px;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, .1);
+
+    .header_content_top {
+      border-radius: 4px;
+      width: 120px;
+      margin-left: -60px;
+      background: none;
+      position: absolute;
+      margin-top: -15px;
+      left: 50%;
+      height: 80px;
+      overflow: hidden;
+
+      .cmy_logo_box {
+        width: 120px;
+        height: 80px;
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        overflow: hidden;
+
+        img {
+          max-width: 100%;
+          max-height: 100%;
+          vertical-align: middle;
+          height: auto !important;
+          overflow-y: auto;
+          color: transparent;
+          font-size: 0;
+        }
+      }
+    }
+
+    .header_content-footer {
+      margin-top: 82px;
+
+      p {
+        margin-bottom: 5px;
+
+        .cmpName {
+          font-size: 16px;
+        }
+      }
+
+      .industry {
+        font-size: 14px;
+        color: #666;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .addressbox {
+        font-size: 13px;
+        line-height: 16px;
+        color: #666;
+      }
+    }
   }
 }

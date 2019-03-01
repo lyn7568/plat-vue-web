@@ -118,6 +118,7 @@
               for (let i = 0; i < $info.length; ++i) {
                 if($info[i].id === this.contentId) {
                   $info.splice(i,1)
+                  i--
                   continue
                 }
                 if ($info[i].modifyTime) {
