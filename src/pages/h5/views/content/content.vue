@@ -48,11 +48,24 @@
               <baseCompany v-for="item in platCompanys" :key="item.index" :itemSingle="item"></baseCompany>
             </div>
           </div>
-          <div class="block-wrapper" v-if="adinfo.shareAdBottom.length">
-            <a class="ad-wrapper" v-for="item in adinfo.shareAdBottom" :key="item.index" :href="item.adUrl" target="_blank">
+          <div class="block-wrapper" v-if="adinfo.shareAdCenter.length">
+            <a class="ad-wrapper" v-for="item in adinfo.shareAdCenter" :key="item.index" :href="item.adUrl" target="_blank">
               <img :src="item.imgUrl" width="100%">
             </a>
           </div>
+          <div class="inner-wrapper" v-if="paltNews && paltNews.length">
+              <div class="content-title">
+                <span>最新文章</span>
+              </div>
+              <div class="content" id="conNonedis">
+                  <baseContent v-for="item in paltNews" :key="item.index" :itemSingle="item" :showOwner="false"></baseContent>
+              </div>
+            </div>
+            <div class="block-wrapper" v-if="adinfo.shareAdBottom.length">
+                <a class="ad-wrapper" v-for="item in adinfo.shareAdBottom" :key="item.index" :href="item.adUrl" target="_blank">
+                  <img :src="item.imgUrl" width="100%">
+                </a>
+              </div>
         </div>
       </div>
     </div>
@@ -65,10 +78,12 @@
   import baseExpert from '@/components/subTemplate/BaseExpert';
   import baseOrg from '@/components/subTemplate/BaseOrg';
   import baseCompany from '@/components/subTemplate/BaseCompany';
+  import baseContent from '@/components/subTemplate/BaseContent';
   export default {
     data() {
       return {
         /* eslint-disable no-undef */
+        paltNews: [],
         adinfo: PLAT.info.adinfo,
         contentInfo: '',
         platExperts: '',
@@ -82,13 +97,38 @@
       this.getPlatExperts();
       this.getPlatOrgs();
       this.getPlatCompanys();
+      this.queryPaltNews();
     },
     components: {
       baseExpert,
       baseOrg,
-      baseCompany
+      baseCompany,
+      baseContent
     },
     methods: {
+      queryPaltNews() {
+        this.$axios.get('/ajax/article/pq', {
+          published: 1,
+          pageSize: 6,
+          pageNo: 1
+        }, (res) => {
+          if (res.success && res.data) {
+            var $info = res.data.data;
+            if ($info.length > 0) {
+              for (let i = 0; i < $info.length; ++i) {
+                if($info[i].id === this.contentId) {
+                  $info.splice(i,1)
+                  continue
+                }
+                if ($info[i].modifyTime) {
+                  $info[i].modifyTime = commenTime($info[i].modifyTime, true)
+                }
+              }
+              this.paltNews = $info.slice(0,5)
+            }
+          };
+        });
+      },
       getContentInfo() {
         this.$axios.get('/ajax/article/qo', {
           id: this.contentId

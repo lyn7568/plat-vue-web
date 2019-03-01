@@ -16,16 +16,22 @@ PLAT.info = {
   'platimgurl': '/static/xtkfq/platimg.jpg',
   'adinfo': {
     'shareAdTop': [
-      {
-        'adUrl': 'javascript:void(0)',
-        'imgUrl': '/static/xtkfq/banner.jpg'
-      }
+      // {
+      //   'adUrl': 'javascript:void(0)',
+      //   'imgUrl': '/static/xtkfq/banner.jpg'
+      // }
+    ],
+    'shareAdCenter': [
+      // {
+      //   'adUrl': 'javascript:void(0)',
+      //   'imgUrl': '/static/xtkfq/banner.jpg'
+      // }
     ],
     'shareAdBottom': [
-      {
-        'adUrl': 'javascript:void(0)',
-        'imgUrl': '/static/xtkfq/banner.jpg'
-      }
+      // {
+      //   'adUrl': 'javascript:void(0)',
+      //   'imgUrl': '/static/xtkfq/banner.jpg'
+      // }
     ],
     'searchAd': [
       // {

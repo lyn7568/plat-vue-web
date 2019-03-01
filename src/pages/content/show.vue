@@ -82,9 +82,9 @@
     },
     created() {
       this.contentId = urlParse('id');
-      // if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
-      //   location.href="http://" + window.location.host + "/h5.html#/content?id="+this.contentId;
-      // }
+      if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
+        location.href="http://" + window.location.host + "/h5.html#/content?id="+this.contentId;
+      }
       this.elurl = window.location.href;
       this.getContentInfo();
       this.getPlatExperts();
