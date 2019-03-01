@@ -23,7 +23,6 @@
         loadingModalShow: true, // 是否显示按钮
         loadingComplete: false, // 是否全部加载
         isFormSearch: false, // 数据加载
-        isLoading: false, // button style...
         ifDefault: false
       };
     },
@@ -46,6 +45,11 @@
         }, (res) => {
           that.$parent.loadState = false
           if (res.success && res.data) {
+            if (res.data.pageNo !== that.pageNo) {
+              that.loadingModalShow = false;
+              that.isFormSearch = false;
+              return;
+            }
             var $info = res.data.data;
             if ($info.length > 0) {
               for (let i = 0; i < $info.length; ++i) {
@@ -71,7 +75,7 @@
         });
       },
       loadLower() {
-        if (this.loadingModalShow && !this.isLoading) {
+        if (this.loadingModalShow && this.isFormSearch) {
           this.pageNo++;
           this.queryPaltNews();
         }

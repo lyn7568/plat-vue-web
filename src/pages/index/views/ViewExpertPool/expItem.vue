@@ -139,8 +139,3 @@
     }
   };
 </script>
-<style scoped>
-  .loadSty{
-    width: 100%;
-  }
-</style>

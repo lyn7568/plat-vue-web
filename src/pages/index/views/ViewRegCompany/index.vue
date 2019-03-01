@@ -53,6 +53,11 @@
         }, (res) => {
           that.loading = false
           if (res.success) {
+            if (res.data.pageNo !== that.pageNo) {
+              that.loadingModalShow = false;
+              that.isFormSearch = false;
+              return;
+            }
             var $info = res.data.data;
             if ($info.length > 0) {
               for (let i = 0; i < $info.length; ++i) {
