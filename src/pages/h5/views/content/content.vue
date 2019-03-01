@@ -57,7 +57,7 @@
               <div class="content-title">
                 <span>最新文章</span>
               </div>
-              <div class="content" id="conNonedis">
+              <div class="content content-nf">
                   <baseContent v-for="item in paltNews" :key="item.index" :itemSingle="item" :showOwner="false"></baseContent>
               </div>
             </div>
