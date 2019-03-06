@@ -24,8 +24,8 @@
           <span>可提供服务</span>
         </div>
         <div class="content content-nf" v-if="platServices.length">
-          <baseService v-for="item in platServices" :key="item.index" :itemSingle="item"></baseService>
-          <p class="moretype" @click="moreService" v-show="loadingModalShow">查看更多服务</span></p>
+          <baseService v-for="item in platServices" :key="item.index" :itemSingle="item" :noBlank="true"></baseService>
+          <p class="moretype" @click="moreService" v-show="loadingModalShow">查看更多服务</p>
         </div>
       </div>
       <div class="inner-wrapper" v-if="platResources.length">
@@ -33,8 +33,8 @@
           <span>可共享资源</span>
         </div>
         <div class="content content-nf" v-if="platResources.length">
-          <baseResource v-for="item in platResources" :key="item.index" :itemSingle="item"></baseResource>
-          <p class="moretype"@click="moreProduct" v-show="loadingModalShow2">查看更多资源</span></p>
+          <baseResource v-for="item in platResources" :key="item.index" :itemSingle="item" :noBlank="true"></baseResource>
+          <p class="moretype" @click="moreProduct" v-show="loadingModalShow2">查看更多资源</p>
         </div>
       </div>
     </div>
@@ -61,7 +61,7 @@
         <span>相关文章</span>
       </div>
       <div class="content content-nf" v-if="orgContents.length">
-        <baseContent v-for="item in orgContents" :key="item.index" :itemSingle="item"></baseContent>
+        <baseContent v-for="item in orgContents" :key="item.index" :itemSingle="item" :noBlank="true"></baseContent>
       </div>
     </div>
     <div class="content-wrapper" v-if="likeOrgs && likeOrgs.length">
@@ -69,7 +69,7 @@
         <span>您可能感兴趣的机构</span>
       </div>
       <div class="content">
-        <a v-for="item in likeOrgs" :key="item.index" class="list-item" :href="'org.html?id='+item.id" target="_blank">
+        <a v-for="item in likeOrgs" :key="item.index" class="list-item" :href="'org.html?id='+item.id">
           <div class="list-head" :style="{backgroundImage: 'url(' + item.logo + ')'}"></div>
           <div class="list-info">
             <div class="list-owner">{{item.name}}</div>
@@ -78,8 +78,6 @@
         </a>
       </div>
     </div>
-  </div>
-  </div>
   </div>
 </template>
 <script>

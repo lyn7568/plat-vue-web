@@ -9,6 +9,7 @@
                 <div class="info-tit info-tit-big">{{contentInfo.title}}</div>
                 <div class="info-tag">
                   <span>{{contentInfo.modifyTime}}</span>
+                  <pageView v-if="contentId" :pageObj="{ tn: 'article', id: contentId, src: '1'}"></pageView>
                   <span>作者/来源：{{contentInfo.source}}</span>
                   <shareOut :tUrl="elurl"></shareOut>
                 </div>
@@ -68,6 +69,7 @@
   import baseOrg from '@/components/subTemplate/BaseOrg';
   import baseCompany from '@/components/subTemplate/BaseCompany';
   import shareOut from '@/components/ShareOut';
+  import pageView from '@/components/pageView';
   export default {
     data() {
       return {
@@ -93,6 +95,7 @@
     },
     components: {
       shareOut,
+      pageView,
       baseExpert,
       baseOrg,
       baseCompany

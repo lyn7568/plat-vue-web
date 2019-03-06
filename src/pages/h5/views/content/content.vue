@@ -9,6 +9,7 @@
                 <div class="info-tit info-tit-big">{{contentInfo.title}}</div>
                 <div class="info-tag">
                   <span>{{contentInfo.modifyTime}}</span>
+                  <pageView v-if="contentId" :pageObj="{ tn: 'article', id: contentId, src: '2'}"></pageView>
                   <span>作者/来源：{{contentInfo.source}}</span>
                 </div>
               </div>
@@ -29,7 +30,7 @@
               <span>相关专家</span>
             </div>
             <div class="content contentPro">
-              <baseExpert v-for="item in platExperts" :key="item.index" :itemSingle="item"></baseExpert>
+              <baseExpert v-for="item in platExperts" :key="item.index" :itemSingle="item" :noBlank="true"></baseExpert>
             </div>
           </div>
           <div class="inner-wrapper" v-if="platOrgs && platOrgs.length">
@@ -37,7 +38,7 @@
               <span>相关机构</span>
             </div>
             <div class="content">
-              <baseOrg v-for="item in platOrgs" :key="item.index" :itemSingle="item"></baseOrg>
+              <baseOrg v-for="item in platOrgs" :key="item.index" :itemSingle="item" :noBlank="true"></baseOrg>
             </div>
           </div>
           <div class="inner-wrapper" v-if="platCompanys && platCompanys.length">
@@ -45,7 +46,7 @@
               <span>相关企业</span>
             </div>
             <div class="content">
-              <baseCompany v-for="item in platCompanys" :key="item.index" :itemSingle="item"></baseCompany>
+              <baseCompany v-for="item in platCompanys" :key="item.index" :itemSingle="item" :noBlank="true"></baseCompany>
             </div>
           </div>
           <div class="block-wrapper" v-if="adinfo.shareAdCenter.length">
@@ -58,7 +59,7 @@
                 <span>最新文章</span>
               </div>
               <div class="content content-nf">
-                  <baseContent v-for="item in paltNews" :key="item.index" :itemSingle="item" :showOwner="false"></baseContent>
+                  <baseContent v-for="item in paltNews" :key="item.index" :itemSingle="item" :showOwner="false" :noBlank="true"></baseContent>
               </div>
             </div>
             <div class="block-wrapper" v-if="adinfo.shareAdBottom.length">
@@ -79,6 +80,7 @@
   import baseOrg from '@/components/subTemplate/BaseOrg';
   import baseCompany from '@/components/subTemplate/BaseCompany';
   import baseContent from '@/components/subTemplate/BaseContent';
+  import pageView from '@/components/pageView';
   export default {
     data() {
       return {
@@ -100,6 +102,7 @@
       this.queryPaltNews();
     },
     components: {
+      pageView,
       baseExpert,
       baseOrg,
       baseCompany,

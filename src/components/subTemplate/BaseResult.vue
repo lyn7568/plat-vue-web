@@ -1,5 +1,5 @@
 <template>
-  <a class="list-item" :href="'result.html?id='+itemSingle.id" target="_blank">
+  <a class="list-item" :href="'result.html?id='+itemSingle.id" :target="noBlank ? '' : '_blank'">
     <div class="list-head" :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
     <div class="list-info">
       <div class="list-tit list-topic">{{itemSingle.name}}</div>
@@ -16,6 +16,10 @@
     props: {
       itemSingle: {
         type: Object
+      },
+      noBlank: {
+        type: Boolean,
+        default: false
       }
     },
     data() {

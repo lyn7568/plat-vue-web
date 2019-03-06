@@ -26,8 +26,8 @@
               <span>我们的产品</span>
             </div>
             <div class="content content-nf" v-if="platProducts.length">
-              <baseProduct v-for="item in platProducts" :key="item.index" :itemSingle="item"></baseProduct>
-              <p class="moretype"@click="moreProduct" v-show="loadingModalShow">查看更多产品</span></p>
+              <baseProduct v-for="item in platProducts" :key="item.index" :itemSingle="item" :noBlank="true"></baseProduct>
+              <p class="moretype" @click="moreProduct" v-show="loadingModalShow">查看更多产品</p>
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@
             <span>相关文章</span>
           </div>
           <div class="content content-nf" v-if="compContents.length">
-              <baseContent v-for="item in compContents" :key="item.index" :itemSingle="item"></baseContent>
+              <baseContent v-for="item in compContents" :key="item.index" :itemSingle="item" :noBlank="true"></baseContent>
             </div>
         </div>
       </div>

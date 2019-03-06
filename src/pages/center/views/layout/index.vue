@@ -15,7 +15,7 @@
 
 <script>
   import { TheHeader, TheFooter } from '@/layout';
-  import com from '../common/index';
+  import com from './common/index';
   import Breadcrumb from '@/components/Breadcrumb';
 
   export default {

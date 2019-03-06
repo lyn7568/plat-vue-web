@@ -232,6 +232,7 @@
               })
             }
           } else {
+            window.scroll(0, 0)
             return false
           }
         })
