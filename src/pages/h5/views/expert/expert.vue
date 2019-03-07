@@ -79,27 +79,33 @@
           </div>
         </div>
         <div class="content-wrapper" v-if="coopExperts && coopExperts.length">
-          <div class="content-title">
-            <span>合作专家</span>
-          </div>
-          <div class="content">
-            <BaseExpert v-for="item in coopExperts" :key="item.index" :itemSingle="item"></BaseExpert>
+          <div class="inner-wrapper">
+            <div class="content-title">
+              <span>合作专家</span>
+            </div>
+            <div class="content content-nf">
+              <BaseExpert v-for="item in coopExperts" :key="item.index" :itemSingle="item"></BaseExpert>
+            </div>
           </div>
         </div>
         <div class="content-wrapper" v-if="expContents && expContents.length">
-          <div class="content-title">
-            <span>相关文章</span>
-          </div>
-          <div class="content content-nf">
-            <baseContent v-for="item in expContents" :key="item.index" :itemSingle="item" :showOwner="false" :noBlank="true"></baseContent>
+          <div class="inner-wrapper">
+            <div class="content-title">
+              <span>相关文章</span>
+            </div>
+            <div class="content content-nf">
+              <baseContent v-for="item in expContents" :key="item.index" :itemSingle="item" :showOwner="false" :noBlank="true"></baseContent>
+            </div>
           </div>
         </div>
         <div class="content-wrapper" v-if="likeExperts && likeExperts.length">
-          <div class="content-title">
-            <span>您可能感兴趣的专家</span>
-          </div>
-          <div class="content">
-            <BaseExpert v-for="item in likeExperts" :key="item.index" :itemSingle="item"></BaseExpert>
+          <div class="inner-wrapper">
+            <div class="content-title">
+              <span>您可能感兴趣的专家</span>
+            </div>
+            <div class="content content-nf">
+              <BaseExpert v-for="item in likeExperts" :key="item.index" :itemSingle="item"></BaseExpert>
+            </div>
           </div>
         </div>
       </div>

@@ -9,7 +9,6 @@
                 <div class="info-tit info-tit-big">{{contentInfo.title}}</div>
                 <div class="info-tag">
                   <span>{{contentInfo.modifyTime}}</span>
-                  <pageView v-if="contentId" :pageObj="{ tn: 'article', id: contentId, src: '2'}"></pageView>
                   <span>作者/来源：{{contentInfo.source}}</span>
                 </div>
               </div>
@@ -80,7 +79,6 @@
   import baseOrg from '@/components/subTemplate/BaseOrg';
   import baseCompany from '@/components/subTemplate/BaseCompany';
   import baseContent from '@/components/subTemplate/BaseContent';
-  import pageView from '@/components/pageView';
   export default {
     data() {
       return {
@@ -102,7 +100,6 @@
       this.queryPaltNews();
     },
     components: {
-      pageView,
       baseExpert,
       baseOrg,
       baseCompany,
