@@ -11,7 +11,7 @@
             <div class="info-tag"><span v-if="orgInfo.type === '2'" style="margin-right:10px">{{compType[orgInfo.type]}} </span>{{keywordObj[1] ? keywordObj[1].join(" | ") : ''}}</div>
             <div class="info-operate">
               <div class="addr">{{citys[orgInfo.addr]}}</div>
-              <shareOut :tUrl="elurl"></shareOut>
+              <shareOut></shareOut>
             </div>
           </div>
         </div>
@@ -140,7 +140,6 @@
       return {
         activeName: 'first',
         orgInfo: '',
-        elurl: '',
         pageSize: 10,
         pageNo: 1,
         productCount: 0,
@@ -160,7 +159,6 @@
     },
     created() {
       this.companyId = urlParse('id');
-      this.elurl = window.location.href;
       this.getDictoryData();
       this.getorgInfo();
       this.getCompanyKeyword();

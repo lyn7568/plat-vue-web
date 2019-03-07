@@ -11,7 +11,7 @@
                   <span>{{contentInfo.modifyTime}}</span>
                   <pageView v-if="contentId" :pageObj="{ tn: 'article', id: contentId, src: '1'}"></pageView>
                   <span>作者/来源：{{contentInfo.source}}</span>
-                  <shareOut :tUrl="elurl"></shareOut>
+                  <shareOut></shareOut>
                 </div>
               </div>
             </div>
@@ -75,7 +75,6 @@
       return {
         /* eslint-disable no-undef */
         adinfo: PLAT.info.adinfo.mainAd,
-        elurl: '',
         contentInfo: '',
         platExperts: '',
         platOrgs: '',
@@ -84,7 +83,6 @@
     },
     created() {
       this.contentId = urlParse('id');
-      this.elurl = window.location.href;
       this.getContentInfo();
       this.getPlatExperts();
       this.getPlatOrgs();

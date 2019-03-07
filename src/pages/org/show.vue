@@ -11,7 +11,7 @@
             <div class="info-tag"><span v-if="orgInfo.orgType === '2'" style="margin-right:10px">{{compType[orgInfo.orgType]}}</span></div>
             <div class="info-operate">
               <div class="addr">{{orgInfo.city}}</div>
-              <shareOut :tUrl="elurl"></shareOut>
+              <shareOut></shareOut>
             </div>
           </div>
           <el-row class="goSpan" :gutter="10">
@@ -181,7 +181,6 @@
         compType: [],
         orgInfo: '',
         orgId: '',
-        elurl: '',
         platServices: [],
         serCount: 0,
         loadingModalShow: true, // 是否显示按钮
@@ -208,7 +207,6 @@
     },
     created() {
       this.orgId = urlParse('id');
-      this.elurl = window.location.href;
       this.getDictoryData();
       this.getorgInfo();
       this.getOrgWave();

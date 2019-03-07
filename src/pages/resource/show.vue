@@ -12,7 +12,7 @@
               <div class="info-tag">应用用途：{{resourceInfo.supportedServices}}</div>
               <div class="info-operate zoom-operate">
                 <collectCo :watchOptions="{oid: resourceId, type: 4}"></collectCo>
-                <shareOut :tUrl="elurl" :tPosition="tPosition"></shareOut>
+                <shareOut :tPosition="tPosition"></shareOut>
               </div>
             </div>
           </div>
@@ -115,7 +115,6 @@
       return {
         resourceInfo: '',
         resourceId: '',
-        elurl: '',
         tPosition: 'top-start',
         owner: {
           id: '',
@@ -128,7 +127,6 @@
     },
     created() {
       this.resourceId = urlParse('id');
-      this.elurl = window.location.href;
       this.getResourceInfo();
       this.getLikeResources();
       this.getLinkmans();

@@ -9,7 +9,7 @@
                 <div class="info-tit info-tit-big">{{patentInfo.name}}</div>
                 <div class="info-operate zoom-operate">
                   <collectCo :watchOptions="{oid: patentId, type: 5}"></collectCo>
-                  <shareOut :tUrl="elurl"></shareOut>
+                  <shareOut></shareOut>
                 </div>
               </div>
             </div>
@@ -122,7 +122,6 @@
         activeName: 'first',
         patentInfo: '',
         patentId: '',
-        elurl: '',
         likePatents: '',
         patentAuthors: '',
         defaultExpertImg: defaultSet.img.expert
@@ -130,7 +129,6 @@
     },
     created() {
       this.patentId = urlParse('id');
-      this.elurl = window.location.href;
       this.getPatentInfo();
       this.getLikePatents();
       this.getPatentAuthors();

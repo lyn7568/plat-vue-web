@@ -9,7 +9,7 @@
             <div class="info-tag"><span v-if="expertInfo.title" style="margin-right:10px">{{expertInfo.title}}</span> {{expertInfo.offt}}</div>
             <div class="info-operate">
               <div class="addr">{{expertInfo.address}}</div>
-              <shareOut :tUrl="elurl"></shareOut>
+              <shareOut></shareOut>
             </div>
           </div>
           <el-row class="goSpan" :gutter="10">
@@ -219,7 +219,6 @@
         activeName: 'first',
         expertInfo: '',
         expertId: '',
-        elurl: '',
         platServices: [],
         serCount: 0,
         loadingModalShow: true, // 是否显示按钮
@@ -247,7 +246,6 @@
     },
     created() {
       this.expertId = urlParse('id');
-      this.elurl = window.location.href;
       this.getExpertInfo();
       this.getExpertWave();
       this.getExpertPatent();

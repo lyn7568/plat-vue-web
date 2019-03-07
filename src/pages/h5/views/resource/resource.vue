@@ -72,7 +72,6 @@
 
   import previewMagnify from '../components/swiperImg';
   import beyondTo from '@/components/BeyondTo';
-  import contactChat from '@/components/ContactChat';
   import baseResource from '@/components/subTemplate/BaseResource';
 
   export default {
@@ -80,7 +79,6 @@
       return {
         resourceInfo: '',
         resourceId: '',
-        elurl: '',
         tPosition: 'top-start',
         owner: {
           id: '',
@@ -93,7 +91,6 @@
     },
     created() {
       this.resourceId = urlParse('id');
-      this.elurl = window.location.href;
       this.getResourceInfo();
       this.getLikeResources();
       this.getLinkmans();
@@ -101,7 +98,6 @@
     components: {
       previewMagnify,
       beyondTo,
-      contactChat,
       baseResource
     },
     methods: {

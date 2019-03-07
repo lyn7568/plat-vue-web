@@ -56,9 +56,7 @@
   import { urlParse, ImageUrl, defaultSet, strToArr } from '@/libs/util';
 
   import previewMagnify from '../components/swiperImg';
-  import collectCo from '@/components/CollectCo';
   import beyondTo from '@/components/BeyondTo';
-  import contactChat from '@/components/ContactChat';
 
   import baseService from '@/components/subTemplate/BaseService';
 
@@ -67,7 +65,6 @@
       return {
         serveInfo: '',
         serveId: '',
-        elurl: '',
         tPosition: 'top-start',
         ownerB: {
           id: '',
@@ -80,16 +77,13 @@
     },
     created() {
       this.serveId = urlParse('id');
-      this.elurl = window.location.href;
       this.getserveInfo();
       this.getLikeserves();
       this.getLinkmans();
     },
     components: {
       previewMagnify,
-      collectCo,
       beyondTo,
-      contactChat,
       baseService
     },
     methods: {

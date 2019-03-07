@@ -20,9 +20,6 @@
     import { urlshare } from '@/libs/util';
   export default {
     props: {
-      tUrl: {
-        type: String
-      },
       tPosition: {
         type: String,
         default: 'bottom-start'
@@ -46,8 +43,6 @@
           height: 120
         });
         qrcode.clear();
-        console.log(this.tUrl,12)
-        console.log(urlshare())
         qrcode.makeCode(urlshare());
       }
     }

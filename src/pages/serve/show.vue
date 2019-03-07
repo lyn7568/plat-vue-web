@@ -12,7 +12,7 @@
               <div class="info-tag">服务内容：{{serveInfo.cnt}}</div>
               <div class="info-operate zoom-operate">
                 <collectCo :watchOptions="{oid: serveId, type: 3}"></collectCo>
-                <shareOut :tUrl="elurl" :tPosition="tPosition"></shareOut>
+                <shareOut :tPosition="tPosition"></shareOut>
               </div>
             </div>
           </div>
@@ -103,7 +103,6 @@
       return {
         serveInfo: '',
         serveId: '',
-        elurl: '',
         tPosition: 'top-start',
         ownerB: {
           id: '',
@@ -116,7 +115,6 @@
     },
     created() {
       this.serveId = urlParse('id');
-      this.elurl = window.location.href;
       this.getserveInfo();
       this.getLikeserves();
       this.getLinkmans();

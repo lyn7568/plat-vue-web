@@ -12,7 +12,7 @@
               <div class="info-tag">简介：{{productInfo.cnt}}</div>
               <div class="info-operate zoom-operate">
                 <!-- <div class="addr">浏览量 10</div> -->
-                <shareOut :tUrl="elurl" :tPosition="tPosition"></shareOut>
+                <shareOut :tPosition="tPosition"></shareOut>
               </div>
             </div>
           </div>
@@ -87,14 +87,12 @@
         productInfo: '',
         companyId: '',
         keywords: '',
-        elurl: '',
         tPosition: 'top-start',
         otherProducts: ''
       };
     },
     created() {
       this.productId = urlParse('id');
-      this.elurl = window.location.href;
       this.getproductInfo();
       this.getProductKeyword();
     },

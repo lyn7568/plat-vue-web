@@ -94,8 +94,6 @@
 
 <script>
   import { urlParse, ImageUrl, defaultSet, strToArr, TimeTr } from '@/libs/util';
-  import collectCo from '@/components/CollectCo';
-  import contactChat from '@/components/ContactChat';
 
   import baseResult from '@/components/subTemplate/BaseResult';
   import queryBase from '@/libs/queryBase';
@@ -107,7 +105,6 @@
         activeName: 'first',
         patentInfo: '',
         patentId: '',
-        elurl: '',
         likePatents: '',
         patentAuthors: '',
         defaultExpertImg: defaultSet.img.expert
@@ -115,14 +112,11 @@
     },
     created() {
       this.patentId = urlParse('id');
-      this.elurl = window.location.href;
       this.getPatentInfo();
       this.getLikePatents();
       this.getPatentAuthors();
     },
     components: {
-      collectCo,
-      contactChat,
       baseResult
     },
     methods: {
