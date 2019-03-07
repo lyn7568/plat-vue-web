@@ -313,4 +313,24 @@ export const DateFormat = function (fmt) {
     if (new RegExp('(' + k + ')').test(fmt))
       fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
   return fmt
-} 
+}
+
+export const urlshare = function () {
+  let arrayUrl = ['home', 'company.html', 'org.html', 'expert.html', 'result.html', 'resource.html', 'serve.html', 'content.html']
+  let arr = arrayUrl.filter(function (item) {
+    return window.location.href.indexOf(item) !== -1;
+  })
+  if (arr && arr.length) {
+    let index = arr[0].indexOf('.');
+    let temp = arr[0].substring(0, index);
+    let url = "http://" + window.location.host + "/h5.html#/" + temp + "?id=" + urlParse('id');
+    return url;
+  }
+}
+
+export const sharePage = function (par) {
+  let url = urlshare();
+  if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {
+    location.href = url
+  } 
+}

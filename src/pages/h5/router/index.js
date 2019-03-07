@@ -65,7 +65,7 @@ const constantRouterMap = [
     path: '',
     component: Layout,
     children: [{
-      path: '/service',
+      path: '/serve',
       component: (resolve) => require(['../views/service/service.vue'], resolve),
       name: 'service',
       meta: { title: '服务' }
@@ -89,6 +89,16 @@ const constantRouterMap = [
       component: (resolve) => require(['../views/product/product.vue'], resolve),
       name: 'product',
       meta: { title: '产品' }
+    }]
+  }, 
+  {
+    path: '',
+    component: Layout,
+    children: [{
+      path: '/result',
+      component: (resolve) => require(['../views/result/result.vue'], resolve),
+      name: 'result',
+      meta: { title: '专利' }
     }]
   }
 ];

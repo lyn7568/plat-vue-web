@@ -46,7 +46,7 @@
 </template>
 
 <script>
-  import { ekexiuUrl } from '@/libs/util';
+  import { sharePage, ekexiuUrl } from '@/libs/util';
   import { MessageBox } from 'element-ui'
 
   export default {
@@ -105,6 +105,7 @@
     },
     mounted () {
       /* eslint-disable no-undef */
+      sharePage();
       this.plat = PLAT.info;
       if (!this.account) {
         this.$store.dispatch('GetUserInfo').then(res => {})

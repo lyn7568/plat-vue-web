@@ -17,6 +17,7 @@
   </div>
 </template>
 <script>
+    import { urlshare } from '@/libs/util';
   export default {
     props: {
       tUrl: {
@@ -45,7 +46,9 @@
           height: 120
         });
         qrcode.clear();
-        qrcode.makeCode(this.tUrl);
+        console.log(this.tUrl,12)
+        console.log(urlshare())
+        qrcode.makeCode(urlshare());
       }
     }
   };
