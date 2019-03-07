@@ -18,59 +18,67 @@
         </div>
       </div>
     </div>
-    <div class="content-wrapper split-other" v-if="platServices.length || platResources.length">
-      <div class="inner-wrapper" v-if="platServices.length">
-        <div class="content-title">
-          <span>可提供服务</span>
+    <div class="block-wrapper">
+        <div class="left-main">
+          <div class="content-wrapper split-other" v-if="platServices.length || platResources.length">
+            <div class="inner-wrapper" v-if="platServices.length">
+              <div class="content-title">
+                <span>可提供服务</span>
+              </div>
+              <div class="content content-nf" v-if="platServices.length">
+                <baseService v-for="item in platServices" :key="item.index" :itemSingle="item" :noBlank="true"></baseService>
+                <p class="moretype" @click="moreService" v-show="loadingModalShow">查看更多服务</p>
+              </div>
+            </div>
+            <div class="inner-wrapper" v-if="platResources.length">
+              <div class="content-title">
+                <span>可共享资源</span>
+              </div>
+              <div class="content content-nf" v-if="platResources.length">
+                <baseResource v-for="item in platResources" :key="item.index" :itemSingle="item" :noBlank="true"></baseResource>
+                <p class="moretype" @click="moreProduct" v-show="loadingModalShow2">查看更多资源</p>
+              </div>
+            </div>
+          </div>
+          <div class="content-wrapper" v-if="orgInfo.descp">
+            <div class="inner-wrapper">
+              <div class="content-title">
+                <span>机构简介</span>
+              </div>
+              <div class="content">{{orgInfo.descp}}</div>
+            </div>
+            <div class="inner-wrapper" v-if="orgInfo.subject && orgInfo.subject.length">
+              <div class="content-title">
+                <span>专注领域</span>
+              </div>
+              <div class="content">
+                <el-row class="tag-item">
+                  <el-tag v-for="sub in orgInfo.subject" :key="sub.index">{{sub}}</el-tag>
+                </el-row>
+              </div>
+            </div>
+          </div>
+          <div class="content-wrapper" v-if="orgContents && orgContents.length">
+            <div class="inner-wrapper">
+              <div class="content-title">
+                <span>相关文章</span>
+              </div>
+              <div class="content content-nf" v-if="orgContents.length">
+                <baseContent v-for="item in orgContents" :key="item.index" :itemSingle="item" :noBlank="true"></baseContent>
+              </div>
+            </div>  
+          </div>
+          <div class="content-wrapper" v-if="likeOrgs && likeOrgs.length">
+            <div class="inner-wrapper">
+              <div class="content-title">
+                <span>您可能感兴趣的机构</span>
+              </div>
+              <div class="content">
+                <BaseOrg v-for="item in likeOrgs" :key="item.index" :itemSingle="item" :noBlank="true"></BaseOrg>>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="content content-nf" v-if="platServices.length">
-          <baseService v-for="item in platServices" :key="item.index" :itemSingle="item" :noBlank="true"></baseService>
-          <p class="moretype" @click="moreService" v-show="loadingModalShow">查看更多服务</p>
-        </div>
-      </div>
-      <div class="inner-wrapper" v-if="platResources.length">
-        <div class="content-title">
-          <span>可共享资源</span>
-        </div>
-        <div class="content content-nf" v-if="platResources.length">
-          <baseResource v-for="item in platResources" :key="item.index" :itemSingle="item" :noBlank="true"></baseResource>
-          <p class="moretype" @click="moreProduct" v-show="loadingModalShow2">查看更多资源</p>
-        </div>
-      </div>
-    </div>
-    <div class="content-wrapper" v-if="orgInfo.descp">
-      <div class="inner-wrapper">
-        <div class="content-title">
-          <span>机构简介</span>
-        </div>
-        <div class="content">{{orgInfo.descp}}</div>
-      </div>
-      <div class="inner-wrapper" v-if="orgInfo.subject && orgInfo.subject.length">
-        <div class="content-title">
-          <span>专注领域</span>
-        </div>
-        <div class="content">
-          <el-row class="tag-item">
-            <el-tag v-for="sub in orgInfo.subject" :key="sub.index">{{sub}}</el-tag>
-          </el-row>
-        </div>
-      </div>
-    </div>
-    <div class="content-wrapper" v-if="orgContents && orgContents.length">
-      <div class="content-title">
-        <span>相关文章</span>
-      </div>
-      <div class="content content-nf" v-if="orgContents.length">
-        <baseContent v-for="item in orgContents" :key="item.index" :itemSingle="item" :noBlank="true"></baseContent>
-      </div>
-    </div>
-    <div class="content-wrapper" v-if="likeOrgs && likeOrgs.length">
-      <div class="content-title">
-        <span>您可能感兴趣的机构</span>
-      </div>
-      <div class="content">
-        <BaseOrg v-for="item in likeOrgs" :key="item.index" :itemSingle="item" :noBlank="true"></BaseOrg>>
-      </div>
     </div>
   </div>
 </template>

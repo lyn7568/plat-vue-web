@@ -38,7 +38,7 @@
             </div>
             <div class="content">{{orgInfo.descp}}</div>
           </div>
-          <div class="inner-wrapper" v-if="keywordObj && keywordObj[2].length">
+          <div class="inner-wrapper" v-if="keywordObj[2] && keywordObj[2].length">
             <div class="content-title">
               <span>专注领域</span>
             </div>
@@ -50,11 +50,13 @@
           </div>
         </div>
         <div class="content-wrapper" v-if="compContents && compContents.length">
-          <div class="content-title">
-            <span>相关文章</span>
-          </div>
-          <div class="content content-nf" v-if="compContents.length">
-            <baseContent v-for="item in compContents" :key="item.index" :itemSingle="item" :noBlank="true"></baseContent>
+          <div class="inner-wrapper">
+            <div class="content-title">
+              <span>相关文章</span>
+            </div>
+            <div class="content content-nf" v-if="compContents.length">
+              <baseContent v-for="item in compContents" :key="item.index" :itemSingle="item" :noBlank="true"></baseContent>
+            </div>
           </div>
         </div>
       </div>

@@ -289,6 +289,7 @@ export default {
       }, (res) => {
         if (res.success && res.data) {
           if (res.data.pageNo !== that.pageNo) {
+            that.scrollData.loading = false
             return;
           }
           var $info = res.data.data;
@@ -431,6 +432,7 @@ export default {
       }, (res) => {
         if (res.success) {
           if (res.data.pageNo !== that.pageNo) {
+            that.scrollData.loading = false
             return;
           }
           var $info = res.data.data;

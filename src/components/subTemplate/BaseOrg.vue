@@ -1,5 +1,5 @@
 <template>
-  <a class="list-item" :href="'org.html?id='+orgInfo.id" :target="noBlank ? '' : '_blank'">
+  <a class="list-item" :href="urlHref" :target="noBlank ? '' : '_blank'">
     <div class="list-head">
       <div class="item-pic-org">
         <img :src="orgInfo.logo">
@@ -25,7 +25,9 @@
       }
     },
     data() {
-      return {};
+      return {
+        urlHref: ''
+      };
     },
     computed: {
       orgInfo() {
@@ -42,6 +44,11 @@
       }
     },
     created() {
+      if (this.noBlank) {
+        this.urlHref = `h5.html#/org?id=${this.orgInfo.id}`;
+      } else {
+        this.urlHref = `org.html?id=${this.orgInfo.id}`
+      }
     },
     methods: {
     }

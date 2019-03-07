@@ -1,5 +1,5 @@
 <template>
-  <a class="list-item" :href="'resource.html?id='+resourceInfo.id" :target="noBlank ? '' : '_blank'">
+  <a class="list-item" :href="urlHref" :target="noBlank ? '' : '_blank'">
     <div class="list-head" :style="{backgroundImage: 'url(' + resourceInfo.firstImg + ')'}"></div>
     <div class="list-info">
       <div class="list-tit list-topic">{{resourceInfo.name}}</div>
@@ -26,7 +26,8 @@
     data() {
       return {
         ownerName: '',
-        ownerAuth: ''
+        ownerAuth: '',
+        urlHref: ''
       };
     },
     computed: {
@@ -54,6 +55,11 @@
     },
     created() {
       this.ownerByond();
+      if (this.noBlank) {
+        this.urlHref = `h5.html#/resource?id=${this.resourceInfo.id}`;
+      } else {
+        this.urlHref = `resource.html?id=${this.resourceInfo.id}`
+      }
     },
     methods: {
       ownerByond() {

@@ -61,7 +61,7 @@
               <div class="content-title">
                 <span>热门资源</span>
               </div>
-              <div class="content">
+              <div class="content content-nf">
                   <baseResource v-for="item in hotResources" :key="item.index" :itemSingle="item" :noBlank="true"></baseResource>
               </div>
             </div>

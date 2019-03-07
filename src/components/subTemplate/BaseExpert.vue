@@ -1,5 +1,5 @@
 <template>
-  <a class="list-item" :href="'expert.html?id='+itemSingle.id" :target="noBlank ? '' : '_blank'">
+  <a class="list-item" :href="urlHref" :target="noBlank ? '' : '_blank'">
     <div class="list-head list-circular-head" :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
     <div class="list-info">
       <div class="list-tit list-topic">{{itemSingle.name}}</div>
@@ -22,7 +22,9 @@
       }
     },
     data() {
-      return {};
+      return {
+        urlHref: ''
+      };
     },
     computed: {
       imgUrl() {
@@ -34,6 +36,11 @@
       }
     },
     created() {
+      if (this.noBlank) {
+        this.urlHref = `h5.html#/expert?id=${this.itemSingle.id}`;
+      } else {
+        this.urlHref = `expert.html?id=${this.itemSingle.id}`
+      }
     },
     methods: {
     }

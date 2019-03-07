@@ -1,5 +1,5 @@
 <template>
-  <a class="list-item" :href="'result.html?id='+itemSingle.id" :target="noBlank ? '' : '_blank'">
+  <a class="list-item" :href="urlHref" :target="noBlank ? '' : '_blank'">
     <div class="list-head" :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
     <div class="list-info">
       <div class="list-tit list-topic">{{itemSingle.name}}</div>
@@ -24,10 +24,16 @@
     },
     data() {
       return {
-        imgUrl: defaultSet.img.patent
+        imgUrl: defaultSet.img.patent,
+        urlHref: ''
       };
     },
     created() {
+      if (this.noBlank) {
+        this.urlHref = `h5.html#/result?id=${this.itemSingle.id}`;
+      } else {
+        this.urlHref = `result.html?id=${this.itemSingle.id}`
+      }
     },
     methods: {
     }

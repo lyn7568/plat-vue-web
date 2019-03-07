@@ -1,5 +1,5 @@
 <template>
-  <a class="list-item" :class="isShowImg(itemSingle.catalog)" :href="'content.html?id='+itemSingle.id" :target="noBlank ? '' : '_blank'">
+  <a class="list-item" :class="isShowImg(itemSingle.catalog)" :href="urlHref" :target="noBlank ? '' : '_blank'">
     <div class="list-head" :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
     <div class="list-info">
       <div class="list-tit">{{itemSingle.title}}</div>
@@ -24,8 +24,16 @@
     },
     data() {
       return {
-        imgUrl: this.itemSingle.imgUrl || defaultSet.img.article
+        imgUrl: this.itemSingle.imgUrl || defaultSet.img.article,
+        urlHref: ''
       };
+    },
+    created() {
+      if (this.noBlank) {
+        this.urlHref = `h5.html#/content?id=${this.itemSingle.id}`;
+      } else {
+        this.urlHref = `content.html?id=${this.itemSingle.id}`
+      }
     },
     methods: {
       isShowImg(catalog) {

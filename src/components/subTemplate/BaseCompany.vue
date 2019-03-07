@@ -1,5 +1,5 @@
 <template>
-  <a class="list-item" :href="'company.html?id='+companyInfo.id" :target="noBlank ? '' : '_blank'">
+  <a class="list-item" :href="urlHref" :target="noBlank ? '' : '_blank'">
     <div class="list-head">
       <div class="item-pic-org">
         <img :src="companyInfo.logo">
@@ -26,7 +26,8 @@
     },
     data() {
       return {
-        objKey: []
+        objKey: [],
+        urlHref: ''
       }
     },
     computed: {
@@ -43,6 +44,11 @@
     },
     created() {
       this.getCompanyKeyword()
+      if (this.noBlank) {
+        this.urlHref = `h5.html#/company?id=${this.companyInfo.id}`;
+      } else {
+        this.urlHref = `company.html?id=${this.companyInfo.id}`
+      }
     },
     methods: {
       getCompanyKeyword() {

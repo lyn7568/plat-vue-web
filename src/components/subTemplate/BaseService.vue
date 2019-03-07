@@ -1,5 +1,5 @@
 <template>
-  <a class="list-item" :href="'serve.html?id='+serveInfo.id" :target="noBlank ? '' : '_blank'">
+  <a class="list-item" :href="urlHref" :target="noBlank ? '' : '_blank'">
     <div class="list-head" :style="{backgroundImage: 'url(' + serveInfo.firstImg + ')'}"></div>
     <div class="list-info">
       <div class="list-tit list-topic">{{serveInfo.name}}</div>
@@ -27,11 +27,17 @@
       return {
         ownerName: '',
         ownerAuth: '',
-        serveInfo: ''
+        serveInfo: '',
+        urlHref: ''
       };
     },
     created() {
       this.itmeList();
+      if (this.noBlank) {
+        this.urlHref = `h5.html#/serve?id=${this.serveInfo.id}`;
+      } else {
+        this.urlHref = `serve.html?id=${this.serveInfo.id}`
+      }
     },
     methods: {
       itmeList() {
