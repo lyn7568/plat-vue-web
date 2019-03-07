@@ -54,18 +54,18 @@
             <span>相关文章</span>
           </div>
           <div class="content content-nf" v-if="compContents.length">
-              <baseContent v-for="item in compContents" :key="item.index" :itemSingle="item" :noBlank="true"></baseContent>
-            </div>
+            <baseContent v-for="item in compContents" :key="item.index" :itemSingle="item" :noBlank="true"></baseContent>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
   import { urlParse, defaultSet, commenTime } from '@/libs/util';
   import queryDict from '@/libs/queryDict';
   import baseContent from '@/components/subTemplate/BaseContent';
-  import shareOut from '@/components/ShareOut';
   import baseProduct from '@/components/subTemplate/BaseProduct';
 
   export default {
@@ -93,7 +93,6 @@
       this.getCompContent();
     },
     components: {
-      shareOut,
       baseProduct,
       baseContent
     },
@@ -217,6 +216,7 @@
     }
   };
 </script>
+
 <style lang="scss" rel="stylesheet/scss">
   @import '../../style/index';
 </style>

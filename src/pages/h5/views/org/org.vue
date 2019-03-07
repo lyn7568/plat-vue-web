@@ -69,13 +69,7 @@
         <span>您可能感兴趣的机构</span>
       </div>
       <div class="content">
-        <a v-for="item in likeOrgs" :key="item.index" class="list-item" :href="'org.html?id='+item.id">
-          <div class="list-head" :style="{backgroundImage: 'url(' + item.logo + ')'}"></div>
-          <div class="list-info">
-            <div class="list-owner">{{item.name}}</div>
-            <div class="list-desc">{{item.compType}}</div>
-          </div>
-        </a>
+        <BaseOrg v-for="item in likeOrgs" :key="item.index" :itemSingle="item" :noBlank="true"></BaseOrg>>
       </div>
     </div>
   </div>
@@ -85,12 +79,10 @@
   import queryDict from '@/libs/queryDict';
   import queryBase from '@/libs/queryBase';
 
-  import shareOut from '@/components/ShareOut';
-  import collectCo from '@/components/CollectCo';
-  import contactChat from '@/components/ContactChat';
   import baseService from '@/components/subTemplate/BaseService';
   import baseResource from '@/components/subTemplate/BaseResource';
   import baseContent from '@/components/subTemplate/BaseContent';
+  import BaseOrg from '@/components/subTemplate/BaseOrg';
 
   export default {
     data() {
@@ -100,7 +92,6 @@
         compType: [],
         orgInfo: '',
         orgId: '',
-        elurl: '',
         platServices: [],
         serCount: 0,
         loadingModalShow: false, // 是否显示按钮
@@ -127,7 +118,6 @@
     },
     created() {
       this.orgId = urlParse('id');
-      this.elurl = window.location.href;
       this.getDictoryData();
       this.getorgInfo();
       this.getOrgWave();
@@ -137,12 +127,10 @@
       this.getLikeOrgs();
     },
     components: {
-      shareOut,
-      collectCo,
-      contactChat,
       baseService,
       baseResource,
-      baseContent
+      baseContent,
+      BaseOrg
     },
     methods: {
       moreService() {

@@ -55,18 +55,18 @@
             </a>
           </div>
           <div class="inner-wrapper" v-if="paltNews && paltNews.length">
-              <div class="content-title">
-                <span>最新文章</span>
-              </div>
-              <div class="content content-nf">
-                  <baseContent v-for="item in paltNews" :key="item.index" :itemSingle="item" :showOwner="false" :noBlank="true"></baseContent>
-              </div>
+            <div class="content-title">
+              <span>最新文章</span>
             </div>
-            <div class="block-wrapper" v-if="adinfo.shareAdBottom.length">
-                <a class="ad-wrapper" v-for="item in adinfo.shareAdBottom" :key="item.index" :href="item.adUrl" target="_blank">
-                  <img :src="item.imgUrl" width="100%">
-                </a>
-              </div>
+            <div class="content content-nf">
+              <baseContent v-for="item in paltNews" :key="item.index" :itemSingle="item" :showOwner="false" :noBlank="true"></baseContent>
+            </div>
+          </div>
+          <div class="block-wrapper" v-if="adinfo.shareAdBottom.length">
+            <a class="ad-wrapper" v-for="item in adinfo.shareAdBottom" :key="item.index" :href="item.adUrl" target="_blank">
+              <img :src="item.imgUrl" width="100%">
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -119,8 +119,8 @@
             var $info = res.data.data;
             if ($info.length > 0) {
               for (let i = 0; i < $info.length; ++i) {
-                if($info[i].id === this.contentId) {
-                  $info.splice(i,1)
+                if ($info[i].id === this.contentId) {
+                  $info.splice(i, 1)
                   i--
                   continue
                 }
@@ -128,7 +128,7 @@
                   $info[i].modifyTime = commenTime($info[i].modifyTime, true)
                 }
               }
-              this.paltNews = $info.slice(0,5)
+              this.paltNews = $info.slice(0, 5)
             }
           };
         });

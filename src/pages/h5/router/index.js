@@ -50,6 +50,46 @@ const constantRouterMap = [
       name: 'org',
       meta: { title: '机构' }
     }]
+  }, 
+  {
+    path: '',
+    component: Layout,
+    children: [{
+      path: '/expert',
+      component: (resolve) => require(['../views/expert/expert.vue'], resolve),
+      name: 'expert',
+      meta: { title: '专家' }
+    }]
+  }, 
+  {
+    path: '',
+    component: Layout,
+    children: [{
+      path: '/service',
+      component: (resolve) => require(['../views/service/service.vue'], resolve),
+      name: 'service',
+      meta: { title: '服务' }
+    }]
+  }, 
+  {
+    path: '',
+    component: Layout,
+    children: [{
+      path: '/resource',
+      component: (resolve) => require(['../views/resource/resource.vue'], resolve),
+      name: 'resource',
+      meta: { title: '资源' }
+    }]
+  }, 
+  {
+    path: '',
+    component: Layout,
+    children: [{
+      path: '/product',
+      component: (resolve) => require(['../views/product/product.vue'], resolve),
+      name: 'product',
+      meta: { title: '产品' }
+    }]
   }
 ];
 

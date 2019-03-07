@@ -1,5 +1,5 @@
 <template>
-  <div class="beyond-block">
+  <div class="beyond-block" :class="styFlag?'beyond-h5':''">
     <div class="expert-block" v-if="ownerType==='1'">
       <div class="show-head" :style="{backgroundImage:'url('+ ownerInfo.img +')'}"></div>
       <div class="show-info">
@@ -17,7 +17,7 @@
         <div class="info-desc">{{ownerInfo.title}}</div>
       </div>
     </div>
-    <div class="goSpan">
+    <div class="goSpan" v-if="!styFlag">
       <collectCo v-if="ownerType==='1'" :watchOptions="{oid: ownerId, type: 1}"></collectCo>
       <contactChat v-if="ownerType==='1'" :contactOptions="{oid: ownerId}"></contactChat>
       <collectCo v-if="ownerType==='2'" :watchOptions="{oid: ownerId, type: 2}"></collectCo>
@@ -37,6 +37,10 @@
       },
       ownerType: {
         type: String
+      },
+      styFlag: {
+        type:Boolean,
+        default: false
       }
     },
     data() {
@@ -154,5 +158,37 @@
   margin-right: -15px;
   display: flex;
   justify-content: center;
+}
+
+
+.beyond-h5 .expert-block{
+  display:flex;
+}
+.beyond-h5 .show-head{
+  width: 50px;
+  height: 50px;
+}
+.beyond-h5 .show-head.orgimg-box{
+  width: 50px;
+  height: 40px; 
+}
+.beyond-h5 .show-head.orgimg-box img{
+  max-width: 50px;
+}
+.beyond-h5 .show-info{
+  line-height: 18px;
+  flex:1 0 80px;
+  padding-left:15px;
+  width: 118px;
+  text-align: left;
+}
+.beyond-h5 .show-info .info-tit{
+  font-size: 16px;
+}
+.beyond-h5 .show-info .info-tag{
+  font-size: 14px;
+}
+.beyond-h5 .show-info .info-desc{
+  font-size: 13px;
 }
 </style>
