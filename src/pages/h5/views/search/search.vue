@@ -273,13 +273,13 @@ export default {
       this.pageNo++;
       setTimeout(() => {
         that.tabTofun()
-        that.scrollData.noFlag = true;
         done();
       }, 2000);
     },
     contentListFun() {
       var that = this
       that.scrollData.loading = true
+      that.scrollData.noFlag = false
       this.$axios.get('/ajax/article/pq', {
         title: that.searchText,
         catalog: that.activeColumn,
@@ -290,6 +290,7 @@ export default {
         if (res.success && res.data) {
           if (res.data.pageNo !== that.pageNo) {
             that.scrollData.loading = false
+            that.scrollData.noFlag = true
             return;
           }
           var $info = res.data.data;
@@ -308,6 +309,7 @@ export default {
     expertListFun() {
       var that = this
       that.scrollData.loading = true
+      that.scrollData.noFlag = false
       that.$axios.get('/ajax/professor/list', {}, (res) => {
         if (res.success) {
           var $data = res.data;
@@ -352,6 +354,7 @@ export default {
                       })
                       that.expertList = obj
                       that.scrollData.loading = false
+                      that.scrollData.noFlag = true
                     }, 1000)
                   }
                 }
@@ -366,6 +369,7 @@ export default {
     orgListFun() {
       var that = this
       that.scrollData.loading = true
+      that.scrollData.noFlag = false
       that.$axios.get('/ajax/org/list', {}, (res) => {
         if (res.success) {
           var $data = res.data;
@@ -411,6 +415,7 @@ export default {
                       })
                       that.orgList = obj
                       that.scrollData.loading = false
+                      that.scrollData.noFlag = true
                     }, 1000);
                   }
                 }
@@ -425,6 +430,7 @@ export default {
     companyListFun() {
       var that = this
       that.scrollData.loading = true
+      that.scrollData.noFlag = false
       this.$axios.get('/ajax/company/pq', {
         name: that.searchText,
         pageSize: that.rows,
@@ -433,6 +439,7 @@ export default {
         if (res.success) {
           if (res.data.pageNo !== that.pageNo) {
             that.scrollData.loading = false
+            that.scrollData.noFlag = true
             return;
           }
           var $info = res.data.data;
@@ -471,6 +478,7 @@ export default {
     resourceListFun() {
       var that = this
       that.scrollData.loading = true
+      that.scrollData.noFlag = false
       this.$axios.getk('/ajax/resource/index/search', {
         key: that.searchText,
         sortNum: that.dataO.resSortNum,
@@ -485,6 +493,8 @@ export default {
             that.dataO.resTime = $info[$info.length - 1].publishTime;
             that.dataO.resId = $info[$info.length - 1].resourceId;
             that.resourceList = that.resourceList.concat($info);
+          } else {
+            that.scrollData.noFlag = true;
           }
         };
         that.scrollData.loading = false
@@ -493,6 +503,7 @@ export default {
     resultListFun() {
       var that = this
       that.scrollData.loading = true
+      that.scrollData.noFlag = false
       this.$axios.getk('/ajax/ppatent/index/search', {
         key: that.searchText,
         sortNum: that.dataO.patSortNum,
@@ -507,7 +518,9 @@ export default {
             that.dataO.patCreateTime = $info[$info.length - 1].createTime;
             that.dataO.patId = $info[$info.length - 1].id;
             that.resultList = that.resultList.concat($info);
-          };
+          } else {
+            that.scrollData.noFlag = true;
+          }
         };
         that.scrollData.loading = false
       });
@@ -515,6 +528,7 @@ export default {
     serviceListFun() {
       var that = this
       that.scrollData.loading = true
+      that.scrollData.noFlag = false
       this.$axios.getk('/ajax/ware/index/search', {
           key: that.searchText,
           sortFirst: that.dataO.serSortFirst,
@@ -529,7 +543,9 @@ export default {
             that.dataO.serTime = $info[$info.length - 1].modifyTime;
             that.dataO.serId = $info[$info.length - 1].id;
             that.serviceList = that.serviceList.concat($info);
-          };
+          } else {
+            that.scrollData.noFlag = true;
+          }
         };
         that.scrollData.loading = false
       });
