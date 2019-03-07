@@ -86,7 +86,7 @@ import baseResource from '@/components/subTemplate/BaseResource';
 import baseResult from '@/components/subTemplate/BaseResult';
 import baseContent from '@/components/subTemplate/BaseContent';
 
-import loadmore from "./scrollMore.vue";
+import loadmore from './scrollMore.vue';
 export default {
   data() {
     return {
@@ -184,6 +184,21 @@ export default {
       return this.orgList;
     }
   },
+  watch: {
+    activeTab(val) {
+      var num = parseInt(val) - 1
+      if (num < 3) {
+        num = 0
+      }
+      this.mySwiperTab.slideTo(num, 500, false)
+      this.clearToFun()
+    },
+    activeColumn(val) {
+      this.contentList = []
+      this.pageNo = 1
+      this.contentListFun()
+    }
+  },
   created() {
     if (urlParse('n')) {
       this.activeTab = urlParse('n');
@@ -208,24 +223,10 @@ export default {
   },
   methods: {
     slideChanged(val) {
-      this.activeTab = val
-      var num = parseInt(val) - 1
-      if (num < 3) {
-        num = 0
-      }
-      this.mySwiperTab.slideTo(num, 500, false)
-      this.clearToFun()
+      this.activeTab = val;
     },
     slideChangedColumn(val) {
       this.activeColumn = val
-      var num = parseInt(val) - 1
-      if (num < 3) {
-        num = 0
-      }
-      this.swiperColumnTab.slideTo(num, 500, false)
-      this.contentList = []
-      this.pageNo = 1
-      this.contentListFun()
     },
     clearToFun() {
       this.contentList = []
@@ -424,6 +425,7 @@ export default {
       var that = this
       that.scrollData.loading = true
       this.$axios.get('/ajax/company/pq', {
+        name: that.searchText,
         pageSize: that.rows,
         pageNo: that.pageNo
       }, (res) => {
@@ -600,12 +602,11 @@ export default {
     }
   }
   &.columnTab{
-    position: fixed;
     top: 80px;
     width: 100%;
-    z-index: 3;
+    z-index: 4;
     .swiper-slide-tab{
-      margin:5px 4px;
+      margin: 4px;
       line-height: 32px;
       padding:0 8px;
       &:after{

@@ -49,6 +49,5 @@
 <style>
 .page-view{
   display: inline-block;
-  margin-right:15px;
 }
 </style>
