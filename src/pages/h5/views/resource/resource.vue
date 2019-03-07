@@ -1,7 +1,7 @@
 <template>
   <div class="browse-main">
     <div class="block-wrapper">
-        <div style="width:100%">
+        <div style="width:100%" class="left-main">
         <div class="content-wrapper" style="padding:0">
             <div class="content-wrapper" style="padding:0">
                 <previewMagnify v-if="resourceInfo.img && resourceInfo.img.length" :previewImg="resourceInfo.img"></previewMagnify>
@@ -47,19 +47,23 @@
             </el-row>
         </div>
         <div class="content-wrapper" v-if="likeResources && likeResources.length">
-          <div class="content-title">
-            <span>您可能感兴趣的资源</span>
-          </div>
-          <div class="content content-nf">
-            <baseResource v-for="item in likeResources" :key="item.index" :itemSingle="item" :noBlank="true"></baseResource>
-          </div>
+          <div class="inner-wrapper">
+            <div class="content-title">
+              <span>您可能感兴趣的资源</span>
+            </div>
+            <div class="content content-nf">
+              <baseResource v-for="item in likeResources" :key="item.index" :itemSingle="item" :noBlank="true"></baseResource>
+            </div>
+           </div> 
         </div>
         <div class="content-wrapper" v-if="hotResources && hotResources.length">
-            <div class="content-title">
-              <span>热门资源</span>
-            </div>
-            <div class="content">
-                <baseResource v-for="item in hotResources" :key="item.index" :itemSingle="item" :noBlank="true"></baseResource>
+            <div class="inner-wrapper">
+              <div class="content-title">
+                <span>热门资源</span>
+              </div>
+              <div class="content">
+                  <baseResource v-for="item in hotResources" :key="item.index" :itemSingle="item" :noBlank="true"></baseResource>
+              </div>
             </div>
           </div>
       </div>
@@ -200,8 +204,5 @@
   @import '../../style/index';
   .browse-main .block-wrapper .content-wrapper{
     padding: 8px 20px;
-  }
-  .browse-main .block-wrapper .content-wrapper .content{
-    margin:-20px;
   }
 </style>

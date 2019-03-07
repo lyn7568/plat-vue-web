@@ -1,53 +1,57 @@
 <template>
   <div class="browse-main">
     <div class="block-wrapper">
-      <div style="width:100%">
-          <div class="content-wrapper" style="padding:0">
-            <previewMagnify v-if="serveInfo.img && serveInfo.img.length" :previewImg="serveInfo.img"></previewMagnify>
+      <div style="width:100%" class="left-main">
+        <div class="content-wrapper" style="padding:0">
+          <previewMagnify v-if="serveInfo.img && serveInfo.img.length" :previewImg="serveInfo.img"></previewMagnify>
+        </div>
+        <div class="content-wrapper">
+          <div class="show-info">
+            <div class="info-tit info-tit-big" style="font-size: 20px; line-height:30px; margin-bottom: 4px;">{{serveInfo.name}}</div>
+            <div class="info-tag">内容：{{serveInfo.cnt}}</div>
           </div>
-            <div class="content-wrapper">
-            <div class="show-info">
-                <div class="info-tit info-tit-big" style="font-size: 20px; line-height:30px; margin-bottom: 4px;">{{serveInfo.name}}</div>
-                <div class="info-tag">内容：{{serveInfo.cnt}}</div>
-              </div>
         </div>
         <div class="content-wrapper">
-            <beyondTo v-if="ownerB.id" :ownerId="ownerB.id" :ownerType="ownerB.type" :styFlag="true"></beyondTo>
+          <beyondTo v-if="ownerB.id" :ownerId="ownerB.id" :ownerType="ownerB.type" :styFlag="true"></beyondTo>
         </div>
         <div class="content-wrapper">
-            <el-row :gutter="10" class="rel-detail">
-              <el-col class="rel-item" :span="24" v-if="serveInfo.cooperation">
-                <div class="rel-tit">合作备注：</div>
-                <div v-html="serveInfo.cooperation"></div>
-              </el-col>
-              <el-col class="rel-item" :span="24" v-if="serveInfo.descp">
-                <div class="rel-tit">详细介绍：</div>
-                <div v-html="serveInfo.descp"></div>
-              </el-col>
-              <el-col class="rel-item" :span="24" v-if="serveInfo.keywords && serveInfo.keywords.length">
-                <el-row class="tag-item">
-                  <el-tag v-for="sub in serveInfo.keywords" :key="sub.index">{{sub}}</el-tag>
-                </el-row>
-              </el-col>
-            </el-row>
+          <el-row :gutter="10" class="rel-detail">
+            <el-col class="rel-item" :span="24" v-if="serveInfo.cooperation">
+              <div class="rel-tit">合作备注：</div>
+              <div v-html="serveInfo.cooperation"></div>
+            </el-col>
+            <el-col class="rel-item" :span="24" v-if="serveInfo.descp">
+              <div class="rel-tit">详细介绍：</div>
+              <div v-html="serveInfo.descp"></div>
+            </el-col>
+            <el-col class="rel-item" :span="24" v-if="serveInfo.keywords && serveInfo.keywords.length">
+              <el-row class="tag-item">
+                <el-tag v-for="sub in serveInfo.keywords" :key="sub.index">{{sub}}</el-tag>
+              </el-row>
+            </el-col>
+          </el-row>
         </div>
         <div class="content-wrapper" v-if="likeserves && likeserves.length">
-          <div class="content-title">
-            <span>您可能感兴趣的服务</span>
-          </div>
-          <div class="content content-nf">
-            <baseService v-for="item in likeserves" :key="item.index" :itemSingle="item" :noBlank="true"></baseService>
-          </div>
+          <div class="inner-wrapper">
+            <div class="content-title">
+              <span>您可能感兴趣的服务</span>
+            </div>
+            <div class="content content-nf">
+              <baseService v-for="item in likeserves" :key="item.index" :itemSingle="item" :noBlank="true"></baseService>
+            </div>
+          </div>>
         </div>
         <div class="content-wrapper" v-if="hotserves && hotserves.length">
+          <div class="inner-wrapper">
             <div class="content-title">
               <span>热门服务</span>
             </div>
             <div class="content content-nf">
-                <baseService v-for="item in hotserves" :key="item.index" :itemSingle="item" :noBlank="true"></baseService>
+              <baseService v-for="item in hotserves" :key="item.index" :itemSingle="item" :noBlank="true"></baseService>
             </div>
           </div>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -209,10 +213,8 @@
 </script>
 <style lang="scss" rel="stylesheet/scss">
   @import '../../style/index';
-  .browse-main .block-wrapper .content-wrapper{
+
+  .browse-main .block-wrapper .content-wrapper {
     padding: 8px 20px;
-  }
-  .browse-main .block-wrapper .content-wrapper .content{
-    margin:-20px;
   }
 </style>

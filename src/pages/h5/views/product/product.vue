@@ -1,7 +1,7 @@
 <template>
   <div class="browse-main">
     <div class="block-wrapper">
-        <div style="width:100%">
+        <div style="width:100%" class="left-main">
             <div class="content-wrapper" style="padding:0">
                 <div class="content-wrapper" style="padding:0">
                     <previewMagnify v-if="productInfo.img && productInfo.img.length" :previewImg="productInfo.img"></previewMagnify>
@@ -48,6 +48,7 @@
           
         </div>
         <div class="content-wrapper" v-if="otherProducts && otherProducts.length">
+          <div class="inner-wrapper">
             <div class="content-title">
               <span>其他产品</span>
             </div>
@@ -55,6 +56,7 @@
               <BaseProduct v-for="item in otherProducts" :key="item.index" :itemSingle="item" :noBlank="true"></BaseProduct>
             </div>
           </div>
+         </div> 
       </div>
     </div>
     
@@ -159,8 +161,5 @@
   @import '../../style/index';
   .browse-main .block-wrapper .content-wrapper{
     padding: 8px 20px;
-  }
-  .browse-main .block-wrapper .content-wrapper .content{
-    margin:-20px;
   }
 </style>
