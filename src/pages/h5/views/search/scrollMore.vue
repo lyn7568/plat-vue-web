@@ -1,7 +1,8 @@
 <template lang="html">
-    <div class="yo-scroll" @touchstart="touchStart($event)"
+ 
+    <div class="yo-scroll" @touchstart="touchStart($event)" ref="scrollBox"
          @touchmove="touchMove($event)" @touchend="touchEnd($event)" :style="{top: topVal+'px'}" v-loading="dataList.loading">
-      <section class="inner">
+      <section class="inner" ref="contentBox">
         <!-- 使用时外面的标签会填在里面 -->
         <slot>
         </slot>
@@ -48,13 +49,16 @@ export default {
       loadMoreText: '上拉加载更多'
     };
   },
+  mounted() {
+    this.scrollBottomTest()
+  },
   methods: {
     touchStart(e) {
       this.startY = e.targetTouches[0].pageY;
       this.startX = e.targetTouches[0].pageX;
       this.startScroll = this.$el.scrollTop || 0;
       this.touching = true; //留着有用，不能删除
-      this.dataList.noFlag = false;
+      // this.dataList.noFlag = false;
     },
     //滑动中
     touchMove(e) {
@@ -98,9 +102,8 @@ export default {
       let outerHeight = this.$el.clientHeight,
         innerHeight = this.$el.querySelector('.inner').clientHeight,
         scrollTop = this.$el.scrollTop,
-        bottom = innerHeight - outerHeight - scrollTop;
-
-      if (bottom <= this.offset) {
+        bottom = innerHeight - outerHeight - scrollTop - 50;
+      if (bottom <= this.offset && !this.dataList.noFlag) {
         //内容太少
         this.doLoadMore();
       } else {
@@ -117,6 +120,20 @@ export default {
       this.isLoading = false;
       let more = this.$el.querySelector('.load-more');
       more.style.display = 'none'; //隐藏加载条
+    },
+    scrollBottomTest() {
+      var that = this
+      var elbody = this.$refs.scrollBox
+      var conbody = this.$refs.contentBox
+      elbody.addEventListener('scroll', () => {
+        var viewH = elbody.clientHeight, // 可视高度
+          contentH = conbody.scrollHeight, // 内容高度
+          scrollTop = elbody.scrollTop; // 滚动高度
+        //if(contentH - viewH - scrollTop <= 100) { //到达底部100px时,加载新内容
+        if (scrollTop / (contentH -viewH) >= 0.95 && !that.dataList.noFlag ) { //到达底部100px时,加载新内容
+          that.doLoadMore();
+        }
+      })
     }
   }
 };

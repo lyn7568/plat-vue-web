@@ -25,13 +25,11 @@ new Vue({
   router: router,
   render: h => h(App),
   created () {
-    router.beforeEach((to, from, next) => {
+    router.afterEach((to, from, next) => {
       document.title = PLAT.info.title
       if (to.meta.title) {
         document.title = to.meta.title + '-' + PLAT.info.title
       }
-    })
-    router.afterEach((to, from, next) => {
       window.scrollTo(0, 0);
     })
   }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fixedBlock">
+    <div class="fixedBlock" ref="fixedBlock">
       <div class="searchBox">
         <el-input placeholder="请输入关键词" v-model="searchText" @keyup.enter.native="clearToFun"></el-input>
       </div>
@@ -29,50 +29,56 @@
         </div>
       </div>
     </div>
-    <v-scroll :onLoadMore="onLoadMore" :dataList="scrollData" :topVal="activeTab==='1'? '122' : '84'">
-      <div v-if="activeTab==='1'">
-        <template v-if="contentList.length">
-          <baseContent v-for="watc in contentList" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseContent>
-        </template>
-        <defaultPage v-else></defaultPage>
+    <div class="swiper-container" :style="'height:'+ slideH" ref="scrollSwiper">
+      <div class="swiper-wrapper" :style="'height:'+ slideH">
+        <div class="swiper-slide swiper-Main-con" :style="'height:'+ slideH" v-for="tab in navList" :key="tab.tab">
+          <v-scroll :onLoadMore="onLoadMore" :dataList="scrollData" :topVal="activeTab==='1'? '122' : '84'">
+            <div v-if="tab.tab==='1'">
+              <template v-if="contentList.length">
+                <baseContent v-for="watc in contentList" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseContent>
+              </template>
+              <defaultPage v-else></defaultPage>
+            </div>
+            <div v-if="tab.tab==='2'">
+              <template v-if="searchExpert.length">
+                <baseExpert v-for="watc in searchExpert" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseExpert>
+              </template>
+              <defaultPage v-else></defaultPage>
+            </div>
+            <div v-if="tab.tab==='3'">
+              <template v-if="serviceList.length">
+                <baseService v-for="watc in serviceList" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseService>
+              </template>
+              <defaultPage v-else></defaultPage>
+            </div>
+            <div v-if="tab.tab === '4'">
+              <template v-if="resourceList.length">
+                <baseResource v-for="watc in resourceList" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseResource>
+              </template>
+              <defaultPage v-else></defaultPage>
+            </div>
+            <div v-if="tab.tab === '5'">
+              <template v-if="resultList.length">
+                <baseResult v-for="watc in resultList" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseResult>
+              </template>
+              <defaultPage v-else></defaultPage>
+            </div>
+            <div v-if="tab.tab === '6'">
+              <template v-if="searchOrg.length">
+                <baseOrg v-for="watc in searchOrg" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseOrg>
+              </template>
+              <defaultPage v-else></defaultPage>
+            </div>
+            <div v-if="tab.tab === '7'">
+              <template v-if="companyList.length">
+                <baseCompany v-for="watc in companyList" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseCompany>
+              </template>
+              <defaultPage v-else></defaultPage>
+            </div>
+          </v-scroll>
+        </div>
       </div>
-      <div v-if="activeTab==='2'">
-        <template v-if="searchExpert.length">
-          <baseExpert v-for="watc in searchExpert" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseExpert>
-        </template>
-        <defaultPage v-else></defaultPage>
-      </div>
-      <div v-if="activeTab==='3'">
-        <template v-if="serviceList.length">
-          <baseService v-for="watc in serviceList" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseService>
-        </template>
-        <defaultPage v-else></defaultPage>
-      </div>
-      <div v-if="activeTab === '4'">
-        <template v-if="resourceList.length">
-          <baseResource v-for="watc in resourceList" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseResource>
-        </template>
-        <defaultPage v-else></defaultPage>
-      </div>
-      <div v-if="activeTab === '5'">
-        <template v-if="resultList.length">
-          <baseResult v-for="watc in resultList" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseResult>
-        </template>
-        <defaultPage v-else></defaultPage>
-      </div>
-      <div v-if="activeTab === '6'">
-        <template v-if="searchOrg.length">
-          <baseOrg v-for="watc in searchOrg" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseOrg>
-        </template>
-        <defaultPage v-else></defaultPage>
-      </div>
-      <div v-if="activeTab === '7'">
-        <template v-if="companyList.length">
-          <baseCompany v-for="watc in companyList" :key="watc.index" :itemSingle="watc" :noBlank="true"></baseCompany>
-        </template>
-        <defaultPage v-else></defaultPage>
-      </div>
-    </v-scroll>
+    </div>
   </div>
 </template>
 
@@ -147,7 +153,8 @@ export default {
       scrollData:{
         noFlag: false, //暂无更多数据显示
         loading: false
-      }
+      },
+      slideH: 0
     };
   },
   components: {
@@ -191,6 +198,7 @@ export default {
         num = 0
       }
       this.mySwiperTab.slideTo(num, 500, false)
+      this.mySwiperMain.slideTo(parseInt(val) - 1, 500, false)
       this.clearToFun()
     },
     activeColumn(val) {
@@ -210,6 +218,9 @@ export default {
   },
   mounted() {
     var that = this
+    this.$nextTick(() => {
+       that.setSlideHeight()
+    });
     this.mySwiperTab = new Swiper(that.$refs.swiperNavTab, {
       freeMode: true,
       slidesPerView: 'auto',
@@ -220,8 +231,22 @@ export default {
       slidesPerView: 'auto',
       freeModeSticky: true
     });
+    this.mySwiperMain = new Swiper(that.$refs.scrollSwiper,{
+      allowTouchMove: true,
+      preventInteractionOnTransition: true,
+      observer: true,
+      on: {
+        slideChangeTransitionEnd: function(){
+          that.activeTab = (this.activeIndex + 1).toString()
+          that.clearToFun()
+        }
+      }
+    });
   },
   methods: {
+    setSlideHeight() {
+      this.slideH = window.innerHeight + 'px'
+    },
     slideChanged(val) {
       this.activeTab = val;
     },
@@ -274,7 +299,7 @@ export default {
       setTimeout(() => {
         that.tabTofun()
         done();
-      }, 2000);
+      }, 300);
     },
     contentListFun() {
       var that = this
@@ -301,6 +326,9 @@ export default {
               }
             }
             that.contentList = that.contentList.concat($info);
+            if ($info.length < that.rows) {
+              that.scrollData.noFlag = true;
+            }
           }
         };
         that.scrollData.loading = false
@@ -452,6 +480,9 @@ export default {
               that.$forceUpdate()
             }
             that.companyList = that.companyList.concat($info);
+            if ($info.length < that.rows) {
+              that.scrollData.noFlag = true;
+            }
           };
         };
         that.scrollData.loading = false
@@ -493,6 +524,9 @@ export default {
             that.dataO.resTime = $info[$info.length - 1].publishTime;
             that.dataO.resId = $info[$info.length - 1].resourceId;
             that.resourceList = that.resourceList.concat($info);
+            if ($info.length < that.rows) {
+              that.scrollData.noFlag = true;
+            }
           } else {
             that.scrollData.noFlag = true;
           }
@@ -518,6 +552,9 @@ export default {
             that.dataO.patCreateTime = $info[$info.length - 1].createTime;
             that.dataO.patId = $info[$info.length - 1].id;
             that.resultList = that.resultList.concat($info);
+            if ($info.length < that.rows) {
+              that.scrollData.noFlag = true;
+            }
           } else {
             that.scrollData.noFlag = true;
           }
@@ -543,6 +580,9 @@ export default {
             that.dataO.serTime = $info[$info.length - 1].modifyTime;
             that.dataO.serId = $info[$info.length - 1].id;
             that.serviceList = that.serviceList.concat($info);
+            if ($info.length < that.rows) {
+              that.scrollData.noFlag = true;
+            }
           } else {
             that.scrollData.noFlag = true;
           }
@@ -554,6 +594,7 @@ export default {
   beforeDestroy() {
     this.mySwiperTab.destroy()
     this.swiperColumnTab.destroy()
+    this.mySwiperMain.destroy()
   }
 };
 </script>
