@@ -41,7 +41,7 @@
               </el-col>
               <el-col class="rel-item" :span="24" v-if="resourceInfo.subject && resourceInfo.subject.length">
                 <el-row class="tag-item">
-                  <el-tag v-for="sub in resourceInfo.subject" :key="sub.index">{{sub}}</el-tag>
+                  <el-tag v-for="sub in resourceInfo.subject" :key="sub.index"><a :href="'h5.html#/search?n=4&k='+ sub">{{sub}}</a></el-tag>
                 </el-row>
               </el-col>
             </el-row>

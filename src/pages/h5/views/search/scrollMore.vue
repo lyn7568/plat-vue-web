@@ -1,20 +1,32 @@
 <template lang="html">
- 
-    <div class="yo-scroll" @touchstart="touchStart($event)" ref="scrollBox"
-         @touchmove="touchMove($event)" @touchend="touchEnd($event)" :style="{top: topVal+'px'}" v-loading="dataList.loading">
-      <section class="inner" ref="contentBox">
-        <!-- 使用时外面的标签会填在里面 -->
+  <!-- <div class="swiper-container" ref="swiperContainer" :style="{top: topVal+'px;-webkit-overflow-scrolling: touch;'}" v-loading="dataList.loading">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" :style="'height:'+ slideH" ref="slideScroll">
         <slot>
         </slot>
-        <!-- 保持加载更多条在最下面 -->
-        <footer class="load-more">
-          <slot name="load-more">
-            <span>{{loadMoreText}}</span>
-          </slot>
-        </footer>
-        <div class="nullData" v-show="dataList.noFlag">暂无更多数据</div>
-      </section>
+      </div>
     </div>
+    <div class="load-more">
+      <slot name="load-more">
+        <span>{{loadMoreText}}</span>
+      </slot>
+    </div>
+    <div class="nullData" v-show="dataList.noFlag">暂无更多数据</div>
+    <div class="swiper-scrollbar" ref="scrollSwiper"></div>
+  </div> -->
+  <div class="yo-scroll" @touchstart="touchStart($event)" ref="scrollBox"
+        @touchmove="touchMove($event)" @touchend="touchEnd($event)" :style="{top: topVal+'px'}" v-loading="dataList.loading">
+    <section class="inner" ref="contentBox">
+      <slot>
+      </slot>
+      <footer class="load-more">
+        <slot name="load-more">
+          <span>{{loadMoreText}}</span>
+        </slot>
+      </footer>
+      <div class="nullData" v-show="dataList.noFlag">暂无更多数据</div>
+    </section>
+  </div>
 </template>
 <script>
 export default {
@@ -52,7 +64,64 @@ export default {
   mounted() {
     this.scrollBottomTest()
   },
+  // mounted() {
+  //   var that = this
+  //   this.$nextTick(() => {
+  //      that.setSlideHeight()
+  //   });
+  //   this.mySwiperScroll = new Swiper(that.$refs.swiperContainer, {
+  //     direction: 'vertical',
+  //     scrollbar: that.$refs.scrollSwiper,
+  //     autoplay : 500,
+  //     mode : 'vertical',
+  //     slidesPerView: 'auto',
+  //     mousewheelControl: true,
+  //     freeMode: true,
+  //     allowTouchMove: true,
+  //     preventInteractionOnTransition: true,
+  //     observer: true,
+  //     on: {
+  //       touchMove(e) {
+  //         if (!that.enableLoadMore || that.dataList.noFlag || !that.touching) {
+  //           return;
+  //         }
+  //         if (that.mySwiperScroll.translate === 0) {
+  //           e.preventDefault();
+  //         }
+  //         that.loadMoreText = '上拉加载更多';
+  //         that.$el.querySelector('.load-more').style.display = 'block';
+  //       },
+  //       touchEnd(swiper) {
+  //         var _viewHeight = that.$refs.swiperContainer.offsetHeight;
+  //         var _contentHeight = that.$refs.slideScroll.offsetHeight;
+  //         // 上拉加载
+  //         if(that.mySwiperScroll.translate <= _viewHeight - _contentHeight + that.topVal - 50
+  //           && that.mySwiperScroll.translate < 0
+  //           && !that.dataList.noFlag && !that.isLoading) {
+  //           setTimeout(function() {
+  //             that.doLoadMore()
+  //             that.mySwiperScroll.update()
+  //           }, 300);
+  //         } else {
+  //           let more = that.$el.querySelector('.load-more');
+  //           more.style.display = 'none'; //隐藏加载条
+  //         }
+  //         if(that.mySwiperScroll.translate >= 50) {
+  //           setTimeout(function() {
+  //             //刷新操作
+  //             that.mySwiperScroll.update(); // 重新计算高度;
+  //           }, 1000);
+  //         }else if(that.mySwiperScroll.translate >= 0 && that.mySwiperScroll.translate < 50){
+
+  //         }
+  //       }
+  //     }
+  //   });
+  // },
   methods: {
+    setSlideHeight() {
+      this.slideH = window.innerHeight + 'px'
+    },
     touchStart(e) {
       this.startY = e.targetTouches[0].pageY;
       this.startX = e.targetTouches[0].pageX;
@@ -87,7 +156,6 @@ export default {
 
       //如果滑动距离太短
       if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
-        // console.log("滑动距离太短")
         let more = this.$el.querySelector('.load-more');
         more.style.display = 'none'; //隐藏加载条
         return;
@@ -103,7 +171,7 @@ export default {
         innerHeight = this.$el.querySelector('.inner').clientHeight,
         scrollTop = this.$el.scrollTop,
         bottom = innerHeight - outerHeight - scrollTop - 50;
-      if (bottom <= this.offset && !this.dataList.noFlag) {
+      if (bottom <= this.offset && !this.dataList.noFlag && !this.isLoading ) {
         //内容太少
         this.doLoadMore();
       } else {
@@ -129,8 +197,7 @@ export default {
         var viewH = elbody.clientHeight, // 可视高度
           contentH = conbody.scrollHeight, // 内容高度
           scrollTop = elbody.scrollTop; // 滚动高度
-        //if(contentH - viewH - scrollTop <= 100) { //到达底部100px时,加载新内容
-        if (scrollTop / (contentH -viewH) >= 0.95 && !that.dataList.noFlag ) { //到达底部100px时,加载新内容
+        if (scrollTop / (contentH -viewH) >= 1 && !that.dataList.noFlag && !that.dataList.loading && !that.isLoading ) { //到达底部时,加载新内容
           that.doLoadMore();
         }
       })

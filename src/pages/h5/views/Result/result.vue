@@ -43,7 +43,7 @@
                 </el-col>
                 <el-col :span="24" v-if="patentInfo.keywords && patentInfo.keywords.length">
                   <el-row class="tag-item">
-                    <el-tag v-for="sub in patentInfo.keywords" :key="sub.index">{{sub}}</el-tag>
+                    <el-tag v-for="sub in patentInfo.keywords" :key="sub.index"><a :href="'h5.html#/search?n=5&k='+ sub">{{sub}}</a></el-tag>
                   </el-row>
                 </el-col>
               </el-row>

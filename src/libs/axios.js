@@ -43,7 +43,7 @@ axiosUtil.interceptors.response.use(function (response) {
     return Promise.resolve(response)
   }
 }, error => {
-  Message.error('请求错误2，请重试')
+  Message.error('服务器请求错误，请重试')
   return Promise.reject(error)
 })
 

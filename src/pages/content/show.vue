@@ -21,6 +21,13 @@
               <div class="content-uditor" v-html="contentInfo.cnt"></div>
             </div>
           </div>
+          <div class="inner-wrapper">
+            <div class="content">
+              <el-row class="tag-item" v-if="contentInfo.keyWords && contentInfo.keyWords.length">
+                <el-tag v-for="sub in contentInfo.keyWords" :key="sub.index">{{sub}}</el-tag>
+              </el-row>
+            </div>
+          </div>
           <div class="inner-wrapper" v-if="platExperts && platExperts.length">
             <div class="content-title">
               <span>相关专家</span>
@@ -62,7 +69,7 @@
 </template>
 
 <script>
-  import { urlParse, commenTime } from '@/libs/util';
+  import { urlParse, commenTime, strToArr } from '@/libs/util';
 
   import queryBase from '@/libs/queryBase';
   import baseExpert from '@/components/subTemplate/BaseExpert';
@@ -102,6 +109,9 @@
         }, (res) => {
           if (res.success) {
             var $info = res.data;
+            if ($info.keyWords) {
+              $info.keyWords = strToArr($info.keyWords);
+            }
             if ($info.modifyTime) {
               $info.modifyTime = commenTime($info.modifyTime, true)
             }

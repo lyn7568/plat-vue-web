@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="swiper-container" :style="'height:'+ slideH" ref="scrollSwiper">
+    <div class="swiper-container" ref="swiperMainCon" :style="'height:'+ slideH">
       <div class="swiper-wrapper" :style="'height:'+ slideH">
         <div class="swiper-slide swiper-Main-con" :style="'height:'+ slideH" v-for="tab in navList" :key="tab.tab">
           <v-scroll :onLoadMore="onLoadMore" :dataList="scrollData" :topVal="activeTab==='1'? '122' : '84'">
@@ -200,11 +200,6 @@ export default {
       this.mySwiperTab.slideTo(num, 500, false)
       this.mySwiperMain.slideTo(parseInt(val) - 1, 500, false)
       this.clearToFun()
-    },
-    activeColumn(val) {
-      this.contentList = []
-      this.pageNo = 1
-      this.contentListFun()
     }
   },
   created() {
@@ -214,7 +209,10 @@ export default {
     if (urlParse('k')) {
       this.searchText = urlParse('k');
     }
-    this.tabTofun()
+    if (urlParse('c')) {
+      this.activeColumn = urlParse('c');
+    }
+    this.clearToFun()
   },
   mounted() {
     var that = this
@@ -231,7 +229,7 @@ export default {
       slidesPerView: 'auto',
       freeModeSticky: true
     });
-    this.mySwiperMain = new Swiper(that.$refs.scrollSwiper,{
+    this.mySwiperMain = new Swiper(that.$refs.swiperMainCon,{
       allowTouchMove: true,
       preventInteractionOnTransition: true,
       observer: true,
@@ -252,6 +250,9 @@ export default {
     },
     slideChangedColumn(val) {
       this.activeColumn = val
+      this.contentList = []
+      this.pageNo = 1
+      this.contentListFun()
     },
     clearToFun() {
       this.contentList = []
@@ -273,6 +274,10 @@ export default {
         patId: ''
       }
       this.pageNo = 1
+      this.scrollData = {
+        noFlag: false,
+        loading: false
+      }
       this.tabTofun()
     },
     tabTofun() {
@@ -295,18 +300,26 @@ export default {
     },
     onLoadMore(done) {
       var that = this
-      this.pageNo++;
-      setTimeout(() => {
-        that.tabTofun()
-        done();
-      }, 300);
+      console.log(111)
+      console.log(that.scrollData.noFlag)
+      console.log(that.scrollData.loading)
+      if (!that.scrollData.noFlag) {
+        console.log(222)
+        setTimeout(() => {
+          console.log(that.pageNo)
+          that.pageNo++;
+          console.log(that.pageNo)
+          that.tabTofun()
+          done();
+        }, 10);
+      }
     },
     contentListFun() {
       var that = this
       that.scrollData.loading = true
       that.scrollData.noFlag = false
       this.$axios.get('/ajax/article/pq', {
-        title: that.searchText,
+        key: that.searchText,
         catalog: that.activeColumn,
         published: 1,
         pageSize: that.rows,

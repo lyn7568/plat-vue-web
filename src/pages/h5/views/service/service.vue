@@ -26,7 +26,7 @@
             </el-col>
             <el-col class="rel-item" :span="24" v-if="serveInfo.keywords && serveInfo.keywords.length">
               <el-row class="tag-item">
-                <el-tag v-for="sub in serveInfo.keywords" :key="sub.index">{{sub}}</el-tag>
+                <el-tag v-for="sub in serveInfo.keywords" :key="sub.index"><a :href="'h5.html#/search?n=3&k='+ sub">{{sub}}</a></el-tag>
               </el-row>
             </el-col>
           </el-row>
@@ -39,7 +39,7 @@
             <div class="content content-nf">
               <baseService v-for="item in likeserves" :key="item.index" :itemSingle="item" :noBlank="true"></baseService>
             </div>
-          </div>>
+          </div>
         </div>
         <div class="content-wrapper" v-if="hotserves && hotserves.length">
           <div class="inner-wrapper">
