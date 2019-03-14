@@ -12,6 +12,7 @@
             <div class="info-operate">
               <div class="addr">{{citys[orgInfo.addr]}}</div>
               <shareOut></shareOut>
+              <pageView v-if="companyId" :pageObj="{ tn: 'company', id: companyId, src: '1', noShow: true}"></pageView>
             </div>
           </div>
         </div>
@@ -133,6 +134,7 @@
   import queryDict from '@/libs/queryDict';
 
   import shareOut from '@/components/ShareOut';
+  import pageView from '@/components/pageView';
   import baseProduct from '@/components/subTemplate/BaseProduct';
 
   export default {
@@ -181,6 +183,7 @@
     },
     components: {
       shareOut,
+      pageView,
       baseProduct
     },
     methods: {

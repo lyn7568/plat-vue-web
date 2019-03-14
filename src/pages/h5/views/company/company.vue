@@ -15,6 +15,7 @@
           <p class="industry">{{keywordObj[1] ? keywordObj[1].join(" | ") : ''}}</p>
           <p class="addressbox">
             <em class="address"></em> {{citys[orgInfo.addr]}}</p>
+          <pageView v-if="companyId" :pageObj="{ tn: 'company', id: companyId, src: '2', noShow: true}"></pageView>
         </div>
       </div>
     </div>
@@ -69,6 +70,7 @@
   import queryDict from '@/libs/queryDict';
   import baseContent from '@/components/subTemplate/BaseContent';
   import baseProduct from '@/components/subTemplate/BaseProduct';
+  import pageView from '@/components/pageView';
 
   export default {
     data() {
@@ -95,6 +97,7 @@
       this.getCompContent();
     },
     components: {
+      pageView,
       baseProduct,
       baseContent
     },

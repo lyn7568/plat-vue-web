@@ -1,7 +1,7 @@
 <template>
   <div class="page-view">
     <img :src="logImg" style="display:none" />
-    <span>浏览量 {{pageCount}}</span>
+    <span v-if="!pageObj.noShow">浏览量 {{pageCount}}</span>
   </div>
 </template>
 <script>
@@ -16,7 +16,9 @@
       }
     },
     created() {
-      this.queryPageView()
+      if (!this.pageObj.noShow) {
+        this.queryPageView()
+      }
       this.wlog(this.pageObj)
     },
     methods: {

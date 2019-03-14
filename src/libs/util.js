@@ -316,7 +316,7 @@ export const DateFormat = function (fmt) {
 }
 
 export const urlshare = function () {
-  let arrayUrl = ['home', 'company.html', 'org.html', 'expert.html', 'result.html', 'resource.html', 'serve.html', 'content.html']
+  let arrayUrl = ['home', 'company.html', 'org.html', 'expert.html', 'result.html', 'resource.html', 'serve.html', 'content.html', 'product.html']
   let arr = arrayUrl.filter(function (item) {
     return window.location.href.indexOf(item) !== -1;
   })

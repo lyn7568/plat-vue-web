@@ -15,6 +15,7 @@
           <p class="industry">{{orgInfo.industry ? orgInfo.industry.join(" | ") : ''}}</p>
           <p class="addressbox">
             <em class="address"></em> {{orgInfo.city}}</p>
+          <pageView v-if="orgId" :pageObj="{ tn: 'organization', id: orgId, src: '2', noShow: true}"></pageView>
         </div>
       </div>
     </div>
@@ -91,6 +92,7 @@
   import baseResource from '@/components/subTemplate/BaseResource';
   import baseContent from '@/components/subTemplate/BaseContent';
   import BaseOrg from '@/components/subTemplate/BaseOrg';
+  import pageView from '@/components/pageView';
 
   export default {
     data() {
@@ -135,6 +137,7 @@
       this.getLikeOrgs();
     },
     components: {
+      pageView,
       baseService,
       baseResource,
       baseContent,

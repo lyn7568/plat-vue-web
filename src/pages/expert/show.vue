@@ -10,6 +10,7 @@
             <div class="info-operate">
               <div class="addr">{{expertInfo.address}}</div>
               <shareOut></shareOut>
+              <pageView v-if="expertId" :pageObj="{ tn: 'professor', id: expertId, src: '1', noShow: true}"></pageView>
             </div>
           </div>
           <el-row class="goSpan" :gutter="10">
@@ -207,6 +208,7 @@
   import queryBase from '@/libs/queryBase';
 
   import shareOut from '@/components/ShareOut';
+  import pageView from '@/components/pageView';
   import collectCo from '@/components/CollectCo';
   import contactChat from '@/components/ContactChat';
   import baseService from '@/components/subTemplate/BaseService';
@@ -282,6 +284,7 @@
     },
     components: {
       shareOut,
+      pageView,
       collectCo,
       contactChat,
       baseService,

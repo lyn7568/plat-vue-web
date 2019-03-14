@@ -17,7 +17,7 @@
                 <beyondTo v-if="companyId" :ownerId="companyId" :ownerType="'00'" :styFlag="true"></beyondTo>
             </div>
         <div class="content-wrapper">
-          
+            <pageView v-if="productId" :pageObj="{ tn: 'product', id: productId, src: '2', noShow: true }"></pageView>
             <el-row :gutter="10" class="rel-detail">
               <el-col class="rel-item" :span="24" v-if="productInfo.spec">
                 <div class="rel-tit">厂商型号：</div>
@@ -52,7 +52,7 @@
             <div class="content-title">
               <span>其他产品</span>
             </div>
-            <div class="content">
+            <div class="content content-nf">
               <BaseProduct v-for="item in otherProducts" :key="item.index" :itemSingle="item" :noBlank="true"></BaseProduct>
             </div>
           </div>
@@ -69,7 +69,7 @@
   import previewMagnify from '../components/swiperImg';
   import beyondTo from '@/components/BeyondTo';
   import BaseProduct from '@/components/subTemplate/BaseProduct';
-
+  import pageView from '@/components/pageView';
   export default {
     data() {
       return {
@@ -88,6 +88,7 @@
     components: {
       previewMagnify,
       beyondTo,
+      pageView,
       BaseProduct
     },
     methods: {

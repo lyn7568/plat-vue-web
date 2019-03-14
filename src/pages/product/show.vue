@@ -11,7 +11,7 @@
               <div class="info-tit">{{productInfo.name}}</div>
               <div class="info-tag">简介：{{productInfo.cnt}}</div>
               <div class="info-operate zoom-operate">
-                <!-- <div class="addr">浏览量 10</div> -->
+                <pageView v-if="productId" :pageObj="{ tn: 'product', id: productId, src: '1'}" style="margin-right:15px"></pageView>
                 <shareOut :tPosition="tPosition"></shareOut>
               </div>
             </div>
@@ -80,6 +80,7 @@
   import previewMagnify from '@/components/previewMagnify';
   import shareOut from '@/components/ShareOut';
   import beyondTo from '@/components/BeyondTo';
+  import pageView from '@/components/pageView';
 
   export default {
     data() {
@@ -99,6 +100,7 @@
     components: {
       previewMagnify,
       shareOut,
+      pageView,
       beyondTo
     },
     methods: {

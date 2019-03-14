@@ -13,6 +13,7 @@
           <p class="industry" v-if="expertInfo.title">{{expertInfo.title}}</p>
           <p class="addressbox">
             <em class="address"></em> {{expertInfo.address}}</p>
+          <pageView v-if="expertId" :pageObj="{ tn: 'professor', id: expertId, src: '2', noShow: true}"></pageView>
         </div>
       </div>
     </div>
@@ -120,6 +121,7 @@
   import baseContent from '@/components/subTemplate/BaseContent';
   import baseResult from '@/components/subTemplate/BaseResult';
   import BaseExpert from '@/components/subTemplate/BaseExpert';
+  import pageView from '@/components/pageView';
 
   export default {
     data() {
@@ -164,6 +166,7 @@
       this.getCoopExperts();
     },
     components: {
+      pageView,
       baseService,
       baseResult,
       baseContent,
