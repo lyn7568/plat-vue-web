@@ -7,6 +7,7 @@
             <div class="headcon-box detail-box">
               <div class="show-info">
                 <div class="info-tit info-tit-big">{{patentInfo.name}}</div>
+                <pageView v-if="patentId" :pageObj="{ tn: 'ppatent', id: patentId, src: '2', noShow: true}"></pageView>
               </div>
             </div>
           </div>
@@ -97,7 +98,7 @@
 
   import baseResult from '@/components/subTemplate/BaseResult';
   import queryBase from '@/libs/queryBase';
-
+  import pageView from '@/components/pageView';
   export default {
     data() {
       return {
@@ -117,7 +118,8 @@
       this.getPatentAuthors();
     },
     components: {
-      baseResult
+      baseResult,
+      pageView
     },
     methods: {
       getPatentInfo() {

@@ -11,6 +11,7 @@
               <div class="info-tit info-tit-big">{{resourceInfo.resourceName}}</div>
               <div class="info-tag">应用用途：{{resourceInfo.supportedServices}}</div>
               <div class="info-operate zoom-operate">
+                <pageView v-if="resourceId" :pageObj="{ tn: 'resource', id: resourceId, src: '1'}"></pageView>
                 <collectCo :watchOptions="{oid: resourceId, type: 4}"></collectCo>
                 <shareOut :tPosition="tPosition"></shareOut>
               </div>
@@ -107,6 +108,7 @@
   import collectCo from '@/components/CollectCo';
   import beyondTo from '@/components/BeyondTo';
   import contactChat from '@/components/ContactChat';
+  import pageView from '@/components/pageView';
 
   import baseResource from '@/components/subTemplate/BaseResource';
 
@@ -137,7 +139,8 @@
       collectCo,
       beyondTo,
       contactChat,
-      baseResource
+      baseResource,
+      pageView
     },
     methods: {
       getResourceInfo() {

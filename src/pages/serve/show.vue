@@ -11,6 +11,7 @@
               <div class="info-tit info-tit-big">{{serveInfo.name}}</div>
               <div class="info-tag">服务内容：{{serveInfo.cnt}}</div>
               <div class="info-operate zoom-operate">
+                <pageView v-if="serveId" :pageObj="{ tn: 'ware', id: serveId, src: '1'}"></pageView>
                 <collectCo :watchOptions="{oid: serveId, type: 3}"></collectCo>
                 <shareOut :tPosition="tPosition"></shareOut>
               </div>
@@ -97,6 +98,7 @@
   import contactChat from '@/components/ContactChat';
 
   import baseService from '@/components/subTemplate/BaseService';
+  import pageView from '@/components/pageView';
 
   export default {
     data() {
@@ -125,7 +127,8 @@
       collectCo,
       beyondTo,
       contactChat,
-      baseService
+      baseService,
+      pageView
     },
     methods: {
       getserveInfo() {

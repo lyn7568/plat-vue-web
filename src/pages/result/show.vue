@@ -8,7 +8,8 @@
               <div class="show-info">
                 <div class="info-tit info-tit-big">{{patentInfo.name}}</div>
                 <div class="info-operate zoom-operate">
-                  <collectCo :watchOptions="{oid: patentId, type: 5}"></collectCo>
+                  <pageView v-if="patentId" :pageObj="{ tn: 'ppatent', id: patentId, src: '1'}"></pageView>
+                  <collectCo :watchOptions="{oid: patentId, type: 5}" style="margin-left:10px;"></collectCo>
                   <shareOut></shareOut>
                 </div>
               </div>
@@ -113,6 +114,7 @@
 
   import baseResult from '@/components/subTemplate/BaseResult';
   import queryBase from '@/libs/queryBase';
+  import pageView from '@/components/pageView';
 
   export default {
     data() {
@@ -137,7 +139,8 @@
       shareOut,
       collectCo,
       contactChat,
-      baseResult
+      baseResult,
+      pageView
     },
     methods: {
       getPatentInfo() {

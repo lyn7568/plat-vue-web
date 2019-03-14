@@ -8,6 +8,7 @@
         <div class="content-wrapper">
           <div class="show-info">
             <div class="info-tit info-tit-big" style="font-size: 20px; line-height:30px; margin-bottom: 4px;">{{serveInfo.name}}</div>
+            <pageView v-if="serveId" :pageObj="{ tn: 'ware', id: serveId, src: '2', noShow: true}"></pageView>
             <div class="info-tag">内容：{{serveInfo.cnt}}</div>
           </div>
         </div>
@@ -63,6 +64,7 @@
   import beyondTo from '@/components/BeyondTo';
 
   import baseService from '@/components/subTemplate/BaseService';
+  import pageView from '@/components/pageView';
 
   export default {
     data() {
@@ -88,7 +90,8 @@
     components: {
       previewMagnify,
       beyondTo,
-      baseService
+      baseService,
+      pageView
     },
     methods: {
       getserveInfo() {

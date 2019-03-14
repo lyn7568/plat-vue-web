@@ -14,6 +14,7 @@
               </div>
         </div>
         <div class="content-wrapper">
+            <pageView v-if="resourceId" :pageObj="{ tn: 'resource', id: resourceId, src: '2', noShow: true}"></pageView>
             <beyondTo v-if="owner.id" :ownerId="owner.id" :ownerType="owner.type" :styFlag="true"></beyondTo>
         </div>
         
@@ -77,7 +78,7 @@
   import previewMagnify from '../components/swiperImg';
   import beyondTo from '@/components/BeyondTo';
   import baseResource from '@/components/subTemplate/BaseResource';
-
+  import pageView from '@/components/pageView';
   export default {
     data() {
       return {
@@ -102,7 +103,8 @@
     components: {
       previewMagnify,
       beyondTo,
-      baseResource
+      baseResource,
+      pageView
     },
     methods: {
       getResourceInfo() {
