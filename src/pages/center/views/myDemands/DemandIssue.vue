@@ -136,14 +136,13 @@
             { max: 1000, message: '不得超过1000个字', trigger: 'blur' }
           ],
           city: [
-            { required: true, message: '请选择所在城市', trigger: 'blur' }
+            { required: true, message: '请选择所在城市', trigger: ['blur', 'change'] }
           ],
           invalidDay: [
             { required: true, validator: delayValidate, trigger: 'blur' }
           ],
           linkOrg: [
-            { required: true, message: '请填写您所在的企业名称', trigger: 'blur' },
-            { max: 50, message: '不得超过50个字', trigger: 'blur' }
+            { required: true, message: '请填写您所在的企业名称', trigger: 'blur' }
           ],
           linkPhone: [
             { required: true, message: '请填写您的联系电话', trigger: 'blur' }
@@ -182,7 +181,19 @@
           this.demandId = id
           this.getDemandInfo()
         } else {
-          this.ruleFormDem = {}
+          this.ruleFormDem = {
+            title: '',
+            descp: '',
+            city: '',
+            invalidDay: '',
+            linkPhone: '',
+            linkOrg: '',
+            cost: '',
+            duration: '',
+            cityStr: '',
+            costStr: '',
+            durationStr: ''
+          }
           const curphone = localStorage.getItem('curphone')
           const curcomp = localStorage.getItem('curcomp')
           this.ruleFormDem.linkPhone = (curphone && curphone !== 'undefined') ? curphone : ''
