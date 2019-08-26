@@ -25,6 +25,7 @@
     },
     data() {
       return {
+        platId: process.env.PLAT_ID,
         orgData: [],
         loadingModalShow: true,
         loadingComplete: false,
@@ -61,68 +62,70 @@
     methods: {
       ResidentOrgs() {
         var that = this
-        that.$axios.get('/ajax/org/list', {}, (res) => {
-          if (res.success) {
-            var $data = res.data;
-            var arr = []
-            var hdata = { num: 1, data: $data }
-            if ($data.length > 0) {
-              for (let i in $data) {
-                hdata.num++
-                arr[i] = $data[i].id;
+       that.$axios.get('http://www.xttjpt.cn:88/ajax/org/sync', {pid: that.platId}, (res) => {
+          that.$axios.get('/ajax/org/list', {}, (res) => {
+            if (res.success) {
+              var $data = res.data;
+              var arr = []
+              var hdata = { num: 1, data: $data }
+              if ($data.length > 0) {
+                for (let i in $data) {
+                  hdata.num++
+                  arr[i] = $data[i].id;
+                  hdata.num--
+                }
                 hdata.num--
-              }
-              hdata.num--
-              if (hdata.num === 0 && arr.length) {
-                that.$axios.getk('/ajax/org/qm', {
-                  id: arr
-                }, function(data) {
-                  if (data.success && data.data) {
-                    var obj = data.data
-                    if (obj.length > 0) {
-                      for (let m = 0; m < obj.length; ++m) {
-                        obj[m].logo = defaultSet.img.org
-                        if (obj[m].hasOrgLogo) {
-                          obj[m].logo = ImageUrl(('org/' + obj[m].id + '.jpg'), true)
+                if (hdata.num === 0 && arr.length) {
+                  that.$axios.getk('/ajax/org/qm', {
+                    id: arr
+                  }, function(data) {
+                    if (data.success && data.data) {
+                      var obj = data.data
+                      if (obj.length > 0) {
+                        for (let m = 0; m < obj.length; ++m) {
+                          obj[m].logo = defaultSet.img.org
+                          if (obj[m].hasOrgLogo) {
+                            obj[m].logo = ImageUrl(('org/' + obj[m].id + '.jpg'), true)
+                          }
+                          if (obj[m].industry) {
+                            obj[m].industry = obj[m].industry.replace(/,/g, ' | ')
+                          }
                         }
-                        if (obj[m].industry) {
-                          obj[m].industry = obj[m].industry.replace(/,/g, ' | ')
-                        }
-                      }
-                      setTimeout(() => {
-                        that.$parent.loadingState = false
-                        for (let j = 0; j < obj.length; ++j) {
-                          for (let n = 0; n < $data.length; ++n) {
-                            if (obj[j].id === $data[n].id) {
-                              if ($data[n].level) {
-                                obj[j].level = $data[n].level
-                              } else {
-                                obj[j].level = 99999
+                        setTimeout(() => {
+                          that.$parent.loadingState = false
+                          for (let j = 0; j < obj.length; ++j) {
+                            for (let n = 0; n < $data.length; ++n) {
+                              if (obj[j].id === $data[n].id) {
+                                if ($data[n].level) {
+                                  obj[j].level = $data[n].level
+                                } else {
+                                  obj[j].level = 99999
+                                }
                               }
                             }
                           }
-                        }
-                        obj.sort(function(a, b) {
-                          return a.level > b.level ? 1 : (a.level === b.level ? 0 : -1)
-                        })
-                        if (obj.length <= that.pageSize) {
-                          that.loadingModalShow = false
-                          that.loadingComplete = true
-                          that.isFormSearch = true
-                          that.isLoading = false
-                          that.ifDefault = false
-                        }
-                        that.orgData = obj
-                      }, 1000);
+                          obj.sort(function(a, b) {
+                            return a.level > b.level ? 1 : (a.level === b.level ? 0 : -1)
+                          })
+                          if (obj.length <= that.pageSize) {
+                            that.loadingModalShow = false
+                            that.loadingComplete = true
+                            that.isFormSearch = true
+                            that.isLoading = false
+                            that.ifDefault = false
+                          }
+                          that.orgData = obj
+                        }, 1000);
+                      }
                     }
-                  }
-                })
+                  })
+                }
+              } else {
+                that.ifDefault = true
+                that.$parent.loadingState = false
               }
-            } else {
-              that.ifDefault = true
-              that.$parent.loadingState = false
             }
-          }
+          })
         })
       },
       searchLower() {
