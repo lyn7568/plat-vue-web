@@ -32,7 +32,7 @@
         isFormSearch: false,
         isLoading: false,
         ifDefault: false,
-        pageSize: 30,
+        pageSize: 10,
         pageNo: 1
       };
     },
@@ -131,7 +131,7 @@
         if (this.loadingModalShow && !this.isLoading) {
           this.pageNo++
         }
-        if (this.pageUserData.length <= this.pageNo * this.pageSize) {
+        if (this.pageUserData.length < this.pageNo * this.pageSize) {
           this.loadingModalShow = false
           this.loadingComplete = true
           this.isFormSearch = true
